@@ -1,0 +1,8 @@
+{
+  "name": "clon",
+  "integrations": {
+    "capacitor": {},
+    "cordova": {}
+  },
+  "type": "angular"
+}

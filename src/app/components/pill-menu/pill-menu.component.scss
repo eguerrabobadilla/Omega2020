@@ -1,0 +1,43 @@
+ion-segment-button::before {
+    opacity: 0;
+    margin-top: 0px;
+}
+
+ion-segment {
+    /* padding: 13px; */
+    /*top: 0;*/
+    top: -2.5vh;
+    height: 56px;
+    position: sticky;
+    z-index: 33;
+    background-color: #ffffff;
+    /* border-radius: 34px; */
+    /* padding-left: 20px; */
+    /* padding-top: 21px; */
+    margin: 0x;
+    /* margin: 0px; */
+    //  margin-top: -1px;
+    border-radius: 44px 44px 0px 0px;
+    padding: 12px;
+    padding-left: 18px;
+}
+
+ion-segment-button {
+    --indicator-color: #222428;
+    --border-radius: 99px;
+    --indicator-height: 29px;
+    max-width: fit-content;
+    font-size: 14px;
+    --indicator-height: 34px;
+    --color: #222428;
+    --color-checked: white;
+    font-weight: bold;
+}
+
+ion-segment-button>ion-label {
+    padding-top: 5px;
+}
+
+.boxshadowadd {
+    box-shadow: 0vh -6vw 0px 5vw #6228cf;
+}

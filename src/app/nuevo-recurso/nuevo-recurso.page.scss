@@ -1,0 +1,20 @@
+ion-content {
+    --background: #F4315D;
+    //--padding-top:15000px;
+    //--offset-top:0.8px !important;
+}
+
+ion-toolbar {
+    --background: #F4315D;
+    --border-color: #F4315D;
+    --border-width: 0px;
+    ion-title {
+        --color: #ffffff;
+    }
+}
+
+ion-card {
+    box-shadow: none !important;
+    --background: #F4315D;
+    --color: #ffffff;
+}

@@ -1,0 +1,224 @@
+<ion-header [translucent]="false" style="height: 13vh;
+border-radius: 0px 0px 0px 50px;" mode="ios">
+    <ion-toolbar #toolbar style="height: 13vh;
+   border-radius: 0px 0px 0px 50px;">
+        <ion-title #text class="etitle">
+            <ion-icon name="cloudy-night" style="color: #FF426D;
+            font-size: 27px;"></ion-icon>
+            <span style="opacity:0;">-</span> What to wear
+
+        </ion-title>
+
+    </ion-toolbar>
+</ion-header>
+
+<ion-header #toolbar1 slot="end" [translucent]="false" style=" top: 0;     height: 20vh;
+border-radius: 0px 0px 0px 40px;
+background-color: #FF426D;
+position: absolute;
+width: 19vw;
+right: 0px;" mode="ios">
+
+    <div style="height: 50%;padding-top: 3vh;
+    padding-left: 7vw;
+    font-size: 7vW;
+    color: white;">
+        <ion-icon name="filter-outline"></ion-icon>
+    </div>
+
+    <div style="  height: 50%;
+    background-color: #F4315D;
+    top: 50%;
+    border-radius: 0px 0px 0px 40px;
+    text-align: center;
+    padding-top: 3vh;
+    font-size: 3vh;
+    color: aliceblue;">
+        03</div>
+
+</ion-header>
+
+<!--<ion-header #toolbar2 class="inverted-border-radius" [translucent]="false" style="    height: 20vh;
+background-color: #6228cf00;
+z-index: 5;
+position: absolute;
+top: 0;" mode="ios">
+</ion-header>
+<div #toolbar2 class="inverted-border-radius-left" style="height: 20vh;
+background-color: #6228cf00;
+z-index: 5;
+position: absolute;
+top: 0;" mode="ios">
+</div>
+<div #toolbar3 class="inverted-border-radius-right" style="height: 20vh;
+background-color: #6228cf00;
+z-index: 5;
+position: absolute;
+top: 0;" mode="ios">
+</div>
+
+
+<!--<ion-content [fullscreen]="true" scrollY="false">
+
+</ion-content>-->
+
+
+<ion-content [scrollY]="scrollenable" #content id="ion-contentx" [fullscreen]="false" style="z-index: 4;
+--background: #6228cf;
+--offset-bottom: 0px;">
+
+    <div #elementsToProcess style="bottom: -64vh;position: relative;"></div>
+
+    <div #div2 style="width: 100%; z-index:5;bottom: -64vh;position: relative;background: white;border-top-right-radius: 44px;
+    border-top-left-radius: 44px;transform: translateY(5vh);">
+
+        <app-pill-menu #pillMenu pillMenu [itemsMenu]="tabs" [selectOption]="selectOption" (indicatorChanged)="segmentChanged($event)" (clickFab)="nuevoRecurso($event)"></app-pill-menu>
+
+
+        <ion-slides #slideDown (ionSlideTouchEnd)="ionSlideTouchEnd(slideUp,slideDown)">
+
+            <ion-slide>
+                <ion-virtual-scroll appAnimateItems [items]="items" approxItemHeight="320px">
+                    <ion-card style="text-align: initial;" mode="ios" *virtualItem="let item; let itemBounds = bounds;" (click)="openDetail(item)">
+                        <ion-card-header>
+                            <ion-card-title>{{ item.name }}</ion-card-title>
+                        </ion-card-header>
+                        <ion-card-content>{{ item.content }}</ion-card-content>
+                    </ion-card>
+                </ion-virtual-scroll>
+            </ion-slide>
+            <ion-slide>
+                <ion-virtual-scroll appAnimateItems [items]="items" approxItemHeight="320px">
+                    <ion-card style="text-align: initial;" mode="ios" *virtualItem="let item; let itemBounds = bounds;" (click)="openDetail(item)">
+                        <ion-card-header>
+                            <ion-card-title>{{ item.name }}</ion-card-title>
+                        </ion-card-header>
+                        <ion-card-content>{{ item.content }}</ion-card-content>
+                    </ion-card>
+                </ion-virtual-scroll>
+            </ion-slide>
+        </ion-slides>
+
+    </div>
+
+    <div id="container" style="background-color: #6228cf;" slot="fixed">
+        <ion-title #animation7 mode="ios" style="left: 0px;
+        bottom: 0px;
+        padding-bottom: 49vh;
+        padding-left: 30px;
+        padding-right: 90px;
+        padding-top: -1vh;
+        /* padding-bottom: 16vh; */
+        /* padding-bottom: 0px; */
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        transform: translateZ(0px);
+        font-size: 73px;
+        font-weight: 500;
+        text-align: left;
+        box-sizing: border-box;
+        pointer-events: none;
+        --color: #fff;
+         z-index: 5;
+        /* letter-spacing: 3px;*/">
+            19°</ion-title>
+        <ion-icon #animation8 style="color: white;
+        left: 0px;
+        bottom: 0px;
+        padding-bottom: 65vh;
+        padding-left: 37px;
+        padding-right: 79px;
+        padding-top: -1vh;
+        position: absolute;
+        font-size: 34px;
+        font-weight: 500;
+        text-align: left;
+        box-sizing: border-box;
+        pointer-events: none;
+        z-index: 5;
+      " [name]="nombreIcono"></ion-icon>
+
+
+        <ion-title mode="ios" style="left: 0px;
+        top: 0px;
+        padding-left: 30px;
+        padding-right: 90px;
+        padding-top:67vh;
+        padding-bottom: 0px;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        transform: translateZ(0px);
+        font-size: 39px;
+        font-weight: 700;
+        text-align: left;
+        box-sizing: border-box;
+        pointer-events: none;
+        z-index: 5;
+        --color: #fff;
+        letter-spacing: 3px;">{{header}}</ion-title>
+
+        <ion-slides #slideUp type="ios" style="transform: translateY(4vh);" (ionSlideTouchEnd)="ionSlideTouchEndSlide()" [options]="slideOpts">
+            <ion-slide>
+                <div class="animated zoomIn fast" style="margin-bottom: 90px; width: 100%;height:100%;background-image: url(assets/img/1.svg);background-repeat: no-repeat;background-size: 100% 100%;"></div>
+            </ion-slide>
+            <ion-slide>
+                <div class="animated zoomIn fast" style="margin-bottom: 90px; width: 100%;height:100%;background-image: url(assets/img/2.svg);background-repeat: no-repeat;background-size: 100% 100%;"></div>
+            </ion-slide>
+            <ion-slide>
+                <div class="animated zoomIn fast" style="margin-bottom: 90px; width: 100%;height:100%;background-image: url(assets/img/3.svg);background-repeat: no-repeat;background-size: 100% 100%;"></div>
+            </ion-slide>
+            <ion-slide>
+                <div class="animated zoomIn fast" style="margin-bottom: 90px; width: 100%;height:100%;background-image: url(assets/img/4.svg);background-repeat: no-repeat;background-size: 100% 100%;"></div>
+            </ion-slide>
+
+        </ion-slides>
+
+    </div>
+
+
+
+</ion-content>
+
+
+<!--<ion-content [scrollY]="scrollenable" #content [fullscreen]="true" id="ion-content1" style="--offset-top:487px !important;width: 100%; z-index:4;position: relative;--background: #fff0;">
+
+
+
+</ion-content>-->
+
+<ion-footer #foot mode="ios" class="ion-no-border" style="border-top-right-radius: 44px;
+border-top-left-radius: 44px;
+height: 10vh;
+background: #ffffff00;
+position: absolute;
+bottom: 0;">
+
+
+
+    <!-- <ion-title #footer style=" text-align: start;padding-left: 2vw;position: absolute;
+            ;">
+        <ion-icon name="time-outline" style="transform: translateY(0.5vh);margin-left: 21px;font-size: 21px;color: #d4d401;"></ion-icon>
+        Today's change</ion-title>-->
+
+    <ion-fab mode="ios" style="left: 168.5px;
+    position: absolute;
+    z-index: 10000;">
+        <ion-fab-button mode="ios" #fab style=" --background-activated: #F4315D;  --background: #F4315D;    width: 46px;
+                    height: 46px;    display: table;margin: 0 auto;transform: scale(0);margin-top: 2vh;">
+            <ion-icon name="add"></ion-icon>
+        </ion-fab-button>
+    </ion-fab>
+    <!--  <ion-title style=" text-align: right;
+    padding-left: 2vw;
+    position: absolute;
+    /* margin-right: 5vw; */
+    padding: 0;
+    padding-right: 11vw;">
+        <ion-icon name="calendar-outline" style="transform: translateY(0.5vh);margin-left: 21px;font-size: 21px;color: #F4315D;"></ion-icon>
+    </ion-title>-->
+
+
+
+</ion-footer>
