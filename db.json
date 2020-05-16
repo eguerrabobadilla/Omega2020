@@ -1,25 +1,24 @@
-[{
-	"Nombre": "Lengua Materna Español",
-	"Grados": "1",
-	"Escolaridad": "Elementary School",
-	"RutaThumbnails": "q1.jpg",
-	"Version": "18"
-}, {
-	"Nombre": "Matemáticas",
-	"Grados": "1",
-	"Escolaridad": "Elementary School",
-	"RutaThumbnails": "q2.jpg",
-	"Version": "16"
-}, {
-	"Nombre": "Conocimiento del Medio",
-	"Grados": "1",
-	"Escolaridad": "Elementary School",
-	"RutaThumbnails": "q3.jpg",
-	"Version": "16"
-}, {
-	"Nombre": "Educación Socioemocional",
-	"Grados": "1",
-	"Escolaridad": "Elementary School",
-	"RutaThumbnails": "q4.jpg",
-	"Version": "18"
-}]
+{
+	"libros": [{
+			"Nombre": "Matemáticas",
+			"Grados": "1",
+			"Escolaridad": "Elementary School",
+			"RutaThumbnails": "q2.jpg",
+			"Version": "16"
+		},
+		{
+			"Nombre": "Matemáticas",
+			"Grados": "1",
+			"Escolaridad": "Elementary School",
+			"RutaThumbnails": "q2.jpg",
+			"Version": "16"
+		},
+		{
+			"Nombre": "Matemáticas",
+			"Grados": "1",
+			"Escolaridad": "Elementary School",
+			"RutaThumbnails": "q2.jpg",
+			"Version": "16"
+		}
+	]
+}
