@@ -67,35 +67,73 @@ top: 0;" mode="ios">
 --background: #6228cf;
 --offset-bottom: 0px;">
 
-    <div #elementsToProcess style="bottom: -64vh;position: relative;"></div>
+    <div #elementsToProcess style="bottom: -0.1vh;position: relative;"></div>
 
-    <div #div2 style="width: 100%; z-index:5;bottom: -64vh;position: relative;background: white;border-top-right-radius: 44px;
-    border-top-left-radius: 44px;transform: translateY(5vh);">
+    <div #div2 (click)="clickDiv()" style="width: 100%; z-index:5;bottom: 0;position: relative;background: white;border-top-right-radius: 44px;
+    border-top-left-radius: 44px;transform: translateY(67vh);">
 
         <app-pill-menu #pillMenu pillMenu [itemsMenu]="tabs" [selectOption]="selectOption" (indicatorChanged)="segmentChanged($event)" (clickFab)="nuevoRecurso($event)"></app-pill-menu>
 
-
-        <ion-slides #slideDown (ionSlideTouchEnd)="ionSlideTouchEnd(slideUp,slideDown)">
+        <ion-slides #slideDown (ionSlideTouchEnd)="ionSlideTouchEnd(slideUp,slideDown)" *ngIf="selectSeccion == 1 || selectSeccion == 3 ||  selectSeccion ==4">
 
             <ion-slide>
                 <ion-virtual-scroll appAnimateItems [items]="items" approxItemHeight="320px">
-                    <ion-card style="text-align: initial;" mode="ios" *virtualItem="let item; let itemBounds = bounds;" (click)="openDetail(item)">
+
+
+                    <ion-card style="text-align: initial;" class="ion-activatable ripple-parent" mode="ios" *virtualItem="let item; let itemBounds = bounds;" (click)="openDetail(this,$event,item)">
+                        <ion-ripple-effect></ion-ripple-effect>
                         <ion-card-header>
                             <ion-card-title>{{ item.name }}</ion-card-title>
                         </ion-card-header>
                         <ion-card-content>{{ item.content }}</ion-card-content>
+
                     </ion-card>
+
                 </ion-virtual-scroll>
             </ion-slide>
             <ion-slide>
                 <ion-virtual-scroll appAnimateItems [items]="items" approxItemHeight="320px">
-                    <ion-card style="text-align: initial;" mode="ios" *virtualItem="let item; let itemBounds = bounds;" (click)="openDetail(item)">
+                    <ion-card class="ion-activatable ripple-parent" style="text-align: initial;" mode="ios" *virtualItem="let item; let itemBounds = bounds;" (click)="openDetail(this,$event,item)">
+                        <ion-ripple-effect></ion-ripple-effect>
                         <ion-card-header>
                             <ion-card-title>{{ item.name }}</ion-card-title>
                         </ion-card-header>
                         <ion-card-content>{{ item.content }}</ion-card-content>
                     </ion-card>
+
                 </ion-virtual-scroll>
+            </ion-slide>
+        </ion-slides>
+
+
+        <ion-slides #slideDown (ionSlideTouchEnd)="ionSlideTouchEnd(slideUp,slideDown)" *ngIf="selectSeccion == 2" style="height: 81.4vh !important;">
+
+            <ion-slide>
+                <div class="images">
+                    <div class="one-image" *ngFor="let item of libros | async">
+
+                        <div style="position:relative">
+                            <img src="assets/img/{{item.RutaThumbnails}}" class="image-rouder" width="100%">
+                            <div class="grid-container" style="position: relative;width: 100%">
+                                <div class="grid-item item1">
+                                    <div class="version">
+                                        <span>v{{item.version}}2</span>
+                                    </div>
+                                    {{item.Nombre}}
+                                </div>
+                                <div class="grid-item item2" style="width: 30px;height: 30px;background-color: #6228cf; border-radius: 50%;text-align: left;">
+
+                                </div>
+                                <div class="grid-item item3">6to Semestre</div>
+                                <div class="grid-item item4">Preparatoria</div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ion-slide>
+            <ion-slide>
+
             </ion-slide>
         </ion-slides>
 
@@ -159,7 +197,7 @@ top: 0;" mode="ios">
         --color: #fff;
         letter-spacing: 3px;">{{header}}</ion-title>
 
-        <ion-slides #slideUp type="ios" style="transform: translateY(4vh);" (ionSlideTouchEnd)="ionSlideTouchEndSlide()" [options]="slideOpts">
+        <ion-slides #slideUp type="ios" style="transform: translateY(4vh);" (ionSlideTouchStart)="ionSlideTouchStart()" (ionSlideTouchEnd)="ionSlideTouchEndSlide()" [options]="slideOpts">
             <ion-slide>
                 <div class="animated zoomIn fast" style="margin-bottom: 90px; width: 100%;height:100%;background-image: url(assets/img/1.svg);background-repeat: no-repeat;background-size: 100% 100%;"></div>
             </ion-slide>
@@ -205,9 +243,9 @@ bottom: 0;">
     <ion-fab mode="ios" style="left: 168.5px;
     position: absolute;
     z-index: 10000;">
-        <ion-fab-button mode="ios" #fab style=" --background-activated: #F4315D;  --background: #F4315D;    width: 46px;
+        <ion-fab-button (click)="mover()" mode="ios" #fab style=" --box-shadow:none ;--background-activated: #F4315D;  --background: #F4315D;    width: 46px;
                     height: 46px;    display: table;margin: 0 auto;transform: scale(0);margin-top: 2vh;">
-            <ion-icon name="add"></ion-icon>
+            <ion-icon name="chevron-down-outline" style="font-size: 24px;"></ion-icon>
         </ion-fab-button>
     </ion-fab>
     <!--  <ion-title style=" text-align: right;

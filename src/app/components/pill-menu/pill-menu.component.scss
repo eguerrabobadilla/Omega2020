@@ -6,7 +6,7 @@ ion-segment-button::before {
 ion-segment {
     /* padding: 13px; */
     /*top: 0;*/
-    top: -2.5vh;
+    top: 0;
     height: 56px;
     position: sticky;
     z-index: 33;
@@ -18,7 +18,7 @@ ion-segment {
     /* margin: 0px; */
     //  margin-top: -1px;
     border-radius: 44px 44px 0px 0px;
-    padding: 12px;
+    //   padding: 12px;
     padding-left: 18px;
 }
 
@@ -28,16 +28,18 @@ ion-segment-button {
     --indicator-height: 29px;
     max-width: fit-content;
     font-size: 14px;
-    --indicator-height: 34px;
+    --indicator-height: 36px;
     --color: #222428;
     --color-checked: white;
     font-weight: bold;
+    --indicator-transform: translateY(10px);
+    margin: 0;
 }
 
 ion-segment-button>ion-label {
-    padding-top: 5px;
+    // padding-top: 5px;
 }
 
 .boxshadowadd {
-    box-shadow: 0vh -6vw 0px 5vw #6228cf;
+    box-shadow: 40vh -3vw 0px 3vw #6228cf, -40vh -3vw 0px 3vw #6228cf;
 }

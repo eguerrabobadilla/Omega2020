@@ -23,7 +23,7 @@ export class PillMenuComponent implements OnInit {
   }
 
   segmentChanged(event) {
-    console.log(event.detail.value);
+   // console.log(event.detail.value);
 
     if(event.detail.value==undefined) {
         this.selectOption=this.indexAnterior;

@@ -5,6 +5,8 @@ import { Gesture, GestureController } from '@ionic/angular';
 import { PillMenuComponent } from '../components/pill-menu/pill-menu.component';
 import { DetallePage } from '../detalle/detalle.page';
 import { NuevoRecursoPage } from '../nuevo-recurso/nuevo-recurso.page';
+import { BooksComponent } from '../components/books/books.component';
+import { BooksService } from '../services/books.service';
 
 @Component({
   selector: 'app-home',
@@ -14,12 +16,19 @@ import { NuevoRecursoPage } from '../nuevo-recurso/nuevo-recurso.page';
 export class HomePage {
   private observer: IntersectionObserver;
   scrollenable = false;
+  pocisionInicial =true;
   tabs: any = [];
   selectOption = '0';
+  selectSeccion = 1;
+  index: number ;
+  libros: any;
+  librosES: any[] = [];
+  librosIN: any[] = [];
 
 
-  @ViewChild('slideDown', {static: true}) slideDown: IonSlides;
+  @ViewChild('slideDown', {static: false}) slideDown: IonSlides;
   @ViewChild('slideUp', {static: true}) slideUp: IonSlides;
+  @ViewChild('slideVertical', {static: true}) slideVertical: IonSlides;
   @ViewChild('toolbar', {read: ElementRef, static: true}) toolbar: ElementRef;
   @ViewChild('toolbar1', {read: ElementRef, static: true}) toolbar1: ElementRef;
   @ViewChild('text', {read: ElementRef, static: true}) text: ElementRef;
@@ -34,10 +43,10 @@ export class HomePage {
   @ViewChild('foot', {read: ElementRef, static: true}) foot: ElementRef;
   @ViewChild('animation7', {read: ElementRef, static: true}) animation7: ElementRef;
   @ViewChild('animation8', {read: ElementRef, static: true}) animation8: ElementRef;
-  @ViewChild('pillMenu', {static: true}) pillMenu: PillMenuComponent;
+  @ViewChild('pillMenu', {static: false}) pillMenu: PillMenuComponent;
 
   items: any[] = [];
-  estadoArriba: boolean;
+  estadoArriba  = false;
   primeraVez = true;
   headersText: any = [];
   header= 'Community';
@@ -52,13 +61,15 @@ export class HomePage {
   };
 
   // tslint:disable-next-line: max-line-length
-  constructor(private statusBar: StatusBar, public platform: Platform, private animationCtrl: AnimationController, 
-              private renderer: Renderer2, private gestureCtrl: GestureController,private modalCrl: ModalController) {
-      this.scrollenable = false;
-
+  constructor(private statusBar: StatusBar, public platform: Platform, private animationCtrl: AnimationController,
+              // tslint:disable-next-line: max-line-length
+              private renderer: Renderer2, private gestureCtrl: GestureController,private modalCrl: ModalController, private booksService: BooksService) {
+      this.scrollenable = true;
+   //   this.selectSeccion = 1;
       for (let i = 0; i < 20  ; i++) {
       this.items.push({
         // tslint:disable-next-line: no-use-before-declare
+        index:i,
         name: i + ' - ' + images[rotateImg],
         imgSrc: getImgSrc(),
         avatarSrc: getImgSrc(),
@@ -81,7 +92,7 @@ export class HomePage {
 
   async animacion(isRegreso: boolean, click: boolean) {
 
-    if (this.primeraVez) {this.primeraVez = false; return; }
+   // if (this.primeraVez) {this.primeraVez = false; return; }
 
     let animation2: Animation;
     let animation4: Animation;
@@ -92,8 +103,8 @@ export class HomePage {
     let animation8: Animation;
 
     if (!isRegreso) {
-      console.log("animacion arriba")
-      this.gesture.enable(false);
+   //   console.log("animacion arriba")
+   //   this.gesture.enable(false);
     //  this.gesture2.enable(false);
     //  this.renderer.setStyle(this.contentref2.nativeElement, 'z-index', `-1`);
 
@@ -174,14 +185,15 @@ export class HomePage {
       animation8.play();
 
      // if (click) {
-      this.moveScroll(true); 
-      this.animacionBounce();
-      this.scrollenable = true;
+      this.moveScroll(true);
+    //  this.scrollenable = true;
+      this.animacionBounce(true);
+
       // }
       this.estadoArriba = true;
   } else {
-    console.log("animacion abajo")
-     
+  //  console.log("animacion abajo")
+
     this.moveScroll(false);
     if (this.estadoArriba === false ) { return; }
   //  this.renderer.removeClass(this.toolbar2.nativeElement, 'inverted-border-radius');
@@ -254,6 +266,7 @@ export class HomePage {
     animation6.play();
     animation7.play();
     animation8.play();
+    this.animacionBounce(false);
     this.estadoArriba = false;
 
 
@@ -265,26 +278,51 @@ export class HomePage {
 
 
   async moveScroll(directionUp: boolean) {
-    
+    /*
     if (directionUp) {
       console.log("move scroll arriba")
     const scrollto: number = (this.platform.height() ) -280;
 
     this.content.scrollToPoint(0, scrollto, 370);
   } else {
-       this.scrollenable = false;
+    //   this.scrollenable = false;
       await this.content.scrollToPoint(0, 0, 370);
 
      this.gesture.enable();
    //  this.gesture2.enable();
     // this.renderer.setStyle(this.contentref2.nativeElement, 'z-index', `4`);
   }
-
+*/
   }
 
+mover(){
+  if(this.pocisionInicial){
+  this.animacion(true, false);
+  const animation5: Animation = this.animationCtrl.create('bouceEduardo')
+  .addElement(this.div2.nativeElement)
+  .duration(250)
+  .delay(50)
+  .easing(' cubic-bezier(0,.70,.45,1)')
+// .beforeStyles({bottom:'-16vh'})
+// .afterStyles({bottom:'-16vh'})
+//   .fromTo('transform', 'translate3d(0, 0, 0)', 'translate3d(0, 40px, 0)')
+  // .fromTo('transform', 'translate3d(0, 67vh, 0)', 'translate3d(0, 0vh, 0)');
+   .keyframes([{ offset: 0, transform: 'translate3d(0, 0vh, 0)' },
 
- async  animacionBounce() {
+{ offset: 1, transform: 'translate3d(0, 67vh, 0)' }, ]);
 
+
+  animation5.play();
+}
+else{
+  this.div2.nativeElement.click();
+  this.content.scrollToPoint(0, 0,400);
+}
+  this.div2.nativeElement.click();
+  this.content.scrollToPoint(0, 0,400);
+}
+ async  animacionBounce(esHaciaArriba : boolean) {
+/*
 const animation5: Animation = this.animationCtrl.create('bouceEduardo')
     .addElement(this.div2.nativeElement)
     .duration(700)
@@ -293,14 +331,70 @@ const animation5: Animation = this.animationCtrl.create('bouceEduardo')
  // .afterStyles({bottom:'-16vh'})
  //   .fromTo('transform', 'translate3d(0, 0, 0)', 'translate3d(0, 40px, 0)')
  //   .fromTo('transform', 'translate3d(0, 40px, 0)', 'translate3d(0, 35px, 0)');
-   .keyframes([{ offset: 0, transform: 'translate3d(0, 10px, 0)' },
- { offset: 0.7, transform: 'translate3d(0, 45px, 0)' },
- { offset: 1, transform: 'translate3d(0, 37px, 0)' }, ]);
+   .keyframes([{ offset: 0, transform: 'translate3d(0, 0px, 0)' },
+ { offset: 0.7, transform: 'translate3d(0, 8px, 0)' },
+ { offset: 1, transform: 'translate3d(0, 0px, 0)' }, ]);
 
-animation5.play();
+await animation5.play();
+this.content.scrollToPoint(0, 11,0);
+
+this.renderer.addClass(this.div2.nativeElement, 'quitarBottom');
+
+
    //  animation5.destroy();
    // animation5.stop();
   //  animation5.destroy();
+*/
+if(esHaciaArriba){
+const animation5: Animation = this.animationCtrl.create('bouceEduardo')
+    .addElement(this.div2.nativeElement)
+    .duration(1150)
+    .delay(60)
+    .easing(' cubic-bezier(0,.70,.45,1)')
+// .beforeStyles({bottom:'-16vh'})
+ // .afterStyles({bottom:'-16vh'})
+ //   .fromTo('transform', 'translate3d(0, 0, 0)', 'translate3d(0, 40px, 0)')
+    // .fromTo('transform', 'translate3d(0, 67vh, 0)', 'translate3d(0, 0vh, 0)');
+     .keyframes([{ offset: 0, transform: 'translate3d(0, 67vh, 0)' },
+     { offset: 0.6, transform: 'translate3d(0, -0.5vh, 0)' },
+     { offset: 0.9, transform: 'translate3d(0, .9vh, 0)' },
+ { offset: 1, transform: 'translate3d(0, 0vh, 0)' }, ]);
+
+
+
+   //  this.gesture.enable(false);
+await animation5.play();
+   // this.scrollenable=true;
+
+
+      // this.renderer.addClass(this.toolbar2.nativeElement, 'inverted-border-radius');
+  //    this.gesture.enable(true);
+
+
+
+    }
+    else{
+     // this.scrollenable=false;
+      const animation5: Animation = this.animationCtrl.create('bouceEduardo')
+  .addElement(this.div2.nativeElement)
+  .duration(250)
+  .delay(50)
+  .easing(' cubic-bezier(0,.70,.45,1)')
+// .beforeStyles({bottom:'-16vh'})
+// .afterStyles({bottom:'-16vh'})
+//   .fromTo('transform', 'translate3d(0, 0, 0)', 'translate3d(0, 40px, 0)')
+   .fromTo('transform', 'translate3d(0, 0vh, 0)', 'translate3d(0, 67vh, 0)');
+  // this.content.scrollToPoint(0, 0, 0);
+      this.gesture.enable(false);
+ //  this.scrollenable=false;
+
+      await animation5.play();
+      this.gesture.enable(true);
+
+
+    }
+
+
 
   }
   detalle() {
@@ -318,34 +412,43 @@ animation5.play();
 
      // set status bar to white
      // this.statusBar.backgroundColorByHexString('#0DFFFFFF');
+      this.llenar_libros();
+      this.selectSeccion =1;
+      this.statusBar.hide();
 
-
-     this.statusBar.hide();
-
-     this.observer = new IntersectionObserver((entries) => {
+      this.observer = new IntersectionObserver((entries) => {
 
         entries.forEach((entry: any) => {
           if (!entry.isIntersecting) {
-         //   this.renderer.addClass(this.toolbar2.nativeElement, 'inverted-border-radius');
-         //   this.renderer.addClass(this.foot.nativeElement, 'sombraFooter');
-       //     this.animacion(false, false);
+            this.pocisionInicial=false;
+            this.gesture.enable(false);
           } else {
-            console.log("dejos de chocar")
-         //   this.renderer.removeClass(this.toolbar2.nativeElement, 'inverted-border-radius');
-         //   this.renderer.removeClass(this.foot.nativeElement, 'sombraFooter');
-          //   this.renderer.setStyle(this.contentref2.nativeElement,"z-index",`-1`);
-            this.animacion(true, false);
+            this.pocisionInicial=true;
+            this.gesture.enable(true);
           }
         });
       }, {threshold: 0});
 
-     this.observer.observe(this.elementsToProcess.nativeElement);
+      this.observer.observe(this.elementsToProcess.nativeElement);
 
     }
-
-    async ionSlideTouchEndSlide() {
-      let index = await this.slideUp.getActiveIndex();
+    async  ionSlideTouchStart(){
+    
+     if(this.estadoArriba){
   
+       this.slideUp.lockSwipes(true);
+        
+      }
+     else{
+
+      this.slideUp.lockSwipes(false);
+      }
+
+    }
+    async ionSlideTouchEndSlide() {
+  
+      let index = await this.slideUp.getActiveIndex();
+
       // Por mientras
       index = index == 5 ? 1 : index;
       index = index == 0 ? 4 : index;
@@ -356,14 +459,16 @@ animation5.play();
         this.tabs = ['Noticias', 'Mensajes'];
       } else if (index == 2) {
         this.tabs = ['Foro', 'Recursos', 'Tareas'];
- } else if (index == 3) {
-        this.tabs = ['Perfil', 'Usuario'];
- } else if (index == 4) {
-        this.tabs = ['Código', 'Ayuda'];
- }
+     } else if (index == 3) {
+            this.tabs = ['Perfil', 'Usuario'];
+     } else if (index == 4) {
+            this.tabs = ['Código', 'Ayuda'];
+     }
 
       this.selectOption = '0';
-      this.pillMenu.nextSegment(await (await this.slideDown.getActiveIndex()).toString());
+      console.log(await this.slideDown.getActiveIndex().toString());
+      this.pillMenu.nextSegment((await this.slideDown.getActiveIndex()).toString());
+      this.selectSeccion = index;
 
     }
 
@@ -377,87 +482,58 @@ animation5.play();
         el: this.contentref.nativeElement,
         gestureName: 'test-swipe',
         direction: 'y',
-        threshold: 0,
+        threshold: 0.5,
+        disableScroll: true,
         onStart: (detail) => {
-          this.renderer.setStyle(this.div2.nativeElement, 'transition', `none`);
+       //   console.log("onstart")
+          //  this.renderer.setStyle(this.div2.nativeElement, 'transition', `none`);
         },
         onMove: (detail) => {
+        //  console.log("onmove")
+          if (detail.velocityY < -0.50) {
+      
+            this.swipeUp = true; }
+           else{
+    
+         //   console.log(this.estadoArriba);
+            this.swipeDown = true
+            }
 
-          if (detail.velocityY < -0.50) { this.swipeUp = true; }
-
-
-
-          /*if(detail.deltaY>-41 && detail.velocityY>-1 && detail.velocityY<-0.30)
-          {
-
-            this.renderer.setStyle(this.div2.nativeElement,"transform",`translateY(${detail.deltaY}px)`);
-          }*/
         },
         onEnd: (detail) => {
 
-           if (this.swipeUp == true)
+           if (this.swipeUp === true && !this.estadoArriba)
            {
-
-
-             if (!this.scrollenable) {
-
+              this.swipeUp = true;
               this.animacion(false, true);
-             }
-           } else {
-// if (!this.scrollenable) this.animacion(true, true);
+              this.div2.nativeElement.click();
+              this.estadoArriba = true;
+              this.scrollenable = true;
+              this.div2.nativeElement.click();
 
-            this.swipeDown = true;
-             // this.renderer.setStyle(this.div2.nativeElement,"transition",`0.15s ease-out`);
-             // this.renderer.setStyle(this.div2.nativeElement,"transform",`translateY(0px)`);
-           }
+           } else {
+              if (this.swipeDown === true && this.estadoArriba)
+              {
+
+
+               if (this.pocisionInicial === true) {
+
+                 this.scrollenable = false;
+                 this.div2.nativeElement.click();
+                 this.animacion(true, true);
+                 this.scrollenable=false;
+                 this.estadoArriba = false;
+                }
+             }
+            }
            this.swipeUp = false;
-           this.swipeDown = true;
+           this.swipeDown = false;
           }
       });
 
       this.gesture.enable();
 
-    /*  this.gesture2 = this.gestureCtrl.create({
 
-        el: this.contentref2.nativeElement,
-        gestureName: 'test-swipe2',
-        direction: 'y',
-        threshold: 0,
-        onStart: (detail) => {
-          this.renderer.setStyle(this.div2.nativeElement, 'transition', `none`);
-        },
-        onMove: (detail) => {
-
-          if (detail.velocityY < -0.50) { this.swipeUp = true; }
-
-
-
-          //if(detail.deltaY>-41 && detail.velocityY>-1 && detail.velocityY<-0.30)
-          //{
-
-            //this.renderer.setStyle(this.div2.nativeElement,"transform",`translateY(${detail.deltaY}px)`);
-          //}
-        },
-        onEnd: (detail) => {
-
-           if (this.swipeUp == true)
-           {
-
-
-             if (!this.scrollenable) { this.animacion(false, true); }
-           } else {
-// if (!this.scrollenable) this.animacion(true, true);
-
-            this.swipeDown = true;
-             // this.renderer.setStyle(this.div2.nativeElement,"transition",`0.15s ease-out`);
-             // this.renderer.setStyle(this.div2.nativeElement,"transform",`translateY(0px)`);
-           }
-           this.swipeUp = false;
-           this.swipeDown = true;
-          }
-      });*/
-
-   //   this.gesture2.enable();
 
 
     }
@@ -468,7 +544,7 @@ animation5.play();
     }
 
     async nuevoRecurso(event) {
-      
+
         const modal = await this.modalCrl.create({
           component: NuevoRecursoPage,
           //cssClass: 'my-custom-modal-css',
@@ -483,17 +559,33 @@ animation5.play();
       this.pillMenu.nextSegment(await (await this.slideDown.getActiveIndex()).toString());
     }
 
-    async openDetail(item) {
-  
-      const modal = await this.modalCrl.create({
+    async openDetail(event : Event,item) {
+console.log("ckicj")
+console.log(event)
+console.log(item)
+const modal = await this.modalCrl.create({
         component: DetallePage,
         cssClass: 'my-custom-modal-css',
         mode: 'ios',
         backdropDismiss: true,
         componentProps:{item}
       });
-      return await modal.present();
-    }  
+   //   return await modal.present();
+    }
+
+
+    clickDiv(){
+     // console.log("Click Div")
+
+    }
+
+    ////// logica libros quitar cuando se cuando se cambie a componente
+    llenar_libros() {
+      console.log("llenar libros")
+      this.libros = this.booksService.getPost();
+
+    }
+  
 
 }
 

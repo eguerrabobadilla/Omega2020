@@ -10,6 +10,7 @@ import { DetallePage } from '../detalle/detalle.page';
 import { DetallePageModule } from '../detalle/detalle.module';
 import { NuevoRecursoPage } from '../nuevo-recurso/nuevo-recurso.page';
 import { NuevoRecursoPageModule } from '../nuevo-recurso/nuevo-recurso.module';
+import { BooksComponent } from '../components/books/books.component';
 
 @NgModule({
   entryComponents : [
@@ -29,6 +30,6 @@ import { NuevoRecursoPageModule } from '../nuevo-recurso/nuevo-recurso.module';
     DetallePageModule,
     NuevoRecursoPageModule
   ],
-  declarations: [HomePage, PillMenuComponent]
+  declarations: [HomePage, PillMenuComponent, BooksComponent]
 })
 export class HomePageModule {}
