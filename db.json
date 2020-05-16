@@ -4,21 +4,35 @@
 			"Grados": "1",
 			"Escolaridad": "Elementary School",
 			"RutaThumbnails": "q2.jpg",
+			"Version": "1"
+		},
+		{
+			"Nombre": "Geografia",
+			"Grados": "1",
+			"Escolaridad": "Elementary School",
+			"RutaThumbnails": "q1.jpg",
 			"Version": "16"
 		},
 		{
-			"Nombre": "Matemáticas",
+			"Nombre": "Español",
 			"Grados": "1",
 			"Escolaridad": "Elementary School",
-			"RutaThumbnails": "q2.jpg",
-			"Version": "16"
+			"RutaThumbnails": "q3.jpg",
+			"Version": "1"
 		},
-		{
-			"Nombre": "Matemáticas",
+		 {
+			"Nombre": "Historia",
 			"Grados": "1",
 			"Escolaridad": "Elementary School",
-			"RutaThumbnails": "q2.jpg",
-			"Version": "16"
+			"RutaThumbnails": "q4.jpg",
+			"Version": "1"
+		},
+		  {
+			"Nombre": "Ciencias",
+			"Grados": "1",
+			"Escolaridad": "Elementary School",
+			"RutaThumbnails": "q5.jpg",
+			"Version": "1"
 		}
 	]
 }
