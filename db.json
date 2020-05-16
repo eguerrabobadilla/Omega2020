@@ -22,46 +22,4 @@
 	"Escolaridad": "Elementary School",
 	"RutaThumbnails": "q4.jpg",
 	"Version": "18"
-}, {
-	"Nombre": "Math",
-	"Grados": "1",
-	"Escolaridad": "Elementary School",
-	"RutaThumbnails": "q5.jpg",
-	"Version": "20"
-}, {
-	"Nombre": "Science",
-	"Grados": "1",
-	"Escolaridad": "Elementary School",
-	"RutaThumbnails": "q6.jpg",
-	"Version": "18"
-}, {
-	"Nombre": "Lengua Materna Español",
-	"Grados": "2",
-	"Escolaridad": "Elementary School",
-	"RutaThumbnails": "q7.jpg",
-	"Version": "17"
-}, {
-	"Nombre": "Matemáticas",
-	"Grados": "2",
-	"Escolaridad": "Elementary School",
-	"RutaThumbnails": "q8.jpg",
-	"Version": "21"
-}, {
-	"Nombre": "Conocimiento del Medio",
-	"Grados": "2",
-	"Escolaridad": "Elementary School",
-	"RutaThumbnails": "q9.jpg",
-	"Version": "16"
-}, {
-	"Nombre": "Educación Socioemocional",
-	"Grados": "2",
-	"Escolaridad": "Elementary School",
-	"RutaThumbnails": "q10.jpg",
-	"Version": "18"
-}, {
-	"Nombre": "Lengua Materna Español",
-	"Grados": "1",
-	"Escolaridad": "Elementary School",
-	"RutaThumbnails": "q1.jpg",
-	"Version": "18"
 }]
