@@ -1,5 +1,5 @@
-{
-	"libros": [{
+
+[{
 			"Nombre": "Matemáticas",
 			"Grados": "1",
 			"Escolaridad": "Elementary School",
@@ -35,4 +35,4 @@
 			"Version": "1"
 		}
 	]
-}
+
