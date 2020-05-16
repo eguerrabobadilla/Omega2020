@@ -1,0 +1,24 @@
+{
+  "libros": [
+    {
+	"Nombre": "Matemáticas",
+	"Grados": "1",
+	"Escolaridad": "Elementary School",
+	"RutaThumbnails": "q2.jpg",
+	"Version": "16"
+    },
+    {
+	"Nombre": "Matemáticas",
+	"Grados": "1",
+	"Escolaridad": "Elementary School",
+	"RutaThumbnails": "q2.jpg",
+	"Version": "16"
+    },
+    {
+	"Nombre": "Matemáticas",
+	"Grados": "1",
+	"Escolaridad": "Elementary School",
+	"RutaThumbnails": "q2.jpg",
+	"Version": "16"
+    }]
+}
