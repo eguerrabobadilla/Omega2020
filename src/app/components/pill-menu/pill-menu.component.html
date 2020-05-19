@@ -1,5 +1,5 @@
 <div style="top: 0;height: 56px;position: -webkit-sticky;position: sticky;z-index: 33;background-color: #ffffff;margin: 0x; border-radius: 44px 44px 0px 0px;">
-    <ion-fab mode="ios" vertical="top" horizontal="end" style="top:0;padding-right: 5px;padding-top: 2px;">
+    <ion-fab mode="ios" vertical="top" horizontal="end" style="top:0;padding-right: 5px;padding-top: 2px;" *ngIf="fabVisible">
         <ion-fab-button style="--box-shadow:none;width: 37px;height: 37px;" mode="ios" color="dark" #fab2 size="small" (click)="onClickFab($event)">
             <ion-icon style="font-size: 24px;" name="add"></ion-icon>
         </ion-fab-button>

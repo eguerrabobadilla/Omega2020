@@ -10,6 +10,12 @@ export class BooksService {
   constructor(private http: HttpClient) { }
 
   getPost() {
-    return this.http.get('https://my-json-server.typicode.com/eguerrabobadilla/Omega2020/libros').pipe(tap(console.log));
+    return this.http.get('http://35.193.103.213/api/codigos/123456').pipe(tap(console.log));
   }
+
+  getBooks(value: string) {
+    console.log(value);
+    return this.http.get('http://35.193.103.213/api/codigos/'+value).pipe(tap(console.log));
+  }
+
 }

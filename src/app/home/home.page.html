@@ -22,7 +22,7 @@ right: 0px;" mode="ios">
     <div style="height: 50%;padding-top: 3vh;
     padding-left: 7vw;
     font-size: 7vW;
-    color: white;">
+    color: white;" (click)="Salir()">
         <ion-icon name="filter-outline"></ion-icon>
     </div>
 
@@ -74,7 +74,7 @@ top: 0;" mode="ios">
 
         <app-pill-menu #pillMenu pillMenu [itemsMenu]="tabs" [selectOption]="selectOption" (indicatorChanged)="segmentChanged($event)" (clickFab)="nuevoRecurso($event)"></app-pill-menu>
 
-        <ion-slides #slideDown (ionSlideTouchEnd)="ionSlideTouchEnd(slideUp,slideDown)" *ngIf="selectSeccion == 1 || selectSeccion == 3 ||  selectSeccion ==4">
+        <ion-slides #slideDown (ionSlideTouchEnd)="ionSlideTouchEnd(slideUp,slideDown)" *ngIf="selectSeccion == 1 || selectSeccion == 2 ||  selectSeccion ==4">
 
             <ion-slide>
                 <ion-virtual-scroll appAnimateItems [items]="items" approxItemHeight="320px">
@@ -106,26 +106,57 @@ top: 0;" mode="ios">
         </ion-slides>
 
 
-        <ion-slides #slideDown (ionSlideTouchEnd)="ionSlideTouchEnd(slideUp,slideDown)" *ngIf="selectSeccion == 2" style="height: 81.4vh !important;">
+        <ion-slides #slideDown (ionSlideTouchEnd)="ionSlideTouchEnd(slideUp,slideDown)" *ngIf="selectSeccion == 3" style="min-height: 72.6vh;">
 
             <ion-slide>
-                <div class="images">
-                    <div class="one-image" *ngFor="let item of libros | async">
+
+
+
+                <ion-card style="text-align: initial;" mode="ios" *ngIf="codigoVisible">
+
+                    <ion-card-header>
+                        <ion-card-title style="font-size: 34px;">Codigo</ion-card-title>
+                    </ion-card-header>
+                    <ion-card-content>Para obtener tus libros, ingresa el codigo que te asigno tu jefe de grupo, y disfruta de ellos</ion-card-content>
+                    <ion-grid style="margin-top: -3vh;
+                    width: 100%;">
+                        <ion-row color="primary" class="ion-justify-content-center">
+                            <ion-col align-self-center size-md="6" size-lg="5" size-xs="12">
+
+                                <div class="ion-padding">
+                                    <ion-item>
+                                        <ion-input style="font-size: 26px; text-align: center;" [(ngModel)]="FrmCodigo.codigo" placeholder="Ingresa tu codigo"></ion-input>
+                                    </ion-item>
+
+                                </div>
+                                <div class="ion-padding">
+                                    <ion-button size="large" style="--border-radius: 35px;
+                                    --background: #171717;--background-activated: #171717;" type="submit" expand="block" (click)="IngresarCodigo()">Obtener</ion-button>
+                                </div>
+                            </ion-col>
+                        </ion-row>
+                    </ion-grid>
+                </ion-card>
+
+                <div class="images" *ngIf="!codigoVisible">
+                    <!--<div class="one-image" *ngFor="let item of libros | async">-->
+                    <div class="one-image" *ngFor="let item of libros">
 
                         <div style="position:relative">
-                            <img src="assets/img/{{item.RutaThumbnails}}" class="image-rouder" width="100%">
+                            <!--<img src="assets/img/{{item.RutaThumbnails}}" class="image-rouder" width="100%">-->
+                            <img src="https://www.alfalbs.app/Wcflbs/cover/{{item.rutaThumbnails}}" class="image-rouder" width="100%">
                             <div class="grid-container" style="position: relative;width: 100%">
                                 <div class="grid-item item1">
                                     <div class="version">
-                                        <span>v{{item.version}}2</span>
+                                        <span>v{{item.version}}</span>
                                     </div>
-                                    {{item.Nombre}}
+                                    {{item.nombre}}
                                 </div>
                                 <div class="grid-item item2" style="width: 30px;height: 30px;background-color: #6228cf; border-radius: 50%;text-align: left;">
 
                                 </div>
-                                <div class="grid-item item3">6to Semestre</div>
-                                <div class="grid-item item4">Preparatoria</div>
+                                <div class="grid-item item3">1st Grade</div>
+                                <div class="grid-item item4">Elementary school</div>
 
                             </div>
                         </div>
@@ -133,6 +164,66 @@ top: 0;" mode="ios">
                 </div>
             </ion-slide>
             <ion-slide>
+
+            </ion-slide>
+            <ion-slide>
+
+            </ion-slide>
+            <ion-slide>
+                <ion-card style="text-align: initial;" mode="ios">
+
+                    <ion-card-header>
+                        <ion-card-title style="font-size: 34px;">Codigo</ion-card-title>
+                    </ion-card-header>
+                    <ion-card-content>Para obtener tus libros, ingresa el codigo que te asigno tu jefe de grupo, y disfruta de ellos</ion-card-content>
+                    <ion-grid style="margin-top: -3vh;
+                    width: 100%;">
+                        <ion-row color="primary" class="ion-justify-content-center">
+                            <ion-col align-self-center size-md="6" size-lg="5" size-xs="12">
+
+                                <div class="ion-padding">
+                                    <ion-item>
+                                        <ion-input style="font-size: 26px; text-align: center;" [(ngModel)]="FrmCodigo.codigo" placeholder="Ingresa tu codigo"></ion-input>
+                                    </ion-item>
+
+                                </div>
+                                <div class="ion-padding">
+                                    <ion-button size="large" style="--border-radius: 35px;
+                                    --background: #171717;--background-activated: #171717;" type="submit" expand="block" (click)="IngresarCodigo()">Obtener</ion-button>
+                                </div>
+                            </ion-col>
+                        </ion-row>
+                    </ion-grid>
+                </ion-card>
+                <!--  <div class="ion-text-center" style="    position: absolute;
+                top: 10px;
+                /* left: 34px; */
+                padding: 1px1px,1px1px;
+                padding-left: 41px;
+                padding-right: 106px;">
+                    <h3 style="font-size: 34px;font-weight: 700;text-align: initial;">Codigo</h3>
+                    <p style="text-align: left;
+                    font-size: 16px;
+                    word-wrap: break-word;
+                    font-weight: 400;    ">Para obtener tus libros, ingresa el codigo que te asigno tu jefe de grupo, y disfruta de ellos</p>
+                </div>
+
+                <ion-grid style="margin-top: 15vh;width: 100%;">
+                    <ion-row color="primary" class="ion-justify-content-center">
+                        <ion-col align-self-center size-md="6" size-lg="5" size-xs="12">
+
+                            <div class="ion-padding" style="width: 154px;">
+                                <ion-item>
+                                    <ion-input style="font-size: 26px; text-align: center;" [(ngModel)]="FrmCodigo.codigo" placeholder="Codigo"></ion-input>
+                                </ion-item>
+
+                            </div>
+                            <div class="ion-padding">
+                                <ion-button size="large" type="submit" expand="block" (click)="IngresarCodigo()">Entrar</ion-button>
+                            </div>
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>-->
 
             </ion-slide>
         </ion-slides>
@@ -197,7 +288,7 @@ top: 0;" mode="ios">
         --color: #fff;
         letter-spacing: 3px;">{{header}}</ion-title>
 
-        <ion-slides #slideUp type="ios" style="transform: translateY(4vh);" (ionSlideTouchStart)="ionSlideTouchStart()" (ionSlideTouchEnd)="ionSlideTouchEndSlide()" [options]="slideOpts">
+        <ion-slides #slideUp type="ios" style="transform: translateY(4vh);" (ionSlideTransitionStart)="ionSlideTransitionStart()" (ionSlideTouchStart)="ionSlideTouchStart()" (ionSlideTouchEnd)="ionSlideTouchEndSlide()" [options]="slideOpts">
             <ion-slide>
                 <div class="animated zoomIn fast" style="margin-bottom: 90px; width: 100%;height:100%;background-image: url(assets/img/1.svg);background-repeat: no-repeat;background-size: 100% 100%;"></div>
             </ion-slide>

@@ -1,5 +1,5 @@
 import { Component, ElementRef, ViewChild, Renderer2 } from '@angular/core';
-import { AnimationController, Animation, IonContent, Platform, IonSlides, ModalController } from '@ionic/angular';
+import { AnimationController, Animation, IonContent, Platform, IonSlides, ModalController, LoadingController, AlertController } from '@ionic/angular';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { Gesture, GestureController } from '@ionic/angular';
 import { PillMenuComponent } from '../components/pill-menu/pill-menu.component';
@@ -7,6 +7,7 @@ import { DetallePage } from '../detalle/detalle.page';
 import { NuevoRecursoPage } from '../nuevo-recurso/nuevo-recurso.page';
 import { BooksComponent } from '../components/books/books.component';
 import { BooksService } from '../services/books.service';
+import { AuthenticationService } from '../services/authentication.service';
 
 @Component({
   selector: 'app-home',
@@ -16,7 +17,7 @@ import { BooksService } from '../services/books.service';
 export class HomePage {
   private observer: IntersectionObserver;
   scrollenable = false;
-  pocisionInicial =true;
+  pocisionInicial = true;
   tabs: any = [];
   selectOption = '0';
   selectSeccion = 1;
@@ -24,6 +25,7 @@ export class HomePage {
   libros: any;
   librosES: any[] = [];
   librosIN: any[] = [];
+  codigoVisible = true;
 
 
   @ViewChild('slideDown', {static: false}) slideDown: IonSlides;
@@ -44,13 +46,14 @@ export class HomePage {
   @ViewChild('animation7', {read: ElementRef, static: true}) animation7: ElementRef;
   @ViewChild('animation8', {read: ElementRef, static: true}) animation8: ElementRef;
   @ViewChild('pillMenu', {static: false}) pillMenu: PillMenuComponent;
+  @ViewChild('pillMenu', {read: ElementRef, static: false}) pillMenuRef: ElementRef;
 
   items: any[] = [];
   estadoArriba  = false;
   primeraVez = true;
   headersText: any = [];
-  header= 'Community';
-  nombreIcono: string = 'rainy-outline';
+  header = 'Community';
+  nombreIcono = 'rainy-outline';
   iconos: any[];
   public swipeUp = false;
   public swipeDown = false;
@@ -59,17 +62,21 @@ export class HomePage {
   slideOpts = {
     loop: true,
   };
+  FrmCodigo = {
+    codigo : ''
+  };
 
   // tslint:disable-next-line: max-line-length
   constructor(private statusBar: StatusBar, public platform: Platform, private animationCtrl: AnimationController,
               // tslint:disable-next-line: max-line-length
-              private renderer: Renderer2, private gestureCtrl: GestureController,private modalCrl: ModalController, private booksService: BooksService) {
+              private renderer: Renderer2, private gestureCtrl: GestureController, private modalCrl: ModalController, private booksService: BooksService,
+              private loadingController: LoadingController, private alertController: AlertController,private authenticationService: AuthenticationService ) {
       this.scrollenable = true;
    //   this.selectSeccion = 1;
       for (let i = 0; i < 20  ; i++) {
       this.items.push({
         // tslint:disable-next-line: no-use-before-declare
-        index:i,
+        index: i,
         name: i + ' - ' + images[rotateImg],
         imgSrc: getImgSrc(),
         avatarSrc: getImgSrc(),
@@ -295,14 +302,14 @@ export class HomePage {
 */
   }
 
-mover(){
-  if(this.pocisionInicial){
+mover() {
+  if (this.pocisionInicial) {
   this.animacion(true, false);
   const animation5: Animation = this.animationCtrl.create('bouceEduardo')
   .addElement(this.div2.nativeElement)
-  .duration(250)
-  .delay(50)
-  .easing(' cubic-bezier(0,.70,.45,1)')
+  .duration(350)
+  .delay(0)
+  .easing(' cubic-bezier(0.61, 1, 0.88, 1)')
 // .beforeStyles({bottom:'-16vh'})
 // .afterStyles({bottom:'-16vh'})
 //   .fromTo('transform', 'translate3d(0, 0, 0)', 'translate3d(0, 40px, 0)')
@@ -313,15 +320,16 @@ mover(){
 
 
   animation5.play();
-}
-else{
+} else {
   this.div2.nativeElement.click();
-  this.content.scrollToPoint(0, 0,400);
+  this.content.scrollToPoint(0, 0, 400);
 }
   this.div2.nativeElement.click();
-  this.content.scrollToPoint(0, 0,400);
+  this.content.scrollToPoint(0, 0, 400);
 }
- async  animacionBounce(esHaciaArriba : boolean) {
+
+
+ async  animacionBounce(esHaciaArriba: boolean) {
 /*
 const animation5: Animation = this.animationCtrl.create('bouceEduardo')
     .addElement(this.div2.nativeElement)
@@ -345,7 +353,7 @@ this.renderer.addClass(this.div2.nativeElement, 'quitarBottom');
    // animation5.stop();
   //  animation5.destroy();
 */
-if(esHaciaArriba){
+if (esHaciaArriba) {
 const animation5: Animation = this.animationCtrl.create('bouceEduardo')
     .addElement(this.div2.nativeElement)
     .duration(1150)
@@ -362,8 +370,11 @@ const animation5: Animation = this.animationCtrl.create('bouceEduardo')
 
 
 
+
+
    //  this.gesture.enable(false);
-await animation5.play();
+    animation5.play();
+         this.pillMenu.animacion();
    // this.scrollenable=true;
 
 
@@ -372,14 +383,13 @@ await animation5.play();
 
 
 
-    }
-    else{
+    } else {
      // this.scrollenable=false;
       const animation5: Animation = this.animationCtrl.create('bouceEduardo')
   .addElement(this.div2.nativeElement)
-  .duration(250)
-  .delay(50)
-  .easing(' cubic-bezier(0,.70,.45,1)')
+  .duration(350)
+  .delay(0)
+  .easing(' cubic-bezier(0.61, 1, 0.88, 1)')
 // .beforeStyles({bottom:'-16vh'})
 // .afterStyles({bottom:'-16vh'})
 //   .fromTo('transform', 'translate3d(0, 0, 0)', 'translate3d(0, 40px, 0)')
@@ -413,17 +423,19 @@ await animation5.play();
      // set status bar to white
      // this.statusBar.backgroundColorByHexString('#0DFFFFFF');
       this.llenar_libros();
-      this.selectSeccion =1;
+      this.selectSeccion = 1;
       this.statusBar.hide();
+
+
 
       this.observer = new IntersectionObserver((entries) => {
 
         entries.forEach((entry: any) => {
           if (!entry.isIntersecting) {
-            this.pocisionInicial=false;
+            this.pocisionInicial = false;
             this.gesture.enable(false);
           } else {
-            this.pocisionInicial=true;
+            this.pocisionInicial = true;
             this.gesture.enable(true);
           }
         });
@@ -432,44 +444,56 @@ await animation5.play();
       this.observer.observe(this.elementsToProcess.nativeElement);
 
     }
-    async  ionSlideTouchStart(){
-    
-     if(this.estadoArriba){
-  
+    async  ionSlideTouchStart() {
+
+     if (this.estadoArriba) {
+
        this.slideUp.lockSwipes(true);
-        
-      }
-     else{
+
+      } else {
 
       this.slideUp.lockSwipes(false);
       }
 
     }
     async ionSlideTouchEndSlide() {
-  
+
       let index = await this.slideUp.getActiveIndex();
 
       // Por mientras
-      index = index == 5 ? 1 : index;
-      index = index == 0 ? 4 : index;
+      index = index === 5 ? 1 : index;
+      index = index === 0 ? 4 : index;
       this.header = this.headersText[index - 1];
       this.nombreIcono = this.iconos[index - 1];
+      console.log(index);
 
-      if (index == 1) {
+      if (index === 1) {
         this.tabs = ['Noticias', 'Mensajes'];
-      } else if (index == 2) {
-        this.tabs = ['Foro', 'Recursos', 'Tareas'];
-     } else if (index == 3) {
-            this.tabs = ['Perfil', 'Usuario'];
-     } else if (index == 4) {
-            this.tabs = ['Código', 'Ayuda'];
+      } else if (index === 2) {
+        this.tabs = ['Foro', 'Recursos'];
+     } else if (index === 3) {
+            this.tabs = ['Todos', 'Ingles'  , 'Español', 'Codigo'];
+     } else if (index === 4) {
+            this.tabs = ['Mi cuenta', 'Ayuda'];
      }
 
       this.selectOption = '0';
       console.log(await this.slideDown.getActiveIndex().toString());
-      this.pillMenu.nextSegment((await this.slideDown.getActiveIndex()).toString());
+      // this.pillMenu.nextSegment((await this.slideDown.getActiveIndex()).toString());
+
+
       this.selectSeccion = index;
 
+      if (index === 3) {this.pillMenu.visibleFab(false); } else { this.pillMenu.visibleFab(true); }
+
+    }
+
+    ionSlideTransitionStart() {
+      setTimeout(() => {
+        this.pillMenu.nextSegment('0');
+      }, 50);
+
+      // this.pillMenu.nextSegment('0');
     }
 
     ngOnInit(): void {
@@ -491,19 +515,17 @@ await animation5.play();
         onMove: (detail) => {
         //  console.log("onmove")
           if (detail.velocityY < -0.50) {
-      
-            this.swipeUp = true; }
-           else{
-    
+
+            this.swipeUp = true; } else {
+
          //   console.log(this.estadoArriba);
-            this.swipeDown = true
+            this.swipeDown = true;
             }
 
         },
         onEnd: (detail) => {
 
-           if (this.swipeUp === true && !this.estadoArriba)
-           {
+           if (this.swipeUp === true && !this.estadoArriba) {
               this.swipeUp = true;
               this.animacion(false, true);
               this.div2.nativeElement.click();
@@ -512,8 +534,7 @@ await animation5.play();
               this.div2.nativeElement.click();
 
            } else {
-              if (this.swipeDown === true && this.estadoArriba)
-              {
+              if (this.swipeDown === true && this.estadoArriba) {
 
 
                if (this.pocisionInicial === true) {
@@ -521,7 +542,7 @@ await animation5.play();
                  this.scrollenable = false;
                  this.div2.nativeElement.click();
                  this.animacion(true, true);
-                 this.scrollenable=false;
+                 this.scrollenable = false;
                  this.estadoArriba = false;
                 }
              }
@@ -540,14 +561,14 @@ await animation5.play();
 
     segmentChanged(event) {
        this.slideDown.slideTo(event.detail.value);
-      //this.slideUp.slideTo(event.detail.value);
+      // this.slideUp.slideTo(event.detail.value);
     }
 
     async nuevoRecurso(event) {
 
         const modal = await this.modalCrl.create({
           component: NuevoRecursoPage,
-          //cssClass: 'my-custom-modal-css',
+          // cssClass: 'my-custom-modal-css',
           mode: 'ios',
           backdropDismiss: true
         });
@@ -559,33 +580,110 @@ await animation5.play();
       this.pillMenu.nextSegment(await (await this.slideDown.getActiveIndex()).toString());
     }
 
-    async openDetail(event : Event,item) {
-console.log("ckicj")
-console.log(event)
-console.log(item)
+    async openDetail(event: Event, item) {
+console.log('ckicj');
+console.log(event);
+console.log(item);
 const modal = await this.modalCrl.create({
         component: DetallePage,
         cssClass: 'my-custom-modal-css',
         mode: 'ios',
         backdropDismiss: true,
-        componentProps:{item}
+        componentProps: {item}
       });
-   //   return await modal.present();
+      return await modal.present();
     }
 
 
-    clickDiv(){
+    clickDiv() {
      // console.log("Click Div")
 
     }
 
     ////// logica libros quitar cuando se cuando se cambie a componente
     llenar_libros() {
-      console.log("llenar libros")
-      this.libros = this.booksService.getPost();
+      console.log('llenar libros');
+      // this.libros = this.booksService.getPost();
 
     }
+
+    async IngresarCodigo() {
+      let loading;
+
+      try {
+
+        if (this.FrmCodigo.codigo === '') { return; }
+
+        loading = await this.loadingController.create({
+          mode: 'ios',
+          message: 'Validando...'
+        });
+
+
+        const code = this.FrmCodigo.codigo;
+        this.libros =  await this.booksService.getBooks(code).toPromise();
+
+        // console.log(response);
+
+        await this.loadingController.dismiss();
+
+        const alert = await this.alertController.create({
+          header: 'Ommega',
+          // subHeader: 'Subtitle',
+          message: `Has adquirido ${ this.libros.length} libros`,
+          mode: 'ios',
+          buttons: ['Aceptar']
+        });
+        this.codigoVisible = false;
+        await alert.present();
+
+        this.FrmCodigo.codigo ='';
+
+        this.pillMenu.nextSegment('0');
+
+
+      } catch (err) {
+        console.log(err);
+        await this.loadingController.dismiss();
+
+        const alert = await this.alertController.create({
+          header: 'Ommega',
+          // subHeader: 'Subtitle',
+          message: err.error,
+          mode: 'ios',
+          buttons: ['Aceptar']
+        });
+
+        await alert.present();
+      }
+    }
+
+    async Salir(){
+
+      const alert = await this.alertController.create({
+        header: 'Ommega',
+        message: '<strong>¿Desea cerrar sesión?</strong>',
+        mode: 'ios',
+        buttons: [
+          {
+            text: 'Cancelar',
+            role: 'cancel',
+            cssClass: 'secondary',
+            handler: (blah) => {
+              console.log('Confirm Cancel: blah');
+            }
+          }, {
+            text: 'Si',
+            handler: () => {
+              this.authenticationService.logout();
+              //this.menu.close();
+            }
+          }
+        ]
+      });
   
+      await alert.present();
+    }
 
 }
 

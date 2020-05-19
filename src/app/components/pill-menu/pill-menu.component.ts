@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, ViewChildren, ElementRef, QueryList, ViewChild, Output, EventEmitter, Renderer2 } from '@angular/core';
-import { IonSegmentButton, IonSegment, } from '@ionic/angular';
+import { IonSegmentButton, IonSegment,  AnimationController , Animation } from '@ionic/angular';
 
 @Component({
   selector: 'app-pill-menu',
@@ -12,11 +12,13 @@ export class PillMenuComponent implements OnInit {
   @Output() indicatorChanged = new EventEmitter();
   @Output() clickFab = new EventEmitter();
   @ViewChild(IonSegment,{ static: true }) Segment: IonSegment;
+  @ViewChild(IonSegment,{read: ElementRef, static: true }) SegmentRef: ElementRef;
   @ViewChildren(IonSegmentButton,{ read: ElementRef }) ArraySegemntButtonHTML: QueryList<ElementRef>;
   @ViewChild('ionsegment', {read: ElementRef, static: true}) ionsegmentHTML: ElementRef;
   public indexAnterior: number =0;
+  private fabVisible: boolean = true;
 
-  constructor(private renderer: Renderer2) {  }
+  constructor(private renderer: Renderer2,private animationCtrl: AnimationController) {  }
 
   ngOnInit() {
     //this.Segment.value ="3";
@@ -48,6 +50,10 @@ export class PillMenuComponent implements OnInit {
     this.clickFab.emit(event);
   }
 
+  public visibleFab(value: boolean) {
+    this.fabVisible = value;
+  }
+
   public nextSegment(index) {
     let element=this.ArraySegemntButtonHTML.toArray()[index].nativeElement;
     element.click();
@@ -60,5 +66,24 @@ export class PillMenuComponent implements OnInit {
   public quitarSombra() {
     this.renderer.removeClass(this.ionsegmentHTML.nativeElement, 'boxshadowadd');
     
+  }
+  public animacion() {
+    
+    const animation6: Animation = this.animationCtrl.create('bouceEduardo')
+    .addElement(this.SegmentRef.nativeElement)
+    .duration(600)
+    .delay(210)
+    .easing(' cubic-bezier(0,.70,.45,1)')
+// .beforeStyles({bottom:'-16vh'})
+ // .afterStyles({bottom:'-16vh'})
+ //   .fromTo('transform', 'translate3d(0, 0, 0)', 'translate3d(0, 40px, 0)')
+    // .fromTo('transform', 'translate3d(0, 67vh, 0)', 'translate3d(0, 0vh, 0)');
+     .keyframes([{ offset: 0, transform: 'translate3d(0, 0vh, 0)' },
+     { offset: 0.6, transform: 'translate3d(0, 0.7vh, 0)' },
+     { offset: 0.9, transform: 'translate3d(0, -.3vh, 0)' },
+ { offset: 1, transform: 'translate3d(0, 0vh, 0)' }, ]);
+
+ animation6.play();
+
   }
 }
