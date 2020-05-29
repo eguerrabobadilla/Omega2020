@@ -3,9 +3,12 @@ border-radius: 0px 0px 0px 50px;" mode="ios">
     <ion-toolbar #toolbar style="height: 13vh;
    border-radius: 0px 0px 0px 50px;">
         <ion-title #text class="etitle">
-            <ion-icon name="cloudy-night" style="color: #FF426D;
-            font-size: 27px;"></ion-icon>
-            <span style="opacity:0;">-</span> What to wear
+            <ion-icon name="person-circle-outline" style="color: #FF426D; transform: translateY(0.8vh);
+            font-size: 27px;font-size: 4vh;"></ion-icon>
+
+
+
+            <span style="opacity:0;    margin-right: -10px;">-</span> Hola, Araseli!
 
         </ion-title>
 
@@ -23,7 +26,8 @@ right: 0px;" mode="ios">
     padding-left: 7vw;
     font-size: 7vW;
     color: white;" (click)="Salir()">
-        <ion-icon name="filter-outline"></ion-icon>
+        <ion-icon name="exit-outline"></ion-icon>
+
     </div>
 
     <div style="  height: 50%;
@@ -67,6 +71,7 @@ top: 0;" mode="ios">
 --background: #6228cf;
 --offset-bottom: 0px;">
 
+
     <div #elementsToProcess style="bottom: -0.1vh;position: relative;"></div>
 
     <div #div2 (click)="clickDiv()" style="width: 100%; z-index:5;bottom: 0;position: relative;background: white;border-top-right-radius: 44px;
@@ -74,26 +79,29 @@ top: 0;" mode="ios">
 
         <app-pill-menu #pillMenu pillMenu [itemsMenu]="tabs" [selectOption]="selectOption" (indicatorChanged)="segmentChanged($event)" (clickFab)="nuevoRecurso($event)"></app-pill-menu>
 
-        <ion-slides #slideDown (ionSlideTouchEnd)="ionSlideTouchEnd(slideUp,slideDown)" *ngIf="selectSeccion == 1 || selectSeccion == 2 ||  selectSeccion ==4">
+        <ion-slides #slideDown (ionSlideTouchEnd)="ionSlideTouchEnd(slideUp,slideDown)" *ngIf="selectSeccion == 1 || selectSeccion == 2 ||  selectSeccion ==4 ||  selectSeccion ==5 ||  selectSeccion ==6">
 
             <ion-slide>
-                <ion-virtual-scroll appAnimateItems [items]="items" approxItemHeight="320px">
+
+                <ion-virtual-scroll appAnimateItems [items]="LstTareas" approxItemHeight="320px" *ngIf="selectSeccion == 2">
 
 
-                    <ion-card style="text-align: initial;" class="ion-activatable ripple-parent" mode="ios" *virtualItem="let item; let itemBounds = bounds;" (click)="openDetail(this,$event,item)">
+                    <ion-card style="text-align: initial;" class="ion-activatable ripple-parent" mode="ios" *virtualItem="let item; let itemBounds = bounds;" (click)="openDetail($event,item)">
                         <ion-ripple-effect></ion-ripple-effect>
                         <ion-card-header>
-                            <ion-card-title>{{ item.name }}</ion-card-title>
+                            <ion-card-title>{{ item.titulo }}</ion-card-title>
                         </ion-card-header>
-                        <ion-card-content>{{ item.content }}</ion-card-content>
-
+                        <ion-card-content>{{ item.descripcion }}</ion-card-content>
                     </ion-card>
 
                 </ion-virtual-scroll>
+                <app-list style="width: 100%;" *ngIf="selectSeccion == 1 ||  selectSeccion ==4 ||  selectSeccion ==5 || selectSeccion ==6"></app-list>
+
             </ion-slide>
             <ion-slide>
-                <ion-virtual-scroll appAnimateItems [items]="items" approxItemHeight="320px">
-                    <ion-card class="ion-activatable ripple-parent" style="text-align: initial;" mode="ios" *virtualItem="let item; let itemBounds = bounds;" (click)="openDetail(this,$event,item)">
+                <app-list style="width: 100%;"></app-list>
+                <!--   <ion-virtual-scroll appAnimateItems [items]="items" approxItemHeight="320px">
+                    <ion-card class="ion-activatable ripple-parent" style="text-align: initial;" mode="ios" *virtualItem="let item; let itemBounds = bounds;" (click)="openDetail($event,item)">
                         <ion-ripple-effect></ion-ripple-effect>
                         <ion-card-header>
                             <ion-card-title>{{ item.name }}</ion-card-title>
@@ -101,129 +109,33 @@ top: 0;" mode="ios">
                         <ion-card-content>{{ item.content }}</ion-card-content>
                     </ion-card>
 
-                </ion-virtual-scroll>
+                </ion-virtual-scroll>-->
+
+            </ion-slide>
+            <ion-slide>
+                <app-list style="width: 100%;"></app-list>
             </ion-slide>
         </ion-slides>
-
 
         <ion-slides #slideDown (ionSlideTouchEnd)="ionSlideTouchEnd(slideUp,slideDown)" *ngIf="selectSeccion == 3" style="min-height: 72.6vh;">
 
             <ion-slide>
 
 
+                <app-codes (librosDescargados)="librosDescargados($event)" *ngIf="codigoVisible"></app-codes>
 
-                <ion-card style="text-align: initial;" mode="ios" *ngIf="codigoVisible">
-
-                    <ion-card-header>
-                        <ion-card-title style="font-size: 34px;">Codigo</ion-card-title>
-                    </ion-card-header>
-                    <ion-card-content>Para obtener tus libros, ingresa el codigo que te asigno tu jefe de grupo, y disfruta de ellos</ion-card-content>
-                    <ion-grid style="margin-top: -3vh;
-                    width: 100%;">
-                        <ion-row color="primary" class="ion-justify-content-center">
-                            <ion-col align-self-center size-md="6" size-lg="5" size-xs="12">
-
-                                <div class="ion-padding">
-                                    <ion-item>
-                                        <ion-input style="font-size: 26px; text-align: center;" [(ngModel)]="FrmCodigo.codigo" placeholder="Ingresa tu codigo"></ion-input>
-                                    </ion-item>
-
-                                </div>
-                                <div class="ion-padding">
-                                    <ion-button size="large" style="--border-radius: 35px;
-                                    --background: #171717;--background-activated: #171717;" type="submit" expand="block" (click)="IngresarCodigo()">Obtener</ion-button>
-                                </div>
-                            </ion-col>
-                        </ion-row>
-                    </ion-grid>
-                </ion-card>
-
-                <div class="images" *ngIf="!codigoVisible">
-                    <!--<div class="one-image" *ngFor="let item of libros | async">-->
-                    <div class="one-image" *ngFor="let item of libros">
-
-                        <div style="position:relative">
-                            <!--<img src="assets/img/{{item.RutaThumbnails}}" class="image-rouder" width="100%">-->
-                            <img src="https://www.alfalbs.app/Wcflbs/cover/{{item.rutaThumbnails}}" class="image-rouder" width="100%">
-                            <div class="grid-container" style="position: relative;width: 100%">
-                                <div class="grid-item item1">
-                                    <div class="version">
-                                        <span>v{{item.version}}</span>
-                                    </div>
-                                    {{item.nombre}}
-                                </div>
-                                <div class="grid-item item2" style="width: 30px;height: 30px;background-color: #6228cf; border-radius: 50%;text-align: left;">
-
-                                </div>
-                                <div class="grid-item item3">1st Grade</div>
-                                <div class="grid-item item4">Elementary school</div>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <app-books [librosIN]="libros" *ngIf="!codigoVisible"> </app-books>
             </ion-slide>
             <ion-slide>
-
+                <app-codes (librosDescargados)="librosDescargados($event)" *ngIf="codigoVisible"></app-codes>
+                <app-books [librosIN]="libros | filter : 'Ingles' : 'idioma'" *ngIf="!codigoVisible"> </app-books>
             </ion-slide>
             <ion-slide>
-
+                <app-codes (librosDescargados)="librosDescargados($event)" *ngIf="codigoVisible"></app-codes>
+                <app-books [librosIN]="libros | filter : 'Espanol' : 'idioma'" *ngIf="!codigoVisible"> </app-books>
             </ion-slide>
             <ion-slide>
-                <ion-card style="text-align: initial;" mode="ios">
-
-                    <ion-card-header>
-                        <ion-card-title style="font-size: 34px;">Codigo</ion-card-title>
-                    </ion-card-header>
-                    <ion-card-content>Para obtener tus libros, ingresa el codigo que te asigno tu jefe de grupo, y disfruta de ellos</ion-card-content>
-                    <ion-grid style="margin-top: -3vh;
-                    width: 100%;">
-                        <ion-row color="primary" class="ion-justify-content-center">
-                            <ion-col align-self-center size-md="6" size-lg="5" size-xs="12">
-
-                                <div class="ion-padding">
-                                    <ion-item>
-                                        <ion-input style="font-size: 26px; text-align: center;" [(ngModel)]="FrmCodigo.codigo" placeholder="Ingresa tu codigo"></ion-input>
-                                    </ion-item>
-
-                                </div>
-                                <div class="ion-padding">
-                                    <ion-button size="large" style="--border-radius: 35px;
-                                    --background: #171717;--background-activated: #171717;" type="submit" expand="block" (click)="IngresarCodigo()">Obtener</ion-button>
-                                </div>
-                            </ion-col>
-                        </ion-row>
-                    </ion-grid>
-                </ion-card>
-                <!--  <div class="ion-text-center" style="    position: absolute;
-                top: 10px;
-                /* left: 34px; */
-                padding: 1px1px,1px1px;
-                padding-left: 41px;
-                padding-right: 106px;">
-                    <h3 style="font-size: 34px;font-weight: 700;text-align: initial;">Codigo</h3>
-                    <p style="text-align: left;
-                    font-size: 16px;
-                    word-wrap: break-word;
-                    font-weight: 400;    ">Para obtener tus libros, ingresa el codigo que te asigno tu jefe de grupo, y disfruta de ellos</p>
-                </div>
-
-                <ion-grid style="margin-top: 15vh;width: 100%;">
-                    <ion-row color="primary" class="ion-justify-content-center">
-                        <ion-col align-self-center size-md="6" size-lg="5" size-xs="12">
-
-                            <div class="ion-padding" style="width: 154px;">
-                                <ion-item>
-                                    <ion-input style="font-size: 26px; text-align: center;" [(ngModel)]="FrmCodigo.codigo" placeholder="Codigo"></ion-input>
-                                </ion-item>
-
-                            </div>
-                            <div class="ion-padding">
-                                <ion-button size="large" type="submit" expand="block" (click)="IngresarCodigo()">Entrar</ion-button>
-                            </div>
-                        </ion-col>
-                    </ion-row>
-                </ion-grid>-->
+                <app-codes (librosDescargados)="librosDescargados($event)"></app-codes>
 
             </ion-slide>
         </ion-slides>
@@ -251,7 +163,7 @@ top: 0;" mode="ios">
         --color: #fff;
          z-index: 5;
         /* letter-spacing: 3px;*/">
-            19°</ion-title>
+            03°</ion-title>
         <ion-icon #animation8 style="color: white;
         left: 0px;
         bottom: 0px;
@@ -300,6 +212,12 @@ top: 0;" mode="ios">
             </ion-slide>
             <ion-slide>
                 <div class="animated zoomIn fast" style="margin-bottom: 90px; width: 100%;height:100%;background-image: url(assets/img/4.svg);background-repeat: no-repeat;background-size: 100% 100%;"></div>
+            </ion-slide>
+            <ion-slide>
+                <div class="animated zoomIn fast" style="margin-bottom: 90px; width: 100%;height:100%;background-image: url(assets/img/5.svg);background-repeat: no-repeat;background-size: 100% 100%;"></div>
+            </ion-slide>
+            <ion-slide>
+                <div class="animated zoomIn fast" style="margin-bottom: 90px; width: 100%;height:100%;background-image: url(assets/img/6.svg);background-repeat: no-repeat;background-size: 100% 100%;"></div>
             </ion-slide>
 
         </ion-slides>

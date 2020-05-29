@@ -11,7 +11,7 @@
 
 <ion-content>
     <ion-card class="ion-no-border" no style="text-align: initial;" mode="ios">
-        <ion-card-header>
+        <!--<ion-card-header>
             <ion-card-title>Titulo</ion-card-title>
         </ion-card-header>
         <ion-card-content>
@@ -25,6 +25,67 @@
         <ion-card-content>
             Lorem iuis aute irure dol cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est Lorem iuis aute irure dol cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est Lorem iuis aute irure dol cupidatat non proident,
             sunt in culpa qui officia deserunt mollit anim id est Lorem iuis aute irure dol cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
+        </ion-card-content>-->
+        <ion-card-content>
+            <form [formGroup]="FrmItem" (ngSubmit)="crearNoticia()">
+                <ion-grid>
+                    <ion-row>
+                        <ion-col size="12">
+                            <ion-item>
+                                <ion-label position="floating">Titulo</ion-label>
+                                <ion-input type="text" formControlName="Titulo" name="Titulo"></ion-input>
+                            </ion-item>
+                            <div *ngIf="!FrmItem.controls.Titulo.valid && (FrmItem.controls.Titulo.dirty || submitAttempt)">
+                                <p class="text-error">Por favor ingresa un titulo.</p>
+                            </div>
+                        </ion-col>
+                        <ion-col size="12">
+                            <ion-item>
+                                <ion-label position="floating">Descripción</ion-label>
+                                <ion-textarea rows="5" formControlName="Descripcion" name="Descripcion">
+                                </ion-textarea>
+                            </ion-item>
+                            <div *ngIf="!FrmItem.controls.Descripcion.valid && (FrmItem.controls.Descripcion.dirty || submitAttempt)">
+                                <p class="text-error">Por favor ingresa una descripción.</p>
+                            </div>
+                        </ion-col>
+                        <ion-col size="6">
+                            <ion-item>
+                                <ion-label position="floating">Fecha</ion-label>
+                                <ion-datetime formControlName="FechaPublicacion" name="FechaPublicacion" displayFormat="DDDD DD MMM, YYYY" pickerFormat="DD MMMM YYYY"></ion-datetime>
+                            </ion-item>
+                            <div *ngIf="!FrmItem.controls.FechaPublicacion.valid && (FrmItem.controls.FechaPublicacion.dirty || submitAttempt)">
+                                <p class="text-error">Por favor ingresa una fecha.</p>
+                            </div>
+                        </ion-col>
+                        <ion-col size="6">
+                            <ion-item>
+                                <ion-label position="floating">Hora</ion-label>
+                                <ion-datetime formControlName="HoraPublicacion" name="HoraPublicacion" displayFormat="hh:mm A" pickerFormat="hh mm A">
+                                </ion-datetime>
+                            </ion-item>
+                            <div *ngIf="!FrmItem.controls.HoraPublicacion.valid && (FrmItem.controls.HoraPublicacion.dirty || submitAttempt)">
+                                <p class="text-error">Por favor ingresa una hora.</p>
+                            </div>
+                        </ion-col>
+                        <ion-col size="12">
+                            <input #inputFilePortada style="opacity:0" name="Image" (change)="onFileChange($event)" type="file" accept="image/png, image/jpeg" />
+                            <ion-button expand="full" type="button" icon-start outline block (click)="inputFilePortada.click()">
+                                <ion-icon name="images"></ion-icon>
+                                {{texto_adjuntar_portada}}
+                            </ion-button>
+                            <div *ngIf="!FrmItem.controls.Image.valid && (FrmItem.controls.Image.dirty || submitAttempt)">
+                                <p class="text-error">Por favor selecciona una foto de portada.</p>
+                            </div>
+                        </ion-col>
+                    </ion-row>
+                    <ion-row>
+                        <ion-col size="12">
+                            <ion-button expand="full" type="submit" block style="margin: 5% 0">Crear Tarea</ion-button>
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
+            </form>
         </ion-card-content>
     </ion-card>
 </ion-content>

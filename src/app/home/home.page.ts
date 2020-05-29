@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild, Renderer2 } from '@angular/core';
+import { Component, ElementRef, ViewChild, Renderer2, ɵCodegenComponentFactoryResolver } from '@angular/core';
 import { AnimationController, Animation, IonContent, Platform, IonSlides, ModalController, LoadingController, AlertController } from '@ionic/angular';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { Gesture, GestureController } from '@ionic/angular';
@@ -8,6 +8,10 @@ import { NuevoRecursoPage } from '../nuevo-recurso/nuevo-recurso.page';
 import { BooksComponent } from '../components/books/books.component';
 import { BooksService } from '../services/books.service';
 import { AuthenticationService } from '../services/authentication.service';
+import { TareasService } from '../api/tareas.service';
+import { CodesComponent } from '../components/codes/codes.component';
+import { Libros } from '../models/Libros';
+
 
 @Component({
   selector: 'app-home',
@@ -22,11 +26,11 @@ export class HomePage {
   selectOption = '0';
   selectSeccion = 1;
   index: number ;
-  libros: any;
+  libros: any[]=[];
   librosES: any[] = [];
   librosIN: any[] = [];
   codigoVisible = true;
-
+  LstTareas: any[] = [];
 
   @ViewChild('slideDown', {static: false}) slideDown: IonSlides;
   @ViewChild('slideUp', {static: true}) slideUp: IonSlides;
@@ -53,7 +57,7 @@ export class HomePage {
   primeraVez = true;
   headersText: any = [];
   header = 'Community';
-  nombreIcono = 'rainy-outline';
+  nombreIcono = 'people-outline';
   iconos: any[];
   public swipeUp = false;
   public swipeDown = false;
@@ -62,37 +66,15 @@ export class HomePage {
   slideOpts = {
     loop: true,
   };
-  FrmCodigo = {
-    codigo : ''
-  };
 
   // tslint:disable-next-line: max-line-length
   constructor(private statusBar: StatusBar, public platform: Platform, private animationCtrl: AnimationController,
               // tslint:disable-next-line: max-line-length
               private renderer: Renderer2, private gestureCtrl: GestureController, private modalCrl: ModalController, private booksService: BooksService,
-              private loadingController: LoadingController, private alertController: AlertController,private authenticationService: AuthenticationService ) {
+              private loadingController: LoadingController, private alertController: AlertController,private authenticationService: AuthenticationService ,
+              private apiTareas: TareasService) {
       this.scrollenable = true;
-   //   this.selectSeccion = 1;
-      for (let i = 0; i < 20  ; i++) {
-      this.items.push({
-        // tslint:disable-next-line: no-use-before-declare
-        index: i,
-        name: i + ' - ' + images[rotateImg],
-        imgSrc: getImgSrc(),
-        avatarSrc: getImgSrc(),
-        imgHeight: Math.floor(Math.random() * 50 + 150),
-        // tslint:disable-next-line: no-use-before-declare
-        content: lorem.substring(0, Math.random() * (lorem.length - 100) + 100)
-      });
 
-      // tslint:disable-next-line: no-use-before-declare
-      rotateImg++;
-      // tslint:disable-next-line: no-use-before-declare
-      if (rotateImg === images.length) {
-        // tslint:disable-next-line: no-use-before-declare
-        rotateImg = 0;
-      }
-    }
 
 
   }
@@ -328,6 +310,13 @@ mover() {
   this.content.scrollToPoint(0, 0, 400);
 }
 
+librosDescargados(Libros){
+    console.log(Libros);
+    this.libros = Libros;
+    this.codigoVisible = false;
+    this.pillMenu.nextSegment('0');
+}
+
 
  async  animacionBounce(esHaciaArriba: boolean) {
 /*
@@ -461,21 +450,28 @@ const animation5: Animation = this.animationCtrl.create('bouceEduardo')
       let index = await this.slideUp.getActiveIndex();
 
       // Por mientras
-      index = index === 5 ? 1 : index;
-      index = index === 0 ? 4 : index;
+      index = index === 7 ? 1 : index;
+      index = index === 0 ? 6 : index;
       this.header = this.headersText[index - 1];
       this.nombreIcono = this.iconos[index - 1];
       console.log(index);
 
       if (index === 1) {
-        this.tabs = ['Noticias', 'Mensajes'];
+        this.tabs = ['Noticias', 'Mensajes', 'Calendario'];
       } else if (index === 2) {
-        this.tabs = ['Foro', 'Recursos'];
+        this.tabs = ['Tareas','Foro', 'Recursos'];
      } else if (index === 3) {
-            this.tabs = ['Todos', 'Ingles'  , 'Español', 'Codigo'];
+            this.tabs = ['Todos', 'Inglés'  , 'Español', 'Código'];
      } else if (index === 4) {
-            this.tabs = ['Mi cuenta', 'Ayuda'];
+            //this.tabs = ['Perfil', 'Clases', 'Usuarios', 'Estadísticas', 'Cerrar Sesión'];
+            this.tabs = ['Perfil', 'Clases', 'Estadísticas'];
      }
+     else if (index === 5) {
+      this.tabs = ['Preguntas', 'Videos', 'Contacto'];
+      }
+      else if (index === 6) {
+        this.tabs = ['Alumnos', 'Docentes', 'Cordinadores'];
+        }
 
       this.selectOption = '0';
       console.log(await this.slideDown.getActiveIndex().toString());
@@ -496,10 +492,15 @@ const animation5: Animation = this.animationCtrl.create('bouceEduardo')
       // this.pillMenu.nextSegment('0');
     }
 
-    ngOnInit(): void {
-      this.iconos = ['rainy-outline', 'watch-outline', 'leaf-outline', 'shield-outline', 'leaf-outline'];
-      this.headersText = ['Community', 'My tasks', 'Books', 'My Account', 'Support'];
-      this.tabs = ['Noticias', 'Calendario'];
+    async ngOnInit() {
+
+      this.LstTareas = await this.apiTareas.get().toPromise();
+      console.log(this.LstTareas);
+    
+
+      this.iconos = ['people-outline', 'watch-outline', 'leaf-outline', 'shield-outline', 'leaf-outline'];
+      this.headersText = ['Community', 'My tasks', 'Books', 'My Account', 'Support', 'User'];
+      this.tabs = ['Noticias', 'Mensajes', 'Calendario']; 
 
       this.gesture = this.gestureCtrl.create({
 
@@ -572,7 +573,15 @@ const animation5: Animation = this.animationCtrl.create('bouceEduardo')
           mode: 'ios',
           backdropDismiss: true
         });
-        return await modal.present();
+
+         await modal.present();
+
+         modal.onDidDismiss().then( async (data) => {
+            this.LstTareas = await this.apiTareas.get().toPromise();
+            console.log(this.LstTareas);
+         });
+
+
     }
 
     async ionSlideTouchEnd(slideSelect: IonSlides, notSlideSlect: IonSlides) {
@@ -581,16 +590,15 @@ const animation5: Animation = this.animationCtrl.create('bouceEduardo')
     }
 
     async openDetail(event: Event, item) {
-console.log('ckicj');
-console.log(event);
-console.log(item);
-const modal = await this.modalCrl.create({
+
+    const modal = await this.modalCrl.create({
         component: DetallePage,
         cssClass: 'my-custom-modal-css',
         mode: 'ios',
         backdropDismiss: true,
         componentProps: {item}
       });
+      
       return await modal.present();
     }
 
@@ -604,58 +612,6 @@ const modal = await this.modalCrl.create({
     llenar_libros() {
       console.log('llenar libros');
       // this.libros = this.booksService.getPost();
-
-    }
-
-    async IngresarCodigo() {
-      let loading;
-
-      try {
-
-        if (this.FrmCodigo.codigo === '') { return; }
-
-        loading = await this.loadingController.create({
-          mode: 'ios',
-          message: 'Validando...'
-        });
-
-
-        const code = this.FrmCodigo.codigo;
-        this.libros =  await this.booksService.getBooks(code).toPromise();
-
-        // console.log(response);
-
-        await this.loadingController.dismiss();
-
-        const alert = await this.alertController.create({
-          header: 'Ommega',
-          // subHeader: 'Subtitle',
-          message: `Has adquirido ${ this.libros.length} libros`,
-          mode: 'ios',
-          buttons: ['Aceptar']
-        });
-        this.codigoVisible = false;
-        await alert.present();
-
-        this.FrmCodigo.codigo ='';
-
-        this.pillMenu.nextSegment('0');
-
-
-      } catch (err) {
-        console.log(err);
-        await this.loadingController.dismiss();
-
-        const alert = await this.alertController.create({
-          header: 'Ommega',
-          // subHeader: 'Subtitle',
-          message: err.error,
-          mode: 'ios',
-          buttons: ['Aceptar']
-        });
-
-        await alert.present();
-      }
     }
 
     async Salir(){

@@ -11,6 +11,9 @@ import { DetallePageModule } from '../detalle/detalle.module';
 import { NuevoRecursoPage } from '../nuevo-recurso/nuevo-recurso.page';
 import { NuevoRecursoPageModule } from '../nuevo-recurso/nuevo-recurso.module';
 import { BooksComponent } from '../components/books/books.component';
+import { CodesComponent } from '../components/codes/codes.component';
+import { ListComponent } from '../components/list/list.component';
+import { FilterPipe } from '../pipes/filter.pipe';
 
 @NgModule({
   entryComponents : [
@@ -30,6 +33,6 @@ import { BooksComponent } from '../components/books/books.component';
     DetallePageModule,
     NuevoRecursoPageModule
   ],
-  declarations: [HomePage, PillMenuComponent, BooksComponent]
+  declarations: [HomePage, PillMenuComponent, BooksComponent, CodesComponent, ListComponent, FilterPipe]
 })
 export class HomePageModule {}

@@ -19,11 +19,13 @@
     </ion-header>
     <ion-card class="ion-no-border" no style="text-align: initial;" mode="ios">
         <ion-card-header>
-            <ion-card-title>{{item.name}}</ion-card-title>
+            <ion-card-title>{{item.titulo}}</ion-card-title>
         </ion-card-header>
         <ion-card-content>
-            Lorem iuis aute irure dol cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est Lorem iuis aute irure dol cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est Lorem iuis aute irure dol cupidatat non proident,
-            sunt in culpa qui officia deserunt mollit anim id est Lorem iuis aute irure dol cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
+            {{item.descripcion}}
+        </ion-card-content>
+        <ion-card-content>
+            <ion-img [src]="item.image"></ion-img>
         </ion-card-content>
         <ion-card-content>
             Lorem iuis aute irure dol cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est Lorem iuis aute irure dol cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est Lorem iuis aute irure dol cupidatat non proident,

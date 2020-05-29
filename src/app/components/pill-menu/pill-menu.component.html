@@ -4,7 +4,7 @@
             <ion-icon style="font-size: 24px;" name="add"></ion-icon>
         </ion-fab-button>
     </ion-fab>
-    <ion-segment class="pill-menu animated fadeIn" #ionsegment id="toolbarscroll1" mode="ios" [value]="selectOption" (ionChange)="segmentChanged($event)" scrollable="true">
+    <ion-segment scrollable="true" class="pill-menu animated fadeIn" #ionsegment id="toolbarscroll1" mode="ios" [value]="selectOption" (ionChange)="segmentChanged($event)" scrollable="true">
         <ion-segment-button *ngFor='let item of itemsMenu; let i = index ' value="{{i}}">
             <!-- {{'movies' | translate}} -->
             <ion-label class="ion-text-capitalize">{{item|lowercase}}</ion-label>

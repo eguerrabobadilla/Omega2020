@@ -13,8 +13,39 @@ ion-toolbar {
     }
 }
 
-ion-card {
+
+/*ion-card {
     box-shadow: none !important;
     --background: #F4315D;
     --color: #ffffff;
+}*/
+
+//form
+.item .item-inner {
+    border-width: 1px !important;
+}
+
+input {
+    color: #fff;
+}
+
+.item-md.item-input.ng-valid.item-input-has-value:not(.input-has-focus):not(.item-input-has-focus) .item-inner,
+.item-md.item-input.ng-valid.input-has-value:not(.input-has-focus):not(.item-input-has-focus) .item-inner {
+    border-bottom-color: #dedede !important;
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+}
+
+form .item-md {
+    color: #fff !important;
+    background-color: #000 !important;
+}
+
+p.text-error {
+    text-align: left;
+    color: #e70a0a;
+    font-size: 0.8em;
+    font-weight: 500;
+    padding-left: 16px;
+    margin: 2% 0 0;
 }

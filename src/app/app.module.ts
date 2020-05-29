@@ -15,14 +15,13 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AuthInterceptorService } from './services/auth-interceptor.service';
 
-
 @NgModule({
   declarations: [AppComponent, AnimateItemsDirective],
   entryComponents: [],
   imports: [
-    BrowserModule, 
+    BrowserModule,
     AppRoutingModule,
-    IonicModule.forRoot(), 
+    IonicModule.forRoot(),
     HttpClientModule,
     ReactiveFormsModule
   ],
