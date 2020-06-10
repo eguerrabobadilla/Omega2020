@@ -7,7 +7,6 @@ export class Libroscodigos {
     Id: number;
     CodigoId: number;
     LibroId: number;
-    Uuid: string;
     Activo: string;
     CampusId: number;
     Version: number;

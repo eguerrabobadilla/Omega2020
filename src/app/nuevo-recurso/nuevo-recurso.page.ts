@@ -26,8 +26,7 @@ export class NuevoRecursoPage implements OnInit {
     });
   }
 
-   ngOnInit() {
-
+  ngOnInit() {
     
   }
 

@@ -1,0 +1,34 @@
+<ion-virtual-scroll appAnimateItems [items]="LstForo" approxItemHeight="320px">
+    <ion-card style="text-align: initial;" class="ion-activatable ripple-parent" mode="ios" *virtualItem="let item; let itemBounds = bounds;" (click)="openDetail($event,item,item.id)">
+        <ion-ripple-effect></ion-ripple-effect>
+        <ion-card-header>
+            <ion-item lines="none">
+                <ion-avatar slot="start" style="margin-left: -14px;height: 40px; width: 40px;">
+                    <img src="assets/img/avatar-han.png">
+                </ion-avatar>
+                <ion-label>
+                    <h2 style="font-weight: 600;font-size: 20px;">{{item.nombre}}</h2>
+                    <p>Eduardo Guerra
+                        <span>24 min</span>
+                    </p>
+                </ion-label>
+            </ion-item>
+
+        </ion-card-header>
+
+
+        <ion-card-content>
+            {{item.descrpcion}}
+        </ion-card-content>
+
+        <ion-item lines="none">
+            <ion-icon style="font-size: 15px;color: #F4315D;" name="chatbubbles-outline"></ion-icon>
+            <ion-label>
+                <p style="padding-left: 6px;"> {{item.numRespuestas}} comentarios</p>
+            </ion-label>
+        </ion-item>
+
+    </ion-card>
+
+
+</ion-virtual-scroll>

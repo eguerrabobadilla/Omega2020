@@ -79,6 +79,7 @@ top: 0;" mode="ios">
 
         <app-pill-menu #pillMenu pillMenu [itemsMenu]="tabs" [selectOption]="selectOption" (indicatorChanged)="segmentChanged($event)" (clickFab)="nuevoRecurso($event)"></app-pill-menu>
 
+
         <ion-slides #slideDown (ionSlideTouchEnd)="ionSlideTouchEnd(slideUp,slideDown)" *ngIf="selectSeccion == 1 || selectSeccion == 2 ||  selectSeccion ==4 ||  selectSeccion ==5 ||  selectSeccion ==6">
 
             <ion-slide>
@@ -99,8 +100,8 @@ top: 0;" mode="ios">
 
             </ion-slide>
             <ion-slide>
-                <app-list style="width: 100%;"></app-list>
-                <!--   <ion-virtual-scroll appAnimateItems [items]="items" approxItemHeight="320px">
+                <!--  <app-list style="width: 100%;"></app-list>
+                <ion-virtual-scroll appAnimateItems [items]="items" approxItemHeight="320px">
                     <ion-card class="ion-activatable ripple-parent" style="text-align: initial;" mode="ios" *virtualItem="let item; let itemBounds = bounds;" (click)="openDetail($event,item)">
                         <ion-ripple-effect></ion-ripple-effect>
                         <ion-card-header>
@@ -110,10 +111,13 @@ top: 0;" mode="ios">
                     </ion-card>
 
                 </ion-virtual-scroll>-->
+                <app-forum #forumComponent style="width: 100%;"></app-forum>
+
 
             </ion-slide>
             <ion-slide>
-                <app-list style="width: 100%;"></app-list>
+                <app-chats style="width: 100%;"></app-chats>
+                <!-- <app-list style="width: 100%;"></app-list>-->
             </ion-slide>
         </ion-slides>
 

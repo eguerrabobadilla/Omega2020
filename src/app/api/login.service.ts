@@ -6,7 +6,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 })
 export class LoginService {
   public Ws:string;
-  public url: string ="http://35.193.103.213";
+  //public url: string ="http://35.193.103.213";
+   public url = 'https://172.16.12.21:5001';
   //public url: string ="https://localhost:5001";
 
   constructor(public http: HttpClient) {

@@ -6,6 +6,7 @@ export class Libros {
     Id: number;
     Nombre: string;
     NombreArchivo: string;
+    Idioma: string;
     Grados: string;
     Escolaridad: string;
     RutaThumbnails: string;

@@ -1,0 +1,17 @@
+<ion-list>
+    <ion-list-header>
+        Recent Conversations
+    </ion-list-header>
+
+    <ion-item (click)="openDetail($event,item)" *ngFor="let item of LstChat">
+        <ion-avatar slot="start">
+            <img src="assets/img/avatar-han.png">
+        </ion-avatar>
+        <ion-label>
+            <h2>{{item.usuarioId2Navigation.nombre}} {{item.usuarioId2Navigation.apellidoMaterno}} {{item.usuarioId2Navigation.apellidoPaterno}}</h2>
+            <p>{{item.ultimoMensaje}}</p>
+            <p>{{item.horaUltimoMensaje}}</p>
+        </ion-label>
+    </ion-item>
+
+</ion-list>

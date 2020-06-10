@@ -14,6 +14,11 @@ import { from } from 'rxjs';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AuthInterceptorService } from './services/auth-interceptor.service';
+import { DetallesForumPageModule } from './pages/detalles-forum/detalles-forum.module';
+import { DetallesChatPage } from './pages/detalles-chat/detalles-chat.page';
+import { DetallesChatPageModule } from './pages/detalles-chat/detalles-chat.module';
+
+
 
 @NgModule({
   declarations: [AppComponent, AnimateItemsDirective],
@@ -21,9 +26,11 @@ import { AuthInterceptorService } from './services/auth-interceptor.service';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    IonicModule.forRoot(),
+    IonicModule.forRoot({mode:'ios', scrollPadding:false,scrollAssist:true}),
     HttpClientModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    DetallesForumPageModule,
+    DetallesChatPageModule
   ],
   providers: [
     StatusBar,

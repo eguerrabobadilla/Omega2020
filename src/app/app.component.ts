@@ -6,6 +6,7 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { AuthInterceptorService } from './services/auth-interceptor.service';
 import { AuthenticationService } from './services/Authentication.service';
 import { Router } from '@angular/router';
+import { WebsocketService } from './services/websocket.service';
 
 @Component({
   selector: 'app-root',
@@ -18,7 +19,8 @@ export class AppComponent {
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
     private router: Router,
-    private authenticationService: AuthenticationService
+    private authenticationService: AuthenticationService,
+    public  webSocket: WebsocketService
   ) {
     this.initializeApp();
   }

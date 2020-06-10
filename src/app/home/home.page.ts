@@ -11,6 +11,8 @@ import { AuthenticationService } from '../services/authentication.service';
 import { TareasService } from '../api/tareas.service';
 import { CodesComponent } from '../components/codes/codes.component';
 import { Libros } from '../models/Libros';
+import { CrearForumPage } from '../pages/crear-forum/crear-forum.page';
+import { ForumComponent } from '../components/forum/forum.component';
 
 
 @Component({
@@ -26,7 +28,7 @@ export class HomePage {
   selectOption = '0';
   selectSeccion = 1;
   index: number ;
-  libros: any[]=[];
+  libros: any[] = [];
   librosES: any[] = [];
   librosIN: any[] = [];
   codigoVisible = true;
@@ -51,6 +53,7 @@ export class HomePage {
   @ViewChild('animation8', {read: ElementRef, static: true}) animation8: ElementRef;
   @ViewChild('pillMenu', {static: false}) pillMenu: PillMenuComponent;
   @ViewChild('pillMenu', {read: ElementRef, static: false}) pillMenuRef: ElementRef;
+  @ViewChild('forumComponent', {static: false}) forumComponent: ForumComponent;
 
   items: any[] = [];
   estadoArriba  = false;
@@ -410,10 +413,10 @@ const animation5: Animation = this.animationCtrl.create('bouceEduardo')
    //  this.statusBar.overlaysWebView(true);
 
      // set status bar to white
-     // this.statusBar.backgroundColorByHexString('#0DFFFFFF');
+      this.statusBar.backgroundColorByHexString('#FFFFFF');
       this.llenar_libros();
       this.selectSeccion = 1;
-      this.statusBar.hide();
+    //  this.statusBar.hide();
 
 
 
@@ -565,23 +568,57 @@ const animation5: Animation = this.animationCtrl.create('bouceEduardo')
       // this.slideUp.slideTo(event.detail.value);
     }
 
-    async nuevoRecurso(event) {
+    async nuevoRecurso(itemOption) {
+      console.log("itemOption")
+      console.log(itemOption)
+      if (itemOption === 'Tareas') {
+          const modal = await this.modalCrl.create({
+            component: NuevoRecursoPage,
+            // cssClass: 'my-custom-modal-css',
+            cssClass: 'my-custom-modal-css-capturas',
+            showBackdrop: false,
+            mode: 'ios',
+            backdropDismiss: true
+          });
 
+          await modal.present();
+
+          modal.onDidDismiss().then( async (data) => {
+              this.LstTareas = await this.apiTareas.get().toPromise();
+              console.log(this.LstTareas);
+          });
+      } else if (itemOption === 'Foro') {
         const modal = await this.modalCrl.create({
-          component: NuevoRecursoPage,
+          component: CrearForumPage,
+          // cssClass: 'my-custom-modal-css',
+          cssClass: 'my-custom-modal-css-capturas',
+          showBackdrop: false,
+          mode: 'ios',
+          backdropDismiss: true
+        });
+
+        await modal.present();
+
+        modal.onDidDismiss().then( async (data) => {
+          this.forumComponent.cargar();
+        });
+
+      } else if (itemOption === 'Test') {
+        /*console.log('Nuevo recurso');
+        const modal = await this.modalCrl.create({
+          component: NewResourcePage,
           // cssClass: 'my-custom-modal-css',
           mode: 'ios',
           backdropDismiss: true
         });
 
-         await modal.present();
+        await modal.present();
 
-         modal.onDidDismiss().then( async (data) => {
-            this.LstTareas = await this.apiTareas.get().toPromise();
-            console.log(this.LstTareas);
-         });
-
-
+        modal.onDidDismiss().then( async (data) => {
+            //this.LstTareas = await this.apiTareas.get().toPromise();
+            //console.log(this.LstTareas);
+        });*/
+      }
     }
 
     async ionSlideTouchEnd(slideSelect: IonSlides, notSlideSlect: IonSlides) {

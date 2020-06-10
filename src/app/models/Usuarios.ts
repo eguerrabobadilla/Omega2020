@@ -1,5 +1,7 @@
 ﻿
 
+import { Comentarios } from './Comentarios';
+import { Foro } from './Foro';
 import { Usuarioscodigos } from './Usuarioscodigos';
 
 export class Usuarios { 
@@ -9,6 +11,8 @@ export class Usuarios {
     ApellidoMaterno: string;
     Usuario: string;
     Password: string;
+    Comentarios: Comentarios[];
+    Foro: Foro[];
     Usuarioscodigos: Usuarioscodigos[];
 
     public constructor(init?: Partial<Usuarios>) {

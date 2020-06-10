@@ -47,7 +47,8 @@ export class PillMenuComponent implements OnInit {
 
   onClickFab(event) {
     //console.log(event);
-    this.clickFab.emit(event);
+  //  this.clickFab.emit(event);
+    this.clickFab.emit(this.itemsMenu[this.indexAnterior]);
   }
 
   public visibleFab(value: boolean) {
