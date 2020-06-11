@@ -20,6 +20,8 @@ import { CrearForumPage } from '../pages/crear-forum/crear-forum.page';
 import { ChatsComponent } from '../components/chats/chats.component';
 import { DetallesChatPage } from '../pages/detalles-chat/detalles-chat.page';
 import { DetallesChatPageModule } from '../pages/detalles-chat/detalles-chat.module';
+import { CrearChatPageModule } from '../pages/crear-chat/crear-chat.module';
+import { CrearChatPage } from '../pages/crear-chat/crear-chat.page';
 
 
 
@@ -27,6 +29,7 @@ import { DetallesChatPageModule } from '../pages/detalles-chat/detalles-chat.mod
   entryComponents : [
     DetallePage,
     CrearForumPage,
+    CrearChatPage,
     NuevoRecursoPage,
     DetallesChatPage
   ],
@@ -43,6 +46,7 @@ import { DetallesChatPageModule } from '../pages/detalles-chat/detalles-chat.mod
     DetallePageModule,
     NuevoRecursoPageModule,
     CrearForumPageModule,
+    CrearChatPageModule,
     DetallesChatPageModule
   ],
   declarations: [HomePage, PillMenuComponent, BooksComponent, CodesComponent, ListComponent, FilterPipe, ForumComponent, ChatsComponent]

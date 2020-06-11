@@ -12,6 +12,7 @@ import { WebsocketService } from '../../services/websocket.service';
 export class DetallesChatPage implements OnInit {
 
   @Input() item;
+  itemApiChat: any;
   public FrmItem: FormGroup;
   LstChats: any[];
   detalleId: number;
@@ -20,7 +21,7 @@ export class DetallesChatPage implements OnInit {
               private applicationRef: ApplicationRef, private webSocket: WebsocketService, private _ngZone: NgZone) {
 
       this.FrmItem = formBuilder.group({
-      mensaje: ['', Validators.compose([Validators.required])]
+        mensaje: ['', Validators.compose([Validators.required])]
       });
   }
 
@@ -35,6 +36,24 @@ export class DetallesChatPage implements OnInit {
     });
 
   }
+
+  async crearMensaje() {
+     console.log("crear noticia")
+
+      this.itemApiChat = this.FrmItem.value;
+      this.itemApiChat.usuarioIdOrigen = this.item.usuarioId;
+      this.itemApiChat.usuarioIdDestino = this.item.usuarioId2;
+
+      console.log(this.itemApiChat);
+   //   this.itemApiChat.usuarioIdOrigen = item. 
+  /*    {
+      usarioId  "usuarioIdOrigen": 2,
+      usarioId2   "usuarioIdDestino": 1,
+        "mensaje": "Otro mensaje de postman de eduardo"
+      }*/
+      const tareaUpload = await this.apichat.addMensajes(this.itemApiChat).toPromise();
+
+    }
 
   closeModal(){
     this.modalCtrl.dismiss();

@@ -13,6 +13,7 @@ import { CodesComponent } from '../components/codes/codes.component';
 import { Libros } from '../models/Libros';
 import { CrearForumPage } from '../pages/crear-forum/crear-forum.page';
 import { ForumComponent } from '../components/forum/forum.component';
+import { CrearChatPage } from '../pages/crear-chat/crear-chat.page';
 
 
 @Component({
@@ -603,11 +604,12 @@ const animation5: Animation = this.animationCtrl.create('bouceEduardo')
           this.forumComponent.cargar();
         });
 
-      } else if (itemOption === 'Test') {
-        /*console.log('Nuevo recurso');
+      } else if (itemOption === 'Calendario') {
         const modal = await this.modalCrl.create({
-          component: NewResourcePage,
+          component: CrearChatPage,
           // cssClass: 'my-custom-modal-css',
+          cssClass: 'my-custom-modal-css-capturas',
+          showBackdrop: false,
           mode: 'ios',
           backdropDismiss: true
         });
@@ -615,9 +617,9 @@ const animation5: Animation = this.animationCtrl.create('bouceEduardo')
         await modal.present();
 
         modal.onDidDismiss().then( async (data) => {
-            //this.LstTareas = await this.apiTareas.get().toPromise();
-            //console.log(this.LstTareas);
-        });*/
+          this.forumComponent.cargar();
+        });
+
       }
     }
 

@@ -18,10 +18,14 @@ export class ChatService extends apiBase {
 
    getConversaciones(): Observable<any[]> {
       return this.http.get<any[]>(`${this.url}/api/conversaciones`);
-  }
+   }
 
   getChatByIdUsuario(id){
     return this.http.get<any[]>(`${this.url}/api/mensajes/usuario/${id}`);
-
   }
+
+  addMensajes(item) {
+    return this.http.post(`${this.url}/${this.Ws}`, item);
+  }
+
 }
