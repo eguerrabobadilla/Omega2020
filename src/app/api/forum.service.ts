@@ -2,19 +2,16 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { tap } from 'rxjs/operators';
+import { apiBase } from './apiBase';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ForumService {
-  public Ws: string;
+export class ForumService  extends apiBase {
   public WsForo: string;
-  //public url = 'http://35.193.103.213';
-  public url = 'https://172.16.12.23:5001';
-  //public LstForos: any = [];
-  // public url: string ="https://localhost:5001";
 
   constructor(public http: HttpClient) {
+    super();
     this.Ws = 'api/comentarios';
     this.WsForo = 'api/foro';
    }

@@ -1,16 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { apiBase } from './apiBase';
 
 @Injectable({
   providedIn: 'root'
 })
-export class TareasService {
-  public Ws:string;
-  public url: string ="http://35.193.103.213";
-  //public url: string ="https://localhost:5001";
+export class TareasService  extends apiBase {
 
   constructor(public http: HttpClient) {
+    super();
     this.Ws = 'api/tareas';
    }
 

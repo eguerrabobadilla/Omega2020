@@ -1,6 +1,7 @@
 import { EventEmitter, Injectable } from '@angular/core';  
 import { HubConnection, HubConnectionBuilder } from '@aspnet/signalr';
 import { Message } from '../models/Message';
+import { apiBase } from '../api/apiBase';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,7 @@ export class WebsocketService {
   private connectionIsEstablished = false;
   private _hubConnection: HubConnection;
 
-  constructor() {
+  constructor(private api: apiBase) {
     this.createConnection();
     this.registerOnServerEvents();
     this.startConnection();
@@ -31,8 +32,8 @@ export class WebsocketService {
 
   private createConnection() {
     this._hubConnection = new HubConnectionBuilder()
-      //.withUrl(window.location.href + 'MessageHub')
-      .withUrl('https://172.16.12.21:5001/' + 'MessageHub')
+      //.withUrl('https://172.16.12.21:5001/' + 'MessageHub')
+      .withUrl(`${this.api.url}/MessageHub`)
       .build();
   }
 
