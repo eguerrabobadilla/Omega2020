@@ -34,6 +34,7 @@ export class AppComponent {
     //Login
     this.authenticationService.authState.subscribe(state => {
       if (state) {
+        this.webSocket.initSocket();
         this.router.navigate(['home']);
       } else {
         this.router.navigate(['login']);

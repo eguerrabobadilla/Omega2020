@@ -23,6 +23,8 @@ export class DetallesChatPage implements OnInit {
       this.FrmItem = formBuilder.group({
         mensaje: ['', Validators.compose([Validators.required])]
       });
+
+      this.subscribeToEvents();
   }
 
   ngOnInit() {
@@ -44,7 +46,7 @@ export class DetallesChatPage implements OnInit {
       this.itemApiChat.usuarioIdOrigen = this.item.usuarioId;
       this.itemApiChat.usuarioIdDestino = this.item.usuarioId2;
 
-      console.log(this.itemApiChat);
+      //console.log(this.itemApiChat);
    //   this.itemApiChat.usuarioIdOrigen = item. 
   /*    {
       usarioId  "usuarioIdOrigen": 2,
@@ -52,11 +54,21 @@ export class DetallesChatPage implements OnInit {
         "mensaje": "Otro mensaje de postman de eduardo"
       }*/
       const tareaUpload = await this.apichat.addMensajes(this.itemApiChat).toPromise();
-
+      this.FrmItem.reset();
+      this.LstChats.unshift(this.itemApiChat)
     }
 
   closeModal(){
     this.modalCtrl.dismiss();
+  }
+
+  private subscribeToEvents(): void {
+
+    this.webSocket.messageReceived.subscribe((message: any) => {
+        this.LstChats.unshift(message);
+        this.applicationRef.tick();
+        console.log(message);
+    });
   }
 
 }
