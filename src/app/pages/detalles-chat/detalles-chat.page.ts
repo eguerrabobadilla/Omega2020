@@ -27,10 +27,9 @@ export class DetallesChatPage implements OnInit {
 
   ngOnInit() {
 
-
     //Me uno al grupo
   //  this.webSocket.AddToGroup(`foro-${this.detalleId}`);
-
+    console.log(this.item);
     this.apichat.getChatByIdUsuario(this.item.usuarioId2).subscribe(data => {
       this.LstChats = data;
     });
@@ -38,24 +37,23 @@ export class DetallesChatPage implements OnInit {
   }
 
   async crearMensaje() {
-     console.log("crear noticia")
 
-      this.itemApiChat = this.FrmItem.value;
-      this.itemApiChat.usuarioIdOrigen = this.item.usuarioId;
-      this.itemApiChat.usuarioIdDestino = this.item.usuarioId2;
+     this.itemApiChat = this.FrmItem.value;
+     this.itemApiChat.usuarioIdOrigen = this.item.usuarioId;
+     this.itemApiChat.usuarioIdDestino = this.item.usuarioId2;
 
-      console.log(this.itemApiChat);
+     console.log(this.itemApiChat);
    //   this.itemApiChat.usuarioIdOrigen = item. 
   /*    {
       usarioId  "usuarioIdOrigen": 2,
       usarioId2   "usuarioIdDestino": 1,
         "mensaje": "Otro mensaje de postman de eduardo"
       }*/
-      const tareaUpload = await this.apichat.addMensajes(this.itemApiChat).toPromise();
+     const tareaUpload = await this.apichat.addMensajes(this.itemApiChat).toPromise();
 
     }
 
-  closeModal(){
+  closeModal() {
     this.modalCtrl.dismiss();
   }
 
