@@ -17,6 +17,10 @@ export class WebsocketService {
   private _hubConnection: HubConnection;
 
   constructor(private api: apiBase) {
+    
+  }
+
+  initSocket(){
     this.createConnection();
     this.registerOnServerEvents();
     this.startConnection();
@@ -31,9 +35,11 @@ export class WebsocketService {
   }
 
   private createConnection() {
+    const token: string = localStorage.getItem('USER_INFO');
+
     this._hubConnection = new HubConnectionBuilder()
       //.withUrl('https://172.16.12.21:5001/' + 'MessageHub')
-      .withUrl(`${this.api.url}/MessageHub`)
+      .withUrl(`${this.api.url}/MessageHub`,{ accessTokenFactory: () => token })
       .build();
   }
 
@@ -54,13 +60,12 @@ export class WebsocketService {
   private registerOnServerEvents(): void {
 
     this._hubConnection.on('MessageReceived', (data: any) => {
-      console.log(data);
+      //console.log(data);
       this.messageReceived.emit(data);
     });
 
     this._hubConnection.on('CommentReceived', (data: any) => {
       this.commentReceived.emit(data);
     });
-
   }
 }
