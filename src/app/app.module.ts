@@ -20,6 +20,9 @@ import { DetallesChatPageModule } from './pages/detalles-chat/detalles-chat.modu
 
 
 
+
+
+
 @NgModule({
   declarations: [AppComponent, AnimateItemsDirective],
   entryComponents: [],
@@ -30,7 +33,7 @@ import { DetallesChatPageModule } from './pages/detalles-chat/detalles-chat.modu
     HttpClientModule,
     ReactiveFormsModule,
     DetallesForumPageModule,
-    DetallesChatPageModule
+    DetallesChatPageModule,
   ],
   providers: [
     StatusBar,

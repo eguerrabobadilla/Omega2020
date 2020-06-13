@@ -604,7 +604,7 @@ const animation5: Animation = this.animationCtrl.create('bouceEduardo')
           this.forumComponent.cargar();
         });
 
-      } else if (itemOption === 'Calendario') {
+      } else if (itemOption === 'Mensajes') {
         const modal = await this.modalCrl.create({
           component: CrearChatPage,
           // cssClass: 'my-custom-modal-css',

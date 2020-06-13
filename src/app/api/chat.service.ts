@@ -14,18 +14,32 @@ export class ChatService extends apiBase {
     this.Ws = 'api/mensajes';
     this.WsConversaciones = 'api/conversaciones';
    }
-
-
+   
    getConversaciones(): Observable<any[]> {
       return this.http.get<any[]>(`${this.url}/api/conversaciones`);
    }
 
-  getChatByIdUsuario(id){
-    return this.http.get<any[]>(`${this.url}/api/mensajes/usuario/${id}`);
+   getAlumnos(): Observable<any[]> {
+     return this.http.get<any[]>(`${this.url}/api/conversaciones/alumnos`);
+   }
+
+   getChatByIdUsuario(id) {
+     return this.http.get<any[]>(`${this.url}/api/mensajes/usuario/${id}`);
+   }
+
+   getGruposMaestros(){
+    return this.http.get<any[]>(`${this.url}/api/conversaciones/grupos`);
   }
 
   addMensajes(item) {
     return this.http.post(`${this.url}/${this.Ws}`, item);
   }
 
+  crearGrupo(item) {
+    return this.http.post(`${this.url}/${this.Ws}/grupos/crear`, item);
+  }
+
+  addMensajeGrupo(item) {
+    return this.http.post(`${this.url}/${this.Ws}/grupos`, item);
+  }
 }

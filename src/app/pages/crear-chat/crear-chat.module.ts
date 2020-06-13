@@ -7,6 +7,9 @@ import { IonicModule } from '@ionic/angular';
 import { CrearChatPageRoutingModule } from './crear-chat-routing.module';
 
 import { CrearChatPage } from './crear-chat.page';
+import { FilterChatPipe } from '../../pipes/filter-chat.pipe';
+
+
 
 @NgModule({
   imports: [
@@ -15,6 +18,6 @@ import { CrearChatPage } from './crear-chat.page';
     IonicModule,
     CrearChatPageRoutingModule
   ],
-  declarations: [CrearChatPage]
+  declarations: [CrearChatPage, FilterChatPipe]
 })
 export class CrearChatPageModule {}

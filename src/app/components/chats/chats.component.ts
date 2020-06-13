@@ -35,6 +35,7 @@ export class ChatsComponent implements OnInit {
         cssClass: 'my-custom-modal-css',
         mode: 'ios',
         backdropDismiss: true,
+        showBackdrop: false,
         componentProps: {item}
       });
 

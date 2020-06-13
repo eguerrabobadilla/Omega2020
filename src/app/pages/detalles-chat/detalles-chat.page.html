@@ -1,6 +1,6 @@
 <ion-header translucent="false" class="ion-no-border" mode="ios">
     <ion-toolbar>
-        <ion-title style="margin-top: 6px;">{{item.usuarioId2Navigation.nombre}} {{item.usuarioId2Navigation.apellidoMaterno}} {{item.usuarioId2Navigation.apellidoPaterno}}</ion-title>
+        <ion-title style="margin-top: 6px;">{{title}}</ion-title>
         <ion-buttons slot="end">
             <ion-button style="margin-top: 8px;margin-right: 8px;" (click)="closeModal()">
                 <ion-icon slot="icon-only" color="danger" name="close"></ion-icon>
@@ -12,13 +12,13 @@
 
 
 </ion-header>
-<ion-content fullscreen="true" scrollX="true" scrollY="true">
-    <ion-list>
+<ion-content #Content fullscreen="true" scrollX="true" scrollY="true">
+    <ion-list #chatList style="bottom: 30px;width: 100%;">
         <div *ngFor="let itemChat of LstChats">
-            <div *ngIf="item.usuarioId==itemChat.usuarioIdDestino; then izquierdaTemplate else derechaTemplate"></div>
+            <div *ngIf="usuarioId==itemChat.usuarioIdDestino; then izquierdaTemplate else derechaTemplate"></div>
             <ng-template #izquierdaTemplate>
                 <ion-item lines="none">
-                    <ion-avatar style="top: 22px;position: absolute;" slot="start">
+                    <ion-avatar style="position: absolute;" slot="start">
                         <img src="assets/img/avatar-han.png">
                     </ion-avatar>
                     <ion-card-content slot="start" style="background-color: #e8e8e8;margin-left: 43px; margin-top: 4px;border-radius: 15px;margin-right: 53px;padding: 10px">
@@ -38,7 +38,6 @@
                     </ion-card-content>
                 </ion-item>
             </ng-template>
-
         </div>
     </ion-list>
     <!--<ion-virtual-scroll appAnimateItems [items]="LstForo " approxItemHeight="320px ">

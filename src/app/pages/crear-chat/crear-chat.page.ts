@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { AnimationController, Animation, ModalController } from '@ionic/angular';
 import { DetallesChatPage } from '../detalles-chat/detalles-chat.page';
+import { ChatService } from '../../api/chat.service';
 
 @Component({
   selector: 'app-crear-chat',
@@ -9,14 +10,32 @@ import { DetallesChatPage } from '../detalles-chat/detalles-chat.page';
 })
 export class CrearChatPage implements OnInit {
   LstContactos: any[] = [];
+  LstGruposContactos: any[] = [];
+
+  LstUsuarios: any[];
+  LstGrupos: any[] = [];
+
+  SearText: any = '';
+
 
   @ViewChild('search', {read: ElementRef, static: true}) search: ElementRef;
 
 
   constructor(private animationCtrl: AnimationController, private modalCtrl: ModalController,
-              private modalCtrlChat: ModalController) { }
+              private modalCtrlChat: ModalController, private apiChat: ChatService) { }
 
   ngOnInit() {
+
+    this.apiChat.getGruposMaestros().subscribe(data => {
+      this.LstGrupos = data;
+      console.log(this.LstGrupos);
+    });
+
+    this.apiChat.getAlumnos().subscribe(data => {
+      this.LstUsuarios = data;
+      console.log(this.LstUsuarios);
+    });
+
   }
 
   focused() {
@@ -31,17 +50,23 @@ export class CrearChatPage implements OnInit {
   }
 
   addContact(item) {
+    console.log(item);
 
-    const itemChat = {
-      usuarioId2 : item,
-      usuarioId2Navigation : {
-        apellidoMaterno: 'Bobadilla',
-        apellidoPaterno: 'Guerra',
-        nombre: 'Eduardo'
-      }
-    };
+    if (this.LstContactos.find(a => a.id === item.id) === undefined) {
+      this.LstContactos.push(item);
+    } else {
+      this.LstContactos.splice(this.LstContactos.findIndex(a => a.id === item.id), 1);
+    }
+  }
 
-    this.LstContactos.push(itemChat);
+  addGroup(item) {
+    console.log(item);
+
+    if (this.LstGruposContactos.find(a => a.id === item.id) === undefined) {
+      this.LstGruposContactos.push(item);
+    } else {
+      this.LstGruposContactos.splice(this.LstGruposContactos.findIndex(a => a.id === item.id), 1);
+    }
   }
 
   async enpezarChat(event: Event, item) {
@@ -49,23 +74,33 @@ export class CrearChatPage implements OnInit {
     /*this.apiForum.get(true,0).subscribe(data =>{
     });*/
 
+    /*if (this.LstContactos.length === 0) {
+      return;
+    }*/
+
     item = this.LstContactos[0];
-  
+
+    this.modalCtrl.dismiss();
+
     const modal =  await  this.modalCtrlChat.create({
         component: DetallesChatPage,
         cssClass: 'my-custom-modal-css',
         mode: 'ios',
         backdropDismiss: true,
-        componentProps: { item }
-      });
-    this.closeModal();
-    await modal.present();
-   
-
-
-    modal.onDidDismiss().then( async (data) => {
-     // this.LstForo = await this.apiForum.get(false, 0).toPromise();
+        showBackdrop: false,
+        componentProps: {
+          item : item,
+          groups : this.LstGruposContactos[0]
+        }
     });
+
+    // this.closeModal();
+    await modal.present();
+
+
+    /*modal.onDidDismiss().then( async (data) => {
+     // this.LstForo = await this.apiForum.get(false, 0).toPromise();
+    });*/
   }
 
   animacionSearchBar(esEntrada) {
@@ -75,7 +110,7 @@ export class CrearChatPage implements OnInit {
       animation2 = this.animationCtrl.create('my-animation-identifier2')
       .addElement(this.search.nativeElement)
       .duration(300)
-      .delay(50)
+      .delay(150)
       .easing('cubic-bezier(0,.70,.45,1)')
       .beforeAddClass('backgroundcolor')
       .fromTo('transform', 'translateX(84%)', 'translateX(0%)');

@@ -13,7 +13,6 @@ import { NuevoRecursoPageModule } from '../nuevo-recurso/nuevo-recurso.module';
 import { BooksComponent } from '../components/books/books.component';
 import { CodesComponent } from '../components/codes/codes.component';
 import { ListComponent } from '../components/list/list.component';
-import { FilterPipe } from '../pipes/filter.pipe';
 import { ForumComponent } from '../components/forum/forum.component';
 import { CrearForumPageModule } from '../pages/crear-forum/crear-forum.module';
 import { CrearForumPage } from '../pages/crear-forum/crear-forum.page';
@@ -22,6 +21,8 @@ import { DetallesChatPage } from '../pages/detalles-chat/detalles-chat.page';
 import { DetallesChatPageModule } from '../pages/detalles-chat/detalles-chat.module';
 import { CrearChatPageModule } from '../pages/crear-chat/crear-chat.module';
 import { CrearChatPage } from '../pages/crear-chat/crear-chat.page';
+import { FilterPipe } from '../pipes/filter.pipe';
+
 
 
 
@@ -47,8 +48,8 @@ import { CrearChatPage } from '../pages/crear-chat/crear-chat.page';
     NuevoRecursoPageModule,
     CrearForumPageModule,
     CrearChatPageModule,
-    DetallesChatPageModule
+    DetallesChatPageModule,
   ],
-  declarations: [HomePage, PillMenuComponent, BooksComponent, CodesComponent, ListComponent, FilterPipe, ForumComponent, ChatsComponent]
+  declarations: [ HomePage, PillMenuComponent, BooksComponent, CodesComponent, ListComponent, ForumComponent, ChatsComponent, FilterPipe]
 })
 export class HomePageModule {}

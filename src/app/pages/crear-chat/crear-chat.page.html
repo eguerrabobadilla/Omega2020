@@ -1,14 +1,11 @@
-<ion-header>
+<ion-header style="padding-top: 10px;
+background-color: #ffffff00;">
     <ion-toolbar>
         <ion-title slot="start" style="text-align: initial;padding-left: 20px;font-size: 25px;">Usuarios</ion-title>
-        <ion-searchbar showCancelButton="focus" #search style="transform: translateX(84%);
+        <ion-searchbar showCancelButton="focus" #search [(ngModel)]="SearText" style="transform: translateX(84%);
         --background: white;padding-top: 10px; --color: white;" (ionFocus)="focused()" (ionBlur)=blur()></ion-searchbar>
-        <ion-button slot="end" style="    margin-top: 2px;
-        margin-right: 0px;
-        --background: white;
-        margin-left: -13px;
-        --background-activated: white;" (click)="closeModal()">
-            <ion-icon slot="icon-only" color="danger" name="close"></ion-icon>
+        <ion-button slot="end" style="margin-top: 2px;margin-right: 0px;--background: white;--background-activated: white;width: 10px;margin-right: 29px;" (click)="closeModal()">
+            <ion-icon style="position: absolute;" slot="icon-only" color="danger" name="close"></ion-icon>
             <!--<ion-icon slot="icon-only" ios="ellips
         is-vertical" md="ellipsis-vertical"></ion-icon>-->
         </ion-button>
@@ -22,7 +19,8 @@
             Grupos
         </ion-list-header>
 
-        <ion-item lines="none">
+
+        <ion-item lines="none" *ngFor="let itemGrupo of LstGrupos | filterChat:  SearText : 'grupo' ">
             <ion-avatar slot="start" style="background-color: blueviolet;">
                 <span style="
                         position: absolute;
@@ -30,64 +28,13 @@
                         color: white;
                         font-weight: 600;
                         padding-left: 3.3%;">L</span>
-                <!-- <img src="./avatar-finn.png">-->
-            </ion-avatar>
-            <ion-label>
-                <h2>Grupo 1A</h2>
-                <p>Elemtary school</p>
-            </ion-label>
-            <ion-checkbox color="danger" checked="false" slot="end" style="--size: 21px;"></ion-checkbox>
-        </ion-item>
 
-        <ion-item lines="none">
-            <ion-avatar slot="start" style="background-color: blueviolet;">
-                <span style="
-                        position: absolute;
-                        padding-top: 2%;
-                        color: white;
-                        font-weight: 600;
-                        padding-left: 3.3%;">A</span>
-                <!-- <img src="./avatar-finn.png">-->
             </ion-avatar>
             <ion-label>
-                <h2>Grupo 5A</h2>
+                <h2>Grupo {{itemGrupo.grupo}}{{itemGrupo.grado}}</h2>
                 <p>Elemtary school</p>
             </ion-label>
-            <ion-checkbox color="danger" checked="false" slot="end" style="--size: 21px;"></ion-checkbox>
-        </ion-item>
-
-        <ion-item lines="none">
-            <ion-avatar slot="start" style="background-color: blueviolet;">
-                <span style="
-                        position: absolute;
-                        padding-top: 2%;
-                        color: white;
-                        font-weight: 600;
-                        padding-left: 3.3%;">B</span>
-                <!-- <img src="./avatar-finn.png">-->
-            </ion-avatar>
-            <ion-label>
-                <h2>Grupo 5B-1</h2>
-                <p>Elemtary school</p>
-            </ion-label>
-            <ion-checkbox color="danger" checked="false" slot="end" style="--size: 21px;"></ion-checkbox>
-        </ion-item>
-
-        <ion-item lines="none">
-            <ion-avatar slot="start" style="background-color: blueviolet;">
-                <span style="
-                        position: absolute;
-                        padding-top: 2%;
-                        color: white;
-                        font-weight: 600;
-                        padding-left: 3.3%;">C</span>
-                <!-- <img src="./avatar-finn.png">-->
-            </ion-avatar>
-            <ion-label>
-                <h2>Grupo 3C-2</h2>
-                <p>Elemtary school</p>
-            </ion-label>
-            <ion-checkbox color="danger" checked="false" slot="end" style="--size: 21px;"></ion-checkbox>
+            <ion-checkbox color="danger" checked="false" slot="end" style="--size: 21px;" (click)="addGroup(itemGrupo)"></ion-checkbox>
         </ion-item>
     </ion-list>
 
@@ -96,7 +43,7 @@
             Todos los alumnos
         </ion-list-header>
 
-        <ion-item lines="none">
+        <ion-item lines="none" *ngFor="let itemUsuario of LstUsuarios">
             <ion-avatar slot="start" style="background-color: blueviolet;">
                 <span style="
                         position: absolute;
@@ -107,13 +54,13 @@
                 <!-- <img src="./avatar-finn.png">-->
             </ion-avatar>
             <ion-label>
-                <h2>Eduardo guerra</h2>
+                <h2>{{ itemUsuario.usuarioId2Navigation.nombre }} {{ itemUsuario.usuarioId2Navigation.apellidoPaterno }} {{ itemUsuario.usuarioId2Navigation.apellidoMaterno }}</h2>
                 <p>3A-2 Elemtary school </p>
             </ion-label>
-            <ion-checkbox color="danger" checked="false" slot="end" style="--size: 21px;" (click)="addContact(2)"></ion-checkbox>
+            <ion-checkbox color="danger" checked="false" slot="end" style="--size: 21px;" (click)="addContact(itemUsuario)"></ion-checkbox>
         </ion-item>
 
-        <ion-item lines="none">
+        <!--<ion-item lines="none">
             <ion-avatar slot="start" style="background-color: blueviolet;">
                 <span style="
                         position: absolute;
@@ -121,7 +68,6 @@
                         color: white;
                         font-weight: 600;
                         padding-left: 3.3%;">J</span>
-                <!-- <img src="./avatar-finn.png">-->
             </ion-avatar>
             <ion-label>
                 <h2>Jose Cruz</h2>
@@ -138,7 +84,6 @@
                         color: white;
                         font-weight: 600;
                         padding-left: 3.3%;">B</span>
-                <!-- <img src="./avatar-finn.png">-->
             </ion-avatar>
             <ion-label>
                 <h2>Bernabeu alatorreu</h2>
@@ -155,14 +100,13 @@
                         color: white;
                         font-weight: 600;
                         padding-left: 3.3%;">B</span>
-                <!-- <img src="./avatar-finn.png">-->
             </ion-avatar>
             <ion-label>
                 <h2>Bernabeu alatorreu</h2>
                 <p>1A-2 Elemtary school </p>
             </ion-label>
             <ion-checkbox color="danger" checked="false" slot="end" style="--size: 21px;"></ion-checkbox>
-        </ion-item>
+        </ion-item>-->
     </ion-list>
 
 
