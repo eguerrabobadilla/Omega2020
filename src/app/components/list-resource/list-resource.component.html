@@ -1,0 +1,110 @@
+<ion-item button detail="false" slot="fixed">
+    <ion-chip (click)="openPicker()" color="danger">
+        <ion-icon name="calendar-outline"></ion-icon>
+        <ion-label>{{mesActual}}</ion-label>
+    </ion-chip>
+</ion-item>
+<ion-list mode="ios" appAnimateItems>
+    <ion-list-header>
+        Semana 1
+    </ion-list-header>
+    <ion-card style="text-align: initial;" class="ion-activatable ripple-parent" mode="ios" *ngFor="let item of LstRecursos | filter : 'Semana 1' : 'semana'">
+        <ion-ripple-effect></ion-ripple-effect>
+        <ion-card-header>
+            <ion-card-title>{{ item.titulo }}</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>{{ item.descripcion }}
+            <ion-chip outline color="dark" style="margin-top: 14px;" (click)="openFile(item)">
+                <ion-icon name="attach-outline"></ion-icon>
+                <ion-label>{{item.pathRecurso}}</ion-label>
+            </ion-chip>
+        </ion-card-content>
+    </ion-card>
+    <ion-card style="text-align: initial; " class="ion-activatable ripple-parent " mode="ios " *ngIf="(LstRecursos | filter : 'Semana 1' : 'semana').length == 0 ">
+        <ion-ripple-effect></ion-ripple-effect>
+        <ion-card-header>
+            <ion-card-title>Ningun recurso</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>No hay nada que mostrar</ion-card-content>
+    </ion-card>
+</ion-list>
+
+<ion-list mode="ios" appAnimateItems>
+    <ion-list-header>
+        Semana 2
+    </ion-list-header>
+    <ion-card style="text-align: initial; " class="ion-activatable ripple-parent " mode="ios" *ngFor="let item of LstRecursos  | filter : 'Semana 2' : 'semana'; let i=i ndex ">
+        <ion-ripple-effect></ion-ripple-effect>
+        <ion-card-header>
+            <ion-card-title>{{ item.titulo }}</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>{{ item.descripcion }}
+            <ion-chip outline color="dark" style="margin-top: 14px;" (click)="openFile(item)">
+                <ion-icon name="attach-outline"></ion-icon>
+                <ion-label>{{item.pathRecurso}}</ion-label>
+            </ion-chip>
+        </ion-card-content>
+    </ion-card>
+    <ion-card style="text-align: initial; " class="ion-activatable ripple-parent " mode="ios" *ngIf="(LstRecursos | filter : 'Semana 2' : 'semana').length == 0 ">
+        <ion-ripple-effect></ion-ripple-effect>
+        <ion-card-header>
+            <ion-card-title>Ningun recurso</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>No hay nada que mostrar</ion-card-content>
+    </ion-card>
+</ion-list>
+
+<ion-list mode="ios" appAnimateItems>
+    <ion-list-header>
+        Semana 3
+    </ion-list-header>
+    <ion-card style="text-align: initial; " class="ion-activatable ripple-parent " mode="ios" *ngFor="let item of LstRecursos  | filter : 'Semana 3' : 'semana'; let i=i ndex ">
+        <ion-ripple-effect></ion-ripple-effect>
+        <ion-card-header>
+            <ion-card-title>{{ item.titulo }}</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>{{ item.descripcion }}
+
+
+            <ion-chip outline color="dark" style="margin-top: 14px;" (click)="openFile(item)">
+                <ion-icon name="attach-outline"></ion-icon>
+                <ion-label>{{item.pathRecurso}}</ion-label>
+            </ion-chip>
+        </ion-card-content>
+    </ion-card>
+
+    <ion-card style="text-align: initial; " class="ion-activatable ripple-parent " mode="ios" *ngIf="(LstRecursos | filter : 'Semana 3' : 'semana').length == 0 ">
+        <ion-ripple-effect></ion-ripple-effect>
+        <ion-card-header>
+            <ion-card-title>Ningun recurso</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>No hay nada que mostrar</ion-card-content>
+    </ion-card>
+</ion-list>
+
+<ion-list mode="ios" appAnimateItems>
+    <ion-list-header>
+        Semana 4
+    </ion-list-header>
+    <ion-card style="text-align: initial; " class="ion-activatable ripple-parent " mode="ios" *ngFor="let item of LstRecursos  | filter : 'Semana 4' : 'semana'; let i=i ndex ">
+        <ion-ripple-effect></ion-ripple-effect>
+        <ion-card-header>
+            <ion-card-title>{{ item.titulo }}</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>{{ item.descripcion }}
+
+
+            <ion-chip outline color="dark" style="margin-top: 14px;" (click)="openFile(item)">
+                <ion-icon name="attach-outline"></ion-icon>
+                <ion-label>{{item.pathRecurso}}</ion-label>
+            </ion-chip>
+        </ion-card-content>
+    </ion-card>
+    <ion-card style="text-align: initial; " class="ion-activatable ripple-parent " mode="ios" *ngIf="(LstRecursos | filter : 'Semana 4' : 'semana').length == 0 ">
+        <ion-ripple-effect></ion-ripple-effect>
+        <ion-card-header>
+            <ion-card-title>Ningun recurso</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>No hay nada que mostrar</ion-card-content>
+    </ion-card>
+</ion-list>

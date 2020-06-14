@@ -14,6 +14,7 @@ import { Libros } from '../models/Libros';
 import { CrearForumPage } from '../pages/crear-forum/crear-forum.page';
 import { ForumComponent } from '../components/forum/forum.component';
 import { CrearChatPage } from '../pages/crear-chat/crear-chat.page';
+import { NewResourcePage } from '../new-resource/new-resource.page';
 
 
 @Component({
@@ -60,7 +61,7 @@ export class HomePage {
   estadoArriba  = false;
   primeraVez = true;
   headersText: any = [];
-  header = 'Community';
+  header = 'Books';
   nombreIcono = 'people-outline';
   iconos: any[];
   public swipeUp = false;
@@ -458,14 +459,17 @@ const animation5: Animation = this.animationCtrl.create('bouceEduardo')
       index = index === 0 ? 6 : index;
       this.header = this.headersText[index - 1];
       this.nombreIcono = this.iconos[index - 1];
+      console.log("index");
       console.log(index);
 
       if (index === 1) {
-        this.tabs = ['Noticias', 'Mensajes', 'Calendario'];
+        this.tabs = ['Todos', 'Inglés'  , 'Español', 'Código'];
+        
       } else if (index === 2) {
         this.tabs = ['Tareas','Foro', 'Recursos'];
      } else if (index === 3) {
-            this.tabs = ['Todos', 'Inglés'  , 'Español', 'Código'];
+      this.tabs = ['Noticias', 'Mensajes', 'Calendario'];
+            
      } else if (index === 4) {
             //this.tabs = ['Perfil', 'Clases', 'Usuarios', 'Estadísticas', 'Cerrar Sesión'];
             this.tabs = ['Perfil', 'Clases', 'Estadísticas'];
@@ -484,7 +488,7 @@ const animation5: Animation = this.animationCtrl.create('bouceEduardo')
 
       this.selectSeccion = index;
 
-      if (index === 3) {this.pillMenu.visibleFab(false); } else { this.pillMenu.visibleFab(true); }
+      if (index === 1) {this.pillMenu.visibleFab(false); } else { this.pillMenu.visibleFab(true); }
 
     }
 
@@ -503,8 +507,8 @@ const animation5: Animation = this.animationCtrl.create('bouceEduardo')
     
 
       this.iconos = ['people-outline', 'watch-outline', 'leaf-outline', 'shield-outline', 'leaf-outline'];
-      this.headersText = ['Community', 'My tasks', 'Books', 'My Account', 'Support', 'User'];
-      this.tabs = ['Noticias', 'Mensajes', 'Calendario']; 
+      this.headersText = ['Books', 'Tasks', 'Community', 'Account', 'Support', 'Users'];
+      this.tabs = ['Todos', 'Inglés'  , 'Español', 'Código'];
 
       this.gesture = this.gestureCtrl.create({
 
@@ -604,9 +608,9 @@ const animation5: Animation = this.animationCtrl.create('bouceEduardo')
           this.forumComponent.cargar();
         });
 
-      } else if (itemOption === 'Mensajes') {
+      } else if (itemOption === 'Recursos') {
         const modal = await this.modalCrl.create({
-          component: CrearChatPage,
+          component: NewResourcePage,
           // cssClass: 'my-custom-modal-css',
           cssClass: 'my-custom-modal-css-capturas',
           showBackdrop: false,

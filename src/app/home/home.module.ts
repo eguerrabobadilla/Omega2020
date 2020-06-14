@@ -22,6 +22,11 @@ import { DetallesChatPageModule } from '../pages/detalles-chat/detalles-chat.mod
 import { CrearChatPageModule } from '../pages/crear-chat/crear-chat.module';
 import { CrearChatPage } from '../pages/crear-chat/crear-chat.page';
 import { FilterPipe } from '../pipes/filter.pipe';
+import { NewResourcePage } from '../new-resource/new-resource.page';
+import { NewResourcePageModule } from '../new-resource/new-resource.module';
+import { ListResourceComponent } from '../components/list-resource/list-resource.component';
+
+
 
 
 
@@ -32,7 +37,8 @@ import { FilterPipe } from '../pipes/filter.pipe';
     CrearForumPage,
     CrearChatPage,
     NuevoRecursoPage,
-    DetallesChatPage
+    DetallesChatPage,
+    NewResourcePage
   ],
   imports: [
     CommonModule,
@@ -49,7 +55,8 @@ import { FilterPipe } from '../pipes/filter.pipe';
     CrearForumPageModule,
     CrearChatPageModule,
     DetallesChatPageModule,
+    NewResourcePageModule
   ],
-  declarations: [ HomePage, PillMenuComponent, BooksComponent, CodesComponent, ListComponent, ForumComponent, ChatsComponent, FilterPipe]
+  declarations: [ HomePage, PillMenuComponent, BooksComponent, CodesComponent, ListComponent, ForumComponent, ChatsComponent, FilterPipe, ListResourceComponent]
 })
 export class HomePageModule {}

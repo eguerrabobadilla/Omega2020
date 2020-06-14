@@ -18,6 +18,10 @@ import { DetallesForumPageModule } from './pages/detalles-forum/detalles-forum.m
 import { DetallesChatPage } from './pages/detalles-chat/detalles-chat.page';
 import { DetallesChatPageModule } from './pages/detalles-chat/detalles-chat.module';
 
+import { File } from '@ionic-native/file/ngx';
+import { FileTransfer } from '@ionic-native/file-transfer/ngx';
+import { FileOpener } from '@ionic-native/file-opener/ngx';
+
 
 
 
@@ -38,6 +42,9 @@ import { DetallesChatPageModule } from './pages/detalles-chat/detalles-chat.modu
   providers: [
     StatusBar,
     SplashScreen,
+    FileTransfer,
+    FileOpener,
+    File,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: HTTP_INTERCEPTORS,useClass: AuthInterceptorService,multi: true}
   ],

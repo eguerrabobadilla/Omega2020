@@ -80,7 +80,7 @@ top: 0;" mode="ios">
         <app-pill-menu #pillMenu pillMenu [itemsMenu]="tabs" [selectOption]="selectOption" (indicatorChanged)="segmentChanged($event)" (clickFab)="nuevoRecurso($event)"></app-pill-menu>
 
 
-        <ion-slides #slideDown (ionSlideTouchEnd)="ionSlideTouchEnd(slideUp,slideDown)" *ngIf="selectSeccion == 1 || selectSeccion == 2 ||  selectSeccion ==4 ||  selectSeccion ==5 ||  selectSeccion ==6">
+        <ion-slides #slideDown (ionSlideTouchEnd)="ionSlideTouchEnd(slideUp,slideDown)" *ngIf="selectSeccion == 3 || selectSeccion == 2 ||  selectSeccion ==4 ||  selectSeccion ==5 ||  selectSeccion ==6">
 
             <ion-slide>
 
@@ -96,7 +96,7 @@ top: 0;" mode="ios">
                     </ion-card>
 
                 </ion-virtual-scroll>
-                <app-list style="width: 100%;" *ngIf="selectSeccion == 1 ||  selectSeccion ==4 ||  selectSeccion ==5 || selectSeccion ==6"></app-list>
+                <app-list style="width: 100%;" *ngIf="selectSeccion == 3 ||  selectSeccion ==4 ||  selectSeccion ==5 || selectSeccion ==6"></app-list>
 
             </ion-slide>
             <ion-slide>
@@ -111,18 +111,21 @@ top: 0;" mode="ios">
                     </ion-card>
 
                 </ion-virtual-scroll>-->
-                <app-chats style="width: 100%;"></app-chats>
+                <app-forum #forumComponent style="width: 100%;"></app-forum>
 
 
 
             </ion-slide>
             <ion-slide>
-                <app-forum #forumComponent style="width: 100%;"></app-forum>
+                <!--  <app-chats style="width: 100%;"></app-chats>-->
+
+                <!-- <app-forum #forumComponent style="width: 100%;"></app-forum>-->
                 <!-- <app-list style="width: 100%;"></app-list>-->
+                <app-list-resource style="width: 100%;"></app-list-resource>
             </ion-slide>
         </ion-slides>
 
-        <ion-slides #slideDown (ionSlideTouchEnd)="ionSlideTouchEnd(slideUp,slideDown)" *ngIf="selectSeccion == 3" style="min-height: 72.6vh;">
+        <ion-slides #slideDown (ionSlideTouchEnd)="ionSlideTouchEnd(slideUp,slideDown)" *ngIf="selectSeccion == 1" style="min-height: 72.6vh;">
 
             <ion-slide>
 

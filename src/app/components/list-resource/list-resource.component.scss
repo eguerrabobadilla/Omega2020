@@ -1,0 +1,76 @@
+.header-ios ion-toolbar:last-of-type {
+    --border-width: 0 0 0;
+}
+
+ion-slides {
+    height: 100%;
+}
+
+.avatar {
+    -webkit-align-items: center;
+    align-items: center;
+    color: #fff;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    height: 2.25rem !important;
+    -webkit-justify-content: center;
+    justify-content: center;
+    width: 2.25rem !important;
+    -webkit-border-radius: 50%;
+    border-radius: 50%;
+    color: rgba(255, 255, 255, .87);
+    -webkit-flex-shrink: 0;
+    flex-shrink: 0;
+    font-size: 1rem;
+    height: 2rem;
+    line-height: 2rem;
+    text-align: center;
+    width: 2rem;
+    background: red;
+}
+
+ion-item {
+    transition: .3s ease-in-out;
+}
+
+.exit-enter-styles {
+    opacity: 0;
+    transform: translate3d(20px, 0, 0);
+}
+
+.visible {
+    visibility: visible !important;
+}
+
+.zindexFooterin {
+    //  z-index: 2 !important;
+}
+
+.zindexFooterout {
+    //   z-index: 0 !important;
+}
+
+.toolbar-container {
+    min-height: 10vh !important;
+    height: 10vh !important;
+}
+
+.sombraFooter {
+    box-shadow: 0 -4px 2px 0px #eaeaea;
+}
+
+.colortoolbarUP {
+    //   background-color: #F4315D !important;
+    //   --background: #F4315D !important;
+}
+
+.colortoolbarDOWN {
+    //// background-color: #FF426D !important;
+    //  --background: #FF426D !important;
+}
+
+.quitarBottom {
+    bottom: 0 !important;
+    top: 0vh;
+}
