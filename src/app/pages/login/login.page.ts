@@ -48,7 +48,7 @@ export class LoginPage implements OnInit {
         await this.loadingController.dismiss();
 
         const alert = await this.alertController.create({
-          header: 'Ommega',
+          header: 'LBS Plus Demo',
           //subHeader: 'Subtitle',
           message: err,
           buttons: ['Aceptar']

@@ -32,6 +32,7 @@ export class WebsocketService {
 
   AddToGroup(grupo: string) {
    this._hubConnection.invoke('AddToGroup', grupo);
+
   }
 
   private createConnection() {
@@ -58,7 +59,7 @@ export class WebsocketService {
   }
 
   private registerOnServerEvents(): void {
-
+    
     this._hubConnection.on('MessageReceived', (data: any) => {
       //console.log(data);
       this.messageReceived.emit(data);

@@ -43,7 +43,7 @@ export class CodesComponent implements OnInit {
       await this.loadingController.dismiss();
 
       const alert = await this.alertController.create({
-        header: 'Ommega',
+        header: 'LBS Plus Demo',
         // subHeader: 'Subtitle',
         message: `Has adquirido ${ this.libros.length} libros`,
         mode: 'ios',
@@ -61,7 +61,7 @@ export class CodesComponent implements OnInit {
       await this.loadingController.dismiss();
 
       const alert = await this.alertController.create({
-        header: 'Ommega',
+        header: 'LBS Plus Demo',
         // subHeader: 'Subtitle',
         message: err.error,
         mode: 'ios',

@@ -660,7 +660,7 @@ const animation5: Animation = this.animationCtrl.create('bouceEduardo')
     async Salir(){
 
       const alert = await this.alertController.create({
-        header: 'Ommega',
+        header: 'LBS Plus Demo',
         message: '<strong>¿Desea cerrar sesión?</strong>',
         mode: 'ios',
         buttons: [
