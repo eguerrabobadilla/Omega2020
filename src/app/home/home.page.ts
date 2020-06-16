@@ -69,7 +69,10 @@ export class HomePage {
   public gesture;
   public gesture2;
   slideOpts = {
-    loop: true,
+    loop: true
+  };
+  slideOptsdos = {
+    autoHeight: true
   };
 
   // tslint:disable-next-line: max-line-length
@@ -592,9 +595,9 @@ const animation5: Animation = this.animationCtrl.create('bouceEduardo')
               this.LstTareas = await this.apiTareas.get().toPromise();
               console.log(this.LstTareas);
           });
-      } else if (itemOption === 'Foro') {
+      } else if (itemOption === 'Mensajes') {
         const modal = await this.modalCrl.create({
-          component: CrearForumPage,
+          component: CrearChatPage,
           // cssClass: 'my-custom-modal-css',
           cssClass: 'my-custom-modal-css-capturas',
           showBackdrop: false,
