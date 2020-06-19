@@ -3,12 +3,12 @@ border-radius: 0px 0px 0px 50px;" mode="ios">
     <ion-toolbar #toolbar style="height: 13vh;
    border-radius: 0px 0px 0px 50px;">
         <ion-title #text class="etitle">
-            <ion-icon name="person-circle-outline" style="color: #FF426D; transform: translateY(0.8vh);
+            <ion-icon name="person-circle-outline" #avatarUser style="color: #FF426D; transform: translateY(0.8vh);
             font-size: 27px;font-size: 4vh;"></ion-icon>
 
 
 
-            <span style="opacity:0;    margin-right: -10px;">-</span> Hola, Araseli!
+            <span style="opacity:0;    margin-right: -10px;">-</span> Hola, {{user.nombre}}!
 
         </ion-title>
 
@@ -172,7 +172,7 @@ top: 0;" mode="ios">
         --color: #fff;
          z-index: 5;
         /* letter-spacing: 3px;*/">
-            03°</ion-title>
+            0{{user.grado}}°</ion-title>
         <ion-icon #animation8 style="color: white;
         left: 0px;
         bottom: 0px;

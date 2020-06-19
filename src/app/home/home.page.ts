@@ -18,6 +18,7 @@ import { NewResourcePage } from '../new-resource/new-resource.page';
 import { CrearNewsPage } from '../pages/crear-news/crear-news.page';
 import { NewsComponent } from '../components/news/news.component';
 
+import { WebsocketService } from '../services/websocket.service';
 
 
 @Component({
@@ -60,6 +61,7 @@ export class HomePage {
   @ViewChild('pillMenu', {read: ElementRef, static: false}) pillMenuRef: ElementRef;
   @ViewChild('forumComponent', {static: false}) forumComponent: ForumComponent;
   @ViewChild('newsComponent', {static: false}) newsComponent: NewsComponent;
+  @ViewChild('avatarUser', {read: ElementRef,static: false}) avatarUser: ElementRef;
 
   items: any[] = [];
   estadoArriba  = false;
@@ -72,6 +74,10 @@ export class HomePage {
   public swipeDown = false;
   public gesture;
   public gesture2;
+  public user={
+    nombre : "",
+    grado  : ""
+  };
   slideOpts = {
     loop: true
   };
@@ -84,7 +90,7 @@ export class HomePage {
               // tslint:disable-next-line: max-line-length
               private renderer: Renderer2, private gestureCtrl: GestureController, private modalCrl: ModalController, private booksService: BooksService,
               private loadingController: LoadingController, private alertController: AlertController,private authenticationService: AuthenticationService ,
-              private apiTareas: TareasService) {
+              private apiTareas: TareasService,public  webSocket: WebsocketService) {
       this.scrollenable = true;
 
 
@@ -507,7 +513,13 @@ const animation5: Animation = this.animationCtrl.create('bouceEduardo')
       // this.pillMenu.nextSegment('0');
     }
 
+    ionViewWillEnter(){
+      this.user.nombre = this.getKeyToken("nombre");
+      this.user.grado = this.getKeyToken("grado");
+    }
+
     async ngOnInit() {
+      this.subscribeToEvents();
 
       this.LstTareas = await this.apiTareas.get().toPromise();
       console.log(this.LstTareas);
@@ -569,10 +581,6 @@ const animation5: Animation = this.animationCtrl.create('bouceEduardo')
       });
 
       this.gesture.enable();
-
-
-
-
     }
 
     segmentChanged(event) {
@@ -705,6 +713,31 @@ const animation5: Animation = this.animationCtrl.create('bouceEduardo')
       });
   
       await alert.present();
+    }
+
+    getKeyToken(key: string) : string {
+
+      let jwt = localStorage.getItem("USER_INFO");
+
+      let jwtData = jwt.split('.')[1];
+      //let decodedJwtJsonData = window.atob(jwtData);
+      let decodedJwtJsonData=decodeURIComponent(escape(window.atob(jwtData)));
+      let decodedJwtData = JSON.parse(decodedJwtJsonData);
+
+      let value = decodedJwtData[key];
+
+      return value;
+    }
+
+    private subscribeToEvents(): void {
+
+      this.webSocket.connectionEstablished.subscribe((status: any) => {
+          if(status==true)
+            this.renderer.setStyle(this.avatarUser.nativeElement, 'color', `#FF426D`);
+          else
+            this.renderer.setStyle(this.avatarUser.nativeElement, 'color', `black`);
+          console.log("Estado conexion:",status);
+      });
     }
 
 }

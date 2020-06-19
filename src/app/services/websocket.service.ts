@@ -2,6 +2,7 @@ import { EventEmitter, Injectable } from '@angular/core';
 import { HubConnection, HubConnectionBuilder } from '@aspnet/signalr';
 import { Message } from '../models/Message';
 import { apiBase } from '../api/apiBase';
+import { async } from '@angular/core/testing';
 
 @Injectable({
   providedIn: 'root'
@@ -17,13 +18,14 @@ export class WebsocketService {
   private _hubConnection: HubConnection;
 
   constructor(private api: apiBase) {
-    
+
   }
 
   initSocket(){
     this.createConnection();
     this.registerOnServerEvents();
     this.startConnection();
+    this.closeConnection();
   }
 
   sendMessage(message: Message) {
@@ -54,8 +56,18 @@ export class WebsocketService {
       })
       .catch(err => {
         console.log('Error while establishing connection, retrying...');
-        setTimeout(function() { this.startConnection(); }, 5000);
+        setTimeout(() => { this.startConnection(); }, 5000);
       });
+  }
+
+  private closeConnection(): void {
+    this._hubConnection.onclose(async () =>{
+        this._hubConnection.stop();
+        
+        this.connectionIsEstablished = false;
+        this.connectionEstablished.emit(false);
+        this.startConnection();
+    });
   }
 
   private registerOnServerEvents(): void {
@@ -68,5 +80,6 @@ export class WebsocketService {
     this._hubConnection.on('CommentReceived', (data: any) => {
       this.commentReceived.emit(data);
     });
+
   }
 }
