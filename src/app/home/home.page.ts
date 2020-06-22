@@ -15,6 +15,9 @@ import { CrearForumPage } from '../pages/crear-forum/crear-forum.page';
 import { ForumComponent } from '../components/forum/forum.component';
 import { CrearChatPage } from '../pages/crear-chat/crear-chat.page';
 import { NewResourcePage } from '../new-resource/new-resource.page';
+import { CrearNewsPage } from '../pages/crear-news/crear-news.page';
+import { NewsComponent } from '../components/news/news.component';
+
 import { WebsocketService } from '../services/websocket.service';
 
 
@@ -57,6 +60,7 @@ export class HomePage {
   @ViewChild('pillMenu', {static: false}) pillMenu: PillMenuComponent;
   @ViewChild('pillMenu', {read: ElementRef, static: false}) pillMenuRef: ElementRef;
   @ViewChild('forumComponent', {static: false}) forumComponent: ForumComponent;
+  @ViewChild('newsComponent', {static: false}) newsComponent: NewsComponent;
   @ViewChild('avatarUser', {read: ElementRef,static: false}) avatarUser: ElementRef;
 
   items: any[] = [];
@@ -633,6 +637,22 @@ const animation5: Animation = this.animationCtrl.create('bouceEduardo')
 
         modal.onDidDismiss().then( async (data) => {
           this.forumComponent.cargar();
+        });
+
+      } else if (itemOption === 'Noticias') {
+        const modal = await this.modalCrl.create({
+          component: CrearNewsPage,
+          // cssClass: 'my-custom-modal-css',
+          cssClass: 'my-custom-modal-css-capturas',
+          showBackdrop: false,
+          mode: 'ios',
+          backdropDismiss: true
+        });
+
+        await modal.present();
+
+        modal.onDidDismiss().then( async (data) => {
+          this.newsComponent.cargar();
         });
 
       }

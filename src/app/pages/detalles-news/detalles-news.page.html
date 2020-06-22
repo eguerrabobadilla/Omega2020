@@ -1,0 +1,44 @@
+<ion-header class="ion-no-border" mode="ios" style="--background: #ffffff00;position: absolute;">
+    <ion-toolbar style="--background: #ffffff00;">
+        <ion-buttons slot="end">
+            <ion-button style="margin-top: 8px;margin-right: 8px;" (click)="closeModal()">
+                <ion-icon slot="icon-only" color="danger" name="close"></ion-icon>
+                <!--<ion-icon slot="icon-only" ios="ellips
+        is-vertical" md="ellipsis-vertical"></ion-icon>-->
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+<ion-content fullscreen="true" scrollX="true" scrollY="true">
+
+    <ion-img [src]="item.image"></ion-img>
+
+    <ion-item lines="none">
+        <ion-avatar slot="start" style="height: 23px;width: 23px;margin: 0;">
+            <img src="assets/img/LAURA.png">
+        </ion-avatar>
+        <ion-label style="font-size: 13px;padding-left: 8px;">EDUARDO G</ion-label>
+    </ion-item>
+
+    <ion-card class="ion-no-border" no style="text-align: initial;" mode="ios">
+        <ion-card-header>
+            <ion-card-title>{{item.titulo}}</ion-card-title>
+            <ion-card-subtitle style="padding-top: 10px;">19 DE JUNIO DE 2020, 9:07</ion-card-subtitle>
+
+        </ion-card-header>
+        <ion-card-content>
+            {{item.descripcion}}
+        </ion-card-content>
+        <!--<ion-card-content>
+          <ion-img [src]="item.image"></ion-img>
+      </ion-card-content>-->
+        <!--<ion-card-content>
+          Lorem iuis aute irure dol cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est Lorem iuis aute irure dol cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est Lorem iuis aute irure dol cupidatat non proident,
+          sunt in culpa qui officia deserunt mollit anim id est Lorem iuis aute irure dol cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
+      </ion-card-content>
+      <ion-card-content>
+          Lorem iuis aute irure dol cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est Lorem iuis aute irure dol cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est Lorem iuis aute irure dol cupidatat non proident,
+          sunt in culpa qui officia deserunt mollit anim id est Lorem iuis aute irure dol cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
+      </ion-card-content>-->
+    </ion-card>
+</ion-content>

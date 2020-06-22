@@ -17,6 +17,8 @@ import { AuthInterceptorService } from './services/auth-interceptor.service';
 import { DetallesForumPageModule } from './pages/detalles-forum/detalles-forum.module';
 import { DetallesChatPage } from './pages/detalles-chat/detalles-chat.page';
 import { DetallesChatPageModule } from './pages/detalles-chat/detalles-chat.module';
+import { DetallesNewsPageModule } from './pages/detalles-news/detalles-news.module';
+import { DetallesNewsPage } from './pages/detalles-news/detalles-news.page';
 
 import { File } from '@ionic-native/file/ngx';
 import { FileTransfer } from '@ionic-native/file-transfer/ngx';
@@ -27,9 +29,11 @@ import { FileOpener } from '@ionic-native/file-opener/ngx';
 
 
 
+
+
 @NgModule({
   declarations: [AppComponent, AnimateItemsDirective],
-  entryComponents: [],
+  entryComponents: [DetallesNewsPage],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -38,6 +42,7 @@ import { FileOpener } from '@ionic-native/file-opener/ngx';
     ReactiveFormsModule,
     DetallesForumPageModule,
     DetallesChatPageModule,
+    DetallesNewsPageModule
   ],
   providers: [
     StatusBar,

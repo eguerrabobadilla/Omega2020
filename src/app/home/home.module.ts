@@ -25,6 +25,11 @@ import { FilterPipe } from '../pipes/filter.pipe';
 import { NewResourcePage } from '../new-resource/new-resource.page';
 import { NewResourcePageModule } from '../new-resource/new-resource.module';
 import { ListResourceComponent } from '../components/list-resource/list-resource.component';
+import { NewsComponent } from '../components/news/news.component';
+import { CrearNewsPageModule } from '../pages/crear-news/crear-news.module';
+import { CrearNewsPage } from '../pages/crear-news/crear-news.page';
+
+
 
 
 
@@ -36,6 +41,7 @@ import { ListResourceComponent } from '../components/list-resource/list-resource
     DetallePage,
     CrearForumPage,
     CrearChatPage,
+    CrearNewsPage,
     NuevoRecursoPage,
     DetallesChatPage,
     NewResourcePage
@@ -55,8 +61,10 @@ import { ListResourceComponent } from '../components/list-resource/list-resource
     CrearForumPageModule,
     CrearChatPageModule,
     DetallesChatPageModule,
-    NewResourcePageModule
+    NewResourcePageModule,
+    CrearNewsPageModule
   ],
-  declarations: [ HomePage, PillMenuComponent, BooksComponent, CodesComponent, ListComponent, ForumComponent, ChatsComponent, FilterPipe, ListResourceComponent]
+  declarations: [ HomePage, PillMenuComponent, BooksComponent, CodesComponent, ListComponent, 
+    ChatsComponent, FilterPipe, ListResourceComponent, NewsComponent]
 })
 export class HomePageModule {}
