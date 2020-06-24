@@ -5,6 +5,7 @@ import { Plugins } from '@capacitor/core';
 import { File } from '@ionic-native/file/ngx';
 import { FileTransfer, FileTransferObject } from '@ionic-native/file-transfer/ngx';
 import { FileOpener } from '@ionic-native/file-opener/ngx';
+import { apiBase } from 'src/app/api/apiBase';
 
 @Component({
   selector: 'app-list-resource',
@@ -33,7 +34,7 @@ export class ListResourceComponent implements OnInit {
   LstRecursos: any[] = [];
 
   constructor(private pickerController: PickerController, private apiRecursos: RecursosService, private transfer: FileTransfer,
-              private file: File, private platform: Platform,private fileOpener: FileOpener) {
+              private file: File, private platform: Platform,private fileOpener: FileOpener,private api: apiBase) {
     for (let i = 0; i < 20  ; i++) {
       this.items.push({
         // tslint:disable-next-line: no-use-before-declare
@@ -121,11 +122,9 @@ ngOnInit() {
     console.log(item);
     const { Browser } = Plugins;
     if (this.platform.is('cordova')) {
-      //this.download(`http://35.193.103.213/resources/${item.pathRecurso}`);
-      this.download(`https://172.16.12.23.:5001/resources/${item.pathRecurso}`);
+      this.download(`${this.api.url}/resources/${item.pathRecurso}`);
     } else {
-      //await Browser.open({ url: `http://35.193.103.213/resources/${item.pathRecurso}` });
-      await Browser.open({ url: `https://172.16.12.23:5001/resources/${item.pathRecurso}` });
+      await Browser.open({ url: `${this.api.url}/resources/${item.pathRecurso}` });
     }
   }
 

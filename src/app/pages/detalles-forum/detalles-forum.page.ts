@@ -39,9 +39,6 @@ export class DetallesForumPage implements OnInit {
     this.apiForum.get(true,this.detalleId).subscribe(data => {
       this.LstForo = data;
     });
-
-   // console.log(this.item.image.includes('http://'));
-  //  this.item.image = this.item.image.includes('http://') === true ?  this.item.image : 'http://35.193.103.213/images/' + this.item.image;
   }
 
   async votar(item) {
