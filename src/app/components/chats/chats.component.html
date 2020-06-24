@@ -1,10 +1,9 @@
-<ion-list>
+<ion-list mode="ios">
     <ion-list-header>
         Grupos
     </ion-list-header>
 
-
-    <ion-item lines="none">
+    <ion-item button lines="none" (click)="openDetailGroups($event,item)" *ngFor="let item of LstGrupos" detail="false">
         <ion-avatar slot="start" style="background-color: blueviolet;">
             <span style="
                     position: absolute;
@@ -15,37 +14,20 @@
 
         </ion-avatar>
         <ion-label>
-            <h2>Grupo A1</h2>
+            <h2>Grupo {{item.grado}}{{item.grupo}}</h2>
             <p>Muy bien Profesor</p>
             <p>12/06/2020</p>
         </ion-label>
 
     </ion-item>
-
-    <ion-item lines="none">
-        <ion-avatar slot="start" style="background-color: blueviolet;">
-            <span style="
-                    position: absolute;
-                    padding-top: 2%;
-                    color: white;
-                    font-weight: 600;
-                    padding-left: 3.3%;">L</span>
-
-        </ion-avatar>
-        <ion-label>
-            <h2>Grupo B2</h2>
-            <p>Mañana nos vemos</p>
-            <p>11/06/2020</p>
-        </ion-label>
-
-    </ion-item>
 </ion-list>
-<ion-list>
+
+<ion-list mode="ios">
     <ion-list-header>
         Recent Conversations
     </ion-list-header>
 
-    <ion-item lines="none" (click)="openDetail($event,item)" *ngFor="let item of LstChat">
+    <ion-item button lines="none" (click)="openDetail($event,item)" *ngFor="let item of LstChat" detail="false">
         <ion-avatar slot="start">
             <img src="assets/img/avatar-han.png">
         </ion-avatar>

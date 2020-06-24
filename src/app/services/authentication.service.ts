@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject} from 'rxjs';
 import { Router } from '@angular/router';
 import { LoginService } from '../api/login.service';
+import { NavController } from '@ionic/angular';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,8 @@ export class AuthenticationService {
 
   constructor(
     private router: Router,
-    private loginService: LoginService
+    private loginService: LoginService,
+    private navCtrl: NavController
   ) {
     this.ifLoggedIn();
   }
@@ -39,12 +41,19 @@ export class AuthenticationService {
   }
 
   logout() {
-    localStorage.clear();
-    this.router.navigate(['login']);
-    this.authState.next(false);
+    var promise = new Promise((resolve, reject) => {
+      this.authState.next(false);
+      localStorage.clear();
+      //this.router.navigate(['login']);
+      window.location.reload();
+      resolve(this.authState.value);
+    });
+
+    return promise;
   }
 
   isAuthenticated() {
+    console.log(this.authState.value);
     return this.authState.value;
   }
 }

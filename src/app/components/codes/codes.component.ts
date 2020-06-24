@@ -17,7 +17,7 @@ export class CodesComponent implements OnInit {
 
   constructor(private loadingController: LoadingController, private booksService: BooksService,
               private alertController: AlertController) {
-      console.log(this.libros);
+      
   }
 
   ngOnInit() {}

@@ -6,7 +6,6 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class FilterChatPipe implements PipeTransform {
 
   transform(items: any[], searchText: string, fieldName: string): any {
-    console.log(searchText);
     // return empty array if array is falsy
     if (!items) { return []; }
     

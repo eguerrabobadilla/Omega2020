@@ -38,33 +38,20 @@ export class DetallesChatPage implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.groups);
     //Me uno al grupo
     // this.webSocket.AddToGroup(`foro-${this.detalleId}`);
 
-    if (this.groups !== undefined) {
-        this.groups.id = 0;
-        this.title = `Grupo ${this.groups.grado}${this.groups.grupo} `;
-        this.apichat.crearGrupo(this.groups).subscribe(data => {
-          this.groups.id = data['grupoId'];
-          this.groups.usuarioId = data['usuarioId'];
-          this.usuarioId = data['usuarioId'];
-          console.log(data);
-        });
-    } else {
-      console.log(this.item);
-      this.usuarioId = this.item.usuarioId;
+    console.log(this.item);
+    this.usuarioId = this.item.usuarioId;
 
-      this.title = `${this.item.usuarioId2Navigation.nombre} ${this.item.usuarioId2Navigation.apellidoPaterno}
-                                                                      ${this.item.usuarioId2Navigation.apellidoMaterno} `;
-      this.apichat.getChatByIdUsuario(this.item.usuarioId2).subscribe(data => {
-        this.LstChats = data;
-      });
-    }
+    this.title = `${this.item.usuarioId2Navigation.nombre} ${this.item.usuarioId2Navigation.apellidoPaterno}
+                                                                    ${this.item.usuarioId2Navigation.apellidoMaterno} `;
 
+    this.apichat.getChatByIdUsuario(this.item.usuarioId2).subscribe(data => {
+      this.LstChats = data;
+    });
 
     this.mutationObserver = new MutationObserver((mutations) => {
-
         this.contentArea.scrollToBottom();
     });
 
@@ -79,33 +66,14 @@ export class DetallesChatPage implements OnInit {
   }
 
   async crearMensaje() {
-    if (this.groups !== undefined) {
-
-      const msg = {
-        MensajesGruposId : this.groups.id,
-        Mensaje : this.FrmItem.controls['mensaje'].value
-      };
-
-      //this.item.usuarioId = 1;
-
       this.itemApiChat = this.FrmItem.value;
-      this.itemApiChat.usuarioIdOrigen = this.groups.usuarioId;
-      this.itemApiChat.usuarioIdDestino = 0;
+      this.itemApiChat.usuarioIdOrigen = this.item.usuarioId;
+      this.itemApiChat.usuarioIdDestino = this.item.usuarioId2;
 
-      const tareaUpload = await this.apichat.addMensajeGrupo(msg).toPromise();
+      const tareaUpload = await this.apichat.addMensajes(this.itemApiChat).toPromise();
       this.FrmItem.reset();
+      //this.LstChats.unshift(this.itemApiChat);
       this.LstChats.push(this.itemApiChat);
-
-    } else {
-       this.itemApiChat = this.FrmItem.value;
-       this.itemApiChat.usuarioIdOrigen = this.item.usuarioId;
-       this.itemApiChat.usuarioIdDestino = this.item.usuarioId2;
-
-       const tareaUpload = await this.apichat.addMensajes(this.itemApiChat).toPromise();
-       this.FrmItem.reset();
-       //this.LstChats.unshift(this.itemApiChat);
-       this.LstChats.push(this.itemApiChat);
-    }
   }
 
   closeModal() {

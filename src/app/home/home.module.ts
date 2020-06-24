@@ -28,13 +28,8 @@ import { ListResourceComponent } from '../components/list-resource/list-resource
 import { NewsComponent } from '../components/news/news.component';
 import { CrearNewsPageModule } from '../pages/crear-news/crear-news.module';
 import { CrearNewsPage } from '../pages/crear-news/crear-news.page';
-
-
-
-
-
-
-
+import { DetalleChatGroupPage } from '../pages/detalle-chat-group/detalle-chat-group.page';
+import { DetalleChatGroupPageModule } from '../pages/detalle-chat-group/detalle-chat-group.module';
 
 @NgModule({
   entryComponents : [
@@ -44,6 +39,7 @@ import { CrearNewsPage } from '../pages/crear-news/crear-news.page';
     CrearNewsPage,
     NuevoRecursoPage,
     DetallesChatPage,
+    DetalleChatGroupPage,
     NewResourcePage
   ],
   imports: [
@@ -61,6 +57,7 @@ import { CrearNewsPage } from '../pages/crear-news/crear-news.page';
     CrearForumPageModule,
     CrearChatPageModule,
     DetallesChatPageModule,
+    DetalleChatGroupPageModule,
     NewResourcePageModule,
     CrearNewsPageModule
   ],
