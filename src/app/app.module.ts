@@ -23,6 +23,7 @@ import { DetallesNewsPage } from './pages/detalles-news/detalles-news.page';
 import { File } from '@ionic-native/file/ngx';
 import { FileTransfer } from '@ionic-native/file-transfer/ngx';
 import { FileOpener } from '@ionic-native/file-opener/ngx';
+import { DetalleChatGroupPageModule } from './pages/detalle-chat-group/detalle-chat-group.module';
 
 
 
@@ -42,6 +43,7 @@ import { FileOpener } from '@ionic-native/file-opener/ngx';
     ReactiveFormsModule,
     DetallesForumPageModule,
     DetallesChatPageModule,
+    DetalleChatGroupPageModule,
     DetallesNewsPageModule
   ],
   providers: [

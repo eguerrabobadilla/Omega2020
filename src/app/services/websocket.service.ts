@@ -1,5 +1,5 @@
 import { EventEmitter, Injectable } from '@angular/core';  
-import { HubConnection, HubConnectionBuilder } from '@aspnet/signalr';
+import { HubConnection, HubConnectionBuilder, HttpTransportType } from '@aspnet/signalr';
 import { Message } from '../models/Message';
 import { apiBase } from '../api/apiBase';
 import { async } from '@angular/core/testing';
@@ -16,6 +16,7 @@ export class WebsocketService {
 
   private connectionIsEstablished = false;
   private _hubConnection: HubConnection;
+  private closedConnection = false;
 
   constructor(private api: apiBase) {
 
@@ -26,6 +27,7 @@ export class WebsocketService {
     this.registerOnServerEvents();
     this.startConnection();
     this.closeConnection();
+    this.closedConnection=false;
   }
 
   sendMessage(message: Message) {
@@ -34,7 +36,6 @@ export class WebsocketService {
 
   AddToGroup(grupo: string) {
    this._hubConnection.invoke('AddToGroup', grupo);
-
   }
 
   private createConnection() {
@@ -42,7 +43,11 @@ export class WebsocketService {
 
     this._hubConnection = new HubConnectionBuilder()
       //.withUrl('https://172.16.12.21:5001/' + 'MessageHub')
-      .withUrl(`${this.api.url}/MessageHub`,{ accessTokenFactory: () => token })
+      .withUrl(`${this.api.url}/MessageHub`,{
+             accessTokenFactory: () => token,
+             skipNegotiation:true,
+             transport: HttpTransportType.WebSockets
+             })
       .build();
   }
 
@@ -62,12 +67,22 @@ export class WebsocketService {
 
   private closeConnection(): void {
     this._hubConnection.onclose(async () =>{
-        this._hubConnection.stop();
-        
-        this.connectionIsEstablished = false;
-        this.connectionEstablished.emit(false);
-        this.startConnection();
+
+          if(this.closedConnection==false)
+          {
+            console.log("reconectar");
+            //this._hubConnection.stop();
+            this.connectionIsEstablished = false;
+            this.connectionEstablished.emit(false);
+            this.startConnection();
+          }
+
     });
+  }
+
+  public finishWebScoket(): void {
+    this.closedConnection = true;
+    this._hubConnection.stop();
   }
 
   private registerOnServerEvents(): void {
@@ -80,6 +95,10 @@ export class WebsocketService {
     this._hubConnection.on('CommentReceived', (data: any) => {
       this.commentReceived.emit(data);
     });
+  }
 
+  public getStatusSocket(): number {
+    //1 conectado; 0 desconectado
+    return this._hubConnection.state;
   }
 }

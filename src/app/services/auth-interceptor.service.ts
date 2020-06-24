@@ -20,7 +20,6 @@ export class AuthInterceptorService {
   ) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    console.log("AuthInterceptorService");
     const token: string = localStorage.getItem('USER_INFO');
     let request = req;
 

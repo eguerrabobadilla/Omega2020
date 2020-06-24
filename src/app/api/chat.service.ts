@@ -27,6 +27,10 @@ export class ChatService extends apiBase {
      return this.http.get<any[]>(`${this.url}/api/mensajes/usuario/${id}`);
    }
 
+   getChatGrupo(id) {
+    return this.http.get<any[]>(`${this.url}/api/mensajes/grupos/${id}`);
+  }
+
    getGruposMaestros(){
     return this.http.get<any[]>(`${this.url}/api/conversaciones/grupos`);
   }

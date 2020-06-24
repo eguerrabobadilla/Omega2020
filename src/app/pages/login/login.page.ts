@@ -3,6 +3,7 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AlertController, LoadingController } from '@ionic/angular';
 import { Router } from '@angular/router';
+import { WebsocketService } from 'src/app/services/websocket.service';
 
 @Component({
   selector: 'app-login',
@@ -14,7 +15,7 @@ export class LoginPage implements OnInit {
 
   constructor(private authService: AuthenticationService, private fb: FormBuilder,
     private alertCtrl: AlertController,public loadingController: LoadingController,
-    public alertController: AlertController,private router: Router) { 
+    public alertController: AlertController,private router: Router,public webSocket: WebsocketService) { 
       this.FrmLogin = this.fb.group({
         Usuario: ['', [Validators.required]],
         Password: ['',[Validators.required]]
@@ -37,6 +38,8 @@ export class LoginPage implements OnInit {
 
       await loading.present();
       await this.authService.login(data);
+
+      this.webSocket.initSocket();
 
       this.router.navigate(['home']);
 

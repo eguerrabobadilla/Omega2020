@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { AnimationController, Animation, ModalController } from '@ionic/angular';
 import { DetallesChatPage } from '../detalles-chat/detalles-chat.page';
 import { ChatService } from '../../api/chat.service';
+import { DetalleChatGroupPage } from '../detalle-chat-group/detalle-chat-group.page';
 
 @Component({
   selector: 'app-crear-chat',
@@ -28,12 +29,10 @@ export class CrearChatPage implements OnInit {
 
     this.apiChat.getGruposMaestros().subscribe(data => {
       this.LstGrupos = data;
-      console.log(this.LstGrupos);
     });
 
     this.apiChat.getAlumnos().subscribe(data => {
       this.LstUsuarios = data;
-      console.log(this.LstUsuarios);
     });
 
   }
@@ -50,8 +49,6 @@ export class CrearChatPage implements OnInit {
   }
 
   addContact(item) {
-    console.log(item);
-
     if (this.LstContactos.find(a => a.id === item.id) === undefined) {
       this.LstContactos.push(item);
     } else {
@@ -60,8 +57,6 @@ export class CrearChatPage implements OnInit {
   }
 
   addGroup(item) {
-    console.log(item);
-
     if (this.LstGruposContactos.find(a => a.id === item.id) === undefined) {
       this.LstGruposContactos.push(item);
     } else {
@@ -70,32 +65,47 @@ export class CrearChatPage implements OnInit {
   }
 
   async enpezarChat(event: Event, item) {
-
-    /*this.apiForum.get(true,0).subscribe(data =>{
-    });*/
-
-    /*if (this.LstContactos.length === 0) {
+    
+    if (this.LstContactos.length === 0 && this.LstGruposContactos.length== 0) {
       return;
-    }*/
+    }
 
-    item = this.LstContactos[0];
+    if(this.LstContactos.length > 0) {
+      item = this.LstContactos[0];
 
-    this.modalCtrl.dismiss();
+      this.modalCtrl.dismiss();
 
-    const modal =  await  this.modalCtrlChat.create({
-        component: DetallesChatPage,
+      const modal =  await  this.modalCtrlChat.create({
+          component: DetallesChatPage,
+          cssClass: 'my-custom-modal-css',
+          mode: 'ios',
+          backdropDismiss: true,
+          showBackdrop: false,
+          componentProps: {
+            item : item
+          }
+      });
+
+      await modal.present();
+    } else if(this.LstGruposContactos.length > 0) {
+
+      item = this.LstGruposContactos[0];
+
+      this.modalCtrl.dismiss();
+      
+      const modal =  await  this.modalCtrlChat.create({
+        component: DetalleChatGroupPage,
         cssClass: 'my-custom-modal-css',
         mode: 'ios',
         backdropDismiss: true,
         showBackdrop: false,
         componentProps: {
-          item : item,
-          groups : this.LstGruposContactos[0]
+          item : item
         }
-    });
+      });
 
-    // this.closeModal();
-    await modal.present();
+      await modal.present();
+    }
 
 
     /*modal.onDidDismiss().then( async (data) => {

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { DetallesChatPage } from 'src/app/pages/detalles-chat/detalles-chat.page';
 import { ChatService } from '../../api/chat.service';
+import { DetalleChatGroupPage } from 'src/app/pages/detalle-chat-group/detalle-chat-group.page';
 
 @Component({
   selector: 'app-chats',
@@ -11,6 +12,7 @@ import { ChatService } from '../../api/chat.service';
 export class ChatsComponent implements OnInit {
 
   public LstChat: any[] = [];
+  public LstGrupos: any[] = [];
 
   constructor( private modalCrl: ModalController,private apichat: ChatService) { 
     this.cargar();
@@ -20,10 +22,14 @@ export class ChatsComponent implements OnInit {
 
     this.apichat.getConversaciones().subscribe(data =>{
       this.LstChat = data;
-      console.log('this.LstForo NOW');
-      console.log(this.LstChat);
     });
+
+    this.apichat.getGruposMaestros().subscribe(data => {
+      this.LstGrupos= data;
+    });
+
   }
+
 
   async openDetail(event: Event, item) {
 
@@ -44,6 +50,21 @@ export class ChatsComponent implements OnInit {
     modal.onDidDismiss().then( async (data) => {
      // this.LstForo = await this.apiForum.get(false, 0).toPromise();
     });
+  }
+
+  async openDetailGroups(event: Event, item){
+     const modal =  await  this.modalCrl.create({
+      component: DetalleChatGroupPage,
+      cssClass: 'my-custom-modal-css',
+      mode: 'ios',
+      backdropDismiss: true,
+      showBackdrop: false,
+      componentProps: {
+        item : item
+      }
+    });
+
+    await modal.present();
   }
 
   ngOnInit() {}

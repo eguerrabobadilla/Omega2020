@@ -19,6 +19,7 @@ import { CrearNewsPage } from '../pages/crear-news/crear-news.page';
 import { NewsComponent } from '../components/news/news.component';
 
 import { WebsocketService } from '../services/websocket.service';
+import { ThrowStmt } from '@angular/compiler';
 
 
 @Component({
@@ -89,7 +90,7 @@ export class HomePage {
   constructor(private statusBar: StatusBar, public platform: Platform, private animationCtrl: AnimationController,
               // tslint:disable-next-line: max-line-length
               private renderer: Renderer2, private gestureCtrl: GestureController, private modalCrl: ModalController, private booksService: BooksService,
-              private loadingController: LoadingController, private alertController: AlertController,private authenticationService: AuthenticationService ,
+              private loadingController: LoadingController, private alertController: AlertController,public authenticationService: AuthenticationService ,
               private apiTareas: TareasService,public  webSocket: WebsocketService) {
       this.scrollenable = true;
 
@@ -472,8 +473,7 @@ const animation5: Animation = this.animationCtrl.create('bouceEduardo')
       index = index === 0 ? 6 : index;
       this.header = this.headersText[index - 1];
       this.nombreIcono = this.iconos[index - 1];
-      console.log("index");
-      console.log(index);
+  
 
       if (index === 1) {
         this.tabs = ['Todos', 'Inglés'  , 'Español', 'Código'];
@@ -495,7 +495,7 @@ const animation5: Animation = this.animationCtrl.create('bouceEduardo')
         }
 
       this.selectOption = '0';
-      console.log(await this.slideDown.getActiveIndex().toString());
+      //console.log(await this.slideDown.getActiveIndex().toString());
       // this.pillMenu.nextSegment((await this.slideDown.getActiveIndex()).toString());
 
 
@@ -518,11 +518,17 @@ const animation5: Animation = this.animationCtrl.create('bouceEduardo')
       this.user.grado = this.getKeyToken("grado");
     }
 
+    ionViewDidEnter(){
+      setTimeout(() => { 
+        const status = this.webSocket.getStatusSocket() == 1 ? true : false;
+        this.inforConnectionScoket(status);
+      }, 100);
+      
+    }
     async ngOnInit() {
       this.subscribeToEvents();
 
       this.LstTareas = await this.apiTareas.get().toPromise();
-      console.log(this.LstTareas);
     
 
       this.iconos = ['people-outline', 'watch-outline', 'leaf-outline', 'shield-outline', 'leaf-outline'];
@@ -589,8 +595,6 @@ const animation5: Animation = this.animationCtrl.create('bouceEduardo')
     }
 
     async nuevoRecurso(itemOption) {
-      console.log("itemOption")
-      console.log(itemOption)
       if (itemOption === 'Tareas') {
           const modal = await this.modalCrl.create({
             component: NuevoRecursoPage,
@@ -605,7 +609,6 @@ const animation5: Animation = this.animationCtrl.create('bouceEduardo')
 
           modal.onDidDismiss().then( async (data) => {
               this.LstTareas = await this.apiTareas.get().toPromise();
-              console.log(this.LstTareas);
           });
       } else if (itemOption === 'Mensajes') {
         const modal = await this.modalCrl.create({
@@ -620,7 +623,7 @@ const animation5: Animation = this.animationCtrl.create('bouceEduardo')
         await modal.present();
 
         modal.onDidDismiss().then( async (data) => {
-          this.forumComponent.cargar();
+          //this.forumComponent.cargar();
         });
 
       } else if (itemOption === 'Recursos') {
@@ -705,7 +708,10 @@ const animation5: Animation = this.animationCtrl.create('bouceEduardo')
           }, {
             text: 'Si',
             handler: () => {
-              this.authenticationService.logout();
+              this.authenticationService.logout().then( data =>{
+                  console.log(data);
+                  this.webSocket.finishWebScoket();
+              });
               //this.menu.close();
             }
           }
@@ -730,14 +736,17 @@ const animation5: Animation = this.animationCtrl.create('bouceEduardo')
     }
 
     private subscribeToEvents(): void {
-
       this.webSocket.connectionEstablished.subscribe((status: any) => {
-          if(status==true)
+          this.inforConnectionScoket(status);
+          console.log("Estado conexion:",status);
+      });
+    }
+
+    public inforConnectionScoket(status) : void {
+      if(status==true)
             this.renderer.setStyle(this.avatarUser.nativeElement, 'color', `#FF426D`);
           else
             this.renderer.setStyle(this.avatarUser.nativeElement, 'color', `black`);
-          console.log("Estado conexion:",status);
-      });
     }
 
 }
