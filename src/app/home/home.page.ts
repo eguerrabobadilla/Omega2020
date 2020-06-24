@@ -34,7 +34,7 @@ export class HomePage {
   tabs: any = [];
   selectOption = '0';
   selectSeccion = 1;
-  index: number ;
+  index = 1 ;
   libros: any[] = [];
   librosES: any[] = [];
   librosIN: any[] = [];
@@ -93,6 +93,7 @@ export class HomePage {
               private loadingController: LoadingController, private alertController: AlertController, public authenticationService: AuthenticationService ,
               private apiTareas: TareasService, public  webSocket: WebsocketService) {
       this.scrollenable = true;
+
 
 
 
@@ -434,7 +435,7 @@ this.pillMenu.animacion();
       this.selectSeccion = 1;
     //  this.statusBar.hide();
 
-
+      this.pillMenu.visibleFab(false);
 
       this.observer = new IntersectionObserver((entries) => {
 
@@ -564,7 +565,7 @@ this.pillMenu.animacion();
              this.estadoArriba = true;
              this.scrollenable = true;
              this.div2.nativeElement.click();
-             this.pocisionInicial === true
+             this.pocisionInicial === true;
 
            } else {
               if (this.swipeDown === true && this.estadoArriba) {
@@ -575,7 +576,7 @@ this.pillMenu.animacion();
                  this.animacion(true, true);
                  this.scrollenable = false;
                  this.estadoArriba = false;
-//}
+// }
              }
             }
            this.swipeUp = false;
@@ -653,6 +654,22 @@ this.pillMenu.animacion();
 
         modal.onDidDismiss().then( async (data) => {
           this.newsComponent.cargar();
+        });
+
+      }else if (itemOption === 'Foro') {
+        const modal = await this.modalCrl.create({
+          component: CrearForumPage,
+          // cssClass: 'my-custom-modal-css',
+          cssClass: 'my-custom-modal-css-capturas',
+          showBackdrop: false,
+          mode: 'ios',
+          backdropDismiss: true
+        });
+
+        await modal.present();
+
+        modal.onDidDismiss().then( async (data) => {
+          this.forumComponent.cargar();
         });
 
       }
@@ -742,8 +759,7 @@ this.pillMenu.animacion();
     public inforConnectionScoket(status): void {
       if (status == true) {
             this.renderer.setStyle(this.avatarUser.nativeElement, 'color', `#FF426D`);
-      }
-          else {
+      } else {
             this.renderer.setStyle(this.avatarUser.nativeElement, 'color', `black`);
       }
     }
