@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ModalController } from '@ionic/angular';
+import { apiBase } from 'src/app/api/apiBase';
 
 @Component({
   selector: 'app-detalles-news',
@@ -9,12 +10,12 @@ import { ModalController } from '@ionic/angular';
 export class DetallesNewsPage implements OnInit {
   @Input() item;
 
-  constructor(private modalCtrl: ModalController) { }
+  constructor(private modalCtrl: ModalController,private api: apiBase) { }
 
   ngOnInit() {
     console.log(this.item);
     console.log(this.item.image.includes('https://'));
-    this.item.image = this.item.image.includes('https://') == true ?  this.item.image : 'https://172.16.12.29:5001/images/' + this.item.image;
+    this.item.image = this.item.image.includes('https://') == true ?  this.item.image : `${this.api.url}/images/${this.item.image}`;
   }
 
   closeModal(){
