@@ -79,53 +79,6 @@ top: 0;" mode="ios">
 
         <app-pill-menu #pillMenu pillMenu [itemsMenu]="tabs" [selectOption]="selectOption" (indicatorChanged)="segmentChanged($event)" (clickFab)="nuevoRecurso($event)"></app-pill-menu>
 
-
-        <ion-slides #slideDown [options]="slideOptsdos" (ionSlideTouchEnd)="ionSlideTouchEnd(slideUp,slideDown)" *ngIf="selectSeccion == 3 || selectSeccion == 2 ||  selectSeccion ==4 ||  selectSeccion ==5 ||  selectSeccion ==6">
-
-            <ion-slide>
-
-                <ion-virtual-scroll appAnimateItems [items]="LstTareas" approxItemHeight="320px" *ngIf="selectSeccion == 2">
-
-
-                    <ion-card style="text-align: initial;" class="ion-activatable ripple-parent" mode="ios" *virtualItem="let item; let itemBounds = bounds;" (click)="openDetail($event,item)">
-                        <ion-ripple-effect></ion-ripple-effect>
-                        <ion-card-header>
-                            <ion-card-title>{{ item.titulo }}</ion-card-title>
-                        </ion-card-header>
-                        <ion-card-content>{{ item.descripcion }}</ion-card-content>
-                    </ion-card>
-
-                </ion-virtual-scroll>
-                <!--  <app-list style="width: 100%;" *ngIf="selectSeccion == 3 ||  selectSeccion ==4 ||  selectSeccion ==5 || selectSeccion ==6"></app-list>-->
-                <app-news #newsComponent style="width: 100%;" *ngIf="selectSeccion == 3 ||  selectSeccion ==4 ||  selectSeccion ==5 || selectSeccion ==6"></app-news>
-            </ion-slide>
-            <ion-slide>
-                <!--  <app-list style="width: 100%;"></app-list>
-                <ion-virtual-scroll appAnimateItems [items]="items" approxItemHeight="320px">
-                    <ion-card class="ion-activatable ripple-parent" style="text-align: initial;" mode="ios" *virtualItem="let item; let itemBounds = bounds;" (click)="openDetail($event,item)">
-                        <ion-ripple-effect></ion-ripple-effect>
-                        <ion-card-header>
-                            <ion-card-title>{{ item.name }}</ion-card-title>
-                        </ion-card-header>
-                        <ion-card-content>{{ item.content }}</ion-card-content>
-                    </ion-card>
-
-                </ion-virtual-scroll>-->
-                <!-- <app-forum #forumComponent style="width: 100%;"></app-forum>-->
-                <!-- <app-chats style="width: 100%;"></app-chats>-->
-                <app-news style="width: 100%;"></app-news>
-
-
-            </ion-slide>
-            <ion-slide>
-                <!--  <app-chats style="width: 100%;"></app-chats>-->
-
-                <!-- <app-forum #forumComponent style="width: 100%;"></app-forum>-->
-                <!-- <app-list style="width: 100%;"></app-list>-->
-                <app-list-resource style="width: 100%;"></app-list-resource>
-            </ion-slide>
-        </ion-slides>
-
         <ion-slides [options]="slideOptsdos" #slideDown (ionSlideTouchEnd)="ionSlideTouchEnd(slideUp,slideDown)" *ngIf="selectSeccion == 1" style="min-height: 72.6vh;">
 
             <ion-slide>
@@ -148,6 +101,93 @@ top: 0;" mode="ios">
 
             </ion-slide>
         </ion-slides>
+
+        <ion-slides #slideDown [options]="slideOptsdos" (ionSlideTouchEnd)="ionSlideTouchEnd(slideUp,slideDown)" *ngIf="selectSeccion == 2" style="min-height: 72.6vh;">
+
+            <ion-slide>
+
+                <ion-virtual-scroll appAnimateItems [items]="LstTareas" approxItemHeight="320px">
+
+
+                    <ion-card style="text-align: initial;" class="ion-activatable ripple-parent" mode="ios" *virtualItem="let item; let itemBounds = bounds;" (click)="openDetail($event,item)">
+                        <ion-ripple-effect></ion-ripple-effect>
+                        <ion-card-header>
+                            <ion-card-title>{{ item.titulo }}</ion-card-title>
+                        </ion-card-header>
+                        <ion-card-content>{{ item.descripcion }}</ion-card-content>
+                    </ion-card>
+
+                </ion-virtual-scroll>
+                <!--  <app-list style="width: 100%;" *ngIf="selectSeccion == 3 ||  selectSeccion ==4 ||  selectSeccion ==5 || selectSeccion ==6"></app-list>-->
+                <!-- <app-news #newsComponent style="width: 100%;" *ngIf="selectSeccion == 3 ||  selectSeccion ==4 ||  selectSeccion ==5 || selectSeccion ==6"></app-news>-->
+
+            </ion-slide>
+            <ion-slide>
+                <!--  <app-list style="width: 100%;"></app-list>
+                <ion-virtual-scroll appAnimateItems [items]="items" approxItemHeight="320px">
+                    <ion-card class="ion-activatable ripple-parent" style="text-align: initial;" mode="ios" *virtualItem="let item; let itemBounds = bounds;" (click)="openDetail($event,item)">
+                        <ion-ripple-effect></ion-ripple-effect>
+                        <ion-card-header>
+                            <ion-card-title>{{ item.name }}</ion-card-title>
+                        </ion-card-header>
+                        <ion-card-content>{{ item.content }}</ion-card-content>
+                    </ion-card>
+
+                </ion-virtual-scroll>-->
+                <app-forum #forumComponent style="width: 100%;"></app-forum>
+                <!-- <app-chats style="width: 100%;"></app-chats>-->
+                <!--  <app-news style="width: 100%;"></app-news>-->
+
+
+            </ion-slide>
+            <ion-slide>
+                <!--  <app-chats style="width: 100%;"></app-chats>-->
+
+                <!-- <app-forum #forumComponent style="width: 100%;"></app-forum>-->
+                <!-- <app-list style="width: 100%;"></app-list>-->
+                <app-list-resource style="width: 100%;"></app-list-resource>
+            </ion-slide>
+        </ion-slides>
+
+        <ion-slides #slideDown [options]="slideOptsdos" (ionSlideTouchEnd)="ionSlideTouchEnd(slideUp,slideDown)" *ngIf="selectSeccion == 3" style="min-height: 72.6vh;">
+
+            <ion-slide>
+                <!--  <app-list style="width: 100%;" ></app-list>-->
+                <app-news #newsComponent style="width: 100%;"></app-news>
+            </ion-slide>
+            <ion-slide>
+
+                <app-chats style="width: 100%;"></app-chats>
+                <!--  <app-news style="width: 100%;"></app-news>-->
+
+
+            </ion-slide>
+            <ion-slide>
+                <!--  <app-chats style="width: 100%;"></app-chats>-->
+
+                <!-- <app-forum #forumComponent style="width: 100%;"></app-forum>-->
+                <!-- <app-list style="width: 100%;"></app-list>-->
+                <app-list style="width: 100%;"></app-list>
+            </ion-slide>
+        </ion-slides>
+
+
+        <ion-slides #slideDown [options]="slideOptsdos" (ionSlideTouchEnd)="ionSlideTouchEnd(slideUp,slideDown)" *ngIf="selectSeccion == 4 || selectSeccion == 5 || selectSeccion == 6 " style="min-height: 72.6vh;">
+
+            <ion-slide>
+                <app-list style="width: 100%;"></app-list>
+            </ion-slide>
+            <ion-slide>
+                <app-list style="width: 100%;"></app-list>
+            </ion-slide>
+            <ion-slide>
+                <app-list style="width: 100%;"></app-list>
+            </ion-slide>
+        </ion-slides>
+
+
+
+
 
     </div>
 

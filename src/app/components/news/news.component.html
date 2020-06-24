@@ -1,15 +1,15 @@
 <ion-virtual-scroll appAnimateItems [items]="LstNoticias" approxItemHeight="320px">
     <ion-card style="text-align: initial;border-radius: 13px;" class="ion-activatable ripple-parent" mode="ios" *virtualItem="let item; let itemBounds = bounds;" (click)="openDetail($event,item)">
         <ion-ripple-effect></ion-ripple-effect>
-        <!--   <img src="assets/img/descarga.jpg" />-->
-        <ion-card-header>
-            <!--  <ion-card-header style="padding-top: 0;">
-            <!--  <ion-item style="z-index: -1;--padding-start: 0;" lines="none">
+        <img src="assets/img/descarga.jpg" />
+        <!-- <ion-card-header>-->
+        <ion-card-header style="padding-top: 0;">
+            <ion-item style="z-index: -1;--padding-start: 0;" lines="none">
                 <ion-avatar slot="start" style="height: 23px;width: 23px;margin: 0;">
                     <img src="assets/img/LAURA.png">
                 </ion-avatar>
                 <ion-label style="font-size: 13px;padding-left: 8px;">EDUARDO G</ion-label>
-            </ion-item>-->
+            </ion-item>
 
             <ion-card-title>{{ item.titulo }}</ion-card-title>
         </ion-card-header>

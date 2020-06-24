@@ -65,6 +65,6 @@ import { CrearNewsPage } from '../pages/crear-news/crear-news.page';
     CrearNewsPageModule
   ],
   declarations: [ HomePage, PillMenuComponent, BooksComponent, CodesComponent, ListComponent, 
-    ChatsComponent, FilterPipe, ListResourceComponent, NewsComponent]
+    ChatsComponent, FilterPipe, ListResourceComponent, NewsComponent, ForumComponent]
 })
 export class HomePageModule {}

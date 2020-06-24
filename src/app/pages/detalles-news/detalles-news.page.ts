@@ -13,8 +13,8 @@ export class DetallesNewsPage implements OnInit {
 
   ngOnInit() {
     console.log(this.item);
-    console.log(this.item.image.includes('http://'));
-    this.item.image = this.item.image.includes('http://') == true ?  this.item.image : 'https://localhost:5001/images/' + this.item.image;
+    console.log(this.item.image.includes('https://'));
+    this.item.image = this.item.image.includes('https://') == true ?  this.item.image : 'https://172.16.12.29:5001/images/' + this.item.image;
   }
 
   closeModal(){
