@@ -62,7 +62,7 @@ export class HomePage {
   @ViewChild('pillMenu', {read: ElementRef, static: false}) pillMenuRef: ElementRef;
   @ViewChild('forumComponent', {static: false}) forumComponent: ForumComponent;
   @ViewChild('newsComponent', {static: false}) newsComponent: NewsComponent;
-  @ViewChild('avatarUser', {read: ElementRef,static: false}) avatarUser: ElementRef;
+  @ViewChild('avatarUser', {read: ElementRef, static: false}) avatarUser: ElementRef;
 
   items: any[] = [];
   estadoArriba  = false;
@@ -75,9 +75,9 @@ export class HomePage {
   public swipeDown = false;
   public gesture;
   public gesture2;
-  public user={
-    nombre : "",
-    grado  : ""
+  public user = {
+    nombre : '',
+    grado  : ''
   };
   slideOpts = {
     loop: true
@@ -90,8 +90,8 @@ export class HomePage {
   constructor(private statusBar: StatusBar, public platform: Platform, private animationCtrl: AnimationController,
               // tslint:disable-next-line: max-line-length
               private renderer: Renderer2, private gestureCtrl: GestureController, private modalCrl: ModalController, private booksService: BooksService,
-              private loadingController: LoadingController, private alertController: AlertController,public authenticationService: AuthenticationService ,
-              private apiTareas: TareasService,public  webSocket: WebsocketService) {
+              private loadingController: LoadingController, private alertController: AlertController, public authenticationService: AuthenticationService ,
+              private apiTareas: TareasService, public  webSocket: WebsocketService) {
       this.scrollenable = true;
 
 
@@ -329,7 +329,7 @@ mover() {
   this.content.scrollToPoint(0, 0, 400);
 }
 
-librosDescargados(Libros){
+librosDescargados(Libros) {
     console.log(Libros);
     this.libros = Libros;
     this.codigoVisible = false;
@@ -381,8 +381,8 @@ const animation5: Animation = this.animationCtrl.create('bouceEduardo')
 
 
    //  this.gesture.enable(false);
-    animation5.play();
-         this.pillMenu.animacion();
+animation5.play();
+this.pillMenu.animacion();
    // this.scrollenable=true;
 
 
@@ -473,29 +473,27 @@ const animation5: Animation = this.animationCtrl.create('bouceEduardo')
       index = index === 0 ? 6 : index;
       this.header = this.headersText[index - 1];
       this.nombreIcono = this.iconos[index - 1];
-  
+
 
       if (index === 1) {
         this.tabs = ['Todos', 'Inglés'  , 'Español', 'Código'];
-        
+
       } else if (index === 2) {
-        this.tabs = ['Tareas','Foro', 'Recursos'];
+        this.tabs = ['Tareas', 'Foro', 'Recursos'];
      } else if (index === 3) {
       this.tabs = ['Noticias', 'Mensajes', 'Calendario'];
-            
+
      } else if (index === 4) {
-            //this.tabs = ['Perfil', 'Clases', 'Usuarios', 'Estadísticas', 'Cerrar Sesión'];
+            // this.tabs = ['Perfil', 'Clases', 'Usuarios', 'Estadísticas', 'Cerrar Sesión'];
             this.tabs = ['Perfil', 'Clases', 'Estadísticas'];
-     }
-     else if (index === 5) {
+     } else if (index === 5) {
       this.tabs = ['Preguntas', 'Videos', 'Contacto'];
-      }
-      else if (index === 6) {
+      } else if (index === 6) {
         this.tabs = ['Alumnos', 'Docentes', 'Cordinadores'];
         }
 
       this.selectOption = '0';
-      //console.log(await this.slideDown.getActiveIndex().toString());
+      // console.log(await this.slideDown.getActiveIndex().toString());
       // this.pillMenu.nextSegment((await this.slideDown.getActiveIndex()).toString());
 
 
@@ -513,23 +511,23 @@ const animation5: Animation = this.animationCtrl.create('bouceEduardo')
       // this.pillMenu.nextSegment('0');
     }
 
-    ionViewWillEnter(){
-      this.user.nombre = this.getKeyToken("nombre");
-      this.user.grado = this.getKeyToken("grado");
+    ionViewWillEnter() {
+      this.user.nombre = this.getKeyToken('nombre');
+      this.user.grado = this.getKeyToken('grado');
     }
 
-    ionViewDidEnter(){
-      setTimeout(() => { 
+    ionViewDidEnter() {
+      setTimeout(() => {
         const status = this.webSocket.getStatusSocket() == 1 ? true : false;
         this.inforConnectionScoket(status);
       }, 100);
-      
+
     }
     async ngOnInit() {
       this.subscribeToEvents();
 
       this.LstTareas = await this.apiTareas.get().toPromise();
-    
+
 
       this.iconos = ['people-outline', 'watch-outline', 'leaf-outline', 'shield-outline', 'leaf-outline'];
       this.headersText = ['Books', 'Tasks', 'Community', 'Account', 'Support', 'Users'];
@@ -560,25 +558,24 @@ const animation5: Animation = this.animationCtrl.create('bouceEduardo')
         onEnd: (detail) => {
 
            if (this.swipeUp === true && !this.estadoArriba) {
-              this.swipeUp = true;
-              this.animacion(false, true);
-              this.div2.nativeElement.click();
-              this.estadoArriba = true;
-              this.scrollenable = true;
-              this.div2.nativeElement.click();
+             this.swipeUp = true;
+             this.animacion(false, true);
+             this.div2.nativeElement.click();
+             this.estadoArriba = true;
+             this.scrollenable = true;
+             this.div2.nativeElement.click();
+             this.pocisionInicial === true
 
            } else {
               if (this.swipeDown === true && this.estadoArriba) {
 
-
-               if (this.pocisionInicial === true) {
-
+             //   if (this.pocisionInicial === true) { causante del problema que no bajaba cuando haciamos swipe para abajo
                  this.scrollenable = false;
                  this.div2.nativeElement.click();
                  this.animacion(true, true);
                  this.scrollenable = false;
                  this.estadoArriba = false;
-                }
+//}
              }
             }
            this.swipeUp = false;
@@ -623,7 +620,7 @@ const animation5: Animation = this.animationCtrl.create('bouceEduardo')
         await modal.present();
 
         modal.onDidDismiss().then( async (data) => {
-          //this.forumComponent.cargar();
+          // this.forumComponent.cargar();
         });
 
       } else if (itemOption === 'Recursos') {
@@ -675,8 +672,8 @@ const animation5: Animation = this.animationCtrl.create('bouceEduardo')
         backdropDismiss: true,
         componentProps: {item}
       });
-      
-      return await modal.present();
+
+    return await modal.present();
     }
 
 
@@ -691,7 +688,7 @@ const animation5: Animation = this.animationCtrl.create('bouceEduardo')
       // this.libros = this.booksService.getPost();
     }
 
-    async Salir(){
+    async Salir() {
 
       const alert = await this.alertController.create({
         header: 'LBS Plus Demo',
@@ -708,29 +705,29 @@ const animation5: Animation = this.animationCtrl.create('bouceEduardo')
           }, {
             text: 'Si',
             handler: () => {
-              this.authenticationService.logout().then( data =>{
+              this.authenticationService.logout().then( data => {
                   console.log(data);
                   this.webSocket.finishWebScoket();
               });
-              //this.menu.close();
+              // this.menu.close();
             }
           }
         ]
       });
-  
+
       await alert.present();
     }
 
-    getKeyToken(key: string) : string {
+    getKeyToken(key: string): string {
 
-      let jwt = localStorage.getItem("USER_INFO");
+      const jwt = localStorage.getItem('USER_INFO');
 
-      let jwtData = jwt.split('.')[1];
-      //let decodedJwtJsonData = window.atob(jwtData);
-      let decodedJwtJsonData=decodeURIComponent(escape(window.atob(jwtData)));
-      let decodedJwtData = JSON.parse(decodedJwtJsonData);
+      const jwtData = jwt.split('.')[1];
+      // let decodedJwtJsonData = window.atob(jwtData);
+      const decodedJwtJsonData = decodeURIComponent(escape(window.atob(jwtData)));
+      const decodedJwtData = JSON.parse(decodedJwtJsonData);
 
-      let value = decodedJwtData[key];
+      const value = decodedJwtData[key];
 
       return value;
     }
@@ -738,15 +735,17 @@ const animation5: Animation = this.animationCtrl.create('bouceEduardo')
     private subscribeToEvents(): void {
       this.webSocket.connectionEstablished.subscribe((status: any) => {
           this.inforConnectionScoket(status);
-          console.log("Estado conexion:",status);
+          console.log('Estado conexion:', status);
       });
     }
 
-    public inforConnectionScoket(status) : void {
-      if(status==true)
+    public inforConnectionScoket(status): void {
+      if (status == true) {
             this.renderer.setStyle(this.avatarUser.nativeElement, 'color', `#FF426D`);
-          else
+      }
+          else {
             this.renderer.setStyle(this.avatarUser.nativeElement, 'color', `black`);
+      }
     }
 
 }
