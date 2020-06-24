@@ -16,8 +16,7 @@ export class CodesComponent implements OnInit {
   };
 
   constructor(private loadingController: LoadingController, private booksService: BooksService,
-              private alertController: AlertController) {
-      
+              private alertController: AlertController) {    
   }
 
   ngOnInit() {}
@@ -38,7 +37,7 @@ export class CodesComponent implements OnInit {
       const code = this.FrmCodigo.codigo;
       this.libros =  await this.booksService.getBooks(code).toPromise();
 
-      // console.log(response);
+
 
       await this.loadingController.dismiss();
 

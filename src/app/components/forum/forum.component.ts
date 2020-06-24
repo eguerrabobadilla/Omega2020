@@ -26,8 +26,7 @@ export class ForumComponent implements OnInit {
 
     this.apiForum.get(false, 0).subscribe(data =>{
       this.LstForo = data;
-      console.log('this.LstForo NOW');
-      console.log(this.LstForo);
+
     });
   }
 
