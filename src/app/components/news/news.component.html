@@ -1,4 +1,4 @@
-<ion-virtual-scroll appAnimateItems [items]="LstNoticias" approxItemHeight="320px">
+<ion-virtual-scroll  [items]="LstNoticias" approxItemHeight="320px">
     <ion-card style="text-align: initial;border-radius: 13px;" class="ion-activatable ripple-parent" mode="ios" *virtualItem="let item; let itemBounds = bounds;" (click)="openDetail($event,item)">
         <ion-ripple-effect></ion-ripple-effect>
         <img src="assets/img/descarga.jpg" />

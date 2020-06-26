@@ -141,7 +141,7 @@ right: 0px;" mode="ios">
         <ion-slides #slideDown (ionSlideTouchEnd)="ionSlideTouchEnd(slideUp,slideDown)">
 
             <ion-slide>
-                <ion-virtual-scroll appAnimateItems [items]="items" approxItemHeight="320px">
+                <ion-virtual-scroll  [items]="items" approxItemHeight="320px">
                     <ion-card style="text-align: initial;" mode="ios" *virtualItem="let item; let itemBounds = bounds;">
                         <ion-card-header>
                             <ion-card-title>{{ item.name }}</ion-card-title>
@@ -151,7 +151,7 @@ right: 0px;" mode="ios">
                 </ion-virtual-scroll>
             </ion-slide>
             <ion-slide>
-                <ion-virtual-scroll appAnimateItems [items]="items" approxItemHeight="320px">
+                <ion-virtual-scroll  [items]="items" approxItemHeight="320px">
                     <ion-card style="text-align: initial;" mode="ios" *virtualItem="let item; let itemBounds = bounds;">
                         <ion-card-header>
                             <ion-card-title>{{ item.name }}</ion-card-title>
