@@ -80,10 +80,12 @@ export class HomePage {
     grado  : ''
   };
   slideOpts = {
-    loop: true
+    loop: true,
+    lazy: true
   };
   slideOptsdos = {
-    autoHeight: true
+    autoHeight: true,
+    lazy: true
   };
 
   // tslint:disable-next-line: max-line-length
@@ -465,49 +467,52 @@ this.pillMenu.animacion();
       }
 
     }
-    async ionSlideTouchEndSlide() {
+    ionSlideTouchEndSlide() {
 
-      let index = await this.slideUp.getActiveIndex();
+      //let index = await this.slideUp.getActiveIndex();
 
-      // Por mientras
-      index = index === 7 ? 1 : index;
-      index = index === 0 ? 6 : index;
-      this.header = this.headersText[index - 1];
-      this.nombreIcono = this.iconos[index - 1];
+      this.slideUp.getActiveIndex().then(index => {
+        console.log(index);
+          
+        // Por mientras
+        index = index === 7 ? 1 : index;
+        index = index === 0 ? 6 : index;
+        this.header = this.headersText[index - 1];
+        this.nombreIcono = this.iconos[index - 1];
+
+          if (index === 1) {
+            this.tabs = ['Todos', 'Inglés'  , 'Español', 'Código'];
+
+          } else if (index === 2) {
+            this.tabs = ['Tareas', 'Foro', 'Recursos'];
+        } else if (index === 3) {
+          this.tabs = ['Noticias', 'Mensajes', 'Calendario'];
+
+        } else if (index === 4) {
+                // this.tabs = ['Perfil', 'Clases', 'Usuarios', 'Estadísticas', 'Cerrar Sesión'];
+                this.tabs = ['Perfil', 'Clases', 'Estadísticas'];
+        } else if (index === 5) {
+          this.tabs = ['Preguntas', 'Videos', 'Contacto'];
+          } else if (index === 6) {
+            this.tabs = ['Alumnos', 'Docentes', 'Cordinadores'];
+            }
+
+          this.selectOption = '0';
+          // console.log(await this.slideDown.getActiveIndex().toString());
+          // this.pillMenu.nextSegment((await this.slideDown.getActiveIndex()).toString());
 
 
-      if (index === 1) {
-        this.tabs = ['Todos', 'Inglés'  , 'Español', 'Código'];
+          this.selectSeccion = index;
 
-      } else if (index === 2) {
-        this.tabs = ['Tareas', 'Foro', 'Recursos'];
-     } else if (index === 3) {
-      this.tabs = ['Noticias', 'Mensajes', 'Calendario'];
-
-     } else if (index === 4) {
-            // this.tabs = ['Perfil', 'Clases', 'Usuarios', 'Estadísticas', 'Cerrar Sesión'];
-            this.tabs = ['Perfil', 'Clases', 'Estadísticas'];
-     } else if (index === 5) {
-      this.tabs = ['Preguntas', 'Videos', 'Contacto'];
-      } else if (index === 6) {
-        this.tabs = ['Alumnos', 'Docentes', 'Cordinadores'];
-        }
-
-      this.selectOption = '0';
-      // console.log(await this.slideDown.getActiveIndex().toString());
-      // this.pillMenu.nextSegment((await this.slideDown.getActiveIndex()).toString());
-
-
-      this.selectSeccion = index;
-
-      if (index === 1) {this.pillMenu.visibleFab(false); } else { this.pillMenu.visibleFab(true); }
+          //if (index === 1) {this.pillMenu.visibleFab(false); } else { this.pillMenu.visibleFab(true); }
+      });
 
     }
 
     ionSlideTransitionStart() {
-      setTimeout(() => {
+      /*setTimeout(() => {
         this.pillMenu.nextSegment('0');
-      }, 50);
+      }, 50);*/
 
       // this.pillMenu.nextSegment('0');
     }
@@ -676,8 +681,7 @@ this.pillMenu.animacion();
     }
 
     async ionSlideTouchEnd(slideSelect: IonSlides, notSlideSlect: IonSlides) {
-      // notSlideSlect.slideTo(await slideSelect.getActiveIndex());
-      this.pillMenu.nextSegment(await (await this.slideDown.getActiveIndex()).toString());
+      //this.pillMenu.nextSegment(await (await this.slideDown.getActiveIndex()).toString());
     }
 
     async openDetail(event: Event, item) {
