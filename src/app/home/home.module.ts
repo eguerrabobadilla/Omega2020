@@ -30,6 +30,7 @@ import { CrearNewsPageModule } from '../pages/crear-news/crear-news.module';
 import { CrearNewsPage } from '../pages/crear-news/crear-news.page';
 import { DetalleChatGroupPage } from '../pages/detalle-chat-group/detalle-chat-group.page';
 import { DetalleChatGroupPageModule } from '../pages/detalle-chat-group/detalle-chat-group.module';
+import { GraphicsComponent } from '../components/graphics/graphics.component';
 
 @NgModule({
   entryComponents : [
@@ -62,6 +63,6 @@ import { DetalleChatGroupPageModule } from '../pages/detalle-chat-group/detalle-
     CrearNewsPageModule
   ],
   declarations: [ HomePage, PillMenuComponent, BooksComponent, CodesComponent, ListComponent, 
-    ChatsComponent, FilterPipe, ListResourceComponent, NewsComponent, ForumComponent]
+    ChatsComponent, FilterPipe, ListResourceComponent, NewsComponent, ForumComponent,GraphicsComponent ]
 })
 export class HomePageModule {}

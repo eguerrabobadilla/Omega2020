@@ -1,0 +1,51 @@
+<ion-card>
+    <ion-card-header>
+        <ion-card-title style="text-align: initial;">Generales</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+
+        <ion-grid>
+            <ion-row>
+                <ion-col>
+                    <div class="numeros">{{Estadisticas.tareas}}</div>
+                </ion-col>
+                <ion-col>
+                    <div class="numeros">{{Estadisticas.foros}}</div>
+                </ion-col>
+                <ion-col>
+                    <div class="numeros">{{Estadisticas.recursos}}</div>
+                </ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col>
+                    <div>Tareas</div>
+                </ion-col>
+                <ion-col>
+                    <div>Foros</div>
+                </ion-col>
+                <ion-col>
+                    <div>Recursos</div>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+    </ion-card-content>
+
+    <ion-card-header>
+        <ion-card-title style="text-align: initial;">Especificos</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+        <ion-card-subtitle style="text-align: center;font-size: 17px; --color: #000;">Tareas</ion-card-subtitle>
+        <canvas #barCharttareas></canvas>
+        <ion-card-subtitle style="text-align: center;font-size: 17px; --color: #000;padding-top: 40px;">Foros</ion-card-subtitle>
+        <canvas #barChartforos></canvas>
+        <ion-card-subtitle style="text-align: center;font-size: 17px; --color: #000;padding-top: 40px;">Recursos</ion-card-subtitle>
+        <canvas #barChartrecursos></canvas>
+
+
+
+    </ion-card-content>
+
+
+</ion-card>
