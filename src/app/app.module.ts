@@ -1,3 +1,4 @@
+import { MbscModule } from '@mobiscroll/angular';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
@@ -25,6 +26,10 @@ import { FileTransfer } from '@ionic-native/file-transfer/ngx';
 import { FileOpener } from '@ionic-native/file-opener/ngx';
 import { DetalleChatGroupPageModule } from './pages/detalle-chat-group/detalle-chat-group.module';
 
+import { FormsModule } from '@angular/forms';
+
+
+
 
 
 
@@ -35,7 +40,8 @@ import { DetalleChatGroupPageModule } from './pages/detalle-chat-group/detalle-c
 @NgModule({
   declarations: [AppComponent, AnimateItemsDirective],
   entryComponents: [DetallesNewsPage],
-  imports: [
+  imports: [ 
+    MbscModule,  
     BrowserModule,
     AppRoutingModule,
     IonicModule.forRoot({mode:'ios', scrollPadding:false,scrollAssist:true}),
@@ -44,7 +50,8 @@ import { DetalleChatGroupPageModule } from './pages/detalle-chat-group/detalle-c
     DetallesForumPageModule,
     DetallesChatPageModule,
     DetalleChatGroupPageModule,
-    DetallesNewsPageModule
+    DetallesNewsPageModule,
+    FormsModule
   ],
   providers: [
     StatusBar,

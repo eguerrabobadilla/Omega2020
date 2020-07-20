@@ -10,7 +10,7 @@ import { TareasService } from '../api/tareas.service';
 })
 export class NuevoRecursoPage implements OnInit {
   public FrmItem: FormGroup;
-  private texto_adjuntar_portada: string = 'Foto de Portada';
+  public  texto_adjuntar_portada: string = 'Foto de Portada';
   public submitAttempt: boolean = false;
   private item: any;
   private files: any;

@@ -17,9 +17,19 @@ import { CrearChatPage } from '../pages/crear-chat/crear-chat.page';
 import { NewResourcePage } from '../new-resource/new-resource.page';
 import { CrearNewsPage } from '../pages/crear-news/crear-news.page';
 import { NewsComponent } from '../components/news/news.component';
-
+import { mobiscroll, MbscCalendarOptions, MbscCalendar, MbscCalendarComponent } from '@mobiscroll/angular';
 import { WebsocketService } from '../services/websocket.service';
 import { ThrowStmt } from '@angular/compiler';
+import { CalendarEventsPage } from '../pages/calendar-events/calendar-events.page';
+import { CalendarioService } from '../api/calendario.service';
+
+mobiscroll.settings = {
+  theme: 'mobiscroll',
+  themeVariant: 'light',
+  layout: 'liquid'
+};
+
+
 
 
 @Component({
@@ -28,18 +38,42 @@ import { ThrowStmt } from '@angular/compiler';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
+
   private observer: IntersectionObserver;
   scrollenable = false;
   pocisionInicial = true;
   tabs: any = [];
+  now = new Date();
   selectOption = '0';
   selectSeccion = 1;
   index = 1 ;
   libros: any[] = [];
   librosES: any[] = [];
-  librosIN: any[] = [];
+  librosIN: any[] = []; 
   codigoVisible = true;
   LstTareas: any[] = [];
+
+  settings: MbscCalendarOptions = {
+    theme: 'mobiscroll',
+    display: 'inline',
+    themeVariant: 'light',
+    calendarScroll: 'vertical',
+    months: 1,
+  onShow: (event, inst) => {
+    setTimeout(() => { //temporal
+      this.activarEventoTouch();
+      this.apiCalendario.getCalendario().subscribe(data => {
+      this.events = data;
+      });
+    }, 100);
+
+  },
+  onDayChange : (event, inst) => {
+   this.abrirCalendarioSemana();
+
+  }
+  
+};
 
   @ViewChild('slideDown', {static: false}) slideDown: IonSlides;
   @ViewChild('slideUp', {static: true}) slideUp: IonSlides;
@@ -51,6 +85,9 @@ export class HomePage {
   @ViewChild('toolbar2', {read: ElementRef, static: true}) toolbar2: ElementRef;
   @ViewChild('content', {static: true}) content: IonContent;
   @ViewChild('content', {read: ElementRef, static: true}) contentref: ElementRef;
+  @ViewChild('calendar', {static: false}) calendar: ElementRef;
+
+  @ViewChild('pillMenu', {static: false}) pillMenu: PillMenuComponent;
   @ViewChild('content2', {read: ElementRef, static: true}) contentref2: ElementRef;
   @ViewChild('div2', {read: ElementRef, static: true}) div2: ElementRef;
   @ViewChild('footer', {read: ElementRef, static: true}) footer: ElementRef;
@@ -58,11 +95,11 @@ export class HomePage {
   @ViewChild('foot', {read: ElementRef, static: true}) foot: ElementRef;
   @ViewChild('animation7', {read: ElementRef, static: true}) animation7: ElementRef;
   @ViewChild('animation8', {read: ElementRef, static: true}) animation8: ElementRef;
-  @ViewChild('pillMenu', {static: false}) pillMenu: PillMenuComponent;
   @ViewChild('pillMenu', {read: ElementRef, static: false}) pillMenuRef: ElementRef;
   @ViewChild('forumComponent', {static: false}) forumComponent: ForumComponent;
   @ViewChild('newsComponent', {static: false}) newsComponent: NewsComponent;
   @ViewChild('avatarUser', {read: ElementRef, static: false}) avatarUser: ElementRef;
+  @ViewChild('mobi',{static: false}) mobi: MbscCalendar; 
 
   items: any[] = [];
   estadoArriba  = false;
@@ -80,24 +117,24 @@ export class HomePage {
     grado  : ''
   };
   slideOpts = {
-    loop: true,
-    lazy: true
+    loop: true
   };
   slideOptsdos = {
-    autoHeight: true,
-    lazy: true
+    autoHeight: true
   };
+  events: any;
+
 
   // tslint:disable-next-line: max-line-length
   constructor(private statusBar: StatusBar, public platform: Platform, private animationCtrl: AnimationController,
               // tslint:disable-next-line: max-line-length
-              private renderer: Renderer2, private gestureCtrl: GestureController, private modalCrl: ModalController, private booksService: BooksService,
+              private renderer: Renderer2, private gestureCtrl2: GestureController, private gestureCtrl: GestureController, private modalCrl: ModalController, private booksService: BooksService,
               private loadingController: LoadingController, private alertController: AlertController, public authenticationService: AuthenticationService ,
-              private apiTareas: TareasService, public  webSocket: WebsocketService) {
+              private apiTareas: TareasService, public  webSocket: WebsocketService, private apiCalendario: CalendarioService) {
       this.scrollenable = true;
 
-
-
+      
+   
 
   }
 
@@ -467,52 +504,71 @@ this.pillMenu.animacion();
       }
 
     }
-    ionSlideTouchEndSlide() {
+    async ionSlideTouchEndSlide() {
 
-      //let index = await this.slideUp.getActiveIndex();
+      let index = await this.slideUp.getActiveIndex();
 
-      this.slideUp.getActiveIndex().then(index => {
-        console.log(index);
-          
-        // Por mientras
-        index = index === 7 ? 1 : index;
-        index = index === 0 ? 6 : index;
-        this.header = this.headersText[index - 1];
-        this.nombreIcono = this.iconos[index - 1];
-
-          if (index === 1) {
-            this.tabs = ['Todos', 'Inglés'  , 'Español', 'Código'];
-
-          } else if (index === 2) {
-            this.tabs = ['Tareas', 'Foro', 'Recursos'];
-        } else if (index === 3) {
-          this.tabs = ['Noticias', 'Mensajes', 'Calendario'];
-
-        } else if (index === 4) {
-                // this.tabs = ['Perfil', 'Clases', 'Usuarios', 'Estadísticas', 'Cerrar Sesión'];
-                this.tabs = ['Perfil', 'Clases', 'Estadísticas'];
-        } else if (index === 5) {
-          this.tabs = ['Preguntas', 'Videos', 'Contacto'];
-          } else if (index === 6) {
-            this.tabs = ['Alumnos', 'Docentes', 'Cordinadores'];
-            }
-
-          this.selectOption = '0';
-          // console.log(await this.slideDown.getActiveIndex().toString());
-          // this.pillMenu.nextSegment((await this.slideDown.getActiveIndex()).toString());
+      // Por mientras
+      index = index === 7 ? 1 : index;
+      index = index === 0 ? 6 : index;
+      this.header = this.headersText[index - 1];
+      this.nombreIcono = this.iconos[index - 1];
 
 
-          this.selectSeccion = index;
+      if (index === 1) {
+        this.tabs = ['Todos', 'Inglés'  , 'Español', 'Código'];
 
-          //if (index === 1) {this.pillMenu.visibleFab(false); } else { this.pillMenu.visibleFab(true); }
-      });
+      } else if (index === 2) {
+        this.tabs = ['Tareas', 'Foro', 'Recursos'];
+     } else if (index === 3) {
+      this.tabs = ['Noticias', 'Mensajes', 'Calendario'];
+
+     } else if (index === 4) {
+            // this.tabs = ['Perfil', 'Clases', 'Usuarios', 'Estadísticas', 'Cerrar Sesión'];
+            this.tabs = ['Perfil', 'Clases', 'Estadísticas'];
+     } else if (index === 5) {
+      this.tabs = ['Preguntas', 'Videos', 'Contacto'];
+      } else if (index === 6) {
+        this.tabs = ['Alumnos', 'Docentes', 'Cordinadores'];
+        }
+
+      this.selectOption = '0';
+      // console.log(await this.slideDown.getActiveIndex().toString());
+      // this.pillMenu.nextSegment((await this.slideDown.getActiveIndex()).toString());
+
+
+      this.selectSeccion = index;
+
+      if (index === 1) {this.pillMenu.visibleFab(false); } else { this.pillMenu.visibleFab(true); }
 
     }
 
+    activarEventoTouch(){
+      console.log('activar evento');
+
+      this.gesture2 = this.gestureCtrl.create({
+          el: this.calendar.nativeElement,
+          gestureName: 'calendar',
+          direction: 'y',
+          threshold: 0.5,
+          onStart: (detail) => {
+            console.log('onstart calendar');
+  
+            //this.gesture.disabled();
+            //  this.renderer.setStyle(this.div2.nativeElement, 'transition', `none`);
+          },
+          onMove: (detail) => {
+              console.log("onmove")
+            //  this.gesture.disabled();
+            },
+        });
+      this.gesture2.enable();
+  }
+
     ionSlideTransitionStart() {
-      /*setTimeout(() => {
+      setTimeout(() => {
         this.pillMenu.nextSegment('0');
-      }, 50);*/
+      }, 50);
 
       // this.pillMenu.nextSegment('0');
     }
@@ -562,8 +618,8 @@ this.pillMenu.animacion();
 
         },
         onEnd: (detail) => {
-
-           if (this.swipeUp === true && !this.estadoArriba) {
+            console.log('fire app');
+            if (this.swipeUp === true && !this.estadoArriba) {
              this.swipeUp = true;
              this.animacion(false, true);
              this.div2.nativeElement.click();
@@ -584,13 +640,14 @@ this.pillMenu.animacion();
 // }
              }
             }
-           this.swipeUp = false;
-           this.swipeDown = false;
+            this.swipeUp = false;
+            this.swipeDown = false;
           }
       });
 
       this.gesture.enable();
     }
+
 
     segmentChanged(event) {
        this.slideDown.slideTo(event.detail.value);
@@ -680,8 +737,26 @@ this.pillMenu.animacion();
       }
     }
 
+   async abrirCalendarioSemana(){
+
+      const modal = await this.modalCrl.create({
+        component: CalendarEventsPage,
+        // cssClass: 'my-custom-modal-css',
+        cssClass: 'my-custom-modal-css-capturas',
+        showBackdrop: false,
+        mode: 'ios',
+        backdropDismiss: true
+      });
+
+      await modal.present();
+
+    }
+
+
+
     async ionSlideTouchEnd(slideSelect: IonSlides, notSlideSlect: IonSlides) {
-      //this.pillMenu.nextSegment(await (await this.slideDown.getActiveIndex()).toString());
+      // notSlideSlect.slideTo(await slideSelect.getActiveIndex());
+      this.pillMenu.nextSegment(await (await this.slideDown.getActiveIndex()).toString());
     }
 
     async openDetail(event: Event, item) {
@@ -701,6 +776,16 @@ this.pillMenu.animacion();
     clickDiv() {
      // console.log("Click Div")
 
+    }
+
+    clickHoyCalendario(){
+      console.log("hoy")
+      this.mobi.instance.navigate(new Date(Date.now()),true);
+      console.log(new Date(Date.now()));
+    }
+
+    clickCalendario(){
+      console.log('Click Div Calendarios');
     }
 
     ////// logica libros quitar cuando se cuando se cambie a componente

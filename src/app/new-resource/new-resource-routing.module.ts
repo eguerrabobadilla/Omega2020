@@ -1,3 +1,5 @@
+import { FormsModule } from '@angular/forms';
+import { MbscModule } from '@mobiscroll/angular';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
@@ -11,7 +13,9 @@ import { NewResourcePage } from './new-resource.page';
 ];*/
 
 @NgModule({
- // imports: [RouterModule.forChild(routes)],
+ /*imports: [ 
+    FormsModule,  
+    MbscModule, RouterModule.forChild(routes)],*/
   exports: [RouterModule],
 })
 export class NewResourcePageRoutingModule {}

@@ -16,7 +16,7 @@ export class PillMenuComponent implements OnInit {
   @ViewChildren(IonSegmentButton,{ read: ElementRef }) ArraySegemntButtonHTML: QueryList<ElementRef>;
   @ViewChild('ionsegment', {read: ElementRef, static: true}) ionsegmentHTML: ElementRef;
   public indexAnterior: number =0;
-  private fabVisible: boolean = true;
+  public fabVisible: boolean = true;
 
   constructor(private renderer: Renderer2,private animationCtrl: AnimationController) {  }
 

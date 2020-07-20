@@ -1,3 +1,4 @@
+import { MbscModule } from '@mobiscroll/angular';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
@@ -31,6 +32,10 @@ import { CrearNewsPage } from '../pages/crear-news/crear-news.page';
 import { DetalleChatGroupPage } from '../pages/detalle-chat-group/detalle-chat-group.page';
 import { DetalleChatGroupPageModule } from '../pages/detalle-chat-group/detalle-chat-group.module';
 import { GraphicsComponent } from '../components/graphics/graphics.component';
+import { CalendarComponent } from '../components/calendar/calendar.component';
+import { CalendarEventsPage } from '../pages/calendar-events/calendar-events.page';
+import { CalendarEventsPageModule } from '../pages/calendar-events/calendar-events.module';
+
 
 @NgModule({
   entryComponents : [
@@ -41,9 +46,12 @@ import { GraphicsComponent } from '../components/graphics/graphics.component';
     NuevoRecursoPage,
     DetallesChatPage,
     DetalleChatGroupPage,
-    NewResourcePage
+    NewResourcePage,
+    CalendarEventsPage
+    
   ],
-  imports: [
+  imports: [ 
+    MbscModule,  
     CommonModule,
     FormsModule,
     IonicModule,
@@ -60,9 +68,10 @@ import { GraphicsComponent } from '../components/graphics/graphics.component';
     DetallesChatPageModule,
     DetalleChatGroupPageModule,
     NewResourcePageModule,
-    CrearNewsPageModule
+    CrearNewsPageModule,
+    CalendarEventsPageModule
   ],
   declarations: [ HomePage, PillMenuComponent, BooksComponent, CodesComponent, ListComponent, 
-    ChatsComponent, FilterPipe, ListResourceComponent, NewsComponent, ForumComponent,GraphicsComponent ]
+    ChatsComponent, FilterPipe, ListResourceComponent, NewsComponent, ForumComponent,GraphicsComponent,CalendarComponent ]
 })
 export class HomePageModule {}

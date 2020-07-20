@@ -64,8 +64,8 @@ export class CrearChatPage implements OnInit {
     }
   }
 
-  async enpezarChat(event: Event, item) {
-    
+  async enpezarChat() {
+    let item: any;
     if (this.LstContactos.length === 0 && this.LstGruposContactos.length== 0) {
       return;
     }
