@@ -1,0 +1,9 @@
+<ion-content>
+    <ion-fab mode="ios" vertical="top" horizontal="end" style="top:0;padding-right: 5px;padding-top: 2px;">
+        <ion-fab-button (click)="closeModal()" style="--box-shadow:none;width: 37px;height: 37px;--background: #f8f8ff00;--background-activated: #f8f8ff00;" size="small">
+
+            <ion-icon style="font-size: 24px;" color="danger" name="close"></ion-icon>
+        </ion-fab-button>
+    </ion-fab>
+    <mbsc-eventcalendar [data]="events" [view]="viewOptions" [options]="eventSettings"></mbsc-eventcalendar>
+</ion-content>

@@ -12,7 +12,7 @@ export class NewResourcePage implements OnInit {
   @ViewChild('txtFecha', {static: false}) txtFecha: IonInput;
   @ViewChild('txtFecha', {read: ElementRef, static: true}) txtFechaHTML: ElementRef;
   public FrmItem: FormGroup;F
-  private texto_adjuntar_portada: string = 'Adjuntar Recurso';
+  public  texto_adjuntar_portada: string = 'Adjuntar Recurso';
   public submitAttempt: boolean = false;
   private item: any;
   private files: any;

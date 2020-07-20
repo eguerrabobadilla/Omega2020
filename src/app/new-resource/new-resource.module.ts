@@ -1,3 +1,4 @@
+import { MbscModule } from '@mobiscroll/angular';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -9,7 +10,8 @@ import { NewResourcePageRoutingModule } from './new-resource-routing.module';
 import { NewResourcePage } from './new-resource.page';
 
 @NgModule({
-  imports: [
+  imports: [ 
+    MbscModule, 
     CommonModule,
     FormsModule,
     IonicModule,

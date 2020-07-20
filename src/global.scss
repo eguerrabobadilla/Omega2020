@@ -50,3 +50,17 @@
     border-top-left-radius: 44px;
     background-color: #00000000;
 }
+
+.mbsc-fr-btn {
+    display: none !important;
+}
+
+$mbsc-ios-accent: #e61d2a;
+$mbsc-material-accent: #e61d2a;
+$mbsc-mobiscroll-accent: #e61d2a;
+$mbsc-mobiscroll-frame-background: white;
+.mbsc-mobiscroll .mbsc-lv-item {
+    background: #ffffff !important;
+}
+
+@import "~@mobiscroll/angular/dist/css/mobiscroll.angular.scss";
