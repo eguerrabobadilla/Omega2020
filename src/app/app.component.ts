@@ -4,7 +4,7 @@ import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { AuthInterceptorService } from './services/auth-interceptor.service';
-import { AuthenticationService } from './services/Authentication.service';
+import { AuthenticationService } from './services/authentication.service';
 import { Router } from '@angular/router';
 import { WebsocketService } from './services/websocket.service';
 

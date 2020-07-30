@@ -3,7 +3,7 @@ import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent,HttpErrorResponse 
 import { Observable,throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Router } from '@angular/router';
-import { AuthenticationService } from './Authentication.service';
+import { AuthenticationService } from './authentication.service';
 
 /*
 Esta servicio intercepta todas las peticiones http y le agrega el 
