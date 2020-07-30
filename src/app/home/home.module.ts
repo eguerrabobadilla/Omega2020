@@ -5,7 +5,6 @@ import { IonicModule } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { PillMenuComponent } from '../components/pill-menu/pill-menu.component';
-
 import { HomePage } from './home.page';
 import { DetallePage } from '../detalle/detalle.page';
 import { DetallePageModule } from '../detalle/detalle.module';
@@ -35,6 +34,10 @@ import { GraphicsComponent } from '../components/graphics/graphics.component';
 import { CalendarComponent } from '../components/calendar/calendar.component';
 import { CalendarEventsPage } from '../pages/calendar-events/calendar-events.page';
 import { CalendarEventsPageModule } from '../pages/calendar-events/calendar-events.module';
+import { EvidencesComponent } from '../components/evidences/evidences.component';
+import { CrearEvidencePage } from '../pages/crear-evidence/crear-evidence.page';
+import { CrearEvidencePageModule } from '../pages/crear-evidence/crear-evidence.module';
+
 
 
 @NgModule({
@@ -47,7 +50,8 @@ import { CalendarEventsPageModule } from '../pages/calendar-events/calendar-even
     DetallesChatPage,
     DetalleChatGroupPage,
     NewResourcePage,
-    CalendarEventsPage
+    CalendarEventsPage,
+    CrearEvidencePage
     
   ],
   imports: [ 
@@ -69,9 +73,11 @@ import { CalendarEventsPageModule } from '../pages/calendar-events/calendar-even
     DetalleChatGroupPageModule,
     NewResourcePageModule,
     CrearNewsPageModule,
-    CalendarEventsPageModule
+    CalendarEventsPageModule,
+    CrearEvidencePageModule
   ],
   declarations: [ HomePage, PillMenuComponent, BooksComponent, CodesComponent, ListComponent, 
-    ChatsComponent, FilterPipe, ListResourceComponent, NewsComponent, ForumComponent,GraphicsComponent,CalendarComponent ]
+    ChatsComponent, FilterPipe, ListResourceComponent, NewsComponent, ForumComponent,GraphicsComponent,CalendarComponent
+    , EvidencesComponent ]
 })
 export class HomePageModule {}

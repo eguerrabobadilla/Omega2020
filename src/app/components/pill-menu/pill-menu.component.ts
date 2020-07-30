@@ -11,12 +11,14 @@ export class PillMenuComponent implements OnInit {
   @Input() selectOption = 0;
   @Output() indicatorChanged = new EventEmitter();
   @Output() clickFab = new EventEmitter();
+  @Output() clickFiltro = new EventEmitter();
   @ViewChild(IonSegment,{ static: true }) Segment: IonSegment;
   @ViewChild(IonSegment,{read: ElementRef, static: true }) SegmentRef: ElementRef;
   @ViewChildren(IonSegmentButton,{ read: ElementRef }) ArraySegemntButtonHTML: QueryList<ElementRef>;
   @ViewChild('ionsegment', {read: ElementRef, static: true}) ionsegmentHTML: ElementRef;
   public indexAnterior: number =0;
   public fabVisible: boolean = true;
+  public fabVisibleFilters: boolean = false;
 
   constructor(private renderer: Renderer2,private animationCtrl: AnimationController) {  }
 
@@ -50,9 +52,17 @@ export class PillMenuComponent implements OnInit {
   //  this.clickFab.emit(event);
     this.clickFab.emit(this.itemsMenu[this.indexAnterior]);
   }
-
+  onClickFiltro(event) {
+    //console.log(event);
+  //  this.clickFab.emit(event);
+    this.clickFiltro.emit();
+  }
   public visibleFab(value: boolean) {
     this.fabVisible = value;
+  }
+  
+  public visibleFabFilters(value: boolean) {
+    this.fabVisibleFilters = value;
   }
 
   public nextSegment(index) {
@@ -70,7 +80,7 @@ export class PillMenuComponent implements OnInit {
   }
   public animacion() {
     
-    const animation6: Animation = this.animationCtrl.create('bouceEduardo')
+    const animation6: Animation = this.animationCtrl.create('bouceEduardoF')
     .addElement(this.SegmentRef.nativeElement)
     .duration(600)
     .delay(210)

@@ -1,5 +1,5 @@
 import { Component, ElementRef, ViewChild, Renderer2, ɵCodegenComponentFactoryResolver } from '@angular/core';
-import { AnimationController, Animation, IonContent, Platform, IonSlides, ModalController, LoadingController, AlertController } from '@ionic/angular';
+import { AnimationController, Animation, IonContent, Platform, IonSlides, ModalController, LoadingController, AlertController, PickerController } from '@ionic/angular';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { Gesture, GestureController } from '@ionic/angular';
 import { PillMenuComponent } from '../components/pill-menu/pill-menu.component';
@@ -22,6 +22,11 @@ import { WebsocketService } from '../services/websocket.service';
 import { ThrowStmt } from '@angular/compiler';
 import { CalendarEventsPage } from '../pages/calendar-events/calendar-events.page';
 import { CalendarioService } from '../api/calendario.service';
+import { MateriasService } from '../api/materias.service';
+import { CrearEvidencePage } from '../pages/crear-evidence/crear-evidence.page';
+import { EvidencesComponent } from '../components/evidences/evidences.component';
+
+
 
 mobiscroll.settings = {
   theme: 'mobiscroll',
@@ -43,11 +48,12 @@ export class HomePage {
   scrollenable = false;
   pocisionInicial = true;
   tabs: any = [];
-  now = new Date();
+  now: number = Date.now();
   selectOption = '0';
   selectSeccion = 1;
   index = 1 ;
   libros: any[] = [];
+  materias: any[] = [];
   librosES: any[] = [];
   librosIN: any[] = []; 
   codigoVisible = true;
@@ -69,7 +75,7 @@ export class HomePage {
 
   },
   onDayChange : (event, inst) => {
-   this.abrirCalendarioSemana();
+   this.abrirCalendarioSemana(event);
 
   }
   
@@ -92,15 +98,20 @@ export class HomePage {
   @ViewChild('div2', {read: ElementRef, static: true}) div2: ElementRef;
   @ViewChild('footer', {read: ElementRef, static: true}) footer: ElementRef;
   @ViewChild('fab', {read: ElementRef, static: true}) fab: ElementRef;
+  @ViewChild('fabstart', {read: ElementRef, static: true}) fabstart: ElementRef;
+  @ViewChild('fabend', {read: ElementRef, static: true}) fabend: ElementRef;
   @ViewChild('foot', {read: ElementRef, static: true}) foot: ElementRef;
   @ViewChild('animation7', {read: ElementRef, static: true}) animation7: ElementRef;
   @ViewChild('animation8', {read: ElementRef, static: true}) animation8: ElementRef;
   @ViewChild('pillMenu', {read: ElementRef, static: false}) pillMenuRef: ElementRef;
   @ViewChild('forumComponent', {static: false}) forumComponent: ForumComponent;
+  @ViewChild('evidenceComponent', {static: false}) evidenceComponent: ForumComponent;
   @ViewChild('newsComponent', {static: false}) newsComponent: NewsComponent;
   @ViewChild('avatarUser', {read: ElementRef, static: false}) avatarUser: ElementRef;
-  @ViewChild('mobi',{static: false}) mobi: MbscCalendar; 
+  @ViewChild('mobi', {static: false}) mobi: MbscCalendar; 
 
+  public fabVisible: boolean = true;
+  public fabVisibleFilters: boolean = false;
   items: any[] = [];
   estadoArriba  = false;
   primeraVez = true;
@@ -129,12 +140,12 @@ export class HomePage {
   constructor(private statusBar: StatusBar, public platform: Platform, private animationCtrl: AnimationController,
               // tslint:disable-next-line: max-line-length
               private renderer: Renderer2, private gestureCtrl2: GestureController, private gestureCtrl: GestureController, private modalCrl: ModalController, private booksService: BooksService,
-              private loadingController: LoadingController, private alertController: AlertController, public authenticationService: AuthenticationService ,
-              private apiTareas: TareasService, public  webSocket: WebsocketService, private apiCalendario: CalendarioService) {
-      this.scrollenable = true;
+              private loadingController: LoadingController, private alertController: AlertController,
+              public authenticationService: AuthenticationService ,
+              private apiTareas: TareasService, public  webSocket: WebsocketService, private apiCalendario: CalendarioService,
+              private pickerController: PickerController, private apiMaterias: MateriasService) {
+    //  this.scrollenable = true;
 
-      
-   
 
   }
 
@@ -149,9 +160,10 @@ export class HomePage {
     let animation6: Animation;
     let animation7: Animation;
     let animation8: Animation;
+    let animation9: Animation;
+    let animation10: Animation;
 
     if (!isRegreso) {
-   //   console.log("animacion arriba")
    //   this.gesture.enable(false);
     //  this.gesture2.enable(false);
     //  this.renderer.setStyle(this.contentref2.nativeElement, 'z-index', `-1`);
@@ -162,7 +174,6 @@ export class HomePage {
       }, 70);
    //   this.renderer.addClass(this.foot.nativeElement, 'sombraFooter');
       if (this.estadoArriba) { return; }
-
 
     // el ion tool bar le vamos hacer un trnasfor en el eje de la Y  hasta transform: translateY(-5vh);
       animation2 = this.animationCtrl.create('my-animation-identifier2')
@@ -223,6 +234,28 @@ export class HomePage {
    .easing('cubic-bezier(.51,1,.88,1)')
    .fromTo('transform', '  translate(0, 0)', ' translate(-2vw, -15.5vh)');
 
+      animation9 = this.animationCtrl.create('my-animation-identifier9A')
+       .addElement(this.fabstart.nativeElement)
+       .afterAddClass('zindexFooter')
+       .duration(700)
+       .delay(20)
+       .easing('cubic-bezier(.61,1,.88,1)')
+      .keyframes([{ offset: 0, transform: 'scale(0)' },
+      { offset: 0.2, transform: 'scale(1)' },
+      { offset: 0.5, transform: 'scale(1.3)' },
+      { offset: 1, transform: 'scale(1)' }, ]);
+
+      animation10 = this.animationCtrl.create('my-animation-identifier10')
+        .addElement(this.fabend.nativeElement)
+        .afterAddClass('zindexFooter')
+        .duration(700)
+        .delay(20)
+        .easing('cubic-bezier(.61,1,.88,1)')
+       .keyframes([{ offset: 0, transform: 'scale(0)' },
+       { offset: 0.2, transform: 'scale(1)' },
+       { offset: 0.5, transform: 'scale(1.3)' },
+       { offset: 1, transform: 'scale(1)' }, ]);
+
 
       animation2.play();
       animation3.play();
@@ -231,6 +264,8 @@ export class HomePage {
       animation6.play();
       animation7.play();
       animation8.play();
+      animation9.play();
+      animation10.play();
 
      // if (click) {
       this.moveScroll(true);
@@ -240,12 +275,13 @@ export class HomePage {
       // }
       this.estadoArriba = true;
   } else {
-  //  console.log("animacion abajo")
+
 
     this.moveScroll(false);
     if (this.estadoArriba === false ) { return; }
   //  this.renderer.removeClass(this.toolbar2.nativeElement, 'inverted-border-radius');
   //  this.renderer.removeClass(this.foot.nativeElement, 'sombraFooter');
+    
     this.pillMenu.quitarSombra();
     animation2 = this.animationCtrl.create('my-animation-identifier2')
     .addElement(this.toolbar.nativeElement)
@@ -304,17 +340,45 @@ export class HomePage {
    .duration(280)
    .delay(0)
    .fromTo('transform' , 'translate(-2vw, -15.5vh)', 'translate(0, 0)');
+    
+
+      animation9 = this.animationCtrl.create('my-animation-identifier9B')
+     .addElement(this.fabstart.nativeElement)
+     .afterAddClass('zindexFooter')
+     .duration(200)
+     .delay(0)
+     .easing('cubic-bezier(.12,0,.39,0)')
+    .keyframes([{ offset: 0, transform: 'scale(1)' },
+  
+    { offset: 1, transform: 'scale(0)' }, ]);
+   
+
+   
+       animation10 = this.animationCtrl.create('my-animation-identifier10B')
+      .addElement(this.fabend.nativeElement)
+      .afterAddClass('zindexFooter')
+      .duration(200)
+      .delay(0)
+      .easing('cubic-bezier(.12,0,.39,0)')
+     .keyframes([{ offset: 0, transform: 'scale(1)' },
+     { offset: 1, transform: 'scale(0)' }, ]);
+    
 
 
 
-    animation2.play();
-    animation3.play();
-    animation4.play();
- //   animation5.play();
-    animation6.play();
-    animation7.play();
-    animation8.play();
-    this.animacionBounce(false);
+      animation2.play();
+      animation3.play();
+      animation4.play();
+   //   animation5.play();
+      animation6.play();
+      animation7.play();
+      animation8.play();
+     animation9.play();
+     animation10.play();
+  
+      this.animacionBounce(false);
+   
+
     this.estadoArriba = false;
 
 
@@ -343,34 +407,34 @@ export class HomePage {
 */
   }
 
-mover() {
-  if (this.pocisionInicial) {
-  this.animacion(true, false);
-  const animation5: Animation = this.animationCtrl.create('bouceEduardo')
-  .addElement(this.div2.nativeElement)
-  .duration(350)
-  .delay(0)
-  .easing(' cubic-bezier(0.61, 1, 0.88, 1)')
-// .beforeStyles({bottom:'-16vh'})
-// .afterStyles({bottom:'-16vh'})
-//   .fromTo('transform', 'translate3d(0, 0, 0)', 'translate3d(0, 40px, 0)')
-  // .fromTo('transform', 'translate3d(0, 67vh, 0)', 'translate3d(0, 0vh, 0)');
-   .keyframes([{ offset: 0, transform: 'translate3d(0, 0vh, 0)' },
-
-{ offset: 1, transform: 'translate3d(0, 67vh, 0)' }, ]);
-
-
-  animation5.play();
-} else {
-  this.div2.nativeElement.click();
-  this.content.scrollToPoint(0, 0, 400);
-}
-  this.div2.nativeElement.click();
-  this.content.scrollToPoint(0, 0, 400);
-}
+  mover() {
+    if (this.pocisionInicial) {
+    this.animacion(true, false);
+    const animation5: Animation = this.animationCtrl.create('bouceEduardo')
+    .addElement(this.div2.nativeElement)
+    .duration(350)
+    .delay(0)
+    .easing(' cubic-bezier(0.61, 1, 0.88, 1)')
+  // .beforeStyles({bottom:'-16vh'})
+  // .afterStyles({bottom:'-16vh'})
+  //   .fromTo('transform', 'translate3d(0, 0, 0)', 'translate3d(0, 40px, 0)')
+    // .fromTo('transform', 'translate3d(0, 67vh, 0)', 'translate3d(0, 0vh, 0)');
+     .keyframes([{ offset: 0, transform: 'translate3d(0, 0vh, 0)' },
+  
+  { offset: 1, transform: 'translate3d(0, 67vh, 0)' }, ]);
+  
+  
+    animation5.play();
+  } else {
+    this.div2.nativeElement.click();
+    this.content.scrollToPoint(0, 0, 400);
+  }
+    this.div2.nativeElement.click();
+    this.content.scrollToPoint(0, 0, 400);
+  }
 
 librosDescargados(Libros) {
-    console.log(Libros);
+
     this.libros = Libros;
     this.codigoVisible = false;
     this.pillMenu.nextSegment('0');
@@ -519,7 +583,7 @@ this.pillMenu.animacion();
         this.tabs = ['Todos', 'Inglés'  , 'Español', 'Código'];
 
       } else if (index === 2) {
-        this.tabs = ['Tareas', 'Foro', 'Recursos'];
+        this.tabs = ['Tareas', 'Foro', 'Recursos', 'Evidencias'];
      } else if (index === 3) {
       this.tabs = ['Noticias', 'Mensajes', 'Calendario'];
 
@@ -539,12 +603,26 @@ this.pillMenu.animacion();
 
       this.selectSeccion = index;
 
-      if (index === 1) {this.pillMenu.visibleFab(false); } else { this.pillMenu.visibleFab(true); }
+      if (index === 1) {
+         this.fabVisible = false; /*this.pillMenu.visibleFab(false);*/ 
+         this.renderer.setStyle(this.fabend.nativeElement,'display','none');
+
+      } else { 
+        this.fabVisible = true; /*this.pillMenu.visibleFab(true);*/ 
+        this.renderer.setStyle(this.fabend.nativeElement,'display','block');
+      }
+      if (index === 2) { 
+         this.fabVisibleFilters = true; /*this.pillMenu.visibleFabFilters(true)*/ 
+         this.renderer.setStyle(this.fabstart.nativeElement,'display','block');
+      } else { 
+          this.fabVisibleFilters = false; /*this.pillMenu.visibleFabFilters(false)*/ 
+          this.renderer.setStyle(this.fabstart.nativeElement,'display','none');
+      }
 
     }
 
     activarEventoTouch(){
-      console.log('activar evento');
+      
 
       this.gesture2 = this.gestureCtrl.create({
           el: this.calendar.nativeElement,
@@ -552,13 +630,13 @@ this.pillMenu.animacion();
           direction: 'y',
           threshold: 0.5,
           onStart: (detail) => {
-            console.log('onstart calendar');
+            
   
             //this.gesture.disabled();
             //  this.renderer.setStyle(this.div2.nativeElement, 'transition', `none`);
           },
           onMove: (detail) => {
-              console.log("onmove")
+        
             //  this.gesture.disabled();
             },
         });
@@ -595,48 +673,60 @@ this.pillMenu.animacion();
       this.headersText = ['Books', 'Tasks', 'Community', 'Account', 'Support', 'Users'];
       this.tabs = ['Todos', 'Inglés'  , 'Español', 'Código'];
 
+
       this.gesture = this.gestureCtrl.create({
 
         el: this.contentref.nativeElement,
         gestureName: 'test-swipe',
         direction: 'y',
-        threshold: 0.5,
+        threshold: 20,
+        passive: true,
         disableScroll: true,
         onStart: (detail) => {
-       //   console.log("onstart")
+
           //  this.renderer.setStyle(this.div2.nativeElement, 'transition', `none`);
         },
         onMove: (detail) => {
-        //  console.log("onmove")
+        
           if (detail.velocityY < -0.50) {
-
-            this.swipeUp = true; } else {
-
-         //   console.log(this.estadoArriba);
+            this.swipeUp = true;
+            console.log("onmoveUp");
+          //  this.scrollenable = false
+          
+           }else{
+            console.log("onmoveDown");
             this.swipeDown = true;
+        //    this.scrollenable = false;
             }
 
         },
         onEnd: (detail) => {
-            console.log('fire app');
+         //   this.scrollenable = false;
+            console.log("SwipeUP",this.swipeUp);
+            console.log("SwipeDown",this.swipeDown);
             if (this.swipeUp === true && !this.estadoArriba) {
-             this.swipeUp = true;
-             this.animacion(false, true);
-             this.div2.nativeElement.click();
-             this.estadoArriba = true;
-             this.scrollenable = true;
-             this.div2.nativeElement.click();
+              console.log("entro al if de swipeUp")
+              this.swipeUp = true;
+              this.animacion(false, true);
+              this.div2.nativeElement.click();
+              this.estadoArriba = true;
+              this.scrollenable = true;
+              this.div2.nativeElement.click();
              this.pocisionInicial === true;
 
            } else {
               if (this.swipeDown === true && this.estadoArriba) {
-
+                this.gesture.enable(true);
+                console.log("entro al if de swipeDown")
              //   if (this.pocisionInicial === true) { causante del problema que no bajaba cuando haciamos swipe para abajo
-                 this.scrollenable = false;
-                 this.div2.nativeElement.click();
-                 this.animacion(true, true);
-                 this.scrollenable = false;
-                 this.estadoArriba = false;
+           //     this.gesture.enable(false);
+            //    this.renderer.setStyle(this.div2.nativeElement, 'touch-action', 'none');
+                this.div2.nativeElement.click();
+                this.scrollenable = false;
+               
+                this.animacion(true, true); 
+            //    this.scrollenable = false;
+                this.estadoArriba = false;
 // }
              }
             }
@@ -652,9 +742,61 @@ this.pillMenu.animacion();
     segmentChanged(event) {
        this.slideDown.slideTo(event.detail.value);
       // this.slideUp.slideTo(event.detail.value);
+    } 
+
+    async openPicker() {
+      const picker = await this.pickerController.create({
+          mode : 'ios',
+          buttons: [
+            {
+              text: 'Cancelar',
+              role: 'cancel'
+            },
+            {
+              text: 'Aceptar',
+              handler:  (value: any) => {
+                   if (value.Meses.value === 0) {
+                    this.apiTareas.get().subscribe(data => {
+                      this.LstTareas = data;
+                     });
+                   } else {
+                    this.apiTareas.getTareasMaterias(value.Meses.value).subscribe(data => {
+                     this.LstTareas = data;
+                    });
+                   }
+              }
+            }
+          ],
+          columns: [{
+              name: 'Meses',
+              options: await this.getColumnOptionsMeses()
+            }
+          ]
+      });
+      
+      picker.present();
+  
+    }
+
+    async getColumnOptionsMeses() {
+      const options = [];
+
+
+      this.materias = await this.apiMaterias.get().toPromise();
+    
+      options.push({text: 'Todas' , value: 0});
+
+      this.materias.forEach(x => {
+        options.push({text: x.nombre , value: x.id});
+      });
+  
+      return options;
     }
 
     async nuevoRecurso(itemOption) {
+      
+      itemOption = this.pillMenu.itemsMenu[this.pillMenu.indexAnterior];
+
       if (itemOption === 'Tareas') {
           const modal = await this.modalCrl.create({
             component: NuevoRecursoPage,
@@ -735,9 +877,26 @@ this.pillMenu.animacion();
         });
 
       }
+      else if (itemOption === 'Evidencias') {
+        const modal = await this.modalCrl.create({
+          component: CrearEvidencePage,
+          // cssClass: 'my-custom-modal-css',
+          cssClass: 'my-custom-modal-css-capturas',
+          showBackdrop: false,
+          mode: 'ios',
+          backdropDismiss: true
+        });
+
+        await modal.present();
+
+        modal.onDidDismiss().then( async (data) => {
+          this.evidenceComponent.cargar();
+        });
+
+      }
     }
 
-   async abrirCalendarioSemana(){
+   async abrirCalendarioSemana(item){
 
       const modal = await this.modalCrl.create({
         component: CalendarEventsPage,
@@ -745,7 +904,8 @@ this.pillMenu.animacion();
         cssClass: 'my-custom-modal-css-capturas',
         showBackdrop: false,
         mode: 'ios',
-        backdropDismiss: true
+        backdropDismiss: true,
+        componentProps: {item}
       });
 
       await modal.present();
@@ -779,18 +939,16 @@ this.pillMenu.animacion();
     }
 
     clickHoyCalendario(){
-      console.log("hoy")
-      this.mobi.instance.navigate(new Date(Date.now()),true);
-      console.log(new Date(Date.now()));
+      this.mobi.instance.navigate(new Date(Date.now()), true);
     }
 
     clickCalendario(){
-      console.log('Click Div Calendarios');
+
     }
 
     ////// logica libros quitar cuando se cuando se cambie a componente
     llenar_libros() {
-      console.log('llenar libros');
+
       // this.libros = this.booksService.getPost();
     }
 
@@ -806,13 +964,13 @@ this.pillMenu.animacion();
             role: 'cancel',
             cssClass: 'secondary',
             handler: (blah) => {
-              console.log('Confirm Cancel: blah');
+
             }
           }, {
             text: 'Si',
             handler: () => {
               this.authenticationService.logout().then( data => {
-                  console.log(data);
+
                   this.webSocket.finishWebScoket();
               });
               // this.menu.close();
@@ -841,7 +999,7 @@ this.pillMenu.animacion();
     private subscribeToEvents(): void {
       this.webSocket.connectionEstablished.subscribe((status: any) => {
           this.inforConnectionScoket(status);
-          console.log('Estado conexion:', status);
+          
       });
     }
 

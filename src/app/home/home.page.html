@@ -77,7 +77,7 @@ top: 0;" mode="ios">
     <div #div2 (click)="clickDiv()" style="width: 100%; z-index:5;bottom: 0;position: relative;background: white;border-top-right-radius: 44px;
     border-top-left-radius: 44px;transform: translateY(67vh);">
 
-        <app-pill-menu #pillMenu pillMenu [itemsMenu]="tabs" [selectOption]="selectOption" (indicatorChanged)="segmentChanged($event)" (clickFab)="nuevoRecurso($event)"></app-pill-menu>
+        <app-pill-menu #pillMenu pillMenu [itemsMenu]="tabs" [selectOption]="selectOption" (indicatorChanged)="segmentChanged($event)" (clickFab)="nuevoRecurso($event)" (clickFiltro)="openPicker($event)"></app-pill-menu>
 
         <ion-slides [options]="slideOptsdos" #slideDown (ionSlideTouchEnd)="ionSlideTouchEnd(slideUp,slideDown)" *ngIf="selectSeccion == 1" style="min-height: 72.6vh;">
             <ion-slide>
@@ -115,6 +115,9 @@ top: 0;" mode="ios">
             <ion-slide>
                 <app-list-resource style="width: 100%;"></app-list-resource>
             </ion-slide>
+            <ion-slide>
+                <app-evidences #evidenceComponent style="width: 100%;"></app-evidences>
+            </ion-slide>
         </ion-slides>
 
         <ion-slides #slideDown [options]="slideOptsdos" (ionSlideTouchEnd)="ionSlideTouchEnd(slideUp,slideDown)" *ngIf="selectSeccion == 3" style="min-height: 72.6vh;">
@@ -138,7 +141,7 @@ top: 0;" mode="ios">
                 <div style="width: 100%">
                     <ion-card style="padding-inline-start: 0px;padding-inline-end: 0px;padding-bottom: 0px;">
                         <ion-card-header>
-                            <ion-card-title (click)="clickHoyCalendario()" style="font-size: 15px;">domingo, 19 de julio de 2020</ion-card-title>
+                            <ion-card-title (click)="clickHoyCalendario()" style="font-size: 15px;">{{ now | date: "longDate" }}</ion-card-title>
                         </ion-card-header>
                         <ion-card-content style="padding-inline-start: 0px;padding-inline-end: 0px;padding-bottom: 0px;">
                             <div #calendar style="width: 100%">
@@ -265,6 +268,25 @@ top: 0;" mode="ios">
     </div>
 
 
+    <ion-fab mode="ios" vertical="bottom" horizontal="start" slot="fixed" style="margin-left: 23vw;">
+        <ion-fab-button #fabstart (click)="openPicker($event)" mode="ios" size="small" style="--box-shadow:none ;--background-activated: #F4315D;  --background: #F4315D;width: 46px;
+        height:46px;transform: scale(0);">
+            <ion-icon name="list-outline"></ion-icon>
+
+        </ion-fab-button>
+    </ion-fab>
+    <ion-fab mode="ios" vertical="bottom" horizontal="center" slot="fixed">
+        <ion-fab-button (click)="mover()" mode="ios" size="small" #fab style="--box-shadow:none ;--background-activated: #F4315D;  --background: #F4315D;width: 46px;
+        height:46px;transform: scale(0);">
+            <ion-icon name="chevron-down-outline" style="font-size: 24px;"></ion-icon>
+        </ion-fab-button>
+    </ion-fab>
+    <ion-fab mode="ios" vertical="bottom" horizontal="end" slot="fixed" style="margin-right: 21vw;">
+        <ion-fab-button #fabend (click)="nuevoRecurso($event)" mode="ios" size="small" style="--box-shadow:none ;--background-activated: #F4315D;  --background: #F4315D;width: 46px;
+        height:46px;transform: scale(0);">
+            <ion-icon name="add-outline"></ion-icon>
+        </ion-fab-button>
+    </ion-fab>
 
 </ion-content>
 
@@ -274,38 +296,3 @@ top: 0;" mode="ios">
 
 
 </ion-content>-->
-
-<ion-footer #foot mode="ios" class="ion-no-border" style="border-top-right-radius: 44px;
-border-top-left-radius: 44px;
-height: 10vh;
-background: #ffffff00;
-position: absolute;
-bottom: 0;">
-
-
-
-    <!-- <ion-title #footer style=" text-align: start;padding-left: 2vw;position: absolute;
-            ;">
-        <ion-icon name="time-outline" style="transform: translateY(0.5vh);margin-left: 21px;font-size: 21px;color: #d4d401;"></ion-icon>
-        Today's change</ion-title>-->
-
-    <ion-fab mode="ios" style="left: 168.5px;
-    position: absolute;
-    z-index: 10000;">
-        <ion-fab-button (click)="mover()" mode="ios" #fab style=" --box-shadow:none ;--background-activated: #F4315D;  --background: #F4315D;    width: 46px;
-                    height: 46px;    display: table;margin: 0 auto;transform: scale(0);margin-top: 2vh;">
-            <ion-icon name="chevron-down-outline" style="font-size: 24px;"></ion-icon>
-        </ion-fab-button>
-    </ion-fab>
-    <!--  <ion-title style=" text-align: right;
-    padding-left: 2vw;
-    position: absolute;
-    /* margin-right: 5vw; */
-    padding: 0;
-    padding-right: 11vw;">
-        <ion-icon name="calendar-outline" style="transform: translateY(0.5vh);margin-left: 21px;font-size: 21px;color: #F4315D;"></ion-icon>
-    </ion-title>-->
-
-
-
-</ion-footer>

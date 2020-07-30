@@ -15,5 +15,11 @@ export class CalendarioService extends apiBase {
 
   getCalendario(): Observable<any[]> {
     return this.http.get<any[]>(`${this.url}/api/calendario`);
- }
+  }
+
+  getCalendarioFecha(fecha): Observable<any[]> {
+    //2020-07-01
+    return this.http.get<any[]>(`${this.url}/api/calendario/fecha/${fecha}`);
+  }
+
 }

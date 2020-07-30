@@ -1,3 +1,20 @@
 .mbsc-ios .mbsc-cal .mbsc-cal-btn {
     display: none !important;
 }
+
+$mbsc-mobiscroll-dark-calendar-mark: white;
+.mbsc-mobiscroll .mbsc-cal-mark {
+    background: white !important;
+}
+
+.mbsc-fr-btn {
+    display: none !important;
+}
+
+$mbsc-ios-accent: #e61d2a;
+$mbsc-material-accent: #e61d2a;
+$mbsc-mobiscroll-accent: #e61d2a;
+$mbsc-mobiscroll-frame-background: white;
+.mbsc-mobiscroll .mbsc-lv-item {
+    background: #ffffff !important;
+}

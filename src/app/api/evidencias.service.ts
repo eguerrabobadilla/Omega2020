@@ -6,24 +6,18 @@ import { apiBase } from './apiBase';
 @Injectable({
   providedIn: 'root'
 })
-export class TareasService  extends apiBase {
+export class EvidenciasService  extends apiBase  {
 
   constructor(public http: HttpClient) {
     super();
-    this.Ws = 'api/tareas';
-   }
-
-   save(item: any) {
-
-    return this.http.post(`${this.url}/${this.Ws}`, item);
+    this.Ws = 'api/evidencias';
   }
 
   get(): Observable<any[]> {
     return this.http.get<any[]>(`${this.url}/${this.Ws}`);
   }
 
-  getTareasMaterias(id): Observable<any[]> {
-    return this.http.get<any[]>(`${this.url}/${this.Ws}/materia/${id}`);
+  save(item: any) {
+    return this.http.post(`${this.url}/${this.Ws}`, item);
   }
-
 }

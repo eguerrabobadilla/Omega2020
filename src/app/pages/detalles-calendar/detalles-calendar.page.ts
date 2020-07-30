@@ -13,8 +13,8 @@ export class DetallesCalendarPage implements OnInit {
   constructor(private modalCtrl: ModalController,) { }
 
   ngOnInit() {
-    console.log("input")
-    console.log(this.item);
+   // console.log("input")
+  //  console.log(this.item);
 
   }
 

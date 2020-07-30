@@ -64,3 +64,26 @@ $mbsc-mobiscroll-frame-background: white;
 }
 
 @import "~@mobiscroll/angular/dist/css/mobiscroll.angular.scss";
+//picker
+.sc-ion-picker-ios-h {
+    --background: #0c0c0c !important;
+    color: white;
+    --border-radius: 23px;
+    .picker-above-highlight {
+        background-color: #0c0c0c;
+        background: none;
+    }
+    .picker-below-highlight {
+        background-color: #0c0c0c;
+        background: none;
+    }
+    .picker-button {
+        color: #ffffff;
+        .ion-activated {
+            color: #ffffff !important;
+        }
+    }
+    .picker-toolbar {
+        border: none;
+    }
+}

@@ -1,14 +1,15 @@
-import { Component, OnInit, ChangeDetectorRef, ViewChild, ElementRef, Renderer2 } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, Renderer2, ViewChild, ElementRef } from '@angular/core';
 import { ModalController, AlertController, PickerController, IonInput } from '@ionic/angular';
-import { FormGroup, FormBuilder,Validators  } from '@angular/forms';
-import { RecursosService } from '../api/recursos.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { RecursosService } from '../../api/recursos.service';
+import { EvidenciasService } from '../../api/evidencias.service';
 
 @Component({
-  selector: 'app-new-resource',
-  templateUrl: './new-resource.page.html',
-  styleUrls: ['./new-resource.page.scss'],
+  selector: 'app-crear-evidence',
+  templateUrl: './crear-evidence.page.html',
+  styleUrls: ['./crear-evidence.page.scss'],
 })
-export class NewResourcePage implements OnInit {
+export class CrearEvidencePage implements OnInit {
   @ViewChild('txtFecha', {static: false}) txtFecha: IonInput;
   @ViewChild('txtFecha', {read: ElementRef, static: true}) txtFechaHTML: ElementRef;
   public FrmItem: FormGroup;
@@ -22,19 +23,16 @@ export class NewResourcePage implements OnInit {
   semanaSeleccionada: any;
 
   constructor(private modalCtrl: ModalController, private formBuilder: FormBuilder, private cd:ChangeDetectorRef,
-              private alertCtrl: AlertController, private apiRecursos: RecursosService, private pickerController: PickerController,
-              private renderer: Renderer2) {
-    this.FrmItem = formBuilder.group({
-      Titulo: ['', Validators.compose([Validators.required])],
-      Descripcion: ['', Validators.compose([Validators.required])],
-      FechaPublicacion: ['', Validators.compose([Validators.required])],
-      Image: [null, Validators.compose([Validators.required])]
-    });
-  }
+              private alertCtrl: AlertController, private apiEvidencias: EvidenciasService, private pickerController: PickerController,
+              private renderer: Renderer2) { 
+                this.FrmItem = formBuilder.group({
+                  Titulo: ['', Validators.compose([Validators.required])],
+                  Descripcion: ['', Validators.compose([Validators.required])],
+                  Image: [null, Validators.compose([Validators.required])]
+                });
+              }
 
   ngOnInit() {
-    this.meses   = ['Agosto','Septiembre','Octubre', 'Noviembre', 'Diciembre', 'Enero', 'Febreo', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio'];
-    this.semanas = ['Semana 1', 'Semana 2', 'Semana 3', 'Semana 4'];
   }
 
   async openPicker() {
@@ -48,7 +46,6 @@ export class NewResourcePage implements OnInit {
           text: 'Aceptar',
           handler: (value: any) => {
             this.txtFecha.value = value.Meses.value + ' / ' + value.Semanas.value;
-            this.semanaSeleccionada = value.Semanas.value;
             this.mesSeleccionado = value.Meses.value;
           }
         }
@@ -57,10 +54,6 @@ export class NewResourcePage implements OnInit {
           name: 'Meses',
           options: this.getColumnOptionsMeses()
         },
-        {
-          name: 'Semanas',
-          options: this.getColumnOptionsSemanas()
-        }
       ],
       mode : 'ios',
     });
@@ -100,16 +93,6 @@ export class NewResourcePage implements OnInit {
     return options;
   }
 
-  getColumnOptionsSemanas() {
-    let options = [];
-
-    this.semanas.forEach(x => {
-      options.push({text: x , value: x});
-    });
-
-    return options;
-  }
-
   async crearNoticia() {
     this.submitAttempt = true;
 
@@ -129,17 +112,14 @@ export class NewResourcePage implements OnInit {
     console.log(this.FrmItem.value);
     this.item = this.FrmItem.value;
 
-     
+
     const payload = new FormData();
     payload.append('Titulo', this.item.Titulo);
     payload.append('Descripcion', this.item.Descripcion);
-    payload.append('Ano', '2020');
-    payload.append('Mes', this.mesSeleccionado);
-    payload.append('Semana', this.semanaSeleccionada);
     payload.append('ItemUpload', this.files, this.files.name);
-  
 
-    const tareaUpload = await this.apiRecursos.save(payload).toPromise();
+
+    const tareaUpload = await this.apiEvidencias.save(payload).toPromise();
 
     this.submitAttempt = false;
 
