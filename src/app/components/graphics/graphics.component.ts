@@ -12,6 +12,7 @@ export class GraphicsComponent implements OnInit {
   @ViewChild('barCharttareas', {read: ElementRef, static: true}) barCharttareas: ElementRef;
   @ViewChild('barChartforos', {read: ElementRef, static: true}) barChartforos: ElementRef;
   @ViewChild('barChartrecursos', {read: ElementRef, static: true}) barChartrecursos: ElementRef;
+  @ViewChild('barCharttemas', {read: ElementRef, static: true}) barCharttemas: ElementRef;
 
   bars: any;
   colorArray: any;
@@ -19,6 +20,7 @@ export class GraphicsComponent implements OnInit {
   public tareas: any[] = [];
   public foros: any[] = [];
   public recursos: any[] = [];
+  public temas: any[] = [];
   public color: any;
 
 
@@ -36,6 +38,7 @@ export class GraphicsComponent implements OnInit {
             this.tareas.push(item.tareas);
             this.foros.push(item.foros);
             this.recursos.push(item.recursos);
+            this.temas.push(item.temas);
       });
 
       console.log(this.tareas);
@@ -43,6 +46,7 @@ export class GraphicsComponent implements OnInit {
       this.createBarChart(this.tareas, this.barCharttareas, '#F4315D');
       this.createBarChart(this.foros, this.barChartforos, '#6228cf');
       this.createBarChart(this.recursos, this.barChartrecursos, '#FF426D');
+      this.createBarChart(this.temas, this.barCharttemas, '#FF426D');
     });
   }
 

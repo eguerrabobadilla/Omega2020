@@ -37,6 +37,9 @@ import { CalendarEventsPageModule } from '../pages/calendar-events/calendar-even
 import { EvidencesComponent } from '../components/evidences/evidences.component';
 import { CrearEvidencePage } from '../pages/crear-evidence/crear-evidence.page';
 import { CrearEvidencePageModule } from '../pages/crear-evidence/crear-evidence.module';
+import { CrearTopicPage } from '../pages/crear-topic/crear-topic.page';
+import { CrearTopicPageModule } from '../pages/crear-topic/crear-topic.module';
+import { SubjectsComponent } from '../components/subjects/subjects.component';
 
 
 
@@ -51,8 +54,8 @@ import { CrearEvidencePageModule } from '../pages/crear-evidence/crear-evidence.
     DetalleChatGroupPage,
     NewResourcePage,
     CalendarEventsPage,
-    CrearEvidencePage
-    
+    CrearEvidencePage,
+    CrearTopicPage
   ],
   imports: [ 
     MbscModule,  
@@ -74,10 +77,11 @@ import { CrearEvidencePageModule } from '../pages/crear-evidence/crear-evidence.
     NewResourcePageModule,
     CrearNewsPageModule,
     CalendarEventsPageModule,
-    CrearEvidencePageModule
+    CrearEvidencePageModule,
+    CrearTopicPageModule
   ],
   declarations: [ HomePage, PillMenuComponent, BooksComponent, CodesComponent, ListComponent, 
     ChatsComponent, FilterPipe, ListResourceComponent, NewsComponent, ForumComponent,GraphicsComponent,CalendarComponent
-    , EvidencesComponent ]
+    , EvidencesComponent,SubjectsComponent]
 })
 export class HomePageModule {}

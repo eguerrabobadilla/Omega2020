@@ -25,6 +25,7 @@ import { CalendarioService } from '../api/calendario.service';
 import { MateriasService } from '../api/materias.service';
 import { CrearEvidencePage } from '../pages/crear-evidence/crear-evidence.page';
 import { EvidencesComponent } from '../components/evidences/evidences.component';
+import { CrearTopicPage } from '../pages/crear-topic/crear-topic.page';
 
 
 
@@ -588,13 +589,12 @@ this.pillMenu.animacion();
       this.tabs = ['Noticias', 'Mensajes', 'Calendario'];
 
      } else if (index === 4) {
-            // this.tabs = ['Perfil', 'Clases', 'Usuarios', 'Estadísticas', 'Cerrar Sesión'];
-            this.tabs = ['Perfil', 'Clases', 'Estadísticas'];
+            this.tabs = ['Perfil', 'Materias', 'Estadísticas'];
      } else if (index === 5) {
       this.tabs = ['Preguntas', 'Videos', 'Contacto'];
       } else if (index === 6) {
         this.tabs = ['Alumnos', 'Docentes', 'Cordinadores'];
-        }
+      }
 
       this.selectOption = '0';
       // console.log(await this.slideDown.getActiveIndex().toString());
@@ -893,6 +893,24 @@ this.pillMenu.animacion();
           this.evidenceComponent.cargar();
         });
 
+      }
+      else if (itemOption === 'Calendario') {
+        const modal = await this.modalCrl.create({
+          component: CrearTopicPage,
+          // cssClass: 'my-custom-modal-css',
+          cssClass: 'my-custom-modal-css-capturas',
+          showBackdrop: false,
+          mode: 'ios',
+          backdropDismiss: true
+        });
+
+        await modal.present();
+
+        modal.onDidDismiss().then( async (data) => {
+          this.apiCalendario.getCalendario().subscribe(data => {
+            this.events = data;
+            });
+        });
       }
     }
 

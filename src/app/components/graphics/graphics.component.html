@@ -16,6 +16,9 @@
                 <ion-col>
                     <div class="numeros">{{Estadisticas.recursos}}</div>
                 </ion-col>
+                <ion-col>
+                    <div class="numeros">{{Estadisticas.temas}}</div>
+                </ion-col>
             </ion-row>
             <ion-row>
                 <ion-col>
@@ -26,6 +29,9 @@
                 </ion-col>
                 <ion-col>
                     <div>Recursos</div>
+                </ion-col>
+                <ion-col>
+                    <div>Temas</div>
                 </ion-col>
             </ion-row>
         </ion-grid>
@@ -42,10 +48,7 @@
         <canvas #barChartforos></canvas>
         <ion-card-subtitle style="text-align: center;font-size: 17px; --color: #000;padding-top: 40px;">Recursos</ion-card-subtitle>
         <canvas #barChartrecursos></canvas>
-
-
-
+        <ion-card-subtitle style="text-align: center;font-size: 17px; --color: #000;padding-top: 40px;">Temas</ion-card-subtitle>
+        <canvas #barCharttemas></canvas>
     </ion-card-content>
-
-
 </ion-card>
