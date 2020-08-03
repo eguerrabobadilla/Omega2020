@@ -26,6 +26,8 @@ import { FileTransfer } from '@ionic-native/file-transfer/ngx';
 import { FileOpener } from '@ionic-native/file-opener/ngx';
 import { DetalleChatGroupPageModule } from './pages/detalle-chat-group/detalle-chat-group.module';
 
+//import {ModusEcho} from 'modusecho/www/ModusEcho';
+
 import { FormsModule } from '@angular/forms';
 
 
@@ -59,6 +61,7 @@ import { FormsModule } from '@angular/forms';
     FileTransfer,
     FileOpener,
     File,
+  //  ModusEcho,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: HTTP_INTERCEPTORS,useClass: AuthInterceptorService,multi: true}
   ],

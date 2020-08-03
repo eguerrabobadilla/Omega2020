@@ -31,13 +31,17 @@
     "@ionic/angular": "^5.0.0",
     "@mobiscroll/angular": "file:./src/lib/mobiscroll-package/mobiscroll-angular-4.10.6.tgz",
     "chart.js": "^2.9.3",
+    "com-moduscreate-plugins-echo": "/Users/appalfalbs/Documents/plugin/modusechoplugin/ModusEcho",
     "cordova-android": "8.1.0",
     "cordova-browser": "6.0.0",
     "cordova-ios": "4.5.5",
     "cordova-plugin-file": "^6.0.2",
     "cordova-plugin-file-opener2": "^3.0.4",
     "cordova-plugin-file-transfer": "^1.7.1",
+    "cordova-plugin-plantilla": "git+https://github.com/thecouk/ionic-cordova-plugin-template.git",
+    "cordova-sqlite-storage": "^5.0.1",
     "core-js": "^2.5.4",
+    "modusecho": "file:../plugin/modusechoplugin/ModusEcho",
     "rxjs": "~6.5.1",
     "tslib": "^1.9.0",
     "zone.js": "~0.9.1",
@@ -46,7 +50,8 @@
     "cordova-plugin-device": "2.0.2",
     "cordova-plugin-splashscreen": "5.0.2",
     "cordova-plugin-ionic-webview": "^4.0.0",
-    "cordova-plugin-ionic-keyboard": "^2.0.5"
+    "cordova-plugin-ionic-keyboard": "^2.0.5",
+    "mi-plugin": "https://github.com/thecouk/ionic-cordova-plugin-template.git"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.803.20",
@@ -93,7 +98,10 @@
       "cordova-plugin-file-transfer": {},
       "cordova-plugin-file-opener2": {
         "ANDROID_SUPPORT_V4_VERSION": "27.+"
-      }
+      },
+      "com-moduscreate-plugins-echo": {},
+      "cordova-sqlite-storage": {},
+      "mi-plugin": {}
     },
     "platforms": [
       "android",
