@@ -177,14 +177,14 @@ export class HomePage {
       if (this.estadoArriba) { return; }
 
     // el ion tool bar le vamos hacer un trnasfor en el eje de la Y  hasta transform: translateY(-5vh);
-      animation2 = this.animationCtrl.create('my-animation-identifier2')
+      animation2 = this.animationCtrl.create('identifier2-a')
     .addElement(this.toolbar.nativeElement)
     .duration(300)
     .delay(50)
     .easing('cubic-bezier(0,.70,.45,1)') // muy lento al ultimo -> cubic-bezier(0,.70,.45,1)
     .fromTo('transform', 'translateY(0)', 'translateY(-3vh)');
 
-      animation4 = this.animationCtrl.create('my-animation-identifier4')
+      animation4 = this.animationCtrl.create('identifier4-a')
     .addElement(this.toolbar1.nativeElement)
     .beforeAddClass('colortoolbarUP')
     .duration(300)
@@ -192,7 +192,7 @@ export class HomePage {
     .easing('cubic-bezier(0,.70,.45,1)') // muy lento al ultimo -> cubic-bezier(0,.70,.45,1)
     .fromTo('transform', 'translateY(0)', 'translateY(-7vh)');
 
-      animation3 = this.animationCtrl.create('my-animation-identifier3')
+      animation3 = this.animationCtrl.create('identifier3-a')
     .addElement(this.text.nativeElement)
     .duration(300)
     .delay(50)
@@ -210,7 +210,7 @@ export class HomePage {
 
 
 
-      animation6 = this.animationCtrl.create('my-animation-identifier3')
+      animation6 = this.animationCtrl.create('identifier6-a')
     .addElement(this.fab.nativeElement)
     .afterAddClass('zindexFooter')
     .duration(700)
@@ -221,21 +221,21 @@ export class HomePage {
    { offset: 0.5, transform: 'scale(1.3)' },
    { offset: 1, transform: 'scale(1)' }, ]);
 
-      animation7 = this.animationCtrl.create('my-animation-identifier3')
+      animation7 = this.animationCtrl.create('identifier7-a')
    .addElement(this.animation7.nativeElement)
    .duration(300)
    .delay(50)
    .easing('cubic-bezier(.51,1,.88,1)')
    .fromTo('transform', ' perspective(1px) translateY(0) translateZ(0) translateX(0) scale(1)', 'perspective(1px) translateY(-18vh) translateZ(0) translateX(-7vw) scale(0.6)');
 
-      animation8 = this.animationCtrl.create('my-animation-identifier3')
+      animation8 = this.animationCtrl.create('identifier8-a')
    .addElement(this.animation8.nativeElement)
    .duration(300)
    .delay(40)
    .easing('cubic-bezier(.51,1,.88,1)')
    .fromTo('transform', '  translate(0, 0)', ' translate(-2vw, -15.5vh)');
 
-      animation9 = this.animationCtrl.create('my-animation-identifier9A')
+      animation9 = this.animationCtrl.create('identifier9-a')
        .addElement(this.fabstart.nativeElement)
        .afterAddClass('zindexFooter')
        .duration(700)
@@ -246,7 +246,7 @@ export class HomePage {
       { offset: 0.5, transform: 'scale(1.3)' },
       { offset: 1, transform: 'scale(1)' }, ]);
 
-      animation10 = this.animationCtrl.create('my-animation-identifier10')
+      animation10 = this.animationCtrl.create('identifier10-a')
         .addElement(this.fabend.nativeElement)
         .afterAddClass('zindexFooter')
         .duration(700)
@@ -284,14 +284,14 @@ export class HomePage {
   //  this.renderer.removeClass(this.foot.nativeElement, 'sombraFooter');
     
     this.pillMenu.quitarSombra();
-    animation2 = this.animationCtrl.create('my-animation-identifier2')
+    animation2 = this.animationCtrl.create('identifier2-b')
     .addElement(this.toolbar.nativeElement)
     .duration(300)
     .delay(50)
     .easing('cubic-bezier(0,.70,.45,1)') // muy lento al ultimo -> cubic-bezier(0,.70,.45,1)
     .fromTo('transform', 'translateY(-3vh)', 'translateY(0)');
 
-    animation4 = this.animationCtrl.create('my-animation-identifier4')
+    animation4 = this.animationCtrl.create('identifier4-b')
     .addElement(this.toolbar1.nativeElement)
     .beforeAddClass('colortoolbarDOWN')
     .duration(300)
@@ -300,7 +300,7 @@ export class HomePage {
     .fromTo('transform', 'translateY(-7vh)', 'translateY(0)');
 
 
-    animation3 = this.animationCtrl.create('my-animation-identifier3')
+    animation3 = this.animationCtrl.create('identifier3-b')
     .addElement(this.text.nativeElement)
     .duration(300)
     .delay(50)
@@ -319,7 +319,7 @@ export class HomePage {
 
 
 
-    animation6 = this.animationCtrl.create('my-animation-identifier3')
+    animation6 = this.animationCtrl.create('identifier6-b')
     .addElement(this.fab.nativeElement)
     .afterAddClass('zindexFooter')
     .duration(200)
@@ -329,21 +329,21 @@ export class HomePage {
 
    { offset: 1, transform: 'scale(0)' }, ]);
 
-    animation7 = this.animationCtrl.create('my-animation-identifier3')
+    animation7 = this.animationCtrl.create('identifier7-b')
    .addElement(this.animation7.nativeElement)
    .duration(300)
    .delay(50)
    .easing('cubic-bezier(.51,1,.88,1)')
    .fromTo('transform', 'perspective(1px) translateY(-18vh) translateZ(0) translateX(-7vw) scale(0.6)', ' perspective(1px) translateY(0) translateZ(0) translateX(0) scale(1)');
 
-    animation8 = this.animationCtrl.create('my-animation-identifier3')
+    animation8 = this.animationCtrl.create('identifier8-b')
    .addElement(this.animation8.nativeElement)
    .duration(280)
    .delay(0)
    .fromTo('transform' , 'translate(-2vw, -15.5vh)', 'translate(0, 0)');
     
 
-      animation9 = this.animationCtrl.create('my-animation-identifier9B')
+      animation9 = this.animationCtrl.create('identifier9-b')
      .addElement(this.fabstart.nativeElement)
      .afterAddClass('zindexFooter')
      .duration(200)
@@ -355,7 +355,7 @@ export class HomePage {
    
 
    
-       animation10 = this.animationCtrl.create('my-animation-identifier10B')
+       animation10 = this.animationCtrl.create('identifier10-b')
       .addElement(this.fabend.nativeElement)
       .afterAddClass('zindexFooter')
       .duration(200)
@@ -411,7 +411,7 @@ export class HomePage {
   mover() {
     if (this.pocisionInicial) {
     this.animacion(true, false);
-    const animation5: Animation = this.animationCtrl.create('bouceEduardo')
+    const animation5: Animation = this.animationCtrl.create('bouceEduardohome')
     .addElement(this.div2.nativeElement)
     .duration(350)
     .delay(0)
@@ -466,9 +466,9 @@ this.renderer.addClass(this.div2.nativeElement, 'quitarBottom');
   //  animation5.destroy();
 */
 if (esHaciaArriba) {
-const animation5: Animation = this.animationCtrl.create('bouceEduardo')
+const animation5: Animation = this.animationCtrl.create('bouceEduardo-b')
     .addElement(this.div2.nativeElement)
-    .duration(1150)
+    .duration(550)
     .delay(60)
     .easing(' cubic-bezier(0,.70,.45,1)')
 // .beforeStyles({bottom:'-16vh'})
@@ -497,7 +497,7 @@ this.pillMenu.animacion();
 
     } else {
      // this.scrollenable=false;
-      const animation5: Animation = this.animationCtrl.create('bouceEduardo')
+      const animation5: Animation = this.animationCtrl.create('bouceEduardo-c')
   .addElement(this.div2.nativeElement)
   .duration(350)
   .delay(0)

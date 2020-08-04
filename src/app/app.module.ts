@@ -26,6 +26,8 @@ import { FileTransfer } from '@ionic-native/file-transfer/ngx';
 import { FileOpener } from '@ionic-native/file-opener/ngx';
 import { DetalleChatGroupPageModule } from './pages/detalle-chat-group/detalle-chat-group.module';
 
+//import {ModusEcho} from 'modusecho/www/ModusEcho';
+
 import { FormsModule } from '@angular/forms';
 import { IonicStorageModule } from '@ionic/storage';
 import { Zip } from '@ionic-native/zip/ngx';

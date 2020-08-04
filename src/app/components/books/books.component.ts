@@ -15,7 +15,10 @@ import { stat } from 'fs';
   styleUrls: ['./books.component.scss'],
 })
 export class BooksComponent implements OnInit {
+
+
   libros: any[] = [];
+  //private  BackgroundGeolocation: modusecho;
   @Input() librosIN: any[];
 
   constructor(public  webSocket: WebsocketService,private serviceDownload: DownloadFileService,private transfer: FileTransfer,
@@ -23,46 +26,58 @@ export class BooksComponent implements OnInit {
 
   }
 
-  ngOnInit() {
-    this.libros = this.librosIN;
-  }
-
-  async openBook(item){
-    console.log(item);
-    const { Browser } = Plugins;
-
-    if (this.platform.is('cordova')) {
-        this.verificarLibro(item);
-    } else {
-      console.log("Opcion solo en celular")
-    }
-  }
-
-  //Verifica si el existen el libro en el alamacenamiento
-  verificarLibro(item){
-    const directory = this.file.externalDataDirectory;
-
-    this.file.checkDir(directory,'Libro'+ item.id).then(_ =>{
-        console.log("Existe el directorio");
-        //Verifica conexion con el servidor
-        const status = this.webSocket.getStatusSocket() == 1 ? true : false;
-
-        if(status==false)
-           console.log(status);
-        else 
-          this.buscarActualizaciones();
-
-    }).catch(err => {
-        console.log("No exite el directorio");
-        this.booksService.getBook(item.id).subscribe(data => {
-          this.download(data["url"],item);
-        });
-    });
-  }
-
-  buscarActualizaciones() {
+    ngOnInit() {
+      this.libros = this.librosIN;
+    //Realiza el llamado al plugin e invoca segun el resultado la funcion correspondiente
+    
       
-  }
+    }
+
+    visualizarLibro() {
+      //modusecho.echo(['dsfadsf','1',"Lbs"]);
+      (<any>window).modusecho.echo(['dsfadsf','1',"Lbs"]);
+    }
+      //Funcion para desplegar la respuesta cuando es satisfactorio
+      successCallback(message){
+        alert(message);
+    }
+
+    async openBook(item){
+      console.log(item);
+      const { Browser } = Plugins;
+
+      if (this.platform.is('cordova')) {
+          this.verificarLibro(item);
+      } else {
+        console.log("Opcion solo en celular")
+      }
+    }
+
+    //Verifica si el existen el libro en el alamacenamiento
+    verificarLibro(item){
+      const directory = this.file.externalDataDirectory;
+
+      this.file.checkDir(directory,'Libro'+ item.id).then(_ =>{
+          console.log("Existe el directorio");
+          //Verifica conexion con el servidor
+          const status = this.webSocket.getStatusSocket() == 1 ? true : false;
+
+          if(status==false)
+            console.log(status);
+          else 
+            this.buscarActualizaciones();
+
+      }).catch(err => {
+          console.log("No exite el directorio");
+          this.booksService.getBook(item.id).subscribe(data => {
+            this.download(data["url"],item);
+          });
+      });
+    }
+
+    buscarActualizaciones() {
+        
+    }
 
   download(url,item) {
     const fileTransfer: FileTransferObject = this.transfer.create();
