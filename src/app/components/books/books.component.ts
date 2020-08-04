@@ -55,7 +55,7 @@ export class BooksComponent implements OnInit {
 
   //Verifica si el existen el libro en el alamacenamiento
   verificarLibro(item){
-    const directory = this.file.externalDataDirectory;
+    const directory = this.file.dataDirectory + "books2020/";
     
     console.log(directory);
     console.log('Libro'+ item.id);
@@ -63,7 +63,7 @@ export class BooksComponent implements OnInit {
     this.existeDirectorio(directory,'Libro'+ item.id,item).then(_ =>{
         //Verifica conexion con el servidor
         const status = this.webSocket.getStatusSocket() == 1 ? true : false;
-
+        console.log("pathLibro",directory + 'Libro'+ item.id);
         if(status==false)
           //console.log(status);
           (<any>window).modusecho.echo([directory + 'Libro'+ item.id,'1',"Lbs"]);
@@ -102,13 +102,15 @@ export class BooksComponent implements OnInit {
     const fileTransfer: FileTransferObject = this.transfer.create();
 
     const nameFile ='Libro'+ item.id + '.zip';
-    const directory = this.file.externalDataDirectory;
+    const directory = this.file.dataDirectory + "books2020/";
     
-    //this.file.dataDirectory
+    //this.file.externalDataDirectory
 
     //Descarga libro
     fileTransfer.download(url, directory + nameFile).then(entry => {
       //Descomprime libro
+      console.log(entry.toURL());
+      console.log(directory + 'Libro'+ item.id);
       return this.zip.unzip(entry.toURL(), directory + 'Libro'+ item.id,(progress) => console.log('Unzipping, ' + Math.round((progress.loaded / progress.total) * 100) + '%'));
     })
     .then(result =>{
