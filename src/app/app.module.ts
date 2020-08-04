@@ -29,15 +29,8 @@ import { DetalleChatGroupPageModule } from './pages/detalle-chat-group/detalle-c
 //import {ModusEcho} from 'modusecho/www/ModusEcho';
 
 import { FormsModule } from '@angular/forms';
-
-
-
-
-
-
-
-
-
+import { IonicStorageModule } from '@ionic/storage';
+import { Zip } from '@ionic-native/zip/ngx';
 
 @NgModule({
   declarations: [AppComponent, AnimateItemsDirective],
@@ -47,6 +40,10 @@ import { FormsModule } from '@angular/forms';
     BrowserModule,
     AppRoutingModule,
     IonicModule.forRoot({mode:'ios', scrollPadding:false,scrollAssist:true}),
+    IonicStorageModule.forRoot({
+      name: '__books',
+      driverOrder: ['sqlite','indexeddb', 'websql']
+    }), 
     HttpClientModule,
     ReactiveFormsModule,
     DetallesForumPageModule,
@@ -61,7 +58,7 @@ import { FormsModule } from '@angular/forms';
     FileTransfer,
     FileOpener,
     File,
-  //  ModusEcho,
+    Zip,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: HTTP_INTERCEPTORS,useClass: AuthInterceptorService,multi: true}
   ],
