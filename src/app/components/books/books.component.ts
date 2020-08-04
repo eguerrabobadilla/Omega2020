@@ -8,6 +8,7 @@ import { Platform } from '@ionic/angular';
 import { BooksService } from 'src/app/services/books.service';
 import { Zip } from '@ionic-native/zip/ngx';
 import { stat } from 'fs';
+import { computeStackId } from '@ionic/angular/directives/navigation/stack-utils';
 
 @Component({
   selector: 'app-books',
@@ -26,58 +27,76 @@ export class BooksComponent implements OnInit {
 
   }
 
-    ngOnInit() {
-      this.libros = this.librosIN;
-    //Realiza el llamado al plugin e invoca segun el resultado la funcion correspondiente
+  ngOnInit() {
+    this.libros = this.librosIN;
+  //Realiza el llamado al plugin e invoca segun el resultado la funcion correspondiente
+  
     
-      
+  }
+
+  visualizarLibro() {
+    //modusecho.echo(['dsfadsf','1',"Lbs"]);
+  }
+    //Funcion para desplegar la respuesta cuando es satisfactorio
+  successCallback(message){
+      alert(message);
+  }
+
+  async openBook(item){
+    console.log(item);
+    const { Browser } = Plugins;
+
+    if (this.platform.is('cordova')) {
+        this.verificarLibro(item);
+    } else {
+      console.log("Opcion solo en celular")
     }
+  }
 
-    visualizarLibro() {
-      //modusecho.echo(['dsfadsf','1',"Lbs"]);
-      (<any>window).modusecho.echo(['dsfadsf','1',"Lbs"]);
-    }
-      //Funcion para desplegar la respuesta cuando es satisfactorio
-      successCallback(message){
-        alert(message);
-    }
+  //Verifica si el existen el libro en el alamacenamiento
+  verificarLibro(item){
+    const directory = this.file.externalDataDirectory;
+    
+    console.log(directory);
+    console.log('Libro'+ item.id);
 
-    async openBook(item){
-      console.log(item);
-      const { Browser } = Plugins;
+    this.existeDirectorio(directory,'Libro'+ item.id,item).then(_ =>{
+        //Verifica conexion con el servidor
+        const status = this.webSocket.getStatusSocket() == 1 ? true : false;
 
-      if (this.platform.is('cordova')) {
-          this.verificarLibro(item);
-      } else {
-        console.log("Opcion solo en celular")
-      }
-    }
+        if(status==false)
+          //console.log(status);
+          (<any>window).modusecho.echo([directory + 'Libro'+ item.id,'1',"Lbs"]);
+        else
+          (<any>window).modusecho.echo([directory + 'Libro'+ item.id,'1',"Lbs"]); 
+          //this.buscarActualizaciones();
 
-    //Verifica si el existen el libro en el alamacenamiento
-    verificarLibro(item){
-      const directory = this.file.externalDataDirectory;
+    }).catch(err => {
+        console.log(err);
+    });
+  }
 
-      this.file.checkDir(directory,'Libro'+ item.id).then(_ =>{
+  existeDirectorio(directory,path,item){
+    var promise = new Promise((resolve, reject) => {
+      this.file.checkDir(directory,path).then(_ =>{
           console.log("Existe el directorio");
-          //Verifica conexion con el servidor
-          const status = this.webSocket.getStatusSocket() == 1 ? true : false;
-
-          if(status==false)
-            console.log(status);
-          else 
-            this.buscarActualizaciones();
-
+          resolve();
       }).catch(err => {
-          console.log("No exite el directorio");
+          console.log("No existe el directorio");
+          console.log(err);
           this.booksService.getBook(item.id).subscribe(data => {
             this.download(data["url"],item);
+            reject();
           });
       });
-    }
+    });
 
-    buscarActualizaciones() {
-        
-    }
+    return promise;
+  }
+
+  buscarActualizaciones() {
+      
+  }
 
   download(url,item) {
     const fileTransfer: FileTransferObject = this.transfer.create();

@@ -103,7 +103,6 @@
       },
       "cordova-sqlite-storage": {},
       "cordova-plugin-zip": {},
-      "com-moduscreate-plugins-echo": {},
       "mi-plugin": {}
     },
     "platforms": [
