@@ -83,7 +83,7 @@ export class HomePage {
 };
 
   @ViewChild('slideDown', {static: false}) slideDown: IonSlides;
-  @ViewChild('slideUp', {static: true}) slideUp: IonSlides;
+  @ViewChild('slideUp', {static: false}) slideUp: IonSlides;
   @ViewChild('slideVertical', {static: true}) slideVertical: IonSlides;
   @ViewChild('toolbar', {read: ElementRef, static: true}) toolbar: ElementRef;
   @ViewChild('toolbar1', {read: ElementRef, static: true}) toolbar1: ElementRef;
@@ -129,7 +129,7 @@ export class HomePage {
     grado  : ''
   };
   slideOpts = {
-    loop: true
+    loop: true,
   };
   slideOptsdos = {
     autoHeight: true
@@ -435,7 +435,6 @@ export class HomePage {
   }
 
 librosDescargados(Libros) {
-
     this.libros = Libros;
     this.codigoVisible = false;
     this.pillMenu.nextSegment('0');
@@ -561,11 +560,11 @@ this.pillMenu.animacion();
 
      if (this.estadoArriba) {
 
-       this.slideUp.lockSwipes(true);
+       //this.slideUp.lockSwipes(true);
 
       } else {
 
-      this.slideUp.lockSwipes(false);
+      //this.slideUp.lockSwipes(false);
       }
 
     }
@@ -657,17 +656,24 @@ this.pillMenu.animacion();
     }
 
     ionViewDidEnter() {
-      setTimeout(() => {
+      setTimeout(async () => {
         const status = this.webSocket.getStatusSocket() == 1 ? true : false;
         this.inforConnectionScoket(status);
+        if(status==true) {
+          this.LstTareas = await this.apiTareas.get().toPromise();
+        }
+        else
+        {
+          console.log("listo");
+          this.slideUp.lockSwipes(true);
+        }
       }, 100);
 
     }
     async ngOnInit() {
       this.subscribeToEvents();
 
-      this.LstTareas = await this.apiTareas.get().toPromise();
-
+      //this.LstTareas = await this.apiTareas.get().toPromise();
 
       this.iconos = ['people-outline', 'watch-outline', 'leaf-outline', 'shield-outline', 'leaf-outline'];
       this.headersText = ['Books', 'Tasks', 'Community', 'Account', 'Support', 'Users'];

@@ -1,6 +1,10 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { LoadingController, AlertController } from '@ionic/angular';
 import { BooksService } from '../../services/books.service';
+import { Storage } from '@ionic/storage';
+import { WebsocketService } from 'src/app/services/websocket.service';
+import { convertActionBinding } from '@angular/compiler/src/compiler_util/expression_converter';
+import { Libroscodigos } from 'src/app/models/Libroscodigos';
 
 @Component({
   selector: 'app-codes',
@@ -16,10 +20,74 @@ export class CodesComponent implements OnInit {
   };
 
   constructor(private loadingController: LoadingController, private booksService: BooksService,
-              private alertController: AlertController) {    
+              private alertController: AlertController,private storage: Storage,public  webSocket: WebsocketService) {    
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.storage.get('books').then((librosLocales) => {
+      const status = this.webSocket.getStatusSocket() == 1 ? true : false;
+      //console.log(librosLocales);
+
+      if(status === true)
+      {
+        console.log("Con conexion a internet");
+        const tipo  = this.getKeyToken('tipo');
+
+        //Si el tipo es alumno y no hay libros guardados de manera local en la bd
+        if(tipo==="Alumno" && librosLocales==null) {
+          this.booksService.getBooksGrado().subscribe(data => {
+            this.libros = data;
+            this.librosDescargados.emit(this.libros);
+            this.storage.set('books',this.libros);
+          });
+        }
+        else if(tipo==="Alumno") {
+          this.booksService.getBooksGrado().subscribe(data => {
+            
+            //Busca si viene algun nuevo libro del servidor
+            data.forEach(element => {
+               const libroD = librosLocales.filter(l => l.id == element.id);
+               if(libroD.length == 0)
+                  librosLocales.push(element);
+            });
+
+            //Busco si algun libro ya no debe estar en el dispostivo
+            let index=0;
+            librosLocales.forEach(element => {
+              const libroD = data.filter(l => l.id == element.id);
+              if(libroD.length == 0)
+                 librosLocales.splice(index,1);
+                 //console.log(element);
+              index++;
+           });
+
+            this.libros = librosLocales;
+            this.librosDescargados.emit(this.libros);
+            this.storage.set('books',this.libros);
+          });
+        }
+      }
+      else {
+        this.libros = librosLocales;
+        this.librosDescargados.emit(this.libros);
+      }
+    });
+  }
+
+  getKeyToken(key: string): string {
+
+    const jwt = localStorage.getItem('USER_INFO');
+
+    const jwtData = jwt.split('.')[1];
+    // let decodedJwtJsonData = window.atob(jwtData);
+    const decodedJwtJsonData = decodeURIComponent(escape(window.atob(jwtData)));
+    const decodedJwtData = JSON.parse(decodedJwtJsonData);
+
+    const value = decodedJwtData[key];
+
+    return value;
+  }
+
 
   async IngresarCodigo() {
     let loading;
@@ -37,7 +105,7 @@ export class CodesComponent implements OnInit {
       const code = this.FrmCodigo.codigo;
       this.libros =  await this.booksService.getBooks(code).toPromise();
 
-
+      await this.storage.set('books',this.libros);
 
       await this.loadingController.dismiss();
 
