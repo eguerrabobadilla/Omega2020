@@ -1,10 +1,10 @@
-<ion-virtual-scroll  [items]="items" approxItemHeight="320px">
+<ion-virtual-scroll [items]="items" approxItemHeight="320px">
 
 
     <ion-card style="text-align: initial;" class="ion-activatable ripple-parent" mode="ios" *virtualItem="let item; let itemBounds = bounds;">
         <ion-ripple-effect></ion-ripple-effect>
         <ion-card-header>
-            <ion-card-title>{{ item.name }}</ion-card-title>
+            <ion-card-title>{{ item.name }}s</ion-card-title>
         </ion-card-header>
         <ion-card-content>{{ item.content }}</ion-card-content>
     </ion-card>
