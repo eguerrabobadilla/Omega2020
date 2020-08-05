@@ -76,8 +76,8 @@ top: 0;" mode="ios">
 
     <div #div2 (click)="clickDiv()" style="width: 100%; z-index:5;bottom: 0;position: relative;background: white;border-top-right-radius: 44px;
     border-top-left-radius: 44px;transform: translateY(67vh);min-height: 100%;">
-        <div style="position: -webkit-sticky;top: 0;font-size: 29px;z-index: 999;">
-        <app-pill-menu #pillMenu pillMenu [itemsMenu]="tabs" [selectOption]="selectOption" (indicatorChanged)="segmentChanged($event)" (clickFab)="nuevoRecurso($event)" (clickFiltro)="openPicker($event)"></app-pill-menu>
+        <div style="position: -webkit-sticky;top: 0;font-size: 29px;z-index: 999;position: sticky;">
+            <app-pill-menu #pillMenu pillMenu [itemsMenu]="tabs" [selectOption]="selectOption" (indicatorChanged)="segmentChanged($event)" (clickFab)="nuevoRecurso($event)" (clickFiltro)="openPicker($event)"></app-pill-menu>
         </div>
         <ion-slides [options]="slideOptsdos" #slideDown (ionSlideTouchEnd)="ionSlideTouchEnd(slideUp,slideDown)" *ngIf="selectSeccion == 1" style="min-height: 72.6vh;">
             <ion-slide>
@@ -99,7 +99,7 @@ top: 0;" mode="ios">
 
         <ion-slides #slideDown [options]="slideOptsdos" (ionSlideTouchEnd)="ionSlideTouchEnd(slideUp,slideDown)" *ngIf="selectSeccion == 2" style="min-height: 72.6vh;">
             <ion-slide>
-              <!-- <ion-virtual-scroll [items]="LstTareas" approxItemHeight="320px">
+                <!-- <ion-virtual-scroll [items]="LstTareas" approxItemHeight="320px">
                     <ion-card style="text-align: initial;" class="ion-activatable ripple-parent" mode="ios" *virtualItem="let item; let itemBounds = bounds;" (click)="openDetail($event,item)">
                         <ion-ripple-effect></ion-ripple-effect>
                         <ion-card-header>
@@ -107,7 +107,7 @@ top: 0;" mode="ios">
                         </ion-card-header>
                         <ion-card-content>{{ item.descripcion }}</ion-card-content>
                     </ion-card>
-                </ion-virtual-scroll>--> 
+                </ion-virtual-scroll>-->
                 <ion-list>
                     <ion-card style="text-align: initial;" class="ion-activatable ripple-parent" mode="ios" *ngFor="let item of LstTareas" (click)="openDetail($event,item)">
                         <ion-ripple-effect></ion-ripple-effect>
@@ -116,6 +116,7 @@ top: 0;" mode="ios">
                         </ion-card-header>
                         <ion-card-content>{{ item.descripcion }}</ion-card-content>
                     </ion-card>
+
                 </ion-list>
             </ion-slide>
             <ion-slide>
@@ -180,7 +181,7 @@ top: 0;" mode="ios">
         <ion-slides #slideDown [options]="slideOptsdos" (ionSlideTouchEnd)="ionSlideTouchEnd(slideUp,slideDown)" *ngIf="selectSeccion == 5 || selectSeccion == 6 " style="min-height: 72.6vh;">
 
             <ion-slide>
-                <app-list style="width: 100%;"></app-list>
+                <app-questions style="width: 100%;"></app-questions>
             </ion-slide>
             <ion-slide>
                 <app-list style="width: 100%;"></app-list>

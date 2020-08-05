@@ -59,6 +59,7 @@ export class HomePage {
   librosIN: any[] = []; 
   codigoVisible = true;
   LstTareas: any[] = [];
+  hayConexion= true;
 
   settings: MbscCalendarOptions = {
     theme: 'mobiscroll',
@@ -153,6 +154,7 @@ export class HomePage {
   async animacion(isRegreso: boolean, click: boolean) {
 
    // if (this.primeraVez) {this.primeraVez = false; return; }
+   
 
     let animation2: Animation;
     let animation4: Animation;
@@ -409,6 +411,7 @@ export class HomePage {
   }
 
   mover() {
+    
     if (this.pocisionInicial) {
     this.animacion(true, false);
     const animation5: Animation = this.animationCtrl.create('bouceEduardohome')
@@ -442,7 +445,9 @@ librosDescargados(Libros) {
 
 
  async  animacionBounce(esHaciaArriba: boolean) {
-/*
+
+   /*
+
 const animation5: Animation = this.animationCtrl.create('bouceEduardo')
     .addElement(this.div2.nativeElement)
     .duration(700)
@@ -465,10 +470,19 @@ this.renderer.addClass(this.div2.nativeElement, 'quitarBottom');
    // animation5.stop();
   //  animation5.destroy();
 */
+let duracion;
+
+if(!this.platform.is("ipad") || !this.platform.is("iphone") || !this.platform.is("ios")){
+   console.log("android")
+   duracion= 1150;
+}
+else{
+  duracion= 550;
+}
 if (esHaciaArriba) {
 const animation5: Animation = this.animationCtrl.create('bouceEduardo-b')
     .addElement(this.div2.nativeElement)
-    .duration(550)
+    .duration(duracion)
     .delay(60)
     .easing(' cubic-bezier(0,.70,.45,1)')
 // .beforeStyles({bottom:'-16vh'})
@@ -515,7 +529,7 @@ this.pillMenu.animacion();
 
 
     }
-
+    this.content.scrollToPoint(0, 0, 0);
 
 
   }
@@ -665,7 +679,7 @@ this.pillMenu.animacion();
         else
         {
           console.log("listo");
-          this.slideUp.lockSwipes(true);
+        //  this.slideUp.lockSwipes(true);
         }
       }, 100);
 
@@ -1029,8 +1043,10 @@ this.pillMenu.animacion();
 
     public inforConnectionScoket(status): void {
       if (status == true) {
+            this.hayConexion = true;
             this.renderer.setStyle(this.avatarUser.nativeElement, 'color', `#FF426D`);
       } else {
+            this.hayConexion = false;
             this.renderer.setStyle(this.avatarUser.nativeElement, 'color', `black`);
       }
     }
