@@ -103,7 +103,8 @@
         "ANDROID_SUPPORT_V4_VERSION": "27.+"
       },
       "cordova-sqlite-storage": {},
-      "cordova-plugin-zip": {}
+      "cordova-plugin-zip": {},
+      "com-moduscreate-plugins-echo": {}
     },
     "platforms": [
       "browser",
