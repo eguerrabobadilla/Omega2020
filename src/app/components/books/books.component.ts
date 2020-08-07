@@ -9,6 +9,7 @@ import { BooksService } from 'src/app/services/books.service';
 import { Zip } from '@ionic-native/zip/ngx';
 import { stat } from 'fs';
 import { computeStackId } from '@ionic/angular/directives/navigation/stack-utils';
+import { WebView } from '@ionic-native/ionic-webview/ngx';
 
 @Component({
   selector: 'app-books',
@@ -23,7 +24,8 @@ export class BooksComponent implements OnInit {
   @Input() librosIN: any[];
 
   constructor(public  webSocket: WebsocketService,private serviceDownload: DownloadFileService,private transfer: FileTransfer,
-              private file: File,private platform: Platform,private booksService: BooksService,private zip: Zip) {
+              private file: File,private platform: Platform,private booksService: BooksService,private zip: Zip,
+              private webview: WebView) {
 
   }
 
@@ -64,13 +66,15 @@ export class BooksComponent implements OnInit {
         //Verifica conexion con el servidor
         const status = this.webSocket.getStatusSocket() == 1 ? true : false;
         console.log("pathLibro",directory + 'Libro'+ item.id);
-        if(status==false)
+        /*if(status==false)
           //console.log(status);
           (<any>window).modusecho.echo([directory + 'Libro'+ item.id,'1',"Lbs"]);
         else
           (<any>window).modusecho.echo([directory + 'Libro'+ item.id,'1',"Lbs"]); 
-          //this.buscarActualizaciones();
+          //this.buscarActualizaciones();*/
 
+        //this.webview.convertFileSrc(directory + 'Libro'+ item.id + "/index.html");
+        (<any>window).modusecho.echo([directory + 'Libro'+ item.id,'1',"Lbs"]); 
     }).catch(err => {
         console.log(err);
     });

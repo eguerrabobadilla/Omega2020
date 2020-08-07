@@ -31,6 +31,7 @@ import { DetalleChatGroupPageModule } from './pages/detalle-chat-group/detalle-c
 import { FormsModule } from '@angular/forms';
 import { IonicStorageModule } from '@ionic/storage';
 import { Zip } from '@ionic-native/zip/ngx';
+import { WebView } from '@ionic-native/ionic-webview/ngx';
 
 @NgModule({
   declarations: [AppComponent, AnimateItemsDirective],
@@ -59,6 +60,7 @@ import { Zip } from '@ionic-native/zip/ngx';
     FileOpener,
     File,
     Zip,
+    WebView,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: HTTP_INTERCEPTORS,useClass: AuthInterceptorService,multi: true}
   ],
