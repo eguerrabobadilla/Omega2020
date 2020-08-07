@@ -108,7 +108,6 @@
     <plugin name="cordova-plugin-splashscreen" spec="5.0.2" />
     <plugin name="cordova-plugin-ionic-keyboard" spec="^2.0.5" />
     <plugin name="cordova-sqlite-storage" spec="^5.0.1" />
-    <plugin name="com-moduscreate-plugins-echo" spec="/Users/appalfalbs/Documents/plugin/modusechoplugin/ModusEcho" />
     <plugin name="cordova-plugin-httpd" spec="^0.9.3" />
     <plugin name="cordova-plugin-ionic-webview" spec="^4.0.0" />
     <plugin name="cordova-plugin-camera" spec="^4.1.0">
@@ -119,5 +118,4 @@
     </edit-config>
     <engine name="browser" spec="6.0.0" />
     <engine name="ios" spec="4.5.5" />
-    <engine name="android" spec="8.1.0" />
 </widget>
