@@ -60,6 +60,7 @@ export class HomePage {
   librosIN: any[] = []; 
   codigoVisible = true;
   LstTareas: any[] = [];
+  hayConexion= true;
 
   settings: MbscCalendarOptions = {
     theme: 'mobiscroll',
@@ -120,7 +121,7 @@ export class HomePage {
   primeraVez = true;
   headersText: any = [];
   header = 'Books';
-  nombreIcono = 'people-outline';
+  nombreIcono = 'book-outline';
   iconos: any[];
   public swipeUp = false;
   public swipeDown = false;
@@ -155,6 +156,7 @@ export class HomePage {
   async animacion(isRegreso: boolean, click: boolean) {
 
    // if (this.primeraVez) {this.primeraVez = false; return; }
+   
 
     let animation2: Animation;
     let animation4: Animation;
@@ -411,6 +413,7 @@ export class HomePage {
   }
 
   mover() {
+    
     if (this.pocisionInicial) {
     this.animacion(true, false);
     const animation5: Animation = this.animationCtrl.create('bouceEduardohome')
@@ -444,7 +447,9 @@ librosDescargados(Libros) {
 
 
  async  animacionBounce(esHaciaArriba: boolean) {
-/*
+
+   /*
+
 const animation5: Animation = this.animationCtrl.create('bouceEduardo')
     .addElement(this.div2.nativeElement)
     .duration(700)
@@ -467,10 +472,19 @@ this.renderer.addClass(this.div2.nativeElement, 'quitarBottom');
    // animation5.stop();
   //  animation5.destroy();
 */
+let duracion;
+
+if(!this.platform.is("ipad") || !this.platform.is("iphone") || !this.platform.is("ios")){
+   console.log("android")
+   duracion= 1150;
+}
+else{
+  duracion= 550;
+}
 if (esHaciaArriba) {
 const animation5: Animation = this.animationCtrl.create('bouceEduardo-b')
     .addElement(this.div2.nativeElement)
-    .duration(550)
+    .duration(duracion)
     .delay(60)
     .easing(' cubic-bezier(0,.70,.45,1)')
 // .beforeStyles({bottom:'-16vh'})
@@ -517,7 +531,7 @@ this.pillMenu.animacion();
 
 
     }
-
+    this.content.scrollToPoint(0, 0, 0);
 
 
   }
@@ -595,7 +609,7 @@ this.pillMenu.animacion();
             this.tabs = ['Perfil', 'Materias', 'Estadísticas'];
      } else if (index === 5) {
       this.tabs = ['Preguntas', 'Videos', 'Contacto'];
-      }/* else if (index === 6) {
+      }/* } else if (index === 6) {
         this.tabs = ['Alumnos', 'Docentes', 'Cordinadores'];
       }*/
 
@@ -688,7 +702,7 @@ this.pillMenu.animacion();
 
       //this.LstTareas = await this.apiTareas.get().toPromise();
 
-      this.iconos = ['people-outline', 'watch-outline', 'leaf-outline', 'shield-outline', 'leaf-outline'];
+      this.iconos = ['book-outline', 'pencil', 'people-outline', 'person-outline', 'hammer-outline'];
       this.headersText = ['Books', 'Tasks', 'Community', 'Account', 'Support'];
       this.tabs = ['Todos', 'Inglés'  , 'Español', 'Código'];
 
@@ -1059,10 +1073,12 @@ this.pillMenu.animacion();
 
     public async inforConnectionScoket(status) {
       if (status == true) {
+            this.hayConexion = true;
             this.renderer.setStyle(this.avatarUser.nativeElement, 'color', `#FF426D`);
             this.slideUp.lockSwipes(false);
             this.LstTareas = await this.apiTareas.get().toPromise();
       } else {
+            this.hayConexion = false;
             this.renderer.setStyle(this.avatarUser.nativeElement, 'color', `black`);
       }
     }

@@ -9,7 +9,7 @@ import { BooksService } from 'src/app/services/books.service';
 import { Zip } from '@ionic-native/zip/ngx';
 import { stat } from 'fs';
 import { computeStackId } from '@ionic/angular/directives/navigation/stack-utils';
-import { dir } from 'console';
+import { WebView } from '@ionic-native/ionic-webview/ngx';
 
 @Component({
   selector: 'app-books',
@@ -24,12 +24,12 @@ export class BooksComponent implements OnInit {
   @Input() librosIN: any[];
 
   constructor(public  webSocket: WebsocketService,private serviceDownload: DownloadFileService,private transfer: FileTransfer,
-              private file: File,private platform: Platform,private booksService: BooksService,private zip: Zip) {
+              private file: File,private platform: Platform,private booksService: BooksService,private zip: Zip,private webview: WebView) {
 
   }
 
   ngOnInit() {
-    const directory = this.file.externalDataDirectory;
+    const directory = this.file.dataDirectory;
 
     this.libros = this.librosIN;
     this.libros.forEach(item => {
@@ -67,22 +67,24 @@ export class BooksComponent implements OnInit {
 
   //Verifica si el existen el libro en el alamacenamiento
   verificarLibro(item){
-    const directory = this.file.externalDataDirectory;
-    
+    const directory = this.file.dataDirectory + "books2020/";
     console.log(directory);
     console.log('Libro'+ item.id);
 
     this.existeDirectorio(directory,'Libro'+ item.id,item).then(_ =>{
         //Verifica conexion con el servidor
         const status = this.webSocket.getStatusSocket() == 1 ? true : false;
-
-        if(status==false)
-          //console.log(status);
+        console.log("pathLibro",directory + 'Libro'+ item.id);
+        if(status=== false) {
+       
           (<any>window).modusecho.echo([directory + 'Libro'+ item.id,'1',"Lbs"]);
-        else
-          (<any>window).modusecho.echo([directory + 'Libro'+ item.id,'1',"Lbs"]); 
+        }
+        else {
+          (<any>window).modusecho.echo([directory + 'Libro'+ item.id,'1',"Lbs"]);
+        } 
           //this.buscarActualizaciones();
 
+        console.log(this.webview.convertFileSrc(directory + 'Libro' + item.id + "/index.html"));
     }).catch(err => {
         console.log(err);
     });
@@ -127,19 +129,22 @@ export class BooksComponent implements OnInit {
     const fileTransfer: FileTransferObject = this.transfer.create();
 
     const nameFile ='Libro'+ item.id + '.zip';
-    const directory = this.file.externalDataDirectory;
+    const directory = this.file.dataDirectory + "books2020/";
     
     //this.file.dataDirectory
     item.display="block";
+    //this.file.externalDataDirectory
 
     //Descarga libro
     fileTransfer.download(url, directory + nameFile).then(entry => {
       //Descomprime libro
+      console.log(entry.toURL());
+      console.log(directory + 'Libro'+ item.id);
       return this.zip.unzip(entry.toURL(), directory + 'Libro'+ item.id,(progress) => console.log('Unzipping, ' + Math.round((progress.loaded / progress.total) * 100) + '%'));
     })
     .then(result =>{
-      if(result === 0) console.log('SUCCESS');
-      if(result === -1) console.log('FAILED');
+      if(result === 0) { console.log('SUCCESS'); }
+      if(result === -1) { console.log('FAILED'); }
 
       //Elimina zip para ahorrae espacio
       return this.file.removeFile(directory,nameFile);
