@@ -3,7 +3,7 @@ border-radius: 0px 0px 0px 50px;" mode="ios">
     <ion-toolbar #toolbar style="height: 13vh;
    border-radius: 0px 0px 0px 50px;">
         <ion-title #text class="etitle">
-            <ion-icon name="person-circle-outline" #avatarUser style="color: black; transform: translateY(0.8vh);
+            <ion-icon name="add-circle" #avatarUser style="color: black; transform: translateY(0.8vh);
             font-size: 27px;font-size: 4vh;"></ion-icon>
 
 
@@ -20,11 +20,13 @@ border-radius: 0px 0px 0px 40px;
 background-color: #FF426D;
 position: absolute;
 width: 19vw;
+max-width: 130px;
 right: 0px;" mode="ios">
 
-    <div style="height: 50%;padding-top: 3vh;
-    padding-left: 7vw;
-    font-size: 7vW;
+    <div style="height: 50%;
+    padding-top: 3vh;
+    padding-left: 36%;
+    font-size: 4vh;
     color: white;" (click)="Salir()">
         <ion-icon name="exit-outline"></ion-icon>
 
@@ -38,7 +40,7 @@ right: 0px;" mode="ios">
     padding-top: 3vh;
     font-size: 3vh;
     color: aliceblue;">
-        03</div>
+        0{{user.grado}}°</div>
 
 </ion-header>
 
@@ -168,7 +170,7 @@ top: 0;" mode="ios">
         <ion-slides #slideDown [options]="slideOptsdos" (ionSlideTouchEnd)="ionSlideTouchEnd(slideUp,slideDown)" *ngIf="selectSeccion == 4 " style="min-height: 72.6vh;">
 
             <ion-slide>
-                <app-list style="width: 100%;"></app-list>
+                <app-perfil style="width: 100%;"></app-perfil>
             </ion-slide>
             <ion-slide>
                 <app-subjects style="width: 100%;"></app-subjects>
@@ -183,11 +185,9 @@ top: 0;" mode="ios">
             <ion-slide>
                 <app-questions style="width: 100%;"></app-questions>
             </ion-slide>
+
             <ion-slide>
-                <app-list style="width: 100%;"></app-list>
-            </ion-slide>
-            <ion-slide>
-                <app-list style="width: 100%;"></app-list>
+                <app-contact style="width: 100%;"></app-contact>
             </ion-slide>
         </ion-slides>
     </div>

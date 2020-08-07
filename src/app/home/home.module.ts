@@ -41,6 +41,9 @@ import { CrearTopicPage } from '../pages/crear-topic/crear-topic.page';
 import { CrearTopicPageModule } from '../pages/crear-topic/crear-topic.module';
 import { SubjectsComponent } from '../components/subjects/subjects.component';
 import { QuestionsComponent } from '../components/questions/questions.component';
+import { ContactComponent } from '../components/contact/contact.component';
+import { PerfilComponent } from '../components/perfil/perfil.component';
+
 
 
 
@@ -83,6 +86,6 @@ import { QuestionsComponent } from '../components/questions/questions.component'
   ],
   declarations: [ HomePage, PillMenuComponent, BooksComponent, CodesComponent, ListComponent, 
     ChatsComponent, FilterPipe, ListResourceComponent, NewsComponent, ForumComponent,GraphicsComponent,CalendarComponent
-    , EvidencesComponent,SubjectsComponent, QuestionsComponent]
+    , EvidencesComponent,SubjectsComponent, QuestionsComponent, ContactComponent, PerfilComponent]
 })
 export class HomePageModule {}

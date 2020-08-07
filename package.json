@@ -34,7 +34,7 @@
     "@ionic/storage": "^2.2.0",
     "@mobiscroll/angular": "file:./src/lib/mobiscroll-package/mobiscroll-angular-4.10.6.tgz",
     "chart.js": "^2.9.3",
-    "cordova-android": "^8.1.0",
+    "cordova-android": "8.1.0",
     "cordova-browser": "6.0.0",
     "cordova-ios": "4.5.5",
     "cordova-plugin-device": "2.0.2",
@@ -51,6 +51,7 @@
     "cordova-plugin-zip": "^3.1.0",
     "cordova-sqlite-storage": "^5.0.1",
     "core-js": "^2.5.4",
+    "modusecho": "git+https://github.com/eguerrabobadilla/plugin.git",
     "rxjs": "~6.5.1",
     "tslib": "^1.9.0",
     "zone.js": "~0.9.1"
@@ -102,7 +103,8 @@
         "ANDROID_SUPPORT_V4_VERSION": "27.+"
       },
       "cordova-sqlite-storage": {},
-      "cordova-plugin-zip": {}
+      "cordova-plugin-zip": {},
+      "com-moduscreate-plugins-echo": {}
     },
     "platforms": [
       "browser",

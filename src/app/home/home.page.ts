@@ -119,7 +119,7 @@ export class HomePage {
   primeraVez = true;
   headersText: any = [];
   header = 'Books';
-  nombreIcono = 'people-outline';
+  nombreIcono = 'book-outline';
   iconos: any[];
   public swipeUp = false;
   public swipeDown = false;
@@ -604,7 +604,7 @@ this.pillMenu.animacion();
      } else if (index === 4) {
             this.tabs = ['Perfil', 'Materias', 'Estadísticas'];
      } else if (index === 5) {
-      this.tabs = ['Preguntas', 'Videos', 'Contacto'];
+      this.tabs = ['Preguntas', 'Contacto'];
       } else if (index === 6) {
         this.tabs = ['Alumnos', 'Docentes', 'Cordinadores'];
       }
@@ -689,7 +689,7 @@ this.pillMenu.animacion();
 
       //this.LstTareas = await this.apiTareas.get().toPromise();
 
-      this.iconos = ['people-outline', 'watch-outline', 'leaf-outline', 'shield-outline', 'leaf-outline'];
+      this.iconos = ['book-outline', 'pencil', 'people-outline', 'person-outline', 'hammer-outline'];
       this.headersText = ['Books', 'Tasks', 'Community', 'Account', 'Support', 'Users'];
       this.tabs = ['Todos', 'Inglés'  , 'Español', 'Código'];
 
