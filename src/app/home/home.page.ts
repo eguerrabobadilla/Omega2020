@@ -608,7 +608,7 @@ this.pillMenu.animacion();
      } else if (index === 4) {
             this.tabs = ['Perfil', 'Materias', 'Estadísticas'];
      } else if (index === 5) {
-      this.tabs = ['Preguntas', 'Videos', 'Contacto'];
+      this.tabs = ['Preguntas', 'Contacto'];
       }/* } else if (index === 6) {
         this.tabs = ['Alumnos', 'Docentes', 'Cordinadores'];
       }*/
