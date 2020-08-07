@@ -21,15 +21,10 @@
     "@angular/router": "~8.2.14",
     "@aspnet/signalr": "^1.1.4",
     "@capacitor/core": "2.0.1",
-    "@ionic-native/camera": "^5.27.0",
     "@ionic-native/core": "^5.0.7",
     "@ionic-native/file": "^5.26.0",
     "@ionic-native/file-opener": "^5.26.0",
     "@ionic-native/file-transfer": "^5.26.0",
-<<<<<<< HEAD
-    "@ionic-native/httpd": "^5.27.0",
-=======
->>>>>>> 846e4ce4f55ef597069d7c0c098d58080b9ab0c4
     "@ionic-native/ionic-webview": "^5.27.0",
     "@ionic-native/keyboard": "^5.26.0",
     "@ionic-native/splash-screen": "^5.0.0",
@@ -42,17 +37,11 @@
     "cordova-android": "8.1.0",
     "cordova-browser": "6.0.0",
     "cordova-ios": "4.5.5",
-    "cordova-plugin-advanced-http": "^3.0.0",
-    "cordova-plugin-camera": "^4.1.0",
     "cordova-plugin-device": "2.0.2",
     "cordova-plugin-file": "^6.0.2",
     "cordova-plugin-file-opener2": "^3.0.4",
     "cordova-plugin-file-transfer": "^1.7.1",
-<<<<<<< HEAD
-    "cordova-plugin-httpd": "^0.9.3",
-=======
     "cordova-plugin-ionic": "5.4.7",
->>>>>>> 846e4ce4f55ef597069d7c0c098d58080b9ab0c4
     "cordova-plugin-ionic-keyboard": "^2.0.5",
     "cordova-plugin-ionic-webview": "^4.0.0",
     "cordova-plugin-plantilla": "git+https://github.com/thecouk/ionic-cordova-plugin-template.git",
@@ -104,7 +93,9 @@
       "cordova-plugin-statusbar": {},
       "cordova-plugin-device": {},
       "cordova-plugin-splashscreen": {},
-      "cordova-plugin-ionic-webview": {},
+      "cordova-plugin-ionic-webview": {
+        "ANDROID_SUPPORT_ANNOTATIONS_VERSION": "27.+"
+      },
       "cordova-plugin-ionic-keyboard": {},
       "cordova-plugin-file": {},
       "cordova-plugin-file-transfer": {},
@@ -113,11 +104,7 @@
       },
       "cordova-sqlite-storage": {},
       "cordova-plugin-zip": {},
-      "com-moduscreate-plugins-echo": {},
-      "cordova-plugin-httpd": {},
-      "cordova-plugin-camera": {
-        "ANDROID_SUPPORT_V4_VERSION": "27.+"
-      }
+      "com-moduscreate-plugins-echo": {}
     },
     "platforms": [
       "browser",

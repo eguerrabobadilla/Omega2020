@@ -33,8 +33,6 @@ import { IonicStorageModule } from '@ionic/storage';
 import { Zip } from '@ionic-native/zip/ngx';
 import { WebView } from '@ionic-native/ionic-webview/ngx';
 
-import { WebView } from '@ionic-native/ionic-webview/ngx';
-
 @NgModule({
   declarations: [AppComponent, AnimateItemsDirective],
   entryComponents: [DetallesNewsPage],
