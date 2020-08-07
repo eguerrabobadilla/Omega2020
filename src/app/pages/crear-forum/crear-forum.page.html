@@ -15,12 +15,33 @@
                 <ion-grid>
                     <ion-row>
                         <ion-col size="12">
+                            <ion-item button (click)="openPickerGrupos()" detail="false">
+                                <ion-label color="light" position="floating">Grupo</ion-label>
+                                <ion-label color="light" position="floating">{{ FrmItem.controls.Grupo.value }}</ion-label>
+                                <ion-input #txtGradoGrupo type="text" readonly formControlName="Grupo" name="Grupo" style="display: none;"></ion-input>
+                                <ion-input #txtGradoGrupo type="text" readonly formControlName="Grupo" name="Grupo" style="display: none;"></ion-input>
+                            </ion-item>
+                            <div *ngIf="!FrmItem.controls.Grupo.valid && (FrmItem.controls.Grupo.dirty || submitAttempt)">
+                              <p class="text-error">Por favor ingresa un Grupo.</p>
+                            </div>
+                          </ion-col>
+                          <ion-col size="12">
+                            <ion-item button (click)="openPickerMaterias()" detail="false">
+                                <ion-label color="light" position="floating">Materia</ion-label>
+                                <ion-label color="light" position="floating">{{ FrmItem.controls.MateriaId.value }}</ion-label>
+                                <ion-input #txtMateria type="text" readonly formControlName="MateriaId" name="MateriaId" style="display: none;"></ion-input>
+                            </ion-item>
+                            <div *ngIf="!FrmItem.controls.Grupo.valid && (FrmItem.controls.Grupo.dirty || submitAttempt)">
+                              <p class="text-error">Por favor ingresa una Materia.</p>
+                            </div>
+                          </ion-col>
+                        <ion-col size="12">
                             <ion-item>
-                                <ion-label color="light" position="floating">Titulo</ion-label>
+                                <ion-label color="light" position="floating">Título</ion-label>
                                 <ion-input type="text" formControlName="Nombre" name="Nombre"></ion-input>
                             </ion-item>
                             <div *ngIf="!FrmItem.controls.Nombre.valid && (FrmItem.controls.Nombre.dirty || submitAttempt)">
-                                <p class="text-error">Por favor ingresa un titulo.</p>
+                                <p class="text-error">Por favor ingresa un título.</p>
                             </div>
                         </ion-col>
                         <ion-col size="12">

@@ -32,7 +32,7 @@ export class GraphicsComponent implements OnInit {
 
 
     this.apiEstadistica.get().subscribe(data => {
-      console.log(data);
+      //console.log(data);
       this.Estadisticas = data;
       this.Estadisticas.estadisticames.forEach(item => {
             this.tareas.push(item.tareas);
@@ -41,7 +41,7 @@ export class GraphicsComponent implements OnInit {
             this.temas.push(item.temas);
       });
 
-      console.log(this.tareas);
+      //console.log(this.tareas);
 
       this.createBarChart(this.tareas, this.barCharttareas, '#F4315D');
       this.createBarChart(this.foros, this.barChartforos, '#6228cf');

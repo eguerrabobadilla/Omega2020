@@ -14,50 +14,47 @@ import { apiBase } from 'src/app/api/apiBase';
 })
 export class ListResourceComponent implements OnInit {
 
-  images = [
-    'bandit',
-    'batmobile',
-    'blues-brothers',
-    'bueller',
-    'delorean',
-    'eleanor',
-    'general-lee',
-    'ghostbusters',
-    'knight-rider',
-    'mirth-mobile'
-  ];
   rotateImg = 0;
   items: any[] = [];
-  lorem = 'Lorem iuis aute irure dol cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.';
   meses: string[];
   mesActual: string = 'Mayo';
   LstRecursos: any[] = [];
 
   constructor(private pickerController: PickerController, private apiRecursos: RecursosService, private transfer: FileTransfer,
               private file: File, private platform: Platform,private fileOpener: FileOpener,private api: apiBase) {
-    for (let i = 0; i < 20  ; i++) {
-      this.items.push({
-        // tslint:disable-next-line: no-use-before-declare
-        index: i,
-        name: i + ' - ' + this.images[this.rotateImg],
-    //    imgSrc: getImgSrc(),
-    //    avatarSrc: getImgSrc(),
-        imgHeight: Math.floor(Math.random() * 50 + 150),
-        // tslint:disable-next-line: no-use-before-declare
-        content: this.lorem.substring(0, Math.random() * (this.lorem.length - 100) + 100)
-      });
-     }
   }
 
 ngOnInit() {
     //console.log("jose")
     this.meses = ['Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre',
-                  'Enero', 'Febreo', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio'];
+                  'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio'];
 
-    this.apiRecursos.getByMonth('Mayo').subscribe(data => {
+    const mesesReal = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo',
+                  'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+
+    const d = new Date();
+    this.mesActual= mesesReal[d.getMonth()];
+
+    this.apiRecursos.getByMonth(this.mesActual).subscribe(data => {
       //console.log(data);
       this.LstRecursos = data;
     });
+  }
+
+  public cargar(materiaId) {
+    //0=todas 1=Filtrado por materia
+    if(materiaId==0){
+      this.apiRecursos.getByMonth(this.mesActual).subscribe(data => {
+        //console.log(data);
+        this.LstRecursos = data;
+      });
+    }
+    else{
+      this.apiRecursos.getRecursosMaterias(materiaId,this.mesActual).subscribe(data => {
+        //console.log(data);
+        this.LstRecursos = data;
+      });
+    }
   }
 
   async openPicker() {
@@ -91,20 +88,29 @@ ngOnInit() {
 
   getRealMonth() {
     /*
-    Datao que el año escolar no inicia en Enero se tiene que ajustar para llenar el picker 
+    Dado que el año escolar no inicia en Enero se tiene que ajustar para llenar el picker 
     ejemplo enero en lugar de ser index 1 es 6
     */
+   console.log("getRealMonth");
     const actualDate = new Date();
     let month = actualDate.getMonth() + 1;
 
     console.log(month);
 
-    if (month >= 7 && month < 12) {
-      month += 7
-    } else {
-      month += 4;
-    }
+    if(month==1) month= 5;
+    else if(month==2) month= 6;
+    else if(month==3) month= 7;
+    else if(month==4) month= 8;
+    else if(month==5) month= 9;
+    else if(month==6) month= 10;
+    else if(month==7) month= 11;
+    else if(month==8) month= 0;
+    else if(month==9) month= 1;
+    else if(month==10) month= 2;
+    else if(month==11) month= 3;
 
+
+    console.log(month);
     return month;
   }
 

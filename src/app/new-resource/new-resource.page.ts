@@ -2,6 +2,8 @@ import { Component, OnInit, ChangeDetectorRef, ViewChild, ElementRef, Renderer2 
 import { ModalController, AlertController, PickerController, IonInput } from '@ionic/angular';
 import { FormGroup, FormBuilder,Validators  } from '@angular/forms';
 import { RecursosService } from '../api/recursos.service';
+import { ChatService } from '../api/chat.service';
+import { MateriasService } from '../api/materias.service';
 
 @Component({
   selector: 'app-new-resource',
@@ -9,6 +11,10 @@ import { RecursosService } from '../api/recursos.service';
   styleUrls: ['./new-resource.page.scss'],
 })
 export class NewResourcePage implements OnInit {
+  @ViewChild('txtGradoGrupo', {static: false}) txtGradoGrupo: IonInput;
+  @ViewChild('txtGradoGrupo', {read: ElementRef, static: true}) txtGradoGrupoHTML: ElementRef;
+  @ViewChild('txtMateria', {static: false}) txtMateria: IonInput;
+  @ViewChild('txtMateria', {read: ElementRef, static: true}) txtMateriaHTML: ElementRef;
   @ViewChild('txtFecha', {static: false}) txtFecha: IonInput;
   @ViewChild('txtFecha', {read: ElementRef, static: true}) txtFechaHTML: ElementRef;
   public FrmItem: FormGroup;
@@ -20,11 +26,18 @@ export class NewResourcePage implements OnInit {
   semanas: string[];
   mesSeleccionado: any;
   semanaSeleccionada: any;
+  grupos: any[] = [];
+  materias: any[] = [];
+  gradoSeleccionado: any;
+  grupoSeleccionado: any;
+  MateriaSeleccionada: any;
 
   constructor(private modalCtrl: ModalController, private formBuilder: FormBuilder, private cd:ChangeDetectorRef,
               private alertCtrl: AlertController, private apiRecursos: RecursosService, private pickerController: PickerController,
-              private renderer: Renderer2) {
+              private renderer: Renderer2,private apiChat: ChatService,private apiMaterias: MateriasService) {
     this.FrmItem = formBuilder.group({
+      Grupo:   ['', Validators.compose([Validators.required])],
+      MateriaId:   ['', Validators.compose([Validators.required])],
       Titulo: ['', Validators.compose([Validators.required])],
       Descripcion: ['', Validators.compose([Validators.required])],
       FechaPublicacion: ['', Validators.compose([Validators.required])],
@@ -72,22 +85,29 @@ export class NewResourcePage implements OnInit {
 
   getRealMonth() {
     /*
-    Datao que el año escolar no inicia en Enero se tiene que ajustar para llenar el picker 
+    Dado que el año escolar no inicia en Enero se tiene que ajustar para llenar el picker 
     ejemplo enero en lugar de ser index 1 es 6
     */
-    const actualDate = new Date();
-    let month = actualDate.getMonth() + 1;
+   const actualDate = new Date();
+   let month = actualDate.getMonth() + 1;
 
-    console.log(month);
+   console.log(month);
 
-    if(month >= 7 && month <12) {
-      month+= 7
-    }
-    else {
-      month+=4;
-    }
+   if(month==1) month= 5;
+   else if(month==2) month= 6;
+   else if(month==3) month= 7;
+   else if(month==4) month= 8;
+   else if(month==5) month= 9;
+   else if(month==6) month= 10;
+   else if(month==7) month= 11;
+   else if(month==8) month= 0;
+   else if(month==9) month= 1;
+   else if(month==10) month= 2;
+   else if(month==11) month= 3;
 
-    return month;
+
+   console.log(month);
+   return month;
   }
 
   getColumnOptionsMeses() {
@@ -136,6 +156,9 @@ export class NewResourcePage implements OnInit {
     payload.append('Ano', '2020');
     payload.append('Mes', this.mesSeleccionado);
     payload.append('Semana', this.semanaSeleccionada);
+    payload.append('MateriaId', this.MateriaSeleccionada);
+    payload.append('Grado', this.gradoSeleccionado);
+    payload.append('Grupo', this.grupoSeleccionado);
     payload.append('ItemUpload', this.files, this.files.name);
   
 
@@ -172,6 +195,93 @@ export class NewResourcePage implements OnInit {
       this.cd.markForCheck();
     }
   }
+
+  async openPickerGrupos() {
+    const picker = await this.pickerController.create({
+        mode : 'ios',
+        buttons: [
+          {
+            text: 'Cancelar',
+            role: 'cancel'
+          },
+          {
+            text: 'Aceptar',
+            handler:  (value: any) => {
+                const gradoGrupo = value.Grupos.value.split("/");
+                this.txtGradoGrupo.value = gradoGrupo[0] + ' / ' + gradoGrupo[1];
+                this.gradoSeleccionado = gradoGrupo[0];
+                this.grupoSeleccionado = gradoGrupo[1];
+
+                this.txtMateria.value = "";
+                this.MateriaSeleccionada = "";
+            }
+          }
+        ],
+        columns: [{
+            name: 'Grupos',
+            options: await this.getColumnGrupos()
+          }
+        ]
+    });
+    
+    picker.present();
+
+  }
+
+  async getColumnGrupos() {
+    const options = [];
+
+    
+    this.grupos = await this.apiChat.getGruposMaestros().toPromise();
+    
+    //options.push({text: 'Todas' , value: 0});
+
+    this.grupos.forEach(x => {
+      options.push({text: x.grado + x.grupo , value: x.grado+'/'+x.grupo});
+    });
+
+    return options;
+  }
+
+  async openPickerMaterias() {
+    const picker = await this.pickerController.create({
+        mode : 'ios',
+        buttons: [
+          {
+            text: 'Cancelar',
+            role: 'cancel'
+          },
+          {
+            text: 'Aceptar',
+            handler:  (value: any) => {
+                this.txtMateria.value = value.Materias.text;
+                this.MateriaSeleccionada = value.Materias.value;
+            }
+          }
+        ],
+        columns: [{
+            name: 'Materias',
+            options: await this.getColumnMaterias()
+          }
+        ]
+    });
+    
+    picker.present();
+
+  }
+
+  async getColumnMaterias() {
+    const options = [];
+
+    this.grupos = await this.apiMaterias.getMateriasProfesor(this.gradoSeleccionado).toPromise();
+
+    this.grupos.forEach(x => {
+      options.push({text: x.nombre , value: x.id});
+    });
+
+    return options;
+  }
+
 
   closeModal() {
     this.modalCtrl.dismiss();

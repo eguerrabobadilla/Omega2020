@@ -37,4 +37,8 @@ export class ForumService  extends apiBase {
    else { return this.http.get<any[]>(`${this.url}/api/foro`);   }
 
   }
+
+  getForosMaterias(id): Observable<any[]> {
+    return this.http.get<any[]>(`${this.url}/${this.WsForo}/materia/${id}`);
+  }
 }

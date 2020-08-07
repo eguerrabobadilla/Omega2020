@@ -17,8 +17,8 @@ export class MateriasService  extends apiBase {
     return this.http.get<any[]>(`${this.url}/${this.Ws}/grado/6`);
   }
 
-  getMateriasProfesor(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.url}/${this.Ws}/profesor`);
+  getMateriasProfesor(grado): Observable<any[]> {
+    return this.http.get<any[]>(`${this.url}/${this.Ws}/profesor/${grado}`);
   }
 
 }

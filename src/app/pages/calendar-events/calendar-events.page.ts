@@ -41,7 +41,6 @@ export class CalendarEventsPage implements OnInit {
     themeVariant: 'light',
     display: 'inline',
     onInit: (event, inst) => {
-       console.log("asdfasdf")
      //  this.mobi.instance.navigate(new Date(2016, 1, 1),true);
     },
     onShow: (event, inst) => {
@@ -56,8 +55,7 @@ export class CalendarEventsPage implements OnInit {
       this.abrirDetalleCalendario(event.event);
    },
    onMarkupReady : (event, inst) => {
-     console.log("event")
-     console.log(event.target);
+     
   },
    onDayChange : (event, inst) => {
    

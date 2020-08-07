@@ -25,4 +25,8 @@ export class RecursosService  extends apiBase {
   getByMonth(mes: string): Observable<any[]> {
     return this.http.get<any[]>(`${this.url}/${this.Ws}/${mes}`);
   }
+
+  getRecursosMaterias(id,mes): Observable<any[]> {
+    return this.http.get<any[]>(`${this.url}/${this.Ws}/materia/${id}/${mes}`);
+  }
 }

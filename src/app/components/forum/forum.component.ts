@@ -19,15 +19,21 @@ export class ForumComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.cargar();
+    this.cargar(0);
   }
 
-  public cargar() {
-
-    this.apiForum.get(false, 0).subscribe(data =>{
-      this.LstForo = data;
-
-    });
+  public cargar(materiaId) {
+    //0=todas 1=Filtrado por materia
+    if(materiaId==0){
+      this.apiForum.get(false, 0).subscribe(data =>{
+        this.LstForo = data;
+      });
+    }
+    else{
+      this.apiForum.getForosMaterias(materiaId).subscribe(data =>{
+        this.LstForo = data;
+      });
+    }
   }
 
   async openDetail(event: Event, item , itemid) {

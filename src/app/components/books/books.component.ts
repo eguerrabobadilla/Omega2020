@@ -9,6 +9,7 @@ import { BooksService } from 'src/app/services/books.service';
 import { Zip } from '@ionic-native/zip/ngx';
 import { stat } from 'fs';
 import { computeStackId } from '@ionic/angular/directives/navigation/stack-utils';
+import { dir } from 'console';
 
 @Component({
   selector: 'app-books',
@@ -28,10 +29,21 @@ export class BooksComponent implements OnInit {
   }
 
   ngOnInit() {
+    const directory = this.file.externalDataDirectory;
+
     this.libros = this.librosIN;
+    this.libros.forEach(item => {
+      item.progreso=0;
+      item.display="none";
+      if (this.platform.is('cordova')) {
+        this.existeLibro(directory,'Libro'+ item.id).then( () =>{
+          item.opacity= 1;
+        }).catch(() =>{
+          item.opacity= 0.2;
+        });
+      }
+    });
   //Realiza el llamado al plugin e invoca segun el resultado la funcion correspondiente
-  
-    
   }
 
   visualizarLibro() {
@@ -76,6 +88,19 @@ export class BooksComponent implements OnInit {
     });
   }
 
+  existeLibro(directory,path){
+    var promise = new Promise((resolve, reject) => {
+      this.file.checkDir(directory,path).then(_ =>{
+          console.log("Existe el directorio");
+          resolve();
+      }).catch(err => {
+          reject();
+      });
+    });
+
+    return promise;
+  }
+
   existeDirectorio(directory,path,item){
     var promise = new Promise((resolve, reject) => {
       this.file.checkDir(directory,path).then(_ =>{
@@ -105,6 +130,7 @@ export class BooksComponent implements OnInit {
     const directory = this.file.externalDataDirectory;
     
     //this.file.dataDirectory
+    item.display="block";
 
     //Descarga libro
     fileTransfer.download(url, directory + nameFile).then(entry => {
@@ -115,12 +141,14 @@ export class BooksComponent implements OnInit {
       if(result === 0) console.log('SUCCESS');
       if(result === -1) console.log('FAILED');
 
-      //Elimina zip para ahorra espacio
+      //Elimina zip para ahorrae espacio
       return this.file.removeFile(directory,nameFile);
     })
     .then( data =>{
       console.log(data);
-      alert("Terminado");
+      console.log("Terminado");
+      item.display="none";
+      item.opacity=1;
     })
     .catch(err => {
       console.error(err);
@@ -129,8 +157,10 @@ export class BooksComponent implements OnInit {
 
     fileTransfer.onProgress(progress => {
       //console.log(progress);
-      let status = Math.round(100 * progress.loaded / progress.total);
-      console.log(`Files are ${status}% downloaded`); 
+      //let status = Math.round(100 * progress.loaded / progress.total);
+      item.progreso += progress.loaded / progress.total;
+      console.log(item.progreso);
+      //console.log(`Files are ${status}% downloaded`); 
     });
   }
 
