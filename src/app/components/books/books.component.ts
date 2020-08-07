@@ -30,10 +30,21 @@ export class BooksComponent implements OnInit {
   }
 
   ngOnInit() {
+    const directory = this.file.dataDirectory;
+
     this.libros = this.librosIN;
+    this.libros.forEach(item => {
+      item.progreso=0;
+      item.display="none";
+      if (this.platform.is('cordova')) {
+        this.existeLibro(directory,'Libro'+ item.id).then( () =>{
+          item.opacity= 1;
+        }).catch(() =>{
+          item.opacity= 0.2;
+        });
+      }
+    });
   //Realiza el llamado al plugin e invoca segun el resultado la funcion correspondiente
-  
-    
   }
 
   visualizarLibro() {
@@ -58,7 +69,6 @@ export class BooksComponent implements OnInit {
   //Verifica si el existen el libro en el alamacenamiento
   verificarLibro(item){
     const directory = this.file.dataDirectory + "books2020/";
-    
     console.log(directory);
     console.log('Libro'+ item.id);
 
@@ -66,18 +76,32 @@ export class BooksComponent implements OnInit {
         //Verifica conexion con el servidor
         const status = this.webSocket.getStatusSocket() == 1 ? true : false;
         console.log("pathLibro",directory + 'Libro'+ item.id);
-        /*if(status==false)
-          //console.log(status);
-          (<any>window).modusecho.echo([directory + 'Libro'+ item.id,'1',"Lbs"]);
-        else
-          (<any>window).modusecho.echo([directory + 'Libro'+ item.id,'1',"Lbs"]); 
-          //this.buscarActualizaciones();*/
+        if(status=== false) {
+       
+          (<any>window).modusecho.echo([directory + 'Libro'+ item.id, item.id,"Lbs"]);
+        }
+        else {
+          (<any>window).modusecho.echo([directory + 'Libro'+ item.id, item.id,"Lbs"]);
+        } 
+          //this.buscarActualizaciones();
 
-        //this.webview.convertFileSrc(directory + 'Libro'+ item.id + "/index.html");
-        (<any>window).modusecho.echo([directory + 'Libro'+ item.id,'1',"Lbs"]); 
+        //console.log(this.webview.convertFileSrc(directory + 'Libro' + item.id + "/index.html"));
     }).catch(err => {
         console.log(err);
     });
+  }
+
+  existeLibro(directory,path){
+    var promise = new Promise((resolve, reject) => {
+      this.file.checkDir(directory,path).then(_ =>{
+          console.log("Existe el directorio");
+          resolve();
+      }).catch(err => {
+          reject();
+      });
+    });
+
+    return promise;
   }
 
   existeDirectorio(directory,path,item){
@@ -108,6 +132,8 @@ export class BooksComponent implements OnInit {
     const nameFile ='Libro'+ item.id + '.zip';
     const directory = this.file.dataDirectory + "books2020/";
     
+    //this.file.dataDirectory
+    item.display="block";
     //this.file.externalDataDirectory
 
     //Descarga libro
@@ -118,15 +144,17 @@ export class BooksComponent implements OnInit {
       return this.zip.unzip(entry.toURL(), directory + 'Libro'+ item.id,(progress) => console.log('Unzipping, ' + Math.round((progress.loaded / progress.total) * 100) + '%'));
     })
     .then(result =>{
-      if(result === 0) console.log('SUCCESS');
-      if(result === -1) console.log('FAILED');
+      if(result === 0) { console.log('SUCCESS'); }
+      if(result === -1) { console.log('FAILED'); }
 
-      //Elimina zip para ahorra espacio
+      //Elimina zip para ahorrae espacio
       return this.file.removeFile(directory,nameFile);
     })
     .then( data =>{
       console.log(data);
-      alert("Terminado");
+      console.log("Terminado");
+      item.display="none";
+      item.opacity=1;
     })
     .catch(err => {
       console.error(err);
@@ -135,8 +163,10 @@ export class BooksComponent implements OnInit {
 
     fileTransfer.onProgress(progress => {
       //console.log(progress);
-      let status = Math.round(100 * progress.loaded / progress.total);
-      console.log(`Files are ${status}% downloaded`); 
+      //let status = Math.round(100 * progress.loaded / progress.total);
+      item.progreso += progress.loaded / progress.total;
+      console.log(item.progreso);
+      //console.log(`Files are ${status}% downloaded`); 
     });
   }
 

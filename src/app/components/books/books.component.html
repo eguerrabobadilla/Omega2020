@@ -1,10 +1,9 @@
 <div class="images">
-
     <div class="one-image" *ngFor="let item of libros">
-
         <div style="position:relative">
+            <!--<ion-progress-bar value="{{item.progreso}}" mode="ios" style="position: absolute;top: 40%;left: 16%;width: 71%;height: 3%;border-radius: 7px;"></ion-progress-bar>-->
             <!--<img src="https://www.alfalbs.app/Wcflbs/cover/{{item.rutaThumbnails}}" class="image-rouder" width="100%">-->
-            <img src="assets/img/cover/{{item.rutaThumbnails}}" class="image-rouder" width="100%" (click)="openBook(item)">
+            <img src="assets/img/cover/{{item.rutaThumbnails}}" class="image-rouder" [ngStyle] ="{'opacity' : item.opacity}" width="100%" (click)="openBook(item)">
             <div class="grid-container" style="position: relative;width: 100%">
                 <div class="grid-item item1">
                     <div class="version">
@@ -13,11 +12,11 @@
                     {{item.nombre}}
                 </div>
                 <div class="grid-item item2" style="width: 30px;height: 30px;background-color: #6228cf; border-radius: 50%;text-align: left;">
-
                 </div>
                 <div class="grid-item item3">{{item.grados}}{{item.suffix}} Grade</div>
                 <div class="grid-item item4">{{item.escolaridad}}</div>
             </div>
+            <ion-spinner name="circles"  [ngStyle] ="{'display' : item.display}" class="spinnerStyle"></ion-spinner>
         </div>
     </div>
 </div>

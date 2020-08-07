@@ -99,6 +99,9 @@ export class CrearTopicPage implements OnInit {
                 this.txtGradoGrupo.value = gradoGrupo[0] + ' / ' + gradoGrupo[1];
                 this.gradoSeleccionado = gradoGrupo[0];
                 this.grupoSeleccionado = gradoGrupo[1];
+
+                this.txtMateria.value = "";
+                this.MateriaSeleccionada = "";
             }
           }
         ],
@@ -158,7 +161,7 @@ export class CrearTopicPage implements OnInit {
   async getColumnMaterias() {
     const options = [];
 
-    this.grupos = await this.apiMaterias.getMateriasProfesor().toPromise();
+    this.grupos = await this.apiMaterias.getMateriasProfesor(this.gradoSeleccionado).toPromise();
 
     this.grupos.forEach(x => {
       options.push({text: x.nombre , value: x.id});

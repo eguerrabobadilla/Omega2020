@@ -1,0 +1,9 @@
+<ion-list>
+    <ion-card style="text-align: initial;" *ngFor="let item of preguntas" class="ion-activatable ripple-parent" mode="ios">
+        <ion-ripple-effect></ion-ripple-effect>
+        <ion-card-header>
+            <ion-card-title>{{item.pregunta}}</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>{{item.respuesta}}</ion-card-content>
+    </ion-card>
+</ion-list>

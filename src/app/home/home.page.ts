@@ -26,6 +26,7 @@ import { MateriasService } from '../api/materias.service';
 import { CrearEvidencePage } from '../pages/crear-evidence/crear-evidence.page';
 import { EvidencesComponent } from '../components/evidences/evidences.component';
 import { CrearTopicPage } from '../pages/crear-topic/crear-topic.page';
+import { ListResourceComponent } from '../components/list-resource/list-resource.component';
 
 
 
@@ -59,6 +60,7 @@ export class HomePage {
   librosIN: any[] = []; 
   codigoVisible = true;
   LstTareas: any[] = [];
+  hayConexion= true;
 
   settings: MbscCalendarOptions = {
     theme: 'mobiscroll',
@@ -106,7 +108,8 @@ export class HomePage {
   @ViewChild('animation8', {read: ElementRef, static: true}) animation8: ElementRef;
   @ViewChild('pillMenu', {read: ElementRef, static: false}) pillMenuRef: ElementRef;
   @ViewChild('forumComponent', {static: false}) forumComponent: ForumComponent;
-  @ViewChild('evidenceComponent', {static: false}) evidenceComponent: ForumComponent;
+  @ViewChild('resourceComponent', {static: false}) resourceComponent: ListResourceComponent;
+  @ViewChild('evidenceComponent', {static: false}) evidenceComponent: EvidencesComponent;
   @ViewChild('newsComponent', {static: false}) newsComponent: NewsComponent;
   @ViewChild('avatarUser', {read: ElementRef, static: false}) avatarUser: ElementRef;
   @ViewChild('mobi', {static: false}) mobi: MbscCalendar; 
@@ -118,7 +121,7 @@ export class HomePage {
   primeraVez = true;
   headersText: any = [];
   header = 'Books';
-  nombreIcono = 'people-outline';
+  nombreIcono = 'book-outline';
   iconos: any[];
   public swipeUp = false;
   public swipeDown = false;
@@ -153,6 +156,7 @@ export class HomePage {
   async animacion(isRegreso: boolean, click: boolean) {
 
    // if (this.primeraVez) {this.primeraVez = false; return; }
+   
 
     let animation2: Animation;
     let animation4: Animation;
@@ -409,6 +413,7 @@ export class HomePage {
   }
 
   mover() {
+    
     if (this.pocisionInicial) {
     this.animacion(true, false);
     const animation5: Animation = this.animationCtrl.create('bouceEduardohome')
@@ -442,7 +447,9 @@ librosDescargados(Libros) {
 
 
  async  animacionBounce(esHaciaArriba: boolean) {
-/*
+
+   /*
+
 const animation5: Animation = this.animationCtrl.create('bouceEduardo')
     .addElement(this.div2.nativeElement)
     .duration(700)
@@ -465,10 +472,19 @@ this.renderer.addClass(this.div2.nativeElement, 'quitarBottom');
    // animation5.stop();
   //  animation5.destroy();
 */
+let duracion;
+
+if(!this.platform.is("ipad") || !this.platform.is("iphone") || !this.platform.is("ios")){
+   console.log("android")
+   duracion= 1150;
+}
+else{
+  duracion= 550;
+}
 if (esHaciaArriba) {
 const animation5: Animation = this.animationCtrl.create('bouceEduardo-b')
     .addElement(this.div2.nativeElement)
-    .duration(550)
+    .duration(duracion)
     .delay(60)
     .easing(' cubic-bezier(0,.70,.45,1)')
 // .beforeStyles({bottom:'-16vh'})
@@ -515,7 +531,7 @@ this.pillMenu.animacion();
 
 
     }
-
+    this.content.scrollToPoint(0, 0, 0);
 
 
   }
@@ -573,8 +589,10 @@ this.pillMenu.animacion();
       let index = await this.slideUp.getActiveIndex();
 
       // Por mientras
-      index = index === 7 ? 1 : index;
-      index = index === 0 ? 6 : index;
+      /*index = index === 7 ? 1 : index;
+      index = index === 0 ? 6 : index;*/
+      index = index === 6 ? 1 : index;
+      index = index === 0 ? 5 : index;
       this.header = this.headersText[index - 1];
       this.nombreIcono = this.iconos[index - 1];
 
@@ -591,9 +609,9 @@ this.pillMenu.animacion();
             this.tabs = ['Perfil', 'Materias', 'Estadísticas'];
      } else if (index === 5) {
       this.tabs = ['Preguntas', 'Videos', 'Contacto'];
-      } else if (index === 6) {
+      }/* } else if (index === 6) {
         this.tabs = ['Alumnos', 'Docentes', 'Cordinadores'];
-      }
+      }*/
 
       this.selectOption = '0';
       // console.log(await this.slideDown.getActiveIndex().toString());
@@ -605,16 +623,25 @@ this.pillMenu.animacion();
       if (index === 1) {
          this.fabVisible = false; /*this.pillMenu.visibleFab(false);*/ 
          this.renderer.setStyle(this.fabend.nativeElement,'display','none');
-
-      } else { 
-        this.fabVisible = true; /*this.pillMenu.visibleFab(true);*/ 
-        this.renderer.setStyle(this.fabend.nativeElement,'display','block');
-      }
-      if (index === 2) { 
+         this.renderer.setStyle(this.fabstart.nativeElement,'display','none');
+      } 
+      else if (index === 2) { 
          this.fabVisibleFilters = true; /*this.pillMenu.visibleFabFilters(true)*/ 
-         this.renderer.setStyle(this.fabstart.nativeElement,'display','block');
-      } else { 
+         if(this.getKeyToken('tipo')=='Profesor')
+          this.renderer.setStyle(this.fabend.nativeElement,'display','block');
+
+        this.renderer.setStyle(this.fabstart.nativeElement,'display','block');
+      } 
+      else if (index === 3) { 
+        this.fabVisibleFilters = true; /*this.pillMenu.visibleFabFilters(true)*/ 
+        if(this.getKeyToken('tipo')=='Profesor')
+         this.renderer.setStyle(this.fabend.nativeElement,'display','block');
+         
+         this.renderer.setStyle(this.fabstart.nativeElement,'display','none');
+     } 
+      else { 
           this.fabVisibleFilters = false; /*this.pillMenu.visibleFabFilters(false)*/ 
+          this.renderer.setStyle(this.fabend.nativeElement,'display','none');
           this.renderer.setStyle(this.fabstart.nativeElement,'display','none');
       }
 
@@ -664,7 +691,7 @@ this.pillMenu.animacion();
         }
         else
         {
-          console.log("listo");
+          //console.log("listo");
           this.slideUp.lockSwipes(true);
         }
       }, 100);
@@ -675,8 +702,8 @@ this.pillMenu.animacion();
 
       //this.LstTareas = await this.apiTareas.get().toPromise();
 
-      this.iconos = ['people-outline', 'watch-outline', 'leaf-outline', 'shield-outline', 'leaf-outline'];
-      this.headersText = ['Books', 'Tasks', 'Community', 'Account', 'Support', 'Users'];
+      this.iconos = ['book-outline', 'pencil', 'people-outline', 'person-outline', 'hammer-outline'];
+      this.headersText = ['Books', 'Tasks', 'Community', 'Account', 'Support'];
       this.tabs = ['Todos', 'Inglés'  , 'Español', 'Código'];
 
 
@@ -696,11 +723,11 @@ this.pillMenu.animacion();
         
           if (detail.velocityY < -0.50) {
             this.swipeUp = true;
-            console.log("onmoveUp");
+            //console.log("onmoveUp");
           //  this.scrollenable = false
           
            }else{
-            console.log("onmoveDown");
+            //console.log("onmoveDown");
             this.swipeDown = true;
         //    this.scrollenable = false;
             }
@@ -708,10 +735,10 @@ this.pillMenu.animacion();
         },
         onEnd: (detail) => {
          //   this.scrollenable = false;
-            console.log("SwipeUP",this.swipeUp);
-            console.log("SwipeDown",this.swipeDown);
+            //console.log("SwipeUP",this.swipeUp);
+            //console.log("SwipeDown",this.swipeDown);
             if (this.swipeUp === true && !this.estadoArriba) {
-              console.log("entro al if de swipeUp")
+              //console.log("entro al if de swipeUp")
               this.swipeUp = true;
               this.animacion(false, true);
               this.div2.nativeElement.click();
@@ -723,7 +750,7 @@ this.pillMenu.animacion();
            } else {
               if (this.swipeDown === true && this.estadoArriba) {
                 this.gesture.enable(true);
-                console.log("entro al if de swipeDown")
+                //console.log("entro al if de swipeDown")
              //   if (this.pocisionInicial === true) { causante del problema que no bajaba cuando haciamos swipe para abajo
            //     this.gesture.enable(false);
             //    this.renderer.setStyle(this.div2.nativeElement, 'touch-action', 'none');
@@ -761,15 +788,33 @@ this.pillMenu.animacion();
             {
               text: 'Aceptar',
               handler:  (value: any) => {
-                   if (value.Meses.value === 0) {
-                    this.apiTareas.get().subscribe(data => {
-                      this.LstTareas = data;
-                     });
-                   } else {
-                    this.apiTareas.getTareasMaterias(value.Meses.value).subscribe(data => {
-                     this.LstTareas = data;
-                    });
-                   }
+                  console.log()
+                  const itemOption =this.pillMenu.itemsMenu[this.pillMenu.indexAnterior];
+                  if(itemOption==="Tareas") {
+                    if (value.Meses.value === 0) {
+                      this.apiTareas.get().subscribe(data => {
+                        this.LstTareas = data;
+                      });
+                    } else {
+                        this.apiTareas.getTareasMaterias(value.Meses.value).subscribe(data => {
+                        this.LstTareas = data;
+                      });
+                    }
+                  }
+                  else if(itemOption==="Foro") {
+                    if (value.Meses.value === 0) {
+                        this.forumComponent.cargar(0);
+                    } else {
+                       this.forumComponent.cargar(value.Meses.value);
+                    } 
+                  }
+                  else if(itemOption==="Recursos") {
+                    if (value.Meses.value === 0) {
+                        this.resourceComponent.cargar(0);
+                    } else {
+                       this.resourceComponent.cargar(value.Meses.value);
+                    } 
+                  }
               }
             }
           ],
@@ -847,7 +892,7 @@ this.pillMenu.animacion();
         await modal.present();
 
         modal.onDidDismiss().then( async (data) => {
-          this.forumComponent.cargar();
+          this.resourceComponent.cargar(0);
         });
 
       } else if (itemOption === 'Noticias') {
@@ -879,7 +924,7 @@ this.pillMenu.animacion();
         await modal.present();
 
         modal.onDidDismiss().then( async (data) => {
-          this.forumComponent.cargar();
+          this.forumComponent.cargar(0);
         });
 
       }
@@ -1023,14 +1068,17 @@ this.pillMenu.animacion();
     private subscribeToEvents(): void {
       this.webSocket.connectionEstablished.subscribe((status: any) => {
           this.inforConnectionScoket(status);
-          
       });
     }
 
-    public inforConnectionScoket(status): void {
+    public async inforConnectionScoket(status) {
       if (status == true) {
+            this.hayConexion = true;
             this.renderer.setStyle(this.avatarUser.nativeElement, 'color', `#FF426D`);
+            this.slideUp.lockSwipes(false);
+            this.LstTareas = await this.apiTareas.get().toPromise();
       } else {
+            this.hayConexion = false;
             this.renderer.setStyle(this.avatarUser.nativeElement, 'color', `black`);
       }
     }

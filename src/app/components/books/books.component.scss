@@ -1,3 +1,18 @@
+ion-progress-bar {
+    --progress-background: #F4315D;
+}
+
+ion-spinner {
+    --color: #F4315D;
+    transform: scale(2);
+}
+
+.spinnerStyle {
+    position: absolute;
+    top: 36%;
+    left: 40%;
+}
+
 .images {
     column-count: 2;
     -moz-column-count: 2;
