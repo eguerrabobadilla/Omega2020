@@ -35,7 +35,7 @@ import { WebView } from '@ionic-native/ionic-webview/ngx';
 import { Pro } from '@ionic/pro';
 
 Pro.init('f6d911b5', {
-  appVersion: '0.0.6'
+  appVersion: '0.0.7'
 });
 Pro.deploy.getConfiguration();
 Pro.deploy.checkForUpdate();
