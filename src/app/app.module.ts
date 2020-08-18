@@ -32,6 +32,14 @@ import { FormsModule } from '@angular/forms';
 import { IonicStorageModule } from '@ionic/storage';
 import { Zip } from '@ionic-native/zip/ngx';
 import { WebView } from '@ionic-native/ionic-webview/ngx';
+import { Pro } from '@ionic/pro';
+
+Pro.init('f6d911b5', {
+  appVersion: '0.0.6'
+});
+Pro.deploy.getConfiguration();
+Pro.deploy.checkForUpdate();
+Pro.deploy.getCurrentVersion();
 
 @NgModule({
   declarations: [AppComponent, AnimateItemsDirective],
