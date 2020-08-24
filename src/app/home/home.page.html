@@ -79,7 +79,7 @@ top: 0;" mode="ios">
     <div #div2 (click)="clickDiv()" style="width: 100%; z-index:5;bottom: 0;position: relative;background: white;border-top-right-radius: 44px;
     border-top-left-radius: 44px;transform: translateY(67vh);min-height: 100%;">
         <div style="position: -webkit-sticky;top: 0;font-size: 29px;z-index: 999;position: sticky;">
-            <app-pill-menu #pillMenu pillMenu [itemsMenu]="tabs" [selectOption]="selectOption" (indicatorChanged)="segmentChanged($event)" (clickFab)="nuevoRecurso($event)" (clickFiltro)="openPicker($event)"></app-pill-menu>
+            <app-pill-menu #pillMenu pillMenu [itemsMenu]="tabs" [selectOption]="selectOption" (indicatorChanged)="segmentChanged($event)" (clickFab)="nuevoRecurso($event)" (clickFiltro)="openPicker()"></app-pill-menu>
         </div>
         <ion-slides [options]="slideOptsdos" #slideDown (ionSlideTouchEnd)="ionSlideTouchEnd(slideUp,slideDown)" *ngIf="selectSeccion == 1" style="min-height: 72.6vh;">
             <ion-slide>
@@ -276,7 +276,7 @@ top: 0;" mode="ios">
 
 
     <ion-fab mode="ios" vertical="bottom" horizontal="start" slot="fixed" style="margin-left: 23vw;">
-        <ion-fab-button #fabstart (click)="openPicker($event)" mode="ios" size="small" style="--box-shadow:none ;--background-activated: #F4315D;  --background: #F4315D;width: 46px;
+        <ion-fab-button #fabstart (click)="openPicker()" mode="ios" size="small" style="--box-shadow:none ;--background-activated: #F4315D;  --background: #F4315D;width: 46px;
         height:46px;transform: scale(0);display: none;">
             <ion-icon name="list-outline"></ion-icon>
         </ion-fab-button>

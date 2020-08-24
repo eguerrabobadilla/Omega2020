@@ -27,6 +27,7 @@ import { CrearEvidencePage } from '../pages/crear-evidence/crear-evidence.page';
 import { EvidencesComponent } from '../components/evidences/evidences.component';
 import { CrearTopicPage } from '../pages/crear-topic/crear-topic.page';
 import { ListResourceComponent } from '../components/list-resource/list-resource.component';
+import { CodePush,InstallMode, SyncStatus } from '@ionic-native/code-push/ngx';
 
 
 
@@ -147,7 +148,8 @@ export class HomePage {
               private loadingController: LoadingController, private alertController: AlertController,
               public authenticationService: AuthenticationService ,
               private apiTareas: TareasService, public  webSocket: WebsocketService, private apiCalendario: CalendarioService,
-              private pickerController: PickerController, private apiMaterias: MateriasService) {
+              private pickerController: PickerController, private apiMaterias: MateriasService,
+              private codePush : CodePush) {
     //  this.scrollenable = true;
 
 
@@ -570,6 +572,10 @@ this.pillMenu.animacion();
       }, {threshold: 0});
 
       this.observer.observe(this.elementsToProcess.nativeElement);
+      setTimeout(() => {
+        this.checkCodePush();
+      }, 100);
+      
 
     }
     async  ionSlideTouchStart() {
@@ -1080,6 +1086,62 @@ this.pillMenu.animacion();
       } else {
             this.hayConexion = false;
             this.renderer.setStyle(this.avatarUser.nativeElement, 'color', `black`);
+      }
+    }
+
+    public checkCodePush() {
+
+      const downloadProgress = (progress) => { 
+        console.log(`Downloaded ${progress.receivedBytes} of ${progress.totalBytes}`); 
+      }
+      this.codePush.sync({
+        updateDialog: {
+          appendReleaseDescription:true,
+          descriptionPrefix: "\n\nChange log:\n",
+        },
+        installMode: InstallMode.IMMEDIATE
+        }, downloadProgress).subscribe((syncStatus) => this.onSyncStatusChange(syncStatus));
+  
+      /*this.codePush.sync({
+        updateDialog: {
+          appendReleaseDescription:true,
+          descriptionPrefix: "\n\nChange log:\n",
+        },
+        installMode: InstallMode.IMMEDIATE
+      },
+  
+      (downloadProgress) =>  {
+      //   this.progres =`Downloaded ${downloadProgress.receivedBytes} of ${downloadProgress.totalBytes}`;
+      //   console.log(this.progres);
+      //   console.log(downloadProgress.receivedBytes)
+      },
+      ).subscribe(
+        (data)=>{
+          console.log('code push terminado' + data);
+        },
+        (err)=>{
+        console.log('code push terminado' + err);
+        },
+      );*/
+    }
+    onSyncStatusChange(SyncStatus){
+      switch (SyncStatus) {
+          case SyncStatus.CHECKING_FOR_UPDATE:
+              // Show "Checking for update" notification
+              console.log("CHECKING_FOR_UPDATE");
+              break;
+          case SyncStatus.AWAITING_USER_ACTION:
+              // Show "Checking for update" notification
+              console.log("AWAITING_USER_ACTION");
+              break;
+          case SyncStatus.DOWNLOADING_PACKAGE:
+              // Show "downloading" notification
+              console.log("DOWNLOADING_PACKAGE");
+              break;
+          case SyncStatus.INSTALLING_UPDATE:
+              // Show "installing" notification
+              console.log("INSTALLING_UPDATE:");
+              break;
       }
     }
 

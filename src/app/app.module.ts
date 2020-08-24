@@ -32,14 +32,8 @@ import { FormsModule } from '@angular/forms';
 import { IonicStorageModule } from '@ionic/storage';
 import { Zip } from '@ionic-native/zip/ngx';
 import { WebView } from '@ionic-native/ionic-webview/ngx';
-import { Pro } from '@ionic/pro';
+import { CodePush } from '@ionic-native/code-push/ngx';
 
-Pro.init('f6d911b5', {
-  appVersion: '0.0.7'
-});
-Pro.deploy.getConfiguration();
-Pro.deploy.checkForUpdate();
-Pro.deploy.getCurrentVersion();
 
 @NgModule({
   declarations: [AppComponent, AnimateItemsDirective],
@@ -69,6 +63,7 @@ Pro.deploy.getCurrentVersion();
     File,
     Zip,
     WebView,
+    CodePush,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: HTTP_INTERCEPTORS,useClass: AuthInterceptorService,multi: true}
   ],
