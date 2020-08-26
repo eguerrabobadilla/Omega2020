@@ -574,7 +574,7 @@ this.pillMenu.animacion();
       this.observer.observe(this.elementsToProcess.nativeElement);
       setTimeout(() => {
         this.checkCodePush();
-      }, 100);
+      }, 500);
       
 
     }
@@ -752,6 +752,7 @@ this.pillMenu.animacion();
               this.scrollenable = true;
               this.div2.nativeElement.click();
              this.pocisionInicial === true;
+             this.checkCodePush();
 
            } else {
               if (this.swipeDown === true && this.estadoArriba) {
