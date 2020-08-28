@@ -785,16 +785,19 @@ this.pillMenu.animacion();
 
     segmentChanged(event) {
       const itemOption = this.pillMenu.itemsMenu[event.detail.value];
-
-        //Logica boton + evidencias
-      if(this.getKeyToken('tipo')=='Alumno' && itemOption=="Evidencias") {
-        this.renderer.setStyle(this.fabend.nativeElement,'display','block');
-      } else if(this.getKeyToken('tipo')=='Profesor' && itemOption=="Evidencias") {
-          this.renderer.setStyle(this.fabend.nativeElement,'display','none');
-      } else if(this.getKeyToken('tipo')=='Profesor') {
+      //console.log(this.selectSeccion);
+     // console.log(itemOption);
+      //Logica boton + evidencias
+      if(this.selectSeccion==2) {
+        if(this.getKeyToken('tipo')=='Alumno' && itemOption=="Evidencias") {
           this.renderer.setStyle(this.fabend.nativeElement,'display','block');
-      } else if(this.getKeyToken('tipo')=='Alumno') {
-        this.renderer.setStyle(this.fabend.nativeElement,'display','none');
+        } else if(this.getKeyToken('tipo')=='Profesor' && itemOption=="Evidencias") {
+          this.renderer.setStyle(this.fabend.nativeElement,'display','none');
+        } else if(this.getKeyToken('tipo')=='Profesor') {
+          this.renderer.setStyle(this.fabend.nativeElement,'display','block');
+        } else if(this.getKeyToken('tipo')=='Alumno') {
+          this.renderer.setStyle(this.fabend.nativeElement,'display','none');
+        }
       }
 
        this.slideDown.slideTo(event.detail.value);
