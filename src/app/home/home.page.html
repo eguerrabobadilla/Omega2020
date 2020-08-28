@@ -8,7 +8,7 @@ border-radius: 0px 0px 0px 50px;" mode="ios">
 
 
 
-            <span style="opacity:0;    margin-right: -10px;">-</span> Hola, {{user.nombre}}!
+            <span style="opacity:0;    margin-right: -10px;">-</span> Hola, {{user.nombre }}!
 
         </ion-title>
 
@@ -114,11 +114,13 @@ top: 0;" mode="ios">
                     <ion-card style="text-align: initial;" class="ion-activatable ripple-parent" mode="ios" *ngFor="let item of LstTareas" (click)="openDetail($event,item)">
                         <ion-ripple-effect></ion-ripple-effect>
                         <ion-card-header>
-                            <ion-card-title>{{ item.titulo }}</ion-card-title>
+                            <ion-card-title>{{ item.Titulo }}</ion-card-title>
                         </ion-card-header>
-                        <ion-card-content>{{ item.descripcion }}</ion-card-content>
+                        <ion-card-content>{{ item.Descripcion }}</ion-card-content>
+                        <ion-item>
+                            <ion-button *ngIf="permisoEditar()" fill="outline" slot="end" (click)="editaTarea($event,item)">Editar</ion-button>
+                        </ion-item>
                     </ion-card>
-
                 </ion-list>
             </ion-slide>
             <ion-slide>

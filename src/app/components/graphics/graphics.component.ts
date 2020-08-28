@@ -34,11 +34,11 @@ export class GraphicsComponent implements OnInit {
     this.apiEstadistica.get().subscribe(data => {
       //console.log(data);
       this.Estadisticas = data;
-      this.Estadisticas.estadisticames.forEach(item => {
-            this.tareas.push(item.tareas);
-            this.foros.push(item.foros);
-            this.recursos.push(item.recursos);
-            this.temas.push(item.temas);
+      this.Estadisticas.Estadisticames.forEach(item => {
+            this.tareas.push(item.Tareas);
+            this.foros.push(item.Foros);
+            this.recursos.push(item.Recursos);
+            this.temas.push(item.Temas);
       });
 
       //console.log(this.tareas);

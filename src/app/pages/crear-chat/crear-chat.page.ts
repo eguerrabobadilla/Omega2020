@@ -49,18 +49,18 @@ export class CrearChatPage implements OnInit {
   }
 
   addContact(item) {
-    if (this.LstContactos.find(a => a.id === item.id) === undefined) {
+    if (this.LstContactos.find(a => a.id === item.Id) === undefined) {
       this.LstContactos.push(item);
     } else {
-      this.LstContactos.splice(this.LstContactos.findIndex(a => a.id === item.id), 1);
+      this.LstContactos.splice(this.LstContactos.findIndex(a => a.id === item.Id), 1);
     }
   }
 
   addGroup(item) {
-    if (this.LstGruposContactos.find(a => a.id === item.id) === undefined) {
+    if (this.LstGruposContactos.find(a => a.id === item.Id) === undefined) {
       this.LstGruposContactos.push(item);
     } else {
-      this.LstGruposContactos.splice(this.LstGruposContactos.findIndex(a => a.id === item.id), 1);
+      this.LstGruposContactos.splice(this.LstGruposContactos.findIndex(a => a.id === item.Id), 1);
     }
   }
 

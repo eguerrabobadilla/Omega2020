@@ -1,6 +1,6 @@
 <ion-header class="ion-no-border" mode="ios">
     <ion-toolbar>
-        <ion-title style="margin-top: 6px;">Nuevo Foro</ion-title>
+        <ion-title style="margin-top: 6px;">{{ titulo }}</ion-title>
         <ion-buttons slot="end">
             <ion-button style="margin-top: 8px;margin-right: 8px;" (click)="closeModal()">
                 <ion-icon slot="icon-only" color="light" name="close"></ion-icon>
@@ -14,6 +14,7 @@
             <form [formGroup]="FrmItem" (ngSubmit)="crearForo()">
                 <ion-grid>
                     <ion-row>
+                        <ion-input hidden type="text" formControlName="Id" name="Id"></ion-input>
                         <ion-col size="12">
                             <ion-item button (click)="openPickerGrupos()" detail="false">
                                 <ion-label color="light" position="floating">Grupo</ion-label>
@@ -31,7 +32,7 @@
                                 <ion-label color="light" position="floating">{{ FrmItem.controls.MateriaId.value }}</ion-label>
                                 <ion-input #txtMateria type="text" readonly formControlName="MateriaId" name="MateriaId" style="display: none;"></ion-input>
                             </ion-item>
-                            <div *ngIf="!FrmItem.controls.Grupo.valid && (FrmItem.controls.Grupo.dirty || submitAttempt)">
+                            <div *ngIf="!FrmItem.controls.MateriaId.valid && (FrmItem.controls.MateriaId.dirty || submitAttempt)">
                               <p class="text-error">Por favor ingresa una Materia.</p>
                             </div>
                           </ion-col>
@@ -66,10 +67,10 @@
                         <ion-col size="6">
                             <ion-item>
                                 <ion-label color="light" position="floating">Hora</ion-label>
-                                <ion-datetime formControlName="HoraPublicacion" name="HoraPublicacion" displayFormat="hh:mm A" pickerFormat="hh mm A">
+                                <ion-datetime formControlName="HoraPulicacion" name="HoraPulicacion" displayFormat="hh:mm A" pickerFormat="hh mm A">
                                 </ion-datetime>
                             </ion-item>
-                            <div *ngIf="!FrmItem.controls.HoraPublicacion.valid && (FrmItem.controls.HoraPublicacion.dirty || submitAttempt)">
+                            <div *ngIf="!FrmItem.controls.HoraPulicacion.valid && (FrmItem.controls.HoraPulicacion.dirty || submitAttempt)">
                                 <p class="text-error">Por favor ingresa una hora.</p>
                             </div>
                         </ion-col>

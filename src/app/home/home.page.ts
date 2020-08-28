@@ -72,9 +72,11 @@ export class HomePage {
     setTimeout(() => { //temporal
       this.activarEventoTouch();
       this.apiCalendario.getCalendario().subscribe(data => {
-      this.events = data;
+        console.log("getCalendario");
+        this.events = data;
       });
     }, 100);
+
 
   },
   onDayChange : (event, inst) => {
@@ -585,7 +587,6 @@ this.pillMenu.animacion();
 
     }
     async ionSlideTouchEndSlide() {
-
       let index = await this.slideUp.getActiveIndex();
 
       // Por mientras
@@ -678,8 +679,14 @@ this.pillMenu.animacion();
     }
 
     ionViewWillEnter() {
-      this.user.nombre = this.getKeyToken('nombre');
+      this.user.nombre = this.capitalizeFirstLetter(this.getKeyToken('nombre').split(' ')[0]);
+      //let nombre = this.capitalizeFirstLetter(this.user.nombre.split(' ')[0]);
+      //console.log(nombre);
       this.user.grado = this.getKeyToken('grado');
+    }
+
+    capitalizeFirstLetter(string) {
+      return string.charAt(0).toUpperCase() + string.slice(1).toLocaleLowerCase();
     }
 
     ionViewDidEnter() {
@@ -697,6 +704,8 @@ this.pillMenu.animacion();
       }, 100);
 
     }
+
+
     async ngOnInit() {
       this.subscribeToEvents();
 
@@ -773,6 +782,19 @@ this.pillMenu.animacion();
 
 
     segmentChanged(event) {
+      const itemOption = this.pillMenu.itemsMenu[event.detail.value];
+
+        //Logica boton + evidencias
+      if(this.getKeyToken('tipo')=='Alumno' && itemOption=="Evidencias") {
+        this.renderer.setStyle(this.fabend.nativeElement,'display','block');
+      } else if(this.getKeyToken('tipo')=='Profesor' && itemOption=="Evidencias") {
+          this.renderer.setStyle(this.fabend.nativeElement,'display','none');
+      } else if(this.getKeyToken('tipo')=='Profesor') {
+          this.renderer.setStyle(this.fabend.nativeElement,'display','block');
+      } else if(this.getKeyToken('tipo')=='Alumno') {
+        this.renderer.setStyle(this.fabend.nativeElement,'display','none');
+      }
+
        this.slideDown.slideTo(event.detail.value);
       // this.slideUp.slideTo(event.detail.value);
     } 
@@ -838,7 +860,7 @@ this.pillMenu.animacion();
       options.push({text: 'Todas' , value: 0});
 
       this.materias.forEach(x => {
-        options.push({text: x.nombre , value: x.id});
+        options.push({text: x.Nombre , value: x.Id});
       });
   
       return options;
@@ -985,11 +1007,14 @@ this.pillMenu.animacion();
 
     async ionSlideTouchEnd(slideSelect: IonSlides, notSlideSlect: IonSlides) {
       // notSlideSlect.slideTo(await slideSelect.getActiveIndex());
-      this.pillMenu.nextSegment(await (await this.slideDown.getActiveIndex()).toString());
+      //console.log(await (await this.slideDown.getActiveIndex()).toString());
+      const index =await (await this.slideDown.getActiveIndex()).toString();
+      //const itemOption = this.pillMenu.itemsMenu[index];
+
+      this.pillMenu.nextSegment(index);
     }
 
     async openDetail(event: Event, item) {
-
     const modal = await this.modalCrl.create({
         component: DetallePage,
         cssClass: 'my-custom-modal-css',
@@ -997,7 +1022,6 @@ this.pillMenu.animacion();
         backdropDismiss: true,
         componentProps: {item}
       });
-
     return await modal.present();
     }
 
@@ -1008,6 +1032,7 @@ this.pillMenu.animacion();
     }
 
     clickHoyCalendario(){
+      console.log("clickHoyCalendario");
       this.mobi.instance.navigate(new Date(Date.now()), true);
     }
 
@@ -1081,6 +1106,33 @@ this.pillMenu.animacion();
             this.hayConexion = false;
             this.renderer.setStyle(this.avatarUser.nativeElement, 'color', `black`);
       }
+    }
+
+    public async editaTarea(event,item){
+      event.stopPropagation();
+      
+      const modal = await this.modalCrl.create({
+        component: NuevoRecursoPage,
+        // cssClass: 'my-custom-modal-css',
+        cssClass: 'my-custom-modal-css-capturas',
+        showBackdrop: false,
+        componentProps: {item},
+        mode: 'ios',
+        backdropDismiss: true
+      });
+
+      await modal.present();
+
+      modal.onDidDismiss().then( async (data) => {
+          this.LstTareas = await this.apiTareas.get().toPromise();
+      });
+    }
+
+    public permisoEditar() {
+      if(this.getKeyToken('tipo')=='Profesor')
+        return true;
+      else
+        return false;
     }
 
 }

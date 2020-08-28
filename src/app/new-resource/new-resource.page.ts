@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef, ViewChild, ElementRef, Renderer2 } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ViewChild, ElementRef, Renderer2,Input} from '@angular/core';
 import { ModalController, AlertController, PickerController, IonInput } from '@ionic/angular';
 import { FormGroup, FormBuilder,Validators  } from '@angular/forms';
 import { RecursosService } from '../api/recursos.service';
@@ -20,7 +20,7 @@ export class NewResourcePage implements OnInit {
   public FrmItem: FormGroup;
   public  texto_adjuntar_portada: string = 'Adjuntar Recurso';
   public submitAttempt: boolean = false;
-  private item: any;
+  //private item: any;
   private files: any;
   meses: string[];
   semanas: string[];
@@ -31,23 +31,53 @@ export class NewResourcePage implements OnInit {
   gradoSeleccionado: any;
   grupoSeleccionado: any;
   MateriaSeleccionada: any;
+  titulo: any;
+  tituloBoton: any;
+  @Input() item;
 
   constructor(private modalCtrl: ModalController, private formBuilder: FormBuilder, private cd:ChangeDetectorRef,
               private alertCtrl: AlertController, private apiRecursos: RecursosService, private pickerController: PickerController,
               private renderer: Renderer2,private apiChat: ChatService,private apiMaterias: MateriasService) {
     this.FrmItem = formBuilder.group({
+      Id:   [0, Validators.compose([Validators.required])],
       Grupo:   ['', Validators.compose([Validators.required])],
       MateriaId:   ['', Validators.compose([Validators.required])],
       Titulo: ['', Validators.compose([Validators.required])],
       Descripcion: ['', Validators.compose([Validators.required])],
       FechaPublicacion: ['', Validators.compose([Validators.required])],
-      Image: [null, Validators.compose([Validators.required])]
+      Image: [null, Validators.compose([])]
     });
   }
 
   ngOnInit() {
     this.meses   = ['Agosto','Septiembre','Octubre', 'Noviembre', 'Diciembre', 'Enero', 'Febreo', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio'];
     this.semanas = ['Semana 1', 'Semana 2', 'Semana 3', 'Semana 4'];
+  }
+
+  ionViewWillEnter() {
+    if(this.item != undefined) {
+      this.FrmItem.patchValue(this.item);
+      
+      this.gradoSeleccionado = this.item.Grado;
+      this.grupoSeleccionado = this.item.Grupo;
+      this.txtGradoGrupo.value = this.item.Grado + ' / ' + this.item.Grupo;
+
+      this.txtMateria.value = this.item.Materia.Nombre;
+      this.MateriaSeleccionada = this.item.MateriaId;
+
+      this.semanaSeleccionada = this.item.Semana;
+      this.mesSeleccionado= this.item.Mes;
+      this.txtFecha.value = this.item.Mes + ' / ' + this.item.Semana
+
+      if(this.item.PathRecurso != undefined)
+        this.texto_adjuntar_portada = 'Recurso Seleccionado';
+
+      this.titulo = 'Modificar Recursos';
+      this.tituloBoton= 'Modificar Recurso';
+    } else {
+      this.titulo = 'Nuevo Recurso';
+      this.tituloBoton = 'Crear Recurso';
+    }
   }
 
   async openPicker() {
@@ -82,6 +112,8 @@ export class NewResourcePage implements OnInit {
     picker.present();
 
   }
+
+  
 
   getRealMonth() {
     /*
@@ -151,6 +183,7 @@ export class NewResourcePage implements OnInit {
 
      
     const payload = new FormData();
+    payload.append('Id', this.item.Id);
     payload.append('Titulo', this.item.Titulo);
     payload.append('Descripcion', this.item.Descripcion);
     payload.append('Ano', '2020');
@@ -159,32 +192,53 @@ export class NewResourcePage implements OnInit {
     payload.append('MateriaId', this.MateriaSeleccionada);
     payload.append('Grado', this.gradoSeleccionado);
     payload.append('Grupo', this.grupoSeleccionado);
-    payload.append('ItemUpload', this.files, this.files.name);
-  
+    //payload.append('ItemUpload', this.files, this.files.name);
+    if(this.files != undefined) //Valida si se selecciono alguna imagen
+      payload.append('ItemUpload', this.files, this.files.name);
 
-    const tareaUpload = await this.apiRecursos.save(payload).toPromise();
+    if(this.item.Id == 0)
+      await this.apiRecursos.save(payload).toPromise();
+    else
+      await this.apiRecursos.update(payload).toPromise();
 
     this.submitAttempt = false;
 
-    const alertTerminado = await this.alertCtrl.create({
-      header: 'Recurso creada con éxito',
-      message: 'Se creó el recurso ' + this.FrmItem.get('Titulo').value + ', ¿desea crear otra tarea?',
-      buttons: [
-        {
-           text: 'No', handler: () =>  this.modalCtrl.dismiss()
-        },
-        {
-          text: 'Crear otro', handler: () => this.FrmItem.reset()
-        }
-      ]
-    });
 
-    await alertTerminado.present();
+    if(this.item.Id == 0) {
+      const alertTerminado = await this.alertCtrl.create({
+        header: 'Recurso creada con éxito',
+        message: 'Se creó el recurso ' + this.FrmItem.get('Titulo').value + ', ¿desea crear otra tarea?',
+        buttons: [
+          {
+             text: 'No', handler: () =>  this.modalCtrl.dismiss()
+          },
+          {
+            text: 'Crear otro', handler: () => this.FrmItem.reset()
+          }
+        ]
+      });
+
+      await alertTerminado.present();
+    } else {
+      const alertTerminado = await this.alertCtrl.create({
+        header: 'Recurso modificado con éxito',
+        message: 'Se modifico el recurso ' + this.FrmItem.get('Titulo').value,
+        buttons: [
+          {
+            text: 'Continuar', handler: () =>  this.modalCtrl.dismiss()
+          }
+        ]
+      });
+      await alertTerminado.present();
+    }
+
+
+    
   }
 
   onFileChange($event: any) {
     if( $event.target.files &&  $event.target.files.length) {
-      this.texto_adjuntar_portada = 'Recurso Seleccionada';
+      this.texto_adjuntar_portada = 'Recurso Seleccionado';
 
       this.FrmItem.patchValue({
         Image: $event.target.files[0]
@@ -237,7 +291,7 @@ export class NewResourcePage implements OnInit {
     //options.push({text: 'Todas' , value: 0});
 
     this.grupos.forEach(x => {
-      options.push({text: x.grado + x.grupo , value: x.grado+'/'+x.grupo});
+      options.push({text: x.Grado + x.Grupo , value: x.Grado+'/'+x.Grupo});
     });
 
     return options;
@@ -276,7 +330,7 @@ export class NewResourcePage implements OnInit {
     this.grupos = await this.apiMaterias.getMateriasProfesor(this.gradoSeleccionado).toPromise();
 
     this.grupos.forEach(x => {
-      options.push({text: x.nombre , value: x.id});
+      options.push({text: x.Nombre , value: x.Id});
     });
 
     return options;

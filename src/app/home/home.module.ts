@@ -43,8 +43,7 @@ import { SubjectsComponent } from '../components/subjects/subjects.component';
 import { QuestionsComponent } from '../components/questions/questions.component';
 import { ContactComponent } from '../components/contact/contact.component';
 import { PerfilComponent } from '../components/perfil/perfil.component';
-
-
+import { LinkifyPipe } from '../pipes/linkifypipe ';
 
 
 @NgModule({
@@ -86,6 +85,6 @@ import { PerfilComponent } from '../components/perfil/perfil.component';
   ],
   declarations: [ HomePage, PillMenuComponent, BooksComponent, CodesComponent, ListComponent, 
     ChatsComponent, FilterPipe, ListResourceComponent, NewsComponent, ForumComponent,GraphicsComponent,CalendarComponent
-    , EvidencesComponent,SubjectsComponent, QuestionsComponent, ContactComponent, PerfilComponent]
+    , EvidencesComponent,SubjectsComponent, QuestionsComponent, ContactComponent, PerfilComponent,LinkifyPipe]
 })
 export class HomePageModule {}

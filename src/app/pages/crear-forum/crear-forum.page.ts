@@ -1,4 +1,4 @@
-import { Component, OnInit,ViewChild,ElementRef } from '@angular/core';
+import { Component, OnInit,ViewChild,ElementRef,Input } from '@angular/core';
 import { ModalController, AlertController,IonInput,PickerController } from '@ionic/angular';
 import { FormGroup, FormBuilder, Validators  } from '@angular/forms';
 import { ForumService } from '../../api/forum.service';
@@ -17,23 +17,27 @@ export class CrearForumPage implements OnInit {
   @ViewChild('txtMateria', {read: ElementRef, static: true}) txtMateriaHTML: ElementRef;
   public FrmItem: FormGroup;
   public submitAttempt: boolean = false;
-  private item: any;
+  //private item: any;
   grupos: any[] = [];
   materias: any[] = [];
   gradoSeleccionado: any;
   grupoSeleccionado: any;
   MateriaSeleccionada: any;
+  titulo: any;
+
+  @Input() item;
 
   constructor(private modalCtrl: ModalController, private formBuilder: FormBuilder,private alertCtrl: AlertController,
               private apiForo: ForumService,private apiChat: ChatService,private apiMaterias: MateriasService,
               private pickerController: PickerController) {
     this.FrmItem = formBuilder.group({
+      Id:   [0, Validators.compose([Validators.required])],
       Grupo:   ['', Validators.compose([Validators.required])],
       MateriaId:   ['', Validators.compose([Validators.required])],
       Nombre: ['', Validators.compose([Validators.required])],
       Descrpcion: ['', Validators.compose([Validators.required])],
       FechaPublicacion: ['', Validators.compose([Validators.required])],
-      HoraPublicacion: ['', Validators.compose([Validators.required])]
+      HoraPulicacion: ['07:00', Validators.compose([Validators.required])]
     });
    }
 
@@ -41,8 +45,26 @@ export class CrearForumPage implements OnInit {
 
   }
 
+  ionViewWillEnter() {
+    if(this.item != undefined) {
+      this.FrmItem.patchValue(this.item);
+      
+      this.gradoSeleccionado = this.item.Grado;
+      this.grupoSeleccionado = this.item.Grupo;
+      this.txtGradoGrupo.value = this.item.Grado + ' / ' + this.item.Grupo;
+
+      this.txtMateria.value = this.item.Materia.Nombre;
+      this.MateriaSeleccionada = this.item.MateriaId;
+
+      this.titulo = 'Modificar Foro';
+    } else {
+      this.titulo = 'Nuevo Foro';
+    }
+  }
+
   async crearForo() {
     this.submitAttempt = true;
+    //let tempHora = null;
 
     if (!this.FrmItem.valid) {
 
@@ -62,25 +84,51 @@ export class CrearForumPage implements OnInit {
     this.item.Grado = this.gradoSeleccionado;
     this.item.Grupo = this.grupoSeleccionado;
     this.item.MateriaId = this.MateriaSeleccionada;
+    /*const d = new Date(this.item.HoraPulicacion);
+    console.log(d);
+    tempHora = this.item.HoraPulicacion;
+    console.log(this.item.HoraPulicacion);
+    this.item.HoraPulicacion = `${d.getHours()}:${d.getMinutes()}`;
+    console.log(this.item);*/
 
-    const saveForo = await this.apiForo.saveForo(this.item).toPromise();
+
+    if(this.item.Id == 0)
+      await this.apiForo.saveForo(this.item).toPromise();
+    else
+      await this.apiForo.updateForo(this.item).toPromise();
+    
+    //this.item.HoraPulicacion = tempHora;
     this.submitAttempt = false;
     
     console.log("guardado2");
-    const alertTerminado = await this.alertCtrl.create({
-      header: 'Foro creado con éxito',
-      message: 'Se creó el foro ' + this.FrmItem.get('Nombre').value + ', ¿desea crear otro foro?',
-      buttons: [
-        {
-           text: 'No', handler: () =>  this.modalCtrl.dismiss()
-        },
-        {
-          text: 'Crear otro', handler: () => this.FrmItem.reset()
-        }
-      ]
-    });
 
-    await alertTerminado.present();
+    if(this.item.Id == 0) {
+        const alertTerminado = await this.alertCtrl.create({
+          header: 'Foro creado con éxito',
+          message: 'Se creó el foro ' + this.FrmItem.get('Nombre').value + ', ¿desea crear otro foro?',
+          buttons: [
+            {
+              text: 'No', handler: () =>  this.modalCtrl.dismiss()
+            },
+            {
+              text: 'Crear otro', handler: () => this.FrmItem.reset()
+            }
+          ]
+        });
+
+        await alertTerminado.present();
+    } else {
+      const alertTerminado = await this.alertCtrl.create({
+        header: 'Foro modoficado con éxito',
+        message: 'Se modifico el Foro ' + this.FrmItem.get('Nombre').value,
+        buttons: [
+          {
+            text: 'Continuar', handler: () =>  this.modalCtrl.dismiss()
+          }
+        ]
+      });
+      await alertTerminado.present();
+    }
   }
 
   
@@ -125,7 +173,7 @@ export class CrearForumPage implements OnInit {
     //options.push({text: 'Todas' , value: 0});
 
     this.grupos.forEach(x => {
-      options.push({text: x.grado + x.grupo , value: x.grado+'/'+x.grupo});
+      options.push({text: x.Grado + x.Grupo , value: x.Grado+'/'+x.Grupo});
     });
 
     return options;
@@ -164,7 +212,7 @@ export class CrearForumPage implements OnInit {
     this.grupos = await this.apiMaterias.getMateriasProfesor(this.gradoSeleccionado).toPromise();
 
     this.grupos.forEach(x => {
-      options.push({text: x.nombre , value: x.id});
+      options.push({text: x.Nombre , value: x.Id});
     });
 
     return options;
