@@ -24,7 +24,8 @@ export class BooksComponent implements OnInit {
   @Input() librosIN: any[];
 
   constructor(public  webSocket: WebsocketService,private serviceDownload: DownloadFileService,private transfer: FileTransfer,
-              private file: File,private platform: Platform,private booksService: BooksService,private zip: Zip,private webview: WebView) {
+              private file: File,private platform: Platform,private booksService: BooksService,private zip: Zip,
+              private webview: WebView) {
 
   }
 
@@ -77,14 +78,14 @@ export class BooksComponent implements OnInit {
         console.log("pathLibro",directory + 'Libro'+ item.Id);
         if(status=== false) {
        
-          (<any>window).modusecho.echo([directory + 'Libro'+ item.Id,'1',"Lbs"]);
+          (<any>window).modusecho.echo([directory + 'Libro'+ item.id, item.id,"Lbs"]);
         }
         else {
-          (<any>window).modusecho.echo([directory + 'Libro'+ item.Id,'1',"Lbs"]);
+          (<any>window).modusecho.echo([directory + 'Libro'+ item.id, item.id,"Lbs"]);
         } 
           //this.buscarActualizaciones();
 
-        console.log(this.webview.convertFileSrc(directory + 'Libro' + item.Id + "/index.html"));
+        //console.log(this.webview.convertFileSrc(directory + 'Libro' + item.id + "/index.html"));
     }).catch(err => {
         console.log(err);
     });

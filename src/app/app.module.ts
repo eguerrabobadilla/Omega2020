@@ -32,8 +32,9 @@ import { Camera } from '@ionic-native/camera/ngx';
 import { FormsModule } from '@angular/forms';
 import { IonicStorageModule } from '@ionic/storage';
 import { Zip } from '@ionic-native/zip/ngx';
-
 import { WebView } from '@ionic-native/ionic-webview/ngx';
+import { CodePush } from '@ionic-native/code-push/ngx';
+
 
 @NgModule({
   declarations: [AppComponent, AnimateItemsDirective],
@@ -64,6 +65,7 @@ import { WebView } from '@ionic-native/ionic-webview/ngx';
     Zip,
     WebView,
     Camera,
+    CodePush,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: HTTP_INTERCEPTORS,useClass: AuthInterceptorService,multi: true}
   ],
