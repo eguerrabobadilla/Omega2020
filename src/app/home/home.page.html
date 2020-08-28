@@ -1,17 +1,20 @@
-<ion-header [translucent]="false" style="height: 13vh;
+<ion-header #toolbar [translucent]="false" style="background-color: white;
 border-radius: 0px 0px 0px 50px;" mode="ios">
-    <ion-toolbar #toolbar style="height: 13vh;
-   border-radius: 0px 0px 0px 50px;">
+    <ion-toolbar  style="height: 13vh;
+   border-radius: 0px 0px 0px 50px;--background:ffffff00">
         <ion-title #text class="etitle">
             <ion-icon name="add-circle" #avatarUser style="color: black; transform: translateY(0.8vh);
             font-size: 27px;font-size: 4vh;"></ion-icon>
-            <span style="opacity:0;    margin-right: -10px;">-</span> Hola, {{user.nombre}}.
+            <span style="opacity:0;    margin-right: -10px;">-</span> Hola, {{user.nombre}}!
         </ion-title>
 
     </ion-toolbar>
 </ion-header>
-
-<ion-header #toolbar1 slot="end" [translucent]="false" style=" top: 0;     height: 20vh;
+<!--v17----test-->
+<!--v17----test-->
+<!--v17----test-->
+<!--v17----test-->
+<ion-header #toolbar1 slot="end" [translucent]="false" style=" top: 0;height: 20vh;
 border-radius: 0px 0px 0px 40px;
 background-color: #FF426D;
 position: absolute;
@@ -64,19 +67,118 @@ top: 0;" mode="ios">
 
 </ion-content>-->
 
-<ion-content [scrollY]="scrollenable" #content id="ion-contentx" [fullscreen]="true" style="z-index: 4;
---background: #ffffff;
---offset-bottom: 0px;">
+
+<div #content id="container" style="background-color: #6228cf;" slot="fixed">
+    <ion-title #animation7 mode="ios" style="left: 0px;
+    bottom: 0px;
+    padding-bottom: 49vh;
+    padding-left: 30px;
+    padding-right: 90px;
+    padding-top: -1vh;
+    /* padding-bottom: 16vh; */
+    /* padding-bottom: 0px; */
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    transform: translateZ(0px);
+    font-size: 73px;
+    font-weight: 500;
+    text-align: left;
+    box-sizing: border-box;
+    pointer-events: none;
+    --color: #fff;
+     z-index: 5;
+    /* letter-spacing: 3px;*/">
+        0{{user.grado}}°</ion-title>
+    <ion-icon #animation8 style="color: white;
+    left: 0px;
+    bottom: 0px;
+    padding-bottom: 65vh;
+    padding-left: 37px;
+    padding-right: 79px;
+    padding-top: -1vh;
+    position: absolute;
+    font-size: 34px;
+    font-weight: 500;
+    text-align: left;
+    box-sizing: border-box;
+    pointer-events: none;
+    z-index: 5;
+  " [name]="nombreIcono"></ion-icon>
 
 
+    <ion-title mode="ios" style="left: 0px;
+    top: 0px;
+    padding-left: 30px;
+    padding-right: 90px;
+    padding-top:67vh;
+    padding-bottom: 0px;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    transform: translateZ(0px);
+    font-size: 39px;
+    font-weight: 700;
+    text-align: left;
+    box-sizing: border-box;
+    pointer-events: none;
+    z-index: 5;
+    --color: #fff;
+    letter-spacing: 3px;">{{header}}</ion-title>
 
-    <div #elementsToProcess style="bottom: -0.1vh;position: relative;"></div>
+    <ion-slides #slideUp type="ios" style="transform: translateY(4vh);height: 100%;" (ionSlideTransitionStart)="ionSlideTransitionStart()" (ionSlideTouchStart)="ionSlideTouchStart()" (ionSlideTouchEnd)="ionSlideTouchEndSlide()" [options]="slideOpts">
+        <ion-slide>
+            <div class="animated zoomIn fast" style="margin-bottom: 90pxn; width: 100%;height:100%;background-image: url(assets/img/1.svg);background-repeat: no-repeat;background-size: 100% 100%;"></div>
+        </ion-slide>
+        <ion-slide>
+            <div class="animated zoomIn fast" style="margin-bottom: 90px; width: 100%;height:100%;background-image: url(assets/img/2.svg);background-repeat: no-repeat;background-size: 100% 100%;"></div>
+        </ion-slide>
+        <ion-slide>
+            <div class="animated zoomIn fast" style="margin-bottom: 90px; width: 100%;height:100%;background-image: url(assets/img/3.svg);background-repeat: no-repeat;background-size: 100% 100%;"></div>
+        </ion-slide>
+        <ion-slide>
+            <div class="animated zoomIn fast" style="margin-bottom: 90px; width: 100%;height:100%;background-image: url(assets/img/4.svg);background-repeat: no-repeat;background-size: 100% 100%;"></div>
+        </ion-slide>
+        <ion-slide>
+            <div class="animated zoomIn fast" style="margin-bottom: 90px; width: 100%;height:100%;background-image: url(assets/img/5.svg);background-repeat: no-repeat;background-size: 100% 100%;"></div>
+        </ion-slide>
+        <!--<ion-slide>
+            <div class="animated zoomIn fast" style="margin-bottom: 90px; width: 100%;height:100%;background-image: url(assets/img/6.svg);background-repeat: no-repeat;background-size: 100% 100%;"></div>
+        </ion-slide>-->
 
-    <div #div2 (click)="clickDiv()" style="width: 100%; z-index:5;bottom: 0;position: relative;background: white;border-top-right-radius: 44px;
-    border-top-left-radius: 44px;transform: translateY(67vh);min-height: 100%;">
-        <div style="position: -webkit-sticky;top: 0;font-size: 29px;z-index: 999;position: sticky;">
-            <app-pill-menu #pillMenu pillMenu [itemsMenu]="tabs" [selectOption]="selectOption" (indicatorChanged)="segmentChanged($event)" (clickFab)="nuevoRecurso($event)" (clickFiltro)="openPicker()"></app-pill-menu>
-        </div>
+    </ion-slides>
+
+</div>
+
+<ion-fab mode="ios" vertical="bottom" horizontal="start" slot="fixed" style="margin-left: 23vw;">
+    <ion-fab-button #fabstart (click)="openPicker()" mode="ios" size="small" style="--box-shadow:none ;--background-activated: #F4315D;  --background: #F4315D;width: 46px;
+    height:46px;transform: scale(0);display: none;">
+        <ion-icon name="list-outline"></ion-icon>
+    </ion-fab-button>
+</ion-fab>
+<ion-fab mode="ios" vertical="bottom" horizontal="center" slot="fixed">
+    <ion-fab-button (click)="mover()" mode="ios" size="small" #fab style="--box-shadow:none ;--background-activated: #F4315D;  --background: #F4315D;width: 46px;
+    height:46px;transform: scale(0);">
+        <ion-icon name="chevron-down-outline" style="font-size: 24px;"></ion-icon>
+    </ion-fab-button>
+</ion-fab>
+<ion-fab mode="ios" vertical="bottom" horizontal="end" slot="fixed" style="margin-right: 21vw;">
+    <ion-fab-button #fabend (click)="nuevoRecurso($event)" mode="ios" size="small" style="--box-shadow:none ;--background-activated: #F4315D;  --background: #F4315D;width: 46px;
+    height:46px;transform: scale(0);display: none;">
+        <ion-icon name="add-outline"></ion-icon>
+    </ion-fab-button>
+</ion-fab>
+
+<div #div2 (click)="clickDiv()" class="edu1" style="transform: translateY(60vh)">
+    <div (click)="test()" style="position: -webkit-sticky;top: 0;font-size: 29px;z-index: 999;position: sticky;">
+       
+        <app-pill-menu    #pillMenu  [itemsMenu]="tabs" [selectOption]="selectOption" (indicatorChanged)="segmentChanged($event)" (clickFab)="nuevoRecurso($event)" (clickFiltro)="openPicker()"></app-pill-menu>
+    </div>
+    <ion-header [translucent]="false" mode="ios"></ion-header>
+
+    <ion-content #IonContentScroll [scrollY]="scrollenable" style="--background: #ffffff;">
+        <div #elementsToProcess style="bottom: -0.1vh;position: relative;"></div>
+
         <ion-slides [options]="slideOptsdos" #slideDown (ionSlideTouchEnd)="ionSlideTouchEnd(slideUp,slideDown)" *ngIf="selectSeccion == 1" style="min-height: 72.6vh;">
             <ion-slide>
                 <app-codes (librosDescargados)="librosDescargados($event)" *ngIf="codigoVisible"></app-codes>
@@ -186,113 +288,9 @@ top: 0;" mode="ios">
                 <app-contact style="width: 100%;"></app-contact>
             </ion-slide>
         </ion-slides>
-    </div>
+    </ion-content>
 
-    <div id="container" style="background-color: #6228cf;" slot="fixed">
-        <ion-title #animation7 mode="ios" style="left: 0px;
-        bottom: 0px;
-        padding-bottom: 49vh;
-        padding-left: 30px;
-        padding-right: 90px;
-        padding-top: -1vh;
-        /* padding-bottom: 16vh; */
-        /* padding-bottom: 0px; */
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        transform: translateZ(0px);
-        font-size: 73px;
-        font-weight: 500;
-        text-align: left;
-        box-sizing: border-box;
-        pointer-events: none;
-        --color: #fff;
-         z-index: 5;
-        /* letter-spacing: 3px;*/">
-            0{{user.grado}}°</ion-title>
-        <ion-icon #animation8 style="color: white;
-        left: 0px;
-        bottom: 0px;
-        padding-bottom: 65vh;
-        padding-left: 37px;
-        padding-right: 79px;
-        padding-top: -1vh;
-        position: absolute;
-        font-size: 34px;
-        font-weight: 500;
-        text-align: left;
-        box-sizing: border-box;
-        pointer-events: none;
-        z-index: 5;
-      " [name]="nombreIcono"></ion-icon>
-
-
-        <ion-title mode="ios" style="left: 0px;
-        top: 0px;
-        padding-left: 30px;
-        padding-right: 90px;
-        padding-top:67vh;
-        padding-bottom: 0px;
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        transform: translateZ(0px);
-        font-size: 39px;
-        font-weight: 700;
-        text-align: left;
-        box-sizing: border-box;
-        pointer-events: none;
-        z-index: 5;
-        --color: #fff;
-        letter-spacing: 3px;">{{header}}</ion-title>
-
-        <ion-slides #slideUp type="ios" style="transform: translateY(4vh);" (ionSlideTransitionStart)="ionSlideTransitionStart()" (ionSlideTouchStart)="ionSlideTouchStart()" (ionSlideTouchEnd)="ionSlideTouchEndSlide()" [options]="slideOpts">
-            <ion-slide>
-                <div class="animated zoomIn fast" style="margin-bottom: 90pxn; width: 100%;height:100%;background-image: url(assets/img/1.svg);background-repeat: no-repeat;background-size: 100% 100%;"></div>
-            </ion-slide>
-            <ion-slide>
-                <div class="animated zoomIn fast" style="margin-bottom: 90px; width: 100%;height:100%;background-image: url(assets/img/2.svg);background-repeat: no-repeat;background-size: 100% 100%;"></div>
-            </ion-slide>
-            <ion-slide>
-                <div class="animated zoomIn fast" style="margin-bottom: 90px; width: 100%;height:100%;background-image: url(assets/img/3.svg);background-repeat: no-repeat;background-size: 100% 100%;"></div>
-            </ion-slide>
-            <ion-slide>
-                <div class="animated zoomIn fast" style="margin-bottom: 90px; width: 100%;height:100%;background-image: url(assets/img/4.svg);background-repeat: no-repeat;background-size: 100% 100%;"></div>
-            </ion-slide>
-            <ion-slide>
-                <div class="animated zoomIn fast" style="margin-bottom: 90px; width: 100%;height:100%;background-image: url(assets/img/5.svg);background-repeat: no-repeat;background-size: 100% 100%;"></div>
-            </ion-slide>
-            <!--<ion-slide>
-                <div class="animated zoomIn fast" style="margin-bottom: 90px; width: 100%;height:100%;background-image: url(assets/img/6.svg);background-repeat: no-repeat;background-size: 100% 100%;"></div>
-            </ion-slide>-->
-
-        </ion-slides>
-
-    </div>
-
-
-    <ion-fab mode="ios" vertical="bottom" horizontal="start" slot="fixed" style="margin-left: 23vw;">
-        <ion-fab-button #fabstart (click)="openPicker()" mode="ios" size="small" style="--box-shadow:none ;--background-activated: #F4315D;  --background: #F4315D;width: 46px;
-        height:46px;transform: scale(0);display: none;">
-            <ion-icon name="list-outline"></ion-icon>
-        </ion-fab-button>
-    </ion-fab>
-    <ion-fab mode="ios" vertical="bottom" horizontal="center" slot="fixed">
-        <ion-fab-button (click)="mover()" mode="ios" size="small" #fab style="--box-shadow:none ;--background-activated: #F4315D;  --background: #F4315D;width: 46px;
-        height:46px;transform: scale(0);">
-            <ion-icon name="chevron-down-outline" style="font-size: 24px;"></ion-icon>
-        </ion-fab-button>
-    </ion-fab>
-    <ion-fab mode="ios" vertical="bottom" horizontal="end" slot="fixed" style="margin-right: 21vw;">
-        <ion-fab-button #fabend (click)="nuevoRecurso($event)" mode="ios" size="small" style="--box-shadow:none ;--background-activated: #F4315D;  --background: #F4315D;width: 46px;
-        height:46px;transform: scale(0);display: none;">
-            <ion-icon name="add-outline"></ion-icon>
-        </ion-fab-button>
-    </ion-fab>
-
-</ion-content>
-
-
+</div>
 <!--<ion-content [scrollY]="scrollenable" #content [fullscreen]="true" id="ion-content1" style="--offset-top:487px !important;width: 100%; z-index:4;position: relative;--background: #fff0;">
 
 
