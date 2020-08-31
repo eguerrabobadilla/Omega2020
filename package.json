@@ -38,7 +38,7 @@
         "@mobiscroll/angular": "file:./src/lib/mobiscroll-package/mobiscroll-angular-4.10.6.tgz",
         "chart.js": "^2.9.3",
         "code-push": "^3.0.1",
-        "com-moduscreate-plugins-echo": "C:/ModusEcho",
+        "com-moduscreate-plugins-echo": "/Users/appalfalbs/Documents/plugin/modusechoplugin/ModusEcho",
         "cordova-android": "8.1.0",
         "cordova-browser": "6.0.0",
         "cordova-ios": "4.5.5",
