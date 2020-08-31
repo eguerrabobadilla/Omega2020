@@ -37,7 +37,7 @@ export class BooksComponent implements OnInit {
       item.progreso=0;
       item.display="none";
       if (this.platform.is('cordova')) {
-        this.existeLibro(directory,'Libro'+ item.id).then( () =>{
+        this.existeLibro(directory,'Libro'+ item.Id).then( () =>{
           item.opacity= 1;
         }).catch(() =>{
           item.opacity= 0.2;
@@ -70,12 +70,12 @@ export class BooksComponent implements OnInit {
   verificarLibro(item){
     const directory = this.file.dataDirectory + "books2020/";
     console.log(directory);
-    console.log('Libro'+ item.id);
+    console.log('Libro'+ item.Id);
 
-    this.existeDirectorio(directory,'Libro'+ item.id,item).then(_ =>{
+    this.existeDirectorio(directory,'Libro'+ item.Id,item).then(_ =>{
         //Verifica conexion con el servidor
         const status = this.webSocket.getStatusSocket() == 1 ? true : false;
-        console.log("pathLibro",directory + 'Libro'+ item.id);
+        console.log("pathLibro",directory + 'Libro'+ item.Id);
         if(status=== false) {
        
           (<any>window).modusecho.echo([directory + 'Libro'+ item.id, item.id,"Lbs"]);
@@ -112,7 +112,7 @@ export class BooksComponent implements OnInit {
       }).catch(err => {
           console.log("No existe el directorio");
           console.log(err);
-          this.booksService.getBook(item.id).subscribe(data => {
+          this.booksService.getBook(item.Id).subscribe(data => {
             this.download(data["url"],item);
             reject();
           });
@@ -129,7 +129,7 @@ export class BooksComponent implements OnInit {
   download(url,item) {
     const fileTransfer: FileTransferObject = this.transfer.create();
 
-    const nameFile ='Libro'+ item.id + '.zip';
+    const nameFile ='Libro'+ item.Id + '.zip';
     const directory = this.file.dataDirectory + "books2020/";
     
     //this.file.dataDirectory
@@ -140,8 +140,8 @@ export class BooksComponent implements OnInit {
     fileTransfer.download(url, directory + nameFile).then(entry => {
       //Descomprime libro
       console.log(entry.toURL());
-      console.log(directory + 'Libro'+ item.id);
-      return this.zip.unzip(entry.toURL(), directory + 'Libro'+ item.id,(progress) => console.log('Unzipping, ' + Math.round((progress.loaded / progress.total) * 100) + '%'));
+      console.log(directory + 'Libro'+ item.Id);
+      return this.zip.unzip(entry.toURL(), directory + 'Libro'+ item.Id,(progress) => console.log('Unzipping, ' + Math.round((progress.loaded / progress.total) * 100) + '%'));
     })
     .then(result =>{
       if(result === 0) { console.log('SUCCESS'); }

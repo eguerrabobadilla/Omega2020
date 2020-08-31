@@ -30,8 +30,8 @@ export class DetallesForumPage implements OnInit {
     this.detalleId = this.item.foroId;
     console.log('foroId');
     console.log(this.item);
-    console.log(this.item.id);
-    this.detalleId = this.item.id;
+    console.log(this.item.Id);
+    this.detalleId = this.item.Id;
 
     //Me uno al grupo
     this.webSocket.AddToGroup(`foro-${this.detalleId}`);
@@ -43,8 +43,8 @@ export class DetallesForumPage implements OnInit {
 
   async votar(item) {
     console.log(item);
-    await this.apiForum.addVoto(item.id).toPromise();
-    item.votos += 1;
+    await this.apiForum.addVoto(item.Id).toPromise();
+    item.Votos += 1;
   }
 
   closeModal() {

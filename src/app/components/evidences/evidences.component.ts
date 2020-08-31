@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { PickerController, Platform } from '@ionic/angular';
+import { PickerController, Platform, LoadingController } from '@ionic/angular';
 import { RecursosService } from '../../api/recursos.service';
-import { File } from '@ionic-native/file/ngx';
+import { File,FileEntry } from '@ionic-native/file/ngx';
 import { FileOpener } from '@ionic-native/file-opener/ngx';
 import { apiBase } from '../../api/apiBase';
 import { Plugins } from '@capacitor/core';
@@ -17,9 +17,10 @@ import { EvidenciasService } from '../../api/evidencias.service';
 export class EvidencesComponent implements OnInit {
   LstEvidencias: any[] = [];
   meses: string[];
+  loading: any;
 
   constructor(private pickerController: PickerController, private apiEvidencias: EvidenciasService, private transfer: FileTransfer,
-    private file: File, private platform: Platform, private fileOpener: FileOpener, private api: apiBase) { }
+    private file: File, private platform: Platform, private fileOpener: FileOpener, private api: apiBase,public loadingController: LoadingController) { }
 
   ngOnInit() {
     this.meses = ['Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre',
@@ -39,28 +40,45 @@ export class EvidencesComponent implements OnInit {
   }
 
   async openFile(item) {
+    this.loading =await this.loadingController.create({
+      //cssClass: 'my-custom-class',
+      message: 'Cargando...',
+      duration: 120000
+    });
+    
+    this.loading.present();
+
     console.log(item);
     const { Browser } = Plugins;
     if (this.platform.is('cordova')) {
-      this.download(`${this.api.url}/resources/${item.pathRecurso}`);
+      this.download(`${this.api.url}/resources/${item.PathRecurso}`);
+      //this.download(`http://192.168.0.16:5000/resources/${item.PathRecurso}`);
     } else {
-      await Browser.open({ url: `${this.api.url}/resources/${item.pathRecurso}` });
+      await Browser.open({ url: `${this.api.url}/resources/${item.PathRecurso}` });
     }
   }
 
   download(url) {
     const fileTransfer: FileTransferObject = this.transfer.create();
+    const extension = url.split('.').pop(); 
 
-
-    fileTransfer.download(url, this.file.dataDirectory + 'file.pdf').then((entry) => {
+    fileTransfer.download(url, this.file.dataDirectory + 'file.'+ extension).then((entry) => {
         console.log('download complete: ' + entry.toURL());
-        this.fileOpener.open(this.file.dataDirectory + 'file.pdf', 'application/pdf')
-        .then(() => console.log('File is opened'))
-        .catch(e => console.log('Error opening file', e));
+
+        let files = entry as FileEntry;
+        files.file(success =>{
+            //success.name;
+
+            this.fileOpener.open(this.file.dataDirectory + 'file.' + extension , success.type)
+            .then(() => { console.log('File is opened'); this.loading.dismiss(); })
+            .catch(e => console.log('Error opening file', e));
+        });
     }, (error) => {
       // handle error
+      console.log(error);
+      alert(error.exception);
     });
-
   }
+
 
 }

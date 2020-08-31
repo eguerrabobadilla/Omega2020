@@ -8,19 +8,21 @@
     <ion-list-header>
         Semana 1
     </ion-list-header>
-    <ion-card style="text-align: initial;" class="ion-activatable ripple-parent" mode="ios" *ngFor="let item of LstRecursos | filter : 'Semana 1' : 'semana'">
+    <ion-card style="text-align: initial;" class="ion-activatable ripple-parent" mode="ios" *ngFor="let item of LstRecursos | filter : 'Semana 1' : 'Semana'">
         <ion-ripple-effect></ion-ripple-effect>
         <ion-card-header>
-            <ion-card-title>{{ item.titulo }}</ion-card-title>
+            <ion-card-title>{{ item.Titulo }}</ion-card-title>
         </ion-card-header>
-        <ion-card-content>{{ item.descripcion }}
-            <ion-chip outline color="dark" style="margin-top: 14px;" (click)="openFile(item)">
+        <ion-card-content [innerHtml]="item.Descripcion | linkify"></ion-card-content>
+        <ion-item  style="margin-top: -6px;">
+            <ion-chip outline color="dark" (click)="openFile(item)" *ngIf=" item.PathRecurso != undefined">
                 <ion-icon name="attach-outline"></ion-icon>
-                <ion-label>{{item.pathRecurso}}</ion-label>
+                <ion-label>{{item.PathRecurso}}</ion-label>
             </ion-chip>
-        </ion-card-content>
+            <ion-button *ngIf="permisoEditar()" fill="outline" slot="end" (click)="edit($event,item)">Editar</ion-button>
+        </ion-item>
     </ion-card>
-    <ion-card style="text-align: initial; " class="ion-activatable ripple-parent " mode="ios " *ngIf="(LstRecursos | filter : 'Semana 1' : 'semana').length == 0 ">
+    <ion-card style="text-align: initial; " class="ion-activatable ripple-parent " mode="ios " *ngIf="(LstRecursos | filter : 'Semana 1' : 'Semana').length == 0 ">
         <ion-ripple-effect></ion-ripple-effect>
         <ion-card-header>
             <ion-card-title>Ningun recurso</ion-card-title>
@@ -33,19 +35,21 @@
     <ion-list-header>
         Semana 2
     </ion-list-header>
-    <ion-card style="text-align: initial; " class="ion-activatable ripple-parent " mode="ios" *ngFor="let item of LstRecursos  | filter : 'Semana 2' : 'semana'; let i=i ndex ">
+    <ion-card style="text-align: initial; " class="ion-activatable ripple-parent " mode="ios" *ngFor="let item of LstRecursos  | filter : 'Semana 2' : 'Semana'; let i=i ndex ">
         <ion-ripple-effect></ion-ripple-effect>
         <ion-card-header>
-            <ion-card-title>{{ item.titulo }}</ion-card-title>
+            <ion-card-title>{{ item.Titulo }}</ion-card-title>
         </ion-card-header>
-        <ion-card-content>{{ item.descripcion }}
-            <ion-chip outline color="dark" style="margin-top: 14px;" (click)="openFile(item)">
+        <ion-card-content [innerHtml]="item.Descripcion | linkify"></ion-card-content>
+        <ion-item  style="margin-top: -6px;">
+            <ion-chip outline color="dark" (click)="openFile(item)" *ngIf=" item.PathRecurso != undefined">
                 <ion-icon name="attach-outline"></ion-icon>
-                <ion-label>{{item.pathRecurso}}</ion-label>
+                <ion-label>{{item.PathRecurso}}</ion-label>
             </ion-chip>
-        </ion-card-content>
+            <ion-button *ngIf="permisoEditar()" fill="outline" slot="end" (click)="edit($event,item)">Editar</ion-button>
+        </ion-item>
     </ion-card>
-    <ion-card style="text-align: initial; " class="ion-activatable ripple-parent " mode="ios" *ngIf="(LstRecursos | filter : 'Semana 2' : 'semana').length == 0 ">
+    <ion-card style="text-align: initial; " class="ion-activatable ripple-parent " mode="ios" *ngIf="(LstRecursos | filter : 'Semana 2' : 'Semana').length == 0 ">
         <ion-ripple-effect></ion-ripple-effect>
         <ion-card-header>
             <ion-card-title>Ningun recurso</ion-card-title>
@@ -58,22 +62,22 @@
     <ion-list-header>
         Semana 3
     </ion-list-header>
-    <ion-card style="text-align: initial; " class="ion-activatable ripple-parent " mode="ios" *ngFor="let item of LstRecursos  | filter : 'Semana 3' : 'semana'; let i=i ndex ">
+    <ion-card style="text-align: initial; " class="ion-activatable ripple-parent " mode="ios" *ngFor="let item of LstRecursos  | filter : 'Semana 3' : 'Semana'; let i=i ndex ">
         <ion-ripple-effect></ion-ripple-effect>
         <ion-card-header>
-            <ion-card-title>{{ item.titulo }}</ion-card-title>
+            <ion-card-title>{{ item.Titulo }}</ion-card-title>
         </ion-card-header>
-        <ion-card-content>{{ item.descripcion }}
-
-
-            <ion-chip outline color="dark" style="margin-top: 14px;" (click)="openFile(item)">
+        <ion-card-content [innerHtml]="item.Descripcion | linkify"></ion-card-content>
+        <ion-item  style="margin-top: -6px;">
+            <ion-chip outline color="dark" (click)="openFile(item)" *ngIf=" item.PathRecurso != undefined">
                 <ion-icon name="attach-outline"></ion-icon>
-                <ion-label>{{item.pathRecurso}}</ion-label>
+                <ion-label>{{item.PathRecurso}}</ion-label>
             </ion-chip>
-        </ion-card-content>
+            <ion-button *ngIf="permisoEditar()" fill="outline" slot="end" (click)="edit($event,item)">Editar</ion-button>
+        </ion-item>
     </ion-card>
 
-    <ion-card style="text-align: initial; " class="ion-activatable ripple-parent " mode="ios" *ngIf="(LstRecursos | filter : 'Semana 3' : 'semana').length == 0 ">
+    <ion-card style="text-align: initial; " class="ion-activatable ripple-parent " mode="ios" *ngIf="(LstRecursos | filter : 'Semana 3' : 'Semana').length == 0 ">
         <ion-ripple-effect></ion-ripple-effect>
         <ion-card-header>
             <ion-card-title>Ningun recurso</ion-card-title>
@@ -86,21 +90,21 @@
     <ion-list-header>
         Semana 4
     </ion-list-header>
-    <ion-card style="text-align: initial; " class="ion-activatable ripple-parent " mode="ios" *ngFor="let item of LstRecursos  | filter : 'Semana 4' : 'semana'; let i=i ndex ">
+    <ion-card style="text-align: initial; " class="ion-activatable ripple-parent " mode="ios" *ngFor="let item of LstRecursos  | filter : 'Semana 4' : 'Semana'; let i=i ndex ">
         <ion-ripple-effect></ion-ripple-effect>
         <ion-card-header>
-            <ion-card-title>{{ item.titulo }}</ion-card-title>
+            <ion-card-title>{{ item.Titulo }}</ion-card-title>
         </ion-card-header>
-        <ion-card-content>{{ item.descripcion }}
-
-
-            <ion-chip outline color="dark" style="margin-top: 14px;" (click)="openFile(item)">
+        <ion-card-content [innerHtml]="item.Descripcion | linkify"></ion-card-content>
+        <ion-item  style="margin-top: -6px;">
+            <ion-chip outline color="dark" (click)="openFile(item)" *ngIf=" item.PathRecurso != undefined">
                 <ion-icon name="attach-outline"></ion-icon>
-                <ion-label>{{item.pathRecurso}}</ion-label>
+                <ion-label>{{item.PathRecurso}}</ion-label>
             </ion-chip>
-        </ion-card-content>
+            <ion-button *ngIf="permisoEditar()" fill="outline" slot="end" (click)="edit($event,item)">Editar</ion-button>
+        </ion-item>
     </ion-card>
-    <ion-card style="text-align: initial; " class="ion-activatable ripple-parent " mode="ios" *ngIf="(LstRecursos | filter : 'Semana 4' : 'semana').length == 0 ">
+    <ion-card style="text-align: initial; " class="ion-activatable ripple-parent " mode="ios" *ngIf="(LstRecursos | filter : 'Semana 4' : 'Semana').length == 0 ">
         <ion-ripple-effect></ion-ripple-effect>
         <ion-card-header>
             <ion-card-title>Ningun recurso</ion-card-title>

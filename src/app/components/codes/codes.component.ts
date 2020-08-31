@@ -32,21 +32,22 @@ export class CodesComponent implements OnInit {
       {
         console.log("Con conexion a internet");
         const tipo  = this.getKeyToken('tipo');
-
+        
         //Si el tipo es alumno y no hay libros guardados de manera local en la bd
-        if(tipo==="Alumno" && librosLocales==null) {
+        //if(tipo==="Alumno" && librosLocales==null) {
+        if(librosLocales==null) {
           this.booksService.getBooksGrado().subscribe(data => {
             this.libros = data;
             this.librosDescargados.emit(this.libros);
             this.storage.set('books',this.libros);
           });
         }
-        else if(tipo==="Alumno") {
+        //else if(tipo==="Alumno") {
+        else {
           this.booksService.getBooksGrado().subscribe(data => {
-            
             //Busca si viene algun nuevo libro del servidor
             data.forEach(element => {
-               const libroD = librosLocales.filter(l => l.id == element.id);
+               const libroD = librosLocales.filter(l => l.Id == element.Id);
                if(libroD.length == 0)
                   librosLocales.push(element);
             });
@@ -54,7 +55,7 @@ export class CodesComponent implements OnInit {
             //Busco si algun libro ya no debe estar en el dispostivo
             let index=0;
             librosLocales.forEach(element => {
-              const libroD = data.filter(l => l.id == element.id);
+              const libroD = data.filter(l => l.Id == element.Id);
               if(libroD.length == 0)
                  librosLocales.splice(index,1);
                  //console.log(element);

@@ -16,14 +16,16 @@ export class DetallePage implements OnInit {
 
   ngOnInit() {
     console.log(this.item);
-    console.log(this.item.image.includes('http://'));
-    this.item.image = this.item.image.includes('http://') == true ?  this.item.image : `${this.api.url}/images/${this.item.image}`;
+    if(this.item.Image != undefined)
+    {
+      console.log(this.item.Image.includes('http://'));
+      this.item.image = this.item.Image.includes('http://') == true ?  this.item.Image : `${this.api.url}/images/${this.item.Image}`;
+    }
   }
 
   closeModal (){
       console.log("cerar");
       this.modalCtrl.dismiss();
   }
-
 }
 

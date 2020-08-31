@@ -3,6 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { ForumService } from '../../api/forum.service';
 import { DetallesForumPage } from '../../pages/detalles-forum/detalles-forum.page';
 import { ModalController } from '@ionic/angular';
+import { CrearForumPage } from 'src/app/pages/crear-forum/crear-forum.page';
+
 
 
 
@@ -13,6 +15,7 @@ import { ModalController } from '@ionic/angular';
 })
 export class ForumComponent implements OnInit {
   public LstForo: any[] = [];
+  materiaId: any;
 
   constructor(private apiForum: ForumService, private modalCrl: ModalController) {
 
@@ -24,6 +27,7 @@ export class ForumComponent implements OnInit {
 
   public cargar(materiaId) {
     //0=todas 1=Filtrado por materia
+    this.materiaId = materiaId;
     if(materiaId==0){
       this.apiForum.get(false, 0).subscribe(data =>{
         this.LstForo = data;
@@ -56,4 +60,46 @@ export class ForumComponent implements OnInit {
     });
   }
 
+  
+  public async edit(event,item){
+    event.stopPropagation();
+    console.log(item);
+
+    const modal = await this.modalCrl.create({
+      component: CrearForumPage,
+      // cssClass: 'my-custom-modal-css',
+      cssClass: 'my-custom-modal-css-capturas',
+      showBackdrop: false,
+      componentProps: {item},
+      mode: 'ios',
+      backdropDismiss: true
+    });
+
+    await modal.present();
+
+    modal.onDidDismiss().then( async (data) => {
+        this.cargar(this.materiaId);
+    });
+  }
+
+  public permisoEditar() {
+    if(this.getKeyToken('tipo')=='Profesor')
+      return true;
+    else
+      return false;
+  }
+
+  getKeyToken(key: string): string {
+
+    const jwt = localStorage.getItem('USER_INFO');
+
+    const jwtData = jwt.split('.')[1];
+    // let decodedJwtJsonData = window.atob(jwtData);
+    const decodedJwtJsonData = decodeURIComponent(escape(window.atob(jwtData)));
+    const decodedJwtData = JSON.parse(decodedJwtJsonData);
+
+    const value = decodedJwtData[key];
+
+    return value;
+  }
 }

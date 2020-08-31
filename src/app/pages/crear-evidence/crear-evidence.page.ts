@@ -3,6 +3,10 @@ import { ModalController, AlertController, PickerController, IonInput } from '@i
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RecursosService } from '../../api/recursos.service';
 import { EvidenciasService } from '../../api/evidencias.service';
+import { MateriasService } from 'src/app/api/materias.service';
+import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
+import { File as FileAngular,FileEntry } from '@ionic-native/file/ngx';
+
 
 @Component({
   selector: 'app-crear-evidence',
@@ -12,27 +16,36 @@ import { EvidenciasService } from '../../api/evidencias.service';
 export class CrearEvidencePage implements OnInit {
   @ViewChild('txtFecha', {static: false}) txtFecha: IonInput;
   @ViewChild('txtFecha', {read: ElementRef, static: true}) txtFechaHTML: ElementRef;
+  @ViewChild('txtMateria', {static: false}) txtMateria: IonInput;
+  @ViewChild('txtMateria', {read: ElementRef, static: true}) txtMateriaHTML: ElementRef;
   public FrmItem: FormGroup;
-  public  texto_adjuntar_portada: string = 'Adjuntar Recurso';
+  public  texto_adjuntar_portada: string = 'Adjuntar';
   public submitAttempt: boolean = false;
   private item: any;
   private files: any;
+  private imgBlob: any;
   meses: string[];
   semanas: string[];
+  materias: any[] = [];
   mesSeleccionado: any;
   semanaSeleccionada: any;
+  MateriaSeleccionada: any;
+  fotoActviva: boolean = false;
 
   constructor(private modalCtrl: ModalController, private formBuilder: FormBuilder, private cd:ChangeDetectorRef,
               private alertCtrl: AlertController, private apiEvidencias: EvidenciasService, private pickerController: PickerController,
-              private renderer: Renderer2) { 
+              private renderer: Renderer2,private apiMaterias: MateriasService,private camera: Camera,private file: FileAngular) { 
                 this.FrmItem = formBuilder.group({
+                  MateriaId:   ['', Validators.compose([Validators.required])],
                   Titulo: ['', Validators.compose([Validators.required])],
                   Descripcion: ['', Validators.compose([Validators.required])],
-                  Image: [null, Validators.compose([Validators.required])]
+                  //Image: [null, Validators.compose([Validators.required])]
+                  Image: [null, Validators.compose([])]
                 });
               }
 
   ngOnInit() {
+    
   }
 
   async openPicker() {
@@ -65,7 +78,7 @@ export class CrearEvidencePage implements OnInit {
 
   getRealMonth() {
     /*
-    Datao que el año escolar no inicia en Enero se tiene que ajustar para llenar el picker 
+    Dado que el año escolar no inicia en Enero se tiene que ajustar para llenar el picker 
     ejemplo enero en lugar de ser index 1 es 6
     */
     const actualDate = new Date();
@@ -116,16 +129,25 @@ export class CrearEvidencePage implements OnInit {
     const payload = new FormData();
     payload.append('Titulo', this.item.Titulo);
     payload.append('Descripcion', this.item.Descripcion);
-    payload.append('ItemUpload', this.files, this.files.name);
+    payload.append('MateriaId', this.MateriaSeleccionada);
+    if(this.fotoActviva == false) {
+      payload.append('ItemUpload', this.files, this.files.name);
+    }
+    else {
+      payload.append('ItemUpload', this.imgBlob, "test.jpg");
+      this.fotoActviva=false;
+    }
 
 
     const tareaUpload = await this.apiEvidencias.save(payload).toPromise();
 
+    this.texto_adjuntar_portada = 'Adjuntar';
+
     this.submitAttempt = false;
 
     const alertTerminado = await this.alertCtrl.create({
-      header: 'Recurso creada con éxito',
-      message: 'Se creó el recurso ' + this.FrmItem.get('Titulo').value + ', ¿desea crear otra tarea?',
+      header: 'Evidencia creada con éxito',
+      message: 'Se creó la evidencia ' + this.FrmItem.get('Titulo').value + ', ¿desea crear otra evidencia?',
       buttons: [
         {
            text: 'No', handler: () =>  this.modalCtrl.dismiss()
@@ -141,17 +163,110 @@ export class CrearEvidencePage implements OnInit {
 
   onFileChange($event: any) {
     if( $event.target.files &&  $event.target.files.length) {
-      this.texto_adjuntar_portada = 'Recurso Seleccionada';
-
+      this.texto_adjuntar_portada = 'Evidencia Seleccionada';
+      
       this.FrmItem.patchValue({
         Image: $event.target.files[0]
       });
 
       this.files = $event.target.files[0];
+      this.fotoActviva = false;
       // need to run CD since file load runs outside of zone
       this.cd.markForCheck();
     }
   }
+
+  async openPickerMaterias() {
+    const picker = await this.pickerController.create({
+        mode : 'ios',
+        buttons: [
+          {
+            text: 'Cancelar',
+            role: 'cancel'
+          },
+          {
+            text: 'Aceptar',
+            handler:  (value: any) => {
+                this.txtMateria.value = value.Materias.text;
+                this.MateriaSeleccionada = value.Materias.value;
+            }
+          }
+        ],
+        columns: [{
+            name: 'Materias',
+            options: await this.getColumnMaterias()
+          }
+        ]
+    });
+    
+    picker.present();
+
+  }
+
+  async getColumnMaterias() {
+    const options = [];
+
+    this.materias = await this.apiMaterias.get().toPromise();
+
+    this.materias.forEach(x => {
+      options.push({text: x.Nombre , value: x.Id});
+    });
+
+    return options;
+  }
+
+  tomarFoto() {
+    console.log("tomarFoto");
+    
+    const options: CameraOptions = {
+      quality: 100,
+      destinationType: this.camera.DestinationType.FILE_URI,
+      encodingType: this.camera.EncodingType.JPEG,
+      mediaType: this.camera.MediaType.PICTURE
+    };
+
+    this.camera.getPicture(options).then((imageData) => {
+      // imageData is either a base64 encoded string or a file URI
+      // If it's base64 (DATA_URL):
+      //let base64Image = 'data:image/jpeg;base64,' + imageData;
+      console.log(imageData);
+      //this.readFile(imageData);
+      this.startUpload(imageData);
+     }, (err) => {
+      // Handle error
+     });
+
+  }
+
+  startUpload(imgEntry) {
+    this.file.resolveLocalFilesystemUrl(imgEntry)
+        .then(entry => {
+          (<FileEntry>entry).file(file => this.readFile(file));
+        })
+        .catch(err => {
+            alert('Error while reading file.');
+        });
+  }
+
+  readFile(file: any) {
+    const reader = new FileReader();
+    reader.onload = () => {
+        this.imgBlob = new Blob([reader.result], {
+            type: file.type
+        });
+
+        this.texto_adjuntar_portada = 'Evidencia Seleccionada';
+        this.fotoActviva = true;
+        const date = new Date();
+        const timestamp = date.getTime();
+        //let archivo = new File([imgBlob],timestamp.toString(),{ type: imgBlob.type });
+        //this.files = archivo;
+
+        console.log(this.files);
+    };
+
+    reader.readAsArrayBuffer(file);
+   }
 
   closeModal() {
     this.modalCtrl.dismiss();

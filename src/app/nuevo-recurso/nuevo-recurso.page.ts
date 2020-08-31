@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef,ViewChild,ElementRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef,ViewChild,ElementRef,Input } from '@angular/core';
 import { ModalController, AlertController, PickerController,IonInput } from '@ionic/angular';
 import { FormGroup, FormBuilder,Validators  } from '@angular/forms';
 import { TareasService } from '../api/tareas.service';
@@ -18,30 +18,58 @@ export class NuevoRecursoPage implements OnInit {
   public FrmItem: FormGroup;
   public  texto_adjuntar_portada: string = 'Foto de Portada';
   public submitAttempt: boolean = false;
-  private item: any;
+  //private item: any;
   private files: any;
   grupos: any[] = [];
   materias: any[] = [];
   gradoSeleccionado: any;
   grupoSeleccionado: any;
   MateriaSeleccionada: any;
+  titulo: any;
+  tituloBoton: any;
+
+  @Input() item;
 
   constructor(private modalCtrl: ModalController,private formBuilder: FormBuilder, private cd:ChangeDetectorRef,
               private alertCtrl: AlertController,private apiTareas: TareasService,private apiChat: ChatService,
               private apiMaterias: MateriasService,private pickerController: PickerController) {
     this.FrmItem = formBuilder.group({
+      Id:   [0, Validators.compose([Validators.required])],
       Grupo:   ['', Validators.compose([Validators.required])],
       MateriaId:   ['', Validators.compose([Validators.required])],
       Titulo: ['', Validators.compose([Validators.required])],
       Descripcion: ['', Validators.compose([Validators.required])],
       FechaPublicacion: ['', Validators.compose([Validators.required])],
       HoraPublicacion: ['', Validators.compose([Validators.required])],
-      Image: [null, Validators.compose([Validators.required])]
+      Image: [null, Validators.compose([])]
     });
   }
 
   ngOnInit() {
-    
+
+  }
+
+  ionViewWillEnter() {
+    console.log(this.item);
+    if(this.item != undefined) {
+      this.FrmItem.patchValue(this.item);
+      
+      this.gradoSeleccionado = this.item.Grado;
+      this.grupoSeleccionado = this.item.Grupo;
+      this.txtGradoGrupo.value = this.item.Grado + ' / ' + this.item.Grupo;
+
+      this.txtMateria.value = this.item.Materia.Nombre;
+      this.MateriaSeleccionada = this.item.MateriaId;
+
+      if(this.item.Image != undefined)
+        this.texto_adjuntar_portada = 'Foto de Portada Seleccionada';
+
+      this.titulo = 'Modificar Tarea';
+      this.tituloBoton= 'Modificar Tarea';
+    } else {
+      this.titulo = 'Nueva Tarea';
+      this.tituloBoton = 'Crear Tarea';
+    }
   }
 
   async crearNoticia() {
@@ -60,10 +88,12 @@ export class NuevoRecursoPage implements OnInit {
       return;
     }
 
-    console.log(this.FrmItem.value);
+    
     this.item = this.FrmItem.value;
+    console.log(this.item);
 
     const payload = new FormData();
+    payload.append('Id', this.item.Id);
     payload.append('Titulo', this.item.Titulo);
     payload.append('Descripcion', this.item.Descripcion);
     payload.append('FechaPublicacion', this.item.FechaPublicacion.toString());
@@ -71,26 +101,49 @@ export class NuevoRecursoPage implements OnInit {
     payload.append('MateriaId', this.MateriaSeleccionada);
     payload.append('Grado', this.gradoSeleccionado);
     payload.append('Grupo', this.grupoSeleccionado);
-    payload.append('ImageUpload', this.files, this.files.name);
+    
+    if(this.files != undefined) //Valida si se selecciono alguna imagen
+      payload.append('ImageUpload', this.files, this.files.name);
 
-    const tareaUpload = await this.apiTareas.save(payload).toPromise();
+      console.log(this.item);
+      console.log(payload);
+    
+    if(this.item.Id == 0) {
+        const tareaUpload = await this.apiTareas.save(payload).toPromise();
+    }
+    else {
+        const tareaUpload =await this.apiTareas.update(payload).toPromise();
+    }
 
     this.submitAttempt = false;
 
-    const alertTerminado = await this.alertCtrl.create({
-      header: 'Tarea creada con éxito',
-      message: 'Se creó la tarea ' + this.FrmItem.get('Titulo').value + ', ¿desea crear otra tarea?',
-      buttons: [
-        {
-           text: 'No', handler: () =>  this.modalCtrl.dismiss()
-        },
-        {
-          text: 'Crear otra', handler: () => this.FrmItem.reset()
-        }
-      ]
-    });
+    if(this.item.Id == 0) {
+      const alertTerminado = await this.alertCtrl.create({
+        header: 'Tarea creada con éxito',
+        message: 'Se creó la tarea ' + this.FrmItem.get('Titulo').value + ', ¿desea crear otra tarea?',
+        buttons: [
+          {
+            text: 'No', handler: () =>  this.modalCtrl.dismiss()
+          },
+          {
+            text: 'Crear otra', handler: () => this.FrmItem.reset()
+          }
+        ]
+      });
+      await alertTerminado.present();
+    } else {
+      const alertTerminado = await this.alertCtrl.create({
+        header: 'Tarea modificada con éxito',
+        message: 'Se modifico la tarea ' + this.FrmItem.get('Titulo').value,
+        buttons: [
+          {
+            text: 'Continuar', handler: () =>  this.modalCtrl.dismiss()
+          }
+        ]
+      });
+      await alertTerminado.present();
+    }
 
-    await alertTerminado.present();
   }
 
   onFileChange($event: any) {
@@ -119,6 +172,7 @@ export class NuevoRecursoPage implements OnInit {
           {
             text: 'Aceptar',
             handler:  (value: any) => {
+                console.log("entro");
                 const gradoGrupo = value.Grupos.value.split("/");
                 this.txtGradoGrupo.value = gradoGrupo[0] + ' / ' + gradoGrupo[1];
                 this.gradoSeleccionado = gradoGrupo[0];
@@ -149,7 +203,7 @@ export class NuevoRecursoPage implements OnInit {
     //options.push({text: 'Todas' , value: 0});
 
     this.grupos.forEach(x => {
-      options.push({text: x.grado + x.grupo , value: x.grado+'/'+x.grupo});
+      options.push({text: x.Grado + x.Grupo , value: x.Grado+'/'+x.Grupo});
     });
 
     return options;
@@ -188,7 +242,7 @@ export class NuevoRecursoPage implements OnInit {
     this.grupos = await this.apiMaterias.getMateriasProfesor(this.gradoSeleccionado).toPromise();
 
     this.grupos.forEach(x => {
-      options.push({text: x.nombre , value: x.id});
+      options.push({text: x.Nombre , value: x.Id});
     });
 
     return options;

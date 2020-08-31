@@ -1,6 +1,6 @@
 
 <ion-virtual-scroll  [items]="LstForo" approxItemHeight="320px">
-    <ion-card style="text-align: initial;" class="ion-activatable ripple-parent" mode="ios" *virtualItem="let item; let itemBounds = bounds;" (click)="openDetail($event,item,item.id)">
+    <ion-card style="text-align: initial;" class="ion-activatable ripple-parent" mode="ios" *virtualItem="let item; let itemBounds = bounds;" (click)="openDetail($event,item,item.Id)">
         <ion-ripple-effect></ion-ripple-effect>
         <ion-card-header>
             <ion-item lines="none">
@@ -8,25 +8,25 @@
                     <img src="assets/img/avatar-han.png">
                 </ion-avatar>
                 <ion-label>
-                    <h2 style="font-weight: 600;font-size: 20px;">{{item.nombre}}</h2>
-                    <p>Eduardo Guerra
+                    <h2 style="font-weight: 600;font-size: 20px;">{{item.Nombre}}</h2>
+                    <p>{{ item.Usario.Nombre }} {{ item.Usario.ApellidoPaterno }} {{ item.Usario.ApellidoMaterno }}
                         <span>24 min</span>
                     </p>
                 </ion-label>
             </ion-item>
-
         </ion-card-header>
 
 
         <ion-card-content>
-            {{item.descrpcion}}
+            {{item.Descrpcion}}
         </ion-card-content>
 
         <ion-item lines="none">
             <ion-icon style="font-size: 15px;color: #F4315D;" name="chatbubbles-outline"></ion-icon>
             <ion-label>
-                <p style="padding-left: 6px;"> {{item.numRespuestas}} comentarios</p>
+                <p style="padding-left: 6px;"> {{item.NumRespuestas}} comentarios</p>
             </ion-label>
+            <ion-button  *ngIf="permisoEditar()" fill="outline" slot="end" (click)="edit($event,item)">Editar</ion-button>
         </ion-item>
 
     </ion-card>

@@ -186,11 +186,11 @@ top: 0;" mode="ios">
             </ion-slide>
             <ion-slide>
                 <app-codes (librosDescargados)="librosDescargados($event)" *ngIf="codigoVisible"></app-codes>
-                <app-books [librosIN]="libros | filter : 'Ingles' : 'idioma'" *ngIf="!codigoVisible"> </app-books>
+                <app-books [librosIN]="libros | filter : 'Ingles' : 'Idioma'" *ngIf="!codigoVisible"> </app-books>
             </ion-slide>
             <ion-slide>
                 <app-codes (librosDescargados)="librosDescargados($event)" *ngIf="codigoVisible"></app-codes>
-                <app-books [librosIN]="libros | filter : 'Espanol' : 'idioma'" *ngIf="!codigoVisible"> </app-books>
+                <app-books [librosIN]="libros | filter : 'Espanol' : 'Idioma'" *ngIf="!codigoVisible"> </app-books>
             </ion-slide>
             <ion-slide>
                 <app-codes (librosDescargados)="librosDescargados($event)"></app-codes>
@@ -212,11 +212,13 @@ top: 0;" mode="ios">
                     <ion-card style="text-align: initial;" class="ion-activatable ripple-parent" mode="ios" *ngFor="let item of LstTareas" (click)="openDetail($event,item)">
                         <ion-ripple-effect></ion-ripple-effect>
                         <ion-card-header>
-                            <ion-card-title>{{ item.titulo }}</ion-card-title>
+                            <ion-card-title>{{ item.Titulo }}</ion-card-title>
                         </ion-card-header>
-                        <ion-card-content>{{ item.descripcion }}</ion-card-content>
+                        <ion-card-content>{{ item.Descripcion }}</ion-card-content>
+                        <ion-item>
+                            <ion-button *ngIf="permisoEditar()" fill="outline" slot="end" (click)="editaTarea($event,item)">Editar</ion-button>
+                        </ion-item>
                     </ion-card>
-
                 </ion-list>
             </ion-slide>
             <ion-slide>

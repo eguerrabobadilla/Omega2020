@@ -43,7 +43,6 @@ export class PillMenuComponent implements OnInit {
       block: 'center',
       inline: 'center'
     });*/
-
     this.indicatorChanged.emit(event);
   }
 

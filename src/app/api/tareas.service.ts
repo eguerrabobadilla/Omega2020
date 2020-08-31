@@ -13,9 +13,13 @@ export class TareasService  extends apiBase {
     this.Ws = 'api/tareas';
    }
 
-   save(item: any) {
-
+  save(item: any) {
     return this.http.post(`${this.url}/${this.Ws}`, item);
+  }
+
+  update(item: any) {
+    console.log(item);
+    return this.http.put(`${this.url}/${this.Ws}/${item.Id}`, item);
   }
 
   get(): Observable<any[]> {

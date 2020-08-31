@@ -13,7 +13,7 @@
 <ion-content #Content fullscreen="true" scrollX="true" scrollY="true">
     <ion-list #chatList style="bottom: 30px;width: 100%;">
         <div *ngFor="let itemChat of LstChats">
-            <div *ngIf="usuarioId==itemChat.usuarioIdDestino; then izquierdaTemplate else derechaTemplate"></div>
+            <div *ngIf="usuarioId==itemChat.UsuarioIdDestino; then izquierdaTemplate else derechaTemplate"></div>
             <ng-template #izquierdaTemplate>
                 <ion-item lines="none">
                     <ion-avatar style="position: absolute;" slot="start">
@@ -21,7 +21,7 @@
                     </ion-avatar>
                     <ion-card-content slot="start" style="background-color: #e8e8e8;margin-left: 43px; margin-top: 4px;border-radius: 15px;margin-right: 53px;padding: 10px">
 
-                        <p>{{itemChat.mensaje}}</p>
+                        <p>{{itemChat.Mensaje}}</p>
 
                     </ion-card-content>
                 </ion-item>
@@ -31,7 +31,7 @@
                     <ion-card-content slot="end" style="background-color: #F4315D;margin-left: 66px; margin-top: 4px;border-radius: 15px;padding: 10px;color: white;">
 
 
-                        <p>{{itemChat.mensaje}}</p>
+                        <p>{{itemChat.Mensaje}}</p>
 
                     </ion-card-content>
                 </ion-item>
@@ -46,7 +46,7 @@
           <ion-card-content style="background-color: #e8e8e8;margin-left: 43px; margin-top: 23px;border-radius: 30px; ">
 
               <h2 style="font-weight: 700; ">Usuario Apellido</h2>
-              <p>{{item.mensaje}}</p>
+              <p>{{item.Mensaje}}</p>
 
           </ion-card-content>
       </ion-item>
@@ -56,7 +56,7 @@
 <ion-footer style="bottom: 22px; ">
     <ion-toolbar>
         <form [formGroup]="FrmItem" style="display: flex;" (ngSubmit)="crearMensaje()">
-            <ion-input formControlName="mensaje" name="mensaje" style="background-color: #e8e8e8;border-radius: 16px;width: 86%;padding-left: 15px !important;height: 38px;margin-top: 4px; " placeholder="Escribir mensaje "></ion-input>
+            <ion-input formControlName="Mensaje" name="Mensaje" style="background-color: #e8e8e8;border-radius: 16px;width: 86%;padding-left: 15px !important;height: 38px;margin-top: 4px; " placeholder="Escribir mensaje "></ion-input>
             <ion-button size="small" type="submit" slot="end" style="--border-radius: 34px;;height: 40px;width: 40px;--background: #F4315D;--background-activated: #F4315D; ">
                 <ion-icon name="send"></ion-icon>
             </ion-button>

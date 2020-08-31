@@ -125,7 +125,7 @@ export class CrearTopicPage implements OnInit {
     //options.push({text: 'Todas' , value: 0});
 
     this.grupos.forEach(x => {
-      options.push({text: x.grado + x.grupo , value: x.grado+'/'+x.grupo});
+      options.push({text: x.Grado + x.Grupo , value: x.Grado+'/'+x.Grupo});
     });
 
     return options;
@@ -164,7 +164,7 @@ export class CrearTopicPage implements OnInit {
     this.grupos = await this.apiMaterias.getMateriasProfesor(this.gradoSeleccionado).toPromise();
 
     this.grupos.forEach(x => {
-      options.push({text: x.nombre , value: x.id});
+      options.push({text: x.Nombre , value: x.Id});
     });
 
     return options;

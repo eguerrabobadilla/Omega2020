@@ -25,6 +25,7 @@ import { File } from '@ionic-native/file/ngx';
 import { FileTransfer } from '@ionic-native/file-transfer/ngx';
 import { FileOpener } from '@ionic-native/file-opener/ngx';
 import { DetalleChatGroupPageModule } from './pages/detalle-chat-group/detalle-chat-group.module';
+import { Camera } from '@ionic-native/camera/ngx';
 
 //import {ModusEcho} from 'modusecho/www/ModusEcho';
 
@@ -63,6 +64,7 @@ import { CodePush } from '@ionic-native/code-push/ngx';
     File,
     Zip,
     WebView,
+    Camera,
     CodePush,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: HTTP_INTERCEPTORS,useClass: AuthInterceptorService,multi: true}

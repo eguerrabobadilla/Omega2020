@@ -2,12 +2,12 @@
     <ion-card style="text-align: initial;" class="ion-activatable ripple-parent" mode="ios" *virtualItem="let item; let itemBounds = bounds;" (click)="openDetail()">
         <ion-ripple-effect></ion-ripple-effect>
         <ion-card-header>
-            <ion-card-title>{{ item.titulo }}</ion-card-title>
+            <ion-card-title>{{ item.Titulo }}</ion-card-title>
         </ion-card-header>
-        <ion-card-content>{{ item.descripcion }}
+        <ion-card-content>{{ item.Descripcion }}
             <ion-chip outline color="dark" style="margin-top: 14px;" (click)="openFile(item)">
                 <ion-icon name="attach-outline"></ion-icon>
-                <ion-label>{{item.pathRecurso}}</ion-label>
+                <ion-label>{{item.PathRecurso}}</ion-label>
             </ion-chip>
         </ion-card-content>
     </ion-card>

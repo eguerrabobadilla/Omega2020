@@ -31,7 +31,7 @@ export class DetallesChatPage implements OnInit {
               private applicationRef: ApplicationRef, private webSocket: WebsocketService, private _ngZone: NgZone) {
 
       this.FrmItem = formBuilder.group({
-        mensaje: ['', Validators.compose([Validators.required])]
+        Mensaje: ['', Validators.compose([Validators.required])]
       });
 
       this.subscribeToEvents();
@@ -42,12 +42,12 @@ export class DetallesChatPage implements OnInit {
     // this.webSocket.AddToGroup(`foro-${this.detalleId}`);
 
     console.log(this.item);
-    this.usuarioId = this.item.usuarioId;
+    this.usuarioId = this.item.UsuarioId;
 
-    this.title = `${this.item.usuarioId2Navigation.nombre} ${this.item.usuarioId2Navigation.apellidoPaterno}
-                                                                    ${this.item.usuarioId2Navigation.apellidoMaterno} `;
+    this.title = `${this.item.UsuarioId2Navigation.Nombre} ${this.item.UsuarioId2Navigation.ApellidoPaterno}
+                                                                    ${this.item.UsuarioId2Navigation.ApellidoMaterno} `;
 
-    this.apichat.getChatByIdUsuario(this.item.usuarioId2).subscribe(data => {
+    this.apichat.getChatByIdUsuario(this.item.UsuarioId2).subscribe(data => {
       this.LstChats = data;
     });
 
@@ -67,12 +67,13 @@ export class DetallesChatPage implements OnInit {
 
   async crearMensaje() {
       this.itemApiChat = this.FrmItem.value;
-      this.itemApiChat.usuarioIdOrigen = this.item.usuarioId;
-      this.itemApiChat.usuarioIdDestino = this.item.usuarioId2;
+      this.itemApiChat.UsuarioIdOrigen = this.item.UsuarioId;
+      this.itemApiChat.UsuarioIdDestino = this.item.UsuarioId2;
 
       const tareaUpload = await this.apichat.addMensajes(this.itemApiChat).toPromise();
       this.FrmItem.reset();
       //this.LstChats.unshift(this.itemApiChat);
+      console.log(this.itemApiChat);
       this.LstChats.push(this.itemApiChat);
   }
 

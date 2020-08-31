@@ -30,8 +30,15 @@ ion-slides {
     background: red;
 }
 
+ion-button {
+    --border-color: #F4315D;
+    --color: #F4315D;
+    --background-activated: #F4315D;
+}
+
 ion-item {
     transition: .3s ease-in-out;
+    --border-color: #ffffff;
 }
 
 .exit-enter-styles {
