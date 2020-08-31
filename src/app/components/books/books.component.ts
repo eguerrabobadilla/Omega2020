@@ -30,7 +30,13 @@ export class BooksComponent implements OnInit {
   }
 
   ngOnInit() {
-    const directory = this.file.dataDirectory;
+    setTimeout(() => {
+      this.iniciarValidacion();
+    }, 1000);
+  }
+
+  iniciarValidacion() {
+    const directory = this.file.dataDirectory + "books2020/";
 
     this.libros = this.librosIN;
     this.libros.forEach(item => {
@@ -44,7 +50,6 @@ export class BooksComponent implements OnInit {
         });
       }
     });
-  //Realiza el llamado al plugin e invoca segun el resultado la funcion correspondiente
   }
 
   visualizarLibro() {
@@ -76,12 +81,12 @@ export class BooksComponent implements OnInit {
         //Verifica conexion con el servidor
         const status = this.webSocket.getStatusSocket() == 1 ? true : false;
         console.log("pathLibro",directory + 'Libro'+ item.Id);
+
         if(status=== false) {
-       
-          (<any>window).modusecho.echo([directory + 'Libro'+ item.id, item.id,"Lbs"]);
+          (<any>window).modusecho.echo([directory + 'Libro'+ item.Id, item.Id ,"Lbs"]);
         }
         else {
-          (<any>window).modusecho.echo([directory + 'Libro'+ item.id, item.id,"Lbs"]);
+          (<any>window).modusecho.echo([directory + 'Libro'+ item.Id, item.Id ,"Lbs"]);
         } 
           //this.buscarActualizaciones();
 
