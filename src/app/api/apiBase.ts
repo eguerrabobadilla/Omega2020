@@ -16,5 +16,4 @@ export class apiBase  {
     //url: string = 'https://www.alfalbs.app/ApiOmega'
     //url: string = 'https://www.alfalbs.app/WcfOmega'
     Ws: string;
-    
 }
