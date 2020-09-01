@@ -43,7 +43,7 @@ export class BooksComponent implements OnInit {
       item.progreso=0;
       item.display="none";
       if (this.platform.is('cordova')) {
-        this.existeLibro(directory,'Libro'+ item.Id).then( () =>{
+        this.existeLibro(directory,'Libro'+ item.Id).then(() =>{
           item.opacity= 1;
         }).catch(() =>{
           item.opacity= 0.2;
