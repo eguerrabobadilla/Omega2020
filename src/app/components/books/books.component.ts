@@ -1,15 +1,18 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChildren, QueryList } from '@angular/core';
 import { WebsocketService } from 'src/app/services/websocket.service';
 import { DownloadFileService } from 'src/app/services/download-file.service';
 import { FileTransfer, FileTransferObject } from '@ionic-native/file-transfer/ngx';
 import { File } from '@ionic-native/file/ngx';
 import { Plugins } from '@capacitor/core';
-import { Platform } from '@ionic/angular';
+import { Platform, AlertController } from '@ionic/angular';
 import { BooksService } from 'src/app/services/books.service';
 import { Zip } from '@ionic-native/zip/ngx';
 import { stat } from 'fs';
 import { computeStackId } from '@ionic/angular/directives/navigation/stack-utils';
 import { WebView } from '@ionic-native/ionic-webview/ngx';
+import { BehaviorSubject} from 'rxjs';
+import { CircleProgressComponent } from '../circle-progress/circle-progress.component';
+import { Storage } from '@ionic/storage';
 
 @Component({
   selector: 'app-books',
@@ -17,36 +20,56 @@ import { WebView } from '@ionic-native/ionic-webview/ngx';
   styleUrls: ['./books.component.scss'],
 })
 export class BooksComponent implements OnInit {
-
-
   libros: any[] = [];
   //private  BackgroundGeolocation: modusecho;
+  @ViewChildren(CircleProgressComponent) ArrayCircleProgress: QueryList<CircleProgressComponent>;
   @Input() librosIN: any[];
 
   constructor(public  webSocket: WebsocketService,private serviceDownload: DownloadFileService,private transfer: FileTransfer,
               private file: File,private platform: Platform,private booksService: BooksService,private zip: Zip,
-              private webview: WebView) {
-
+              private webview: WebView,private storage: Storage) {
   }
 
   ngOnInit() {
+    
     setTimeout(() => {
       this.iniciarValidacion();
+      //console.log(this.ArrayCircleProgress);
     }, 1000);
+  }
+
+  ngAfterViewInit (){
+    console.log("ngAfterViewInit");
+    /*this.ArrayCircleProgress.changes.subscribe((items: Array<CircleProgressComponent>) => {
+      //messages.forEach((item: SystemMessageComponent) => console.log(item.message));
+      console.log(items);
+    });*/
   }
 
   iniciarValidacion() {
     const directory = this.file.dataDirectory + "books2020/";
 
+    //this.data = new BehaviorSubject(element);
+    
     this.libros = this.librosIN;
     this.libros.forEach(item => {
       item.progreso=0;
       item.display="none";
+      item.spinner="none";
+      item.status="pendiente";
       if (this.platform.is('cordova')) {
         this.existeLibro(directory,'Libro'+ item.Id).then(() =>{
-          item.opacity= 1;
+          //item.opacity= 1;
+          if(item.descargado=="no")
+              throw new Error("El libro no esta descargado");
+
+          item.descarga = "none";
+          item.flecha= "none";
         }).catch(() =>{
-          item.opacity= 0.2;
+          //item.opacity= 0.2;
+          item.descargado="no";
+          item.descarga = "block";
+          item.flecha= "block";
         });
       }
     });
@@ -61,13 +84,20 @@ export class BooksComponent implements OnInit {
   }
 
   async openBook(item){
-    console.log(item);
+    //console.log(item);
     const { Browser } = Plugins;
+
+    if(item.status=="descargando")
+      return;
+
+    console.log("openBook");
+    item.status="descargando";
 
     if (this.platform.is('cordova')) {
         this.verificarLibro(item);
     } else {
       console.log("Opcion solo en celular")
+      item.status="terminado";
     }
   }
 
@@ -76,11 +106,14 @@ export class BooksComponent implements OnInit {
     const directory = this.file.dataDirectory + "books2020/";
     console.log(directory);
     console.log('Libro'+ item.Id);
+    
+    item.flecha="none";
 
     this.existeDirectorio(directory,'Libro'+ item.Id,item).then(_ =>{
         //Verifica conexion con el servidor
         const status = this.webSocket.getStatusSocket() == 1 ? true : false;
         console.log("pathLibro",directory + 'Libro'+ item.Id);
+        item.status=="terminado";
 
         if(status=== false) {
           (<any>window).modusecho.echo([directory + 'Libro'+ item.Id, item.Id ,"Lbs"]);
@@ -117,9 +150,20 @@ export class BooksComponent implements OnInit {
       }).catch(err => {
           console.log("No existe el directorio");
           console.log(err);
+          item.spinner="block";
+
+          //Solicita la url de descarga
           this.booksService.getBook(item.Id).subscribe(data => {
             this.download(data["url"],item);
             reject();
+          },err =>{
+            //reinicia el estado de la descarga
+            item.spinner="none";
+            item.descarga="block";
+            item.status="terminado";
+            item.flecha= "block";
+            item.progreso=0;
+            item.descargado="no";
           });
       });
     });
@@ -138,39 +182,68 @@ export class BooksComponent implements OnInit {
     const directory = this.file.dataDirectory + "books2020/";
     
     //this.file.dataDirectory
-    item.display="block";
+    //item.display="block";
     //this.file.externalDataDirectory
+    item.spinner="none";
 
     //Descarga libro
     fileTransfer.download(url, directory + nameFile).then(entry => {
+      item.spinner="block";
+
       //Descomprime libro
       console.log(entry.toURL());
       console.log(directory + 'Libro'+ item.Id);
-      return this.zip.unzip(entry.toURL(), directory + 'Libro'+ item.Id,(progress) => console.log('Unzipping, ' + Math.round((progress.loaded / progress.total) * 100) + '%'));
+      //,(progress) => console.log('Unzipping, ' + Math.round((progress.loaded / progress.total) * 100) + '%')
+      return this.zip.unzip(entry.toURL(), directory + 'Libro'+ item.Id);
     })
     .then(result =>{
       if(result === 0) { console.log('SUCCESS'); }
       if(result === -1) { console.log('FAILED'); }
 
-      //Elimina zip para ahorrae espacio
+      //Elimina zip para ahorrar espacio
       return this.file.removeFile(directory,nameFile);
     })
     .then( data =>{
       console.log(data);
       console.log("Terminado");
-      item.display="none";
-      item.opacity=1;
+      //item.display="none";
+      //item.opacity=1;
+      item.spinner="none";
+      item.descarga="none";
+      item.status="terminado";
+      item.descargado="si";
+      item.progreso=0;
     })
     .catch(err => {
       console.error(err);
       alert(err);
+
+      //reinicia el estado de la descarga
+      item.spinner="none";
+      item.descarga="block";
+      item.status="terminado";
+      item.flecha= "block";
+      item.progreso=0;
+      item.descargado="no";
+
+      const circleP=this.ArrayCircleProgress.toArray().find(x => x.item.Id===item.Id);
+      circleP.restartProgress();
+
+      this.storage.set('books',this.libros).then( () => {
+        console.log("guardo libros");
+      });
+
     });
 
     fileTransfer.onProgress(progress => {
       //console.log(progress);
       //let status = Math.round(100 * progress.loaded / progress.total);
-      item.progreso += progress.loaded / progress.total;
-      console.log(item.progreso);
+      //item.progreso += progress.loaded / progress.total;
+      item.progreso = Math.round(100 *progress.loaded / progress.total);
+      const circleP=this.ArrayCircleProgress.toArray().find(x => x.item.Id===item.Id);
+      circleP.progress(item.progreso);
+      //console.log(item.progreso);
+      
       //console.log(`Files are ${status}% downloaded`); 
     });
   }

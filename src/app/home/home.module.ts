@@ -44,6 +44,7 @@ import { QuestionsComponent } from '../components/questions/questions.component'
 import { ContactComponent } from '../components/contact/contact.component';
 import { PerfilComponent } from '../components/perfil/perfil.component';
 import { LinkifyPipe } from '../pipes/linkifypipe ';
+import { CircleProgressComponent } from '../components/circle-progress/circle-progress.component';
 
 
 @NgModule({
@@ -85,6 +86,6 @@ import { LinkifyPipe } from '../pipes/linkifypipe ';
   ],
   declarations: [ HomePage, PillMenuComponent, BooksComponent, CodesComponent, ListComponent, 
     ChatsComponent, FilterPipe, ListResourceComponent, NewsComponent, ForumComponent,GraphicsComponent,CalendarComponent
-    , EvidencesComponent,SubjectsComponent, QuestionsComponent, ContactComponent, PerfilComponent,LinkifyPipe]
+    , EvidencesComponent,SubjectsComponent, QuestionsComponent, ContactComponent, PerfilComponent,LinkifyPipe,CircleProgressComponent]
 })
 export class HomePageModule {}

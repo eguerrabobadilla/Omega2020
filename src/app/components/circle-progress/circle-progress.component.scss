@@ -1,0 +1,50 @@
+#svg circle {
+    stroke-dashoffset: 0;
+    transition: stroke-dashoffset 1s linear;
+    stroke: #565656;
+    stroke-width: 0.4em;
+    opacity: 0.7;
+  }
+  #svg #bar {
+    stroke: #ffff;
+    opacity:  0.7;
+  }
+  #cont {
+    /*display: block;
+    height: 200px;
+    width: 200px;
+    margin: 2em auto;*/
+    //box-shadow: 0 0 1em black;
+    /*border-radius: 100%;
+    position: relative;
+    top: 0%;
+    left: 0%;*/
+  }
+  #cont:after {
+    /*background: #565656;
+    position: absolute;
+    display: block;
+    height: 195px;
+    width: 195px;
+    left: 50%;
+    top: 50%;
+    z-index: -1;*/
+    //box-shadow: inset 0 0 1em black;
+    /*content: attr(data-pct)"%";
+    margin-top: -97.5px;
+    margin-left: -97.5px;
+    border-radius: 100%;
+    line-height: 160px;
+    font-size: 2em;
+    //text-shadow: 0 0 0.5em black;
+    color: #565656;
+    opacity:  0.7;*/
+  }
+
+  input {
+    color: #000;
+  }
+
+
+  /* Make things perty */
+  

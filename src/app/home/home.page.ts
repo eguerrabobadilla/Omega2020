@@ -1155,8 +1155,8 @@ this.pillMenu.animacion();
   }
 
   divArriba(){	
-    console.log("this.estadoArriba")	
-    console.log(this.estadoArriba)	
+    /*console.log("this.estadoArriba")	
+    console.log(this.estadoArriba)	*/
   if(this.estadoArriba===false){	
     this.swipeUp = true;
     this.animacion(false, true);
@@ -1186,6 +1186,7 @@ this.pillMenu.animacion();
  }
 
     public checkCodePush() {
+      
       const downloadProgress = (progress) => { 
         console.log(`Downloaded ${progress.receivedBytes} of ${progress.totalBytes}`); 
       }
