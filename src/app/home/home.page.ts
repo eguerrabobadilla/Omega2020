@@ -28,6 +28,7 @@ import { EvidencesComponent } from '../components/evidences/evidences.component'
 import { CrearTopicPage } from '../pages/crear-topic/crear-topic.page';
 import { ListResourceComponent } from '../components/list-resource/list-resource.component';
 import { CodePush,InstallMode, SyncStatus } from '@ionic-native/code-push/ngx';
+import { Storage } from '@ionic/storage';
 
 
 
@@ -152,7 +153,7 @@ export class HomePage {
               public authenticationService: AuthenticationService ,
               private apiTareas: TareasService, public  webSocket: WebsocketService, private apiCalendario: CalendarioService,
               private pickerController: PickerController, private apiMaterias: MateriasService,
-              private codePush : CodePush) {
+              private codePush : CodePush,private storage: Storage) {
     //  this.scrollenable = true;
 
 
@@ -1068,9 +1069,10 @@ this.pillMenu.animacion();
           }, {
             text: 'Si',
             handler: () => {
-              this.authenticationService.logout().then( data => {
-
+              this.storage.clear().then(() => {
+                this.authenticationService.logout().then( data => {
                   this.webSocket.finishWebScoket();
+                });
               });
               // this.menu.close();
             }

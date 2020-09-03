@@ -24,9 +24,16 @@ export class CodesComponent implements OnInit {
   }
 
   ngOnInit() {
+    setTimeout(() => {
+      this.iniciarValidacion();
+    }, 1000);
+  }
+
+  iniciarValidacion() {
     this.storage.get('books').then((librosLocales) => {
       const status = this.webSocket.getStatusSocket() == 1 ? true : false;
       //console.log(librosLocales);
+      //console.log(status);
 
       if(status === true)
       {
@@ -38,12 +45,14 @@ export class CodesComponent implements OnInit {
         if(librosLocales==null) {
           this.booksService.getBooksGrado().subscribe(data => {
             this.libros = data;
-            this.librosDescargados.emit(this.libros);
-            this.storage.set('books',this.libros);
+            this.storage.set('books',this.libros).then( () =>{
+              this.librosDescargados.emit(this.libros);
+            });
           });
         }
         //else if(tipo==="Alumno") {
         else {
+          console.log("ya tiene libros");
           this.booksService.getBooksGrado().subscribe(data => {
             //Busca si viene algun nuevo libro del servidor
             data.forEach(element => {
@@ -63,12 +72,14 @@ export class CodesComponent implements OnInit {
            });
 
             this.libros = librosLocales;
-            this.librosDescargados.emit(this.libros);
-            this.storage.set('books',this.libros);
+            this.storage.set('books',this.libros).then( () => {
+              this.librosDescargados.emit(this.libros);
+            });
           });
         }
       }
       else {
+        console.log("sin conexion a internet");
         this.libros = librosLocales;
         this.librosDescargados.emit(this.libros);
       }
