@@ -44,6 +44,7 @@ export class CodesComponent implements OnInit {
         //if(tipo==="Alumno" && librosLocales==null) {
         if(librosLocales==null) {
           this.booksService.getBooksGrado().subscribe(data => {
+            data.forEach(element => { element.descargado="no"});
             this.libros = data;
             this.storage.set('books',this.libros).then( () =>{
               this.librosDescargados.emit(this.libros);
@@ -57,6 +58,7 @@ export class CodesComponent implements OnInit {
             //Busca si viene algun nuevo libro del servidor
             data.forEach(element => {
                const libroD = librosLocales.filter(l => l.Id == element.Id);
+               element.descargado="no"
                if(libroD.length == 0)
                   librosLocales.push(element);
             });
