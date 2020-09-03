@@ -213,6 +213,10 @@ export class BooksComponent implements OnInit {
       item.status="terminado";
       item.descargado="si";
       item.progreso=0;
+
+      this.storage.set('books',this.libros).then( () => {
+        console.log("guardo libros");
+      });
     })
     .catch(err => {
       console.error(err);
@@ -228,11 +232,6 @@ export class BooksComponent implements OnInit {
 
       const circleP=this.ArrayCircleProgress.toArray().find(x => x.item.Id===item.Id);
       circleP.restartProgress();
-
-      this.storage.set('books',this.libros).then( () => {
-        console.log("guardo libros");
-      });
-
     });
 
     fileTransfer.onProgress(progress => {
