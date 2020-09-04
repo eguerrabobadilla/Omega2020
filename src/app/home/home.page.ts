@@ -500,7 +500,7 @@ const animation5: Animation = this.animationCtrl.create('bouceEduardo-b')
      .keyframes([{ offset: 0, transform: 'translate3d(0, 60vh, 0)' },	
      { offset: 0.7, transform: 'translate3d(0, -10.5vh, 0)' },	
      { offset: 0.8, transform: 'translate3d(0, -8.5vh, 0)' },	
-     { offset: 0.9, transform: 'translate3d(0, -6.5.0vh, 0)' },	
+     { offset: 0.9, transform: 'translate3d(0, -6.5vh, 0)' },	
      { offset: 1, transform: 'translate3d(0, -7vh, 0)' }, ]);	
    // .fromTo('transform', 'translate3d(0, 67vh, 0)', 'translate3d(0, -7vh, 0)')	
     // .fromTo('transform', 'translate3d(0, 67vh, 0)', 'translate3d(0, 0vh, 0)');	
