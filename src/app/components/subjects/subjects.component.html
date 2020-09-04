@@ -1,11 +1,11 @@
 <ion-card mode="ios">
 
   <ion-card-header mode="ios" style="padding-bottom: 1px;">
-    <ion-card-title style="text-align: initial;">Grupo {{user.grado}}{{user.grupo}}</ion-card-title>
+    <ion-card-title style="text-align: initial;" *ngIf="user.tipo=='Alumno'">Grupo {{user.grado}}{{user.grupo}}</ion-card-title>
   </ion-card-header>
 
   <ion-list>
-    <ion-list-header style="padding-bottom: 15px">
+    <ion-list-header style="padding-bottom: 15px" *ngIf="user.tipo=='Alumno'">
       Elementary School
     </ion-list-header>
 
@@ -14,7 +14,7 @@
         <ion-label>Español</ion-label>
       </ion-item-divider>
 
-      <ion-item lines="none" *ngFor="let item of LstMaterias  | filter : 'Español' : 'idioma'" style="padding-left: 23px;">
+      <ion-item lines="none" *ngFor="let item of LstMaterias  | filter : 'Español' : 'Idioma'" style="padding-left: 23px;">
         <ion-label>{{item.Nombre}}</ion-label>
       </ion-item>
 
@@ -22,7 +22,7 @@
         <ion-label>Inglés</ion-label>
       </ion-item-divider>
 
-      <ion-item lines="none" *ngFor="let item of LstMaterias  | filter : 'Ingles' : 'idioma'" style="padding-left: 23px;">
+      <ion-item lines="none" *ngFor="let item of LstMaterias  | filter : 'Ingles' : 'Idioma'" style="padding-left: 23px;">
         <ion-label>{{item.Nombre}}</ion-label>
       </ion-item>
     </ion-item-group>
