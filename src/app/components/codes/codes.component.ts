@@ -30,7 +30,7 @@ export class CodesComponent implements OnInit {
   }
 
   iniciarValidacion() {
-    this.storage.get('books').then((librosLocales) => {
+    this.storage.get('books2020').then((librosLocales) => {
       const status = this.webSocket.getStatusSocket() == 1 ? true : false;
       //console.log(librosLocales);
       //console.log(status);
@@ -46,7 +46,7 @@ export class CodesComponent implements OnInit {
           this.booksService.getBooksGrado().subscribe(data => {
             data.forEach(element => { element.descargado="no"});
             this.libros = data;
-            this.storage.set('books',this.libros).then( () =>{
+            this.storage.set('books2020',this.libros).then( () =>{
               this.librosDescargados.emit(this.libros);
             });
           });
@@ -74,7 +74,7 @@ export class CodesComponent implements OnInit {
            });
 
             this.libros = librosLocales;
-            this.storage.set('books',this.libros).then( () => {
+            this.storage.set('books2020',this.libros).then( () => {
               this.librosDescargados.emit(this.libros);
             });
           });
@@ -119,7 +119,7 @@ export class CodesComponent implements OnInit {
       const code = this.FrmCodigo.codigo;
       this.libros =  await this.booksService.getBooks(code).toPromise();
 
-      await this.storage.set('books',this.libros);
+      await this.storage.set('books2020',this.libros);
 
       await this.loadingController.dismiss();
 

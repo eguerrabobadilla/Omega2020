@@ -145,6 +145,9 @@ export class BooksComponent implements OnInit {
   existeDirectorio(directory,path,item){
     var promise = new Promise((resolve, reject) => {
       this.file.checkDir(directory,path).then(_ =>{
+          if(item.descargado=="no")
+              throw new Error("El libro no esta descargado");
+              
           console.log("Existe el directorio");
           resolve();
       }).catch(err => {
@@ -214,7 +217,7 @@ export class BooksComponent implements OnInit {
       item.descargado="si";
       item.progreso=0;
 
-      this.storage.set('books',this.libros).then( () => {
+      this.storage.set('books2020',this.libros).then( () => {
         console.log("guardo libros");
       });
     })
@@ -225,13 +228,17 @@ export class BooksComponent implements OnInit {
       //reinicia el estado de la descarga
       item.spinner="none";
       item.descarga="block";
-      item.status="terminado";
+      item.status="pendiente";
       item.flecha= "block";
       item.progreso=0;
       item.descargado="no";
 
       const circleP=this.ArrayCircleProgress.toArray().find(x => x.item.Id===item.Id);
       circleP.restartProgress();
+
+      this.storage.set('books2020',this.libros).then( () => {
+        console.log("guardo libros");
+      });
     });
 
     fileTransfer.onProgress(progress => {
