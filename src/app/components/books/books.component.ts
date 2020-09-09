@@ -113,7 +113,7 @@ export class BooksComponent implements OnInit {
         //Verifica conexion con el servidor
         const status = this.webSocket.getStatusSocket() == 1 ? true : false;
         console.log("pathLibro",directory + 'Libro'+ item.Id);
-        item.status=="terminado";
+        item.status="terminado";
 
         if(status=== false) {
           (<any>window).modusecho.echo([directory + 'Libro'+ item.Id, item.Id ,"Lbs"]);

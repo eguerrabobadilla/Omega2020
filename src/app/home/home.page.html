@@ -170,14 +170,14 @@ top: 0;" mode="ios">
 </ion-fab>
 
 <div #div2 (click)="clickDiv()" class="edu1" style="transform: translateY(60vh)">
-    <div (click)="test()" style="position: -webkit-sticky;top: 0;font-size: 29px;z-index: 999;position: sticky;">
+    <div  style="position: -webkit-sticky;top: 0;font-size: 29px;z-index: 999;position: sticky;">
        
-        <app-pill-menu    #pillMenu  [itemsMenu]="tabs" [selectOption]="selectOption" (indicatorChanged)="segmentChanged($event)" (clickFab)="nuevoRecurso($event)" (clickFiltro)="openPicker()"></app-pill-menu>
+        <app-pill-menu (click)="test()"    #pillMenu  [itemsMenu]="tabs" [selectOption]="selectOption" (indicatorChanged)="segmentChanged($event)" (clickFab)="nuevoRecurso($event)" (clickFiltro)="openPicker()"></app-pill-menu>
     </div>
     <ion-header [translucent]="false" mode="ios"></ion-header>
 
     <ion-content #IonContentScroll [scrollY]="scrollenable" style="--background: #ffffff;">
-        <div #elementsToProcess style="bottom: -0.1vh;position: relative;"></div>
+        <div #elementsToProcess style="bottom: -0.04vh;position: relative;"></div>
 
         <ion-slides [options]="slideOptsdos" #slideDown (ionSlideTouchEnd)="ionSlideTouchEnd(slideUp,slideDown)" *ngIf="selectSeccion == 1" style="min-height: 72.6vh;">
             <ion-slide>
