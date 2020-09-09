@@ -24,6 +24,7 @@
     <preference name="SplashShowOnlyFirstTime" value="false" />
     <preference name="SplashScreen" value="screen" />
     <preference name="SplashScreenDelay" value="3000" />
+    <preference name="orientation" value="portrait" />
     <platform name="android">
         <preference name="APP_SECRET" value="89ceb10e-9e59-4028-a1a1-9c981c078656" />
         <preference name="CodePushDeploymentKey" value="5dowe1J6r0qGy6uyR6pxnLbKyzNXOMhrjUn4z" />
