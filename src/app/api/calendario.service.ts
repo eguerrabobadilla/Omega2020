@@ -22,4 +22,8 @@ export class CalendarioService extends apiBase {
     return this.http.get<any[]>(`${this.url}/api/calendario/fecha/${fecha}`);
   }
 
+  deleteEvento(Tipo:any,Id: any) {
+    return this.http.delete(`${this.url}/${this.Ws}/${Tipo}/${Id}`);
+  }
+
 }

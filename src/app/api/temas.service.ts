@@ -14,8 +14,17 @@ export class TemasService extends apiBase {
     this.Ws = 'api/temas';
    }
 
-   save(item: any) {
+  save(item: any) {
     return this.http.post(`${this.url}/${this.Ws}`, item);
+  }
+
+  get(id:any): Observable<any[]> {
+    return this.http.get<any[]>(`${this.url}/${this.Ws}/${id}`);
+  }
+
+  update(item: any) {
+    console.log(item);
+    return this.http.put(`${this.url}/${this.Ws}/${item.Id}`, item);
   }
   
 }

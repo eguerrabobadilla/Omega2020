@@ -65,6 +65,7 @@ export class HomePage {
   LstTareas: any[] = [];
   hayConexion= true;
   numeroclicks=0;
+  loading: any;
 
   settings: MbscCalendarOptions = {
     theme: 'mobiscroll',
@@ -1100,15 +1101,18 @@ this.pillMenu.animacion();
         await modal.present();
 
         modal.onDidDismiss().then( async (data) => {
+          this.cargandoAnimation();
+
           this.apiCalendario.getCalendario().subscribe(data => {
             this.events = data;
-            });
+            this.loadingController.dismiss();
+          });
         });
       }
     }
 
    async abrirCalendarioSemana(item){
-
+      console.log("abrirCalendarioSemana");
       const modal = await this.modalCrl.create({
         component: CalendarEventsPage,
         // cssClass: 'my-custom-modal-css',
@@ -1121,9 +1125,26 @@ this.pillMenu.animacion();
 
       await modal.present();
 
+      modal.onDidDismiss().then( async (data) => {
+        if(data.data != undefined) {
+          this.cargandoAnimation();
+          this.apiCalendario.getCalendario().subscribe(data => {
+            console.log("getCalendario");
+            this.events = data;
+            this.loadingController.dismiss();
+          });
+        }
+      });
+
     }
 
+    async cargandoAnimation() {
+      this.loading = await this.loadingController.create({
+        message: 'Guardando...'
+      });
 
+      await this.loading.present();
+    }
 
     async ionSlideTouchEnd(slideSelect: IonSlides, notSlideSlect: IonSlides) {
       // notSlideSlect.slideTo(await slideSelect.getActiveIndex());
