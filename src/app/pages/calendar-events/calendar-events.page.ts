@@ -80,6 +80,7 @@ export class CalendarEventsPage implements OnInit {
                   -${this.item.date.getDate().toString().padStart(2, "0")}`;
 
   this.apiCalendario.getCalendarioFecha(strDate1).subscribe(data => {
+    //console.log(data);
     this.events = data;
   });
 

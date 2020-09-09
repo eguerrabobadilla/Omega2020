@@ -35,10 +35,38 @@ export class AppComponent {
     this.authenticationService.authState.subscribe(state => {
       if (state) {
         this.webSocket.initSocket();
-        this.router.navigate(['home']);
+
+        //Busca si se quedo un sesion del director iniciada
+        const jwt_temp = localStorage.getItem('USER_INFO_TEMP');
+        
+        if(jwt_temp != null)
+        {
+            localStorage.clear();
+            localStorage.setItem('USER_INFO',jwt_temp);
+        }
+
+        if(this.getKeyToken("tipo")=="Director")
+            this.router.navigate(['home-director']);
+        else
+            this.router.navigate(['home']);
       } else {
         this.router.navigate(['login']);
       }
     });
+  }
+
+  
+  getKeyToken(key: string): string {
+
+    const jwt = localStorage.getItem('USER_INFO');
+
+    const jwtData = jwt.split('.')[1];
+    // let decodedJwtJsonData = window.atob(jwtData);
+    const decodedJwtJsonData = decodeURIComponent(escape(window.atob(jwtData)));
+    const decodedJwtData = JSON.parse(decodedJwtJsonData);
+
+    const value = decodedJwtData[key];
+
+    return value;
   }
 }

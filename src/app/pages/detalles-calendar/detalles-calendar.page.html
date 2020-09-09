@@ -11,7 +11,6 @@
 
 
 <ion-content>
-
     <ion-card class="ion-no-border" style="text-align: initial;padding-top: 40px;" mode="ios">
         <ion-card-header>
             <ion-card-subtitle>18 de julio del 2020</ion-card-subtitle>
@@ -21,6 +20,12 @@
         <ion-card-content>
             {{item.Descripcion}}
         </ion-card-content>
-    </ion-card>
 
+        <ion-item>
+            <ion-label><b>Grupo:</b> {{item.Grado}}{{item.Grupo}} {{item.Escolaridad}}</ion-label>
+        </ion-item>
+        <ion-item>
+            <ion-label><b>Materia:</b> {{item.Materia.Nombre}}</ion-label>
+        </ion-item>
+    </ion-card>
 </ion-content>

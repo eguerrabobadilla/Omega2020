@@ -22,7 +22,6 @@ export class SubjectsComponent implements OnInit {
     this.user.tipo  = this.getKeyToken('tipo');
 
     this.apiMaterias.get().subscribe(data => {
-      console.log(data);
       this.LstMaterias = data;
     });
 
