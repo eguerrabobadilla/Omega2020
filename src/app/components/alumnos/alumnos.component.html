@@ -1,0 +1,26 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-title size="large" style="text-align: center;">{{ data.escolaridad }} {{ data.Grado }}{{ data.Grupo }}</ion-title>
+    <ion-buttons slot="start">
+      <ion-button style="margin-top: 8px;margin-left: 8px;" (click)="back()">
+          <ion-icon size="large" slot="icon-only" color="dark" name="arrow-back-circle-outline"></ion-icon>
+      </ion-button>
+  </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-list mode="ios">
+  <!--<ion-list-header>
+    {{ data.escolaridad }} {{ data.Grado }}{{ data.Grupo }}
+  </ion-list-header>-->
+
+  <ion-item button detail="false" mode="ios" *ngFor="let item of LstAlumnos" (click)="verAlumno(item)">
+    <ion-avatar slot="start">
+      <img src="assets/img/unnamed.png">
+    </ion-avatar>
+    <ion-label style="text-transform: capitalize;">
+      <h2>{{ item.ApellidoPaterno }} {{ item.ApellidoMaterno }} {{ item.Nombre }} </h2>
+      <h3>{{ data.escolaridad }} {{ item.Grado }}{{ item.Grupo }}</h3>
+      <p>Usuario: {{ item.Usuario }}</p>
+    </ion-label>
+  </ion-item>
+</ion-list>

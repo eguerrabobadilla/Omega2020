@@ -1,5 +1,5 @@
 import { MbscModule } from '@mobiscroll/angular';
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 
@@ -34,7 +34,6 @@ import { IonicStorageModule } from '@ionic/storage';
 import { Zip } from '@ionic-native/zip/ngx';
 import { WebView } from '@ionic-native/ionic-webview/ngx';
 import { CodePush } from '@ionic-native/code-push/ngx';
-
 
 @NgModule({
   declarations: [AppComponent, AnimateItemsDirective],

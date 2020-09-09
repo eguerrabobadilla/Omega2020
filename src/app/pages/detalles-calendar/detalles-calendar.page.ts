@@ -14,8 +14,18 @@ export class DetallesCalendarPage implements OnInit {
 
   ngOnInit() {
    // console.log("input")
-  //  console.log(this.item);
-
+  //console.log(this.item);
+    let escolaridad="";
+    if(this.item.Escolaridad == 'Elementary School')
+        escolaridad="Primaria"
+    else if(this.item.Escolaridad == 'Junior High School')
+        escolaridad="Secundaria"
+    else if(this.item.Escolaridad == 'High School')
+        escolaridad="Preparatoria"
+    else if(this.item.Escolaridad == 'Kinder')
+        escolaridad="Kinder"
+    
+    this.item.Escolaridad= escolaridad;
   }
 
   closeModal(){

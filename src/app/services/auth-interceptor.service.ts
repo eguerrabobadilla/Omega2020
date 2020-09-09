@@ -30,7 +30,7 @@ export class AuthInterceptorService {
         }
       });
     }
-
+    
     return next.handle(request).pipe(
       catchError((err: HttpErrorResponse) => {
 

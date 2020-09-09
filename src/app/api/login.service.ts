@@ -14,5 +14,9 @@ export class LoginService extends apiBase {
 
    login(item) {
     return this.http.post(`${this.url}/${this.Ws}`,item);
-  }
+   }
+
+   loginTemp(item) {
+    return this.http.post(`${this.url}/${this.Ws}/1`,item);
+   }
 }

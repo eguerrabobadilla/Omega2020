@@ -45,6 +45,7 @@ import { ContactComponent } from '../components/contact/contact.component';
 import { PerfilComponent } from '../components/perfil/perfil.component';
 import { LinkifyPipe } from '../pipes/linkifypipe ';
 import { CircleProgressComponent } from '../components/circle-progress/circle-progress.component';
+import { GlobalModule } from '../modules/GoblaModule';
 
 
 @NgModule({
@@ -82,9 +83,10 @@ import { CircleProgressComponent } from '../components/circle-progress/circle-pr
     CrearNewsPageModule,
     CalendarEventsPageModule,
     CrearEvidencePageModule,
-    CrearTopicPageModule
+    CrearTopicPageModule,
+    GlobalModule
   ],
-  declarations: [ HomePage, PillMenuComponent, BooksComponent, CodesComponent, ListComponent, 
+  declarations: [ HomePage, BooksComponent, CodesComponent, ListComponent, 
     ChatsComponent, FilterPipe, ListResourceComponent, NewsComponent, ForumComponent,GraphicsComponent,CalendarComponent
     , EvidencesComponent,SubjectsComponent, QuestionsComponent, ContactComponent, PerfilComponent,LinkifyPipe,CircleProgressComponent]
 })

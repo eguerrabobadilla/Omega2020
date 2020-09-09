@@ -1,35 +1,40 @@
-import { Component, ElementRef, ViewChild, Renderer2, ɵCodegenComponentFactoryResolver } from '@angular/core';
+import { Component, ElementRef, ViewChild, Renderer2, ɵCodegenComponentFactoryResolver, ViewContainerRef, ComponentFactoryResolver } from '@angular/core';
 import { AnimationController, Animation, IonContent, Platform, IonSlides, ModalController, LoadingController, AlertController, PickerController } from '@ionic/angular';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { Gesture, GestureController } from '@ionic/angular';
-import { PillMenuComponent } from '../components/pill-menu/pill-menu.component';
-import { DetallePage } from '../detalle/detalle.page';
-import { NuevoRecursoPage } from '../nuevo-recurso/nuevo-recurso.page';
-import { BooksComponent } from '../components/books/books.component';
-import { BooksService } from '../services/books.service';
-import { AuthenticationService } from '../services/authentication.service';
-import { TareasService } from '../api/tareas.service';
-import { CodesComponent } from '../components/codes/codes.component';
-import { Libros } from '../models/Libros';
-import { CrearForumPage } from '../pages/crear-forum/crear-forum.page';
-import { ForumComponent } from '../components/forum/forum.component';
-import { CrearChatPage } from '../pages/crear-chat/crear-chat.page';
-import { NewResourcePage } from '../new-resource/new-resource.page';
-import { CrearNewsPage } from '../pages/crear-news/crear-news.page';
-import { NewsComponent } from '../components/news/news.component';
+import { PillMenuComponent } from '../../components/pill-menu/pill-menu.component';
+import { DetallePage } from '../../detalle/detalle.page';
+import { NuevoRecursoPage } from '../../nuevo-recurso/nuevo-recurso.page';
+import { BooksComponent } from '../../components/books/books.component';
+import { BooksService } from '../../services/books.service';
+import { AuthenticationService } from '../../services/authentication.service';
+import { TareasService } from '../../api/tareas.service';
+import { CodesComponent } from '../../components/codes/codes.component';
+import { Libros } from '../../models/Libros';
+import { CrearForumPage } from '../../pages/crear-forum/crear-forum.page';
+import { ForumComponent } from '../../components/forum/forum.component';
+import { CrearChatPage } from '../../pages/crear-chat/crear-chat.page';
+import { NewResourcePage } from '../../new-resource/new-resource.page';
+import { CrearNewsPage } from '../../pages/crear-news/crear-news.page';
+import { NewsComponent } from '../../components/news/news.component';
 import { mobiscroll, MbscCalendarOptions, MbscCalendar, MbscCalendarComponent } from '@mobiscroll/angular';
-import { WebsocketService } from '../services/websocket.service';
+import { WebsocketService } from '../../services/websocket.service';
 import { ThrowStmt } from '@angular/compiler';
-import { CalendarEventsPage } from '../pages/calendar-events/calendar-events.page';
-import { CalendarioService } from '../api/calendario.service';
-import { MateriasService } from '../api/materias.service';
-import { CrearEvidencePage } from '../pages/crear-evidence/crear-evidence.page';
-import { EvidencesComponent } from '../components/evidences/evidences.component';
-import { CrearTopicPage } from '../pages/crear-topic/crear-topic.page';
-import { ListResourceComponent } from '../components/list-resource/list-resource.component';
+import { CalendarEventsPage } from '../../pages/calendar-events/calendar-events.page';
+import { CalendarioService } from '../../api/calendario.service';
+import { MateriasService } from '../../api/materias.service';
+import { CrearEvidencePage } from '../../pages/crear-evidence/crear-evidence.page';
+import { EvidencesComponent } from '../../components/evidences/evidences.component';
+import { CrearTopicPage } from '../../pages/crear-topic/crear-topic.page';
+import { ListResourceComponent } from '../../components/list-resource/list-resource.component';
 import { CodePush,InstallMode, SyncStatus } from '@ionic-native/code-push/ngx';
 import { Storage } from '@ionic/storage';
+import { from } from 'rxjs';
 import { Router } from '@angular/router';
+import { PerfilComponent } from 'src/app/components/perfil/perfil.component';
+import { EscolaridadComponent } from 'src/app/components/escolaridad/escolaridad.component';
+import { GruposComponent } from 'src/app/components/grupos/grupos.component';
+import { AlumnosComponent } from 'src/app/components/alumnos/alumnos.component';
 
 
 
@@ -39,15 +44,12 @@ mobiscroll.settings = {
   layout: 'liquid'
 };
 
-
-
-
 @Component({
-  selector: 'app-home',
-  templateUrl: 'home.page.html',
-  styleUrls: ['home.page.scss'],
+  selector: 'app-home-director',
+  templateUrl: './home-director.page.html',
+  styleUrls: ['./home-director.page.scss'],
 })
-export class HomePage {
+export class HomeDirectorPage {
 
   private observer: IntersectionObserver;
   scrollenable = false;
@@ -120,28 +122,27 @@ export class HomePage {
   @ViewChild('avatarUser', {read: ElementRef, static: false}) avatarUser: ElementRef;
   @ViewChild('mobi', {static: false}) mobi: MbscCalendar; 
 
+  @ViewChild('processContainer', { read: ViewContainerRef,static: false }) container;
+
   public fabVisible: boolean = true;
   public fabVisibleFilters: boolean = false;
   items: any[] = [];
   estadoArriba  = false;
   primeraVez = true;
   headersText: any = [];
-  header = 'Books';
+  header = 'Director';
   nombreIcono = 'book-outline';
   iconos: any[];
   public swipeUp = false;
-  public swipeUp2 = false;
   public swipeDown = false;
-  public swipeDown2 = false;
   public gesture;
   public gesture2;
-  public gesture3;
   public user = {
     nombre : '',
     grado  : ''
   };
   slideOpts = {
-    loop: true,
+    loop: false,
   };
   slideOptsdos = {
     autoHeight: true
@@ -157,7 +158,7 @@ export class HomePage {
               public authenticationService: AuthenticationService ,
               private apiTareas: TareasService, public  webSocket: WebsocketService, private apiCalendario: CalendarioService,
               private pickerController: PickerController, private apiMaterias: MateriasService,
-              private codePush : CodePush,private storage: Storage,private router: Router) {
+              private codePush : CodePush,private storage: Storage,private router: Router,private resolver: ComponentFactoryResolver) {
     //  this.scrollenable = true;
 
 
@@ -578,10 +579,10 @@ this.pillMenu.animacion();
         entries.forEach((entry: any) => {
           if (!entry.isIntersecting) {
             this.pocisionInicial = false;
-            this.gesture3.enable(false);
+            this.gesture.enable(false);
           } else {
             this.pocisionInicial = true;
-            this.gesture3.enable(true);
+            this.gesture.enable(true);
           }
         });
       }, {threshold: 0});
@@ -610,29 +611,15 @@ this.pillMenu.animacion();
       let index = await this.slideUp.getActiveIndex();
 
       // Por mientras
-      /*index = index === 7 ? 1 : index;
-      index = index === 0 ? 6 : index;*/
-      index = index === 6 ? 1 : index;
-      index = index === 0 ? 5 : index;
+      index = index === 1 ? 1 : index;
+      index = index === 0 ? 1 : index;
       this.header = this.headersText[index - 1];
       this.nombreIcono = this.iconos[index - 1];
 
 
       if (index === 1) {
-        this.tabs = ['Todos', 'Inglés'  , 'Español', 'Código'];
-
-      } else if (index === 2) {
-        this.tabs = ['Tareas', 'Foro', 'Recursos', 'Evidencias'];
-     } else if (index === 3) {
-      this.tabs = ['Noticias', 'Mensajes', 'Calendario'];
-
-     } else if (index === 4) {
-            this.tabs = ['Perfil', 'Materias', 'Estadísticas'];
-     } else if (index === 5) {
-      this.tabs = ['Preguntas', 'Contacto'];
-      }/* } else if (index === 6) {
         this.tabs = ['Alumnos', 'Docentes', 'Cordinadores'];
-      }*/
+      }
 
       this.selectOption = '0';
       // console.log(await this.slideDown.getActiveIndex().toString());
@@ -666,17 +653,9 @@ this.pillMenu.animacion();
           this.renderer.setStyle(this.fabstart.nativeElement,'display','none');
       }
 
-      //Si el usuario es un director disfrazado de otro usuario bloquea los add
-      if(this.getKeyToken("estatus")!=undefined) {
-          this.renderer.setStyle(this.fabend.nativeElement,'display','none');
-          this.renderer.setStyle(this.fabstart.nativeElement,'display','none');
-      }
-
     }
 
     activarEventoTouch(){
-      
-
       this.gesture2 = this.gestureCtrl.create({
           el: this.calendar.nativeElement,
           gestureName: 'calendar',
@@ -734,22 +713,24 @@ this.pillMenu.animacion();
 
 
     async ngOnInit() {
-      console.log("home principal");
       this.subscribeToEvents();
 
       //this.LstTareas = await this.apiTareas.get().toPromise();
 
       this.iconos = ['book-outline', 'pencil', 'people-outline', 'person-outline', 'hammer-outline'];
-      this.headersText = ['Books', 'Tasks', 'Community', 'Account', 'Support'];
-      this.tabs = ['Todos', 'Inglés'  , 'Español', 'Código'];
+      this.headersText = ['Director', 'Tasks', 'Community', 'Account', 'Support'];
+      this.tabs = ['Alumnos', 'Docentes', 'Cordinadores'];
 
+      setTimeout(() => {
+        this.verEscolaridades();
+      }, 100);
 
       this.gesture = this.gestureCtrl.create({
 
         el: this.contentref.nativeElement,
         gestureName: 'test-swipe',
         direction: 'y',
-        threshold: 8,
+        threshold: 20,
         passive: true,
         disableScroll: true,
         onStart: (detail) => {
@@ -772,39 +753,18 @@ this.pillMenu.animacion();
         },
         onEnd: (detail) => {
          //   this.scrollenable = false;
-            console.log("Entro al on end swipe content");
+            //console.log("SwipeUP",this.swipeUp);
             //console.log("SwipeDown",this.swipeDown);
             if (this.swipeUp === true && !this.estadoArriba) {
               
               this.divArriba();
-        /*     this.swipeUp = true;
-             this.animacion(false, true);
-             this.div2.nativeElement.click();
-             this.estadoArriba = true;
-             this.scrollenable = true;
-             this.div2.nativeElement.click();
-            this.pocisionInicial === true;
-            this.checkCodePush();*/
 
 
            } else {
               if (this.swipeDown === true && this.estadoArriba) {
 
-               // this.divAbajo();
-             /*  this.gesture.enable(true);	
+                this.divAbajo();
 
-               this.gesture.enable(true);
-               //console.log("entro al if de swipeDown")
-             //   if (this.pocisionInicial === true) { causante del problema que no bajaba cuando haciamos swipe para abajo
-             //     this.gesture.enable(false);
-             //    this.renderer.setStyle(this.div2.nativeElement, 'touch-action', 'none');
-               this.div2.nativeElement.click();
-               this.scrollenable = false;
-              
-               this.animacion(true, true); 
-             //    this.scrollenable = false;
-               this.estadoArriba = false;
-              */
              }
             }
             this.swipeUp = false;
@@ -813,82 +773,6 @@ this.pillMenu.animacion();
       });
 
       this.gesture.enable();
-
-      this.gesture3 = this.gestureCtrl.create({
-
-        el: this.div2.nativeElement,
-        gestureName: 'test-swipedown',
-        direction: 'y',
-        threshold: 20,
-        passive: true,
-        disableScroll: true,
-        onStart: (detail) => {
-
-          //  this.renderer.setStyle(this.div2.nativeElement, 'transition', `none`);
-        },
-        onMove: (detail) => {
-        
-          if (detail.velocityY < -0.50) {
-            this.swipeUp2 = true;
-            //console.log("onmoveUp");
-          //  this.scrollenable = false
-          
-           }else{
-            //console.log("onmoveDown");
-            this.swipeDown2 = true;
-        //    this.scrollenable = false;
-            }
-
-        },
-        onEnd: (detail) => {
-         //   this.scrollenable = false;
-            //console.log("SwipeUP",this.swipeUp);
-            //console.log("SwipeDown",this.swipeDown);
-            
-            if (this.swipeUp2 === true && !this.estadoArriba) {
-              console.log("this.swipeUp2 === true && !this.estadoArriba Uppppp");
-            //  this.divArriba();
-          /*   this.swipeUp2 = true;
-                          this.div2.nativeElement.click();
-             this.estadoArriba = true;
-             this.scrollenable = true;
-             this.div2.nativeElement.click();
-            this.pocisionInicial === true;
-             this.animacion(false, true);
-             this.div2.nativeElement.click();
-             this.estadoArriba = true;
-             this.scrollenable = true;
-             this.div2.nativeElement.click();
-            this.pocisionInicial === true;
-            this.checkCodePush();*/
-
-
-           } else {
-              if ((this.swipeDown2 === true && this.estadoArriba)&& this.swipeUp2=== false) {
-                console.log("this.swipeDown2 === true && this.estadoArriba)&& this.swipeUp2=== false down");
-                this.divAbajo();
-             /*  this.gesture.enable(true);	
-
-               this.gesture.enable(true);
-               //console.log("entro al if de swipeDown")
-             //   if (this.pocisionInicial === true) { causante del problema que no bajaba cuando haciamos swipe para abajo
-             //     this.gesture.enable(false);
-             //    this.renderer.setStyle(this.div2.nativeElement, 'touch-action', 'none');
-               this.div2.nativeElement.click();
-               this.scrollenable = false;
-              
-               this.animacion(true, true); 
-             //    this.scrollenable = false;
-               this.estadoArriba = false;
-              */
-             }
-            }
-            this.swipeUp2 = false;
-            this.swipeDown2 = false;
-          }
-      });
-
-      this.gesture3.enable();
     }
 
 
@@ -906,12 +790,6 @@ this.pillMenu.animacion();
           this.renderer.setStyle(this.fabend.nativeElement,'display','block');
         } else if(this.getKeyToken('tipo')=='Alumno') {
           this.renderer.setStyle(this.fabend.nativeElement,'display','none');
-        }
-
-        //Si el usuario es un director disfrazado de otro usuario bloquea los add
-        if(this.getKeyToken("estatus")!=undefined) {
-          this.renderer.setStyle(this.fabend.nativeElement,'display','none');
-          this.renderer.setStyle(this.fabstart.nativeElement,'display','none');
         }
       }
 
@@ -1167,18 +1045,6 @@ this.pillMenu.animacion();
     }
 
     async Salir() {
-      //Busca si se existe un sesion del director iniciada
-      const jwt_temp = localStorage.getItem('USER_INFO_TEMP');
-  
-      if(jwt_temp != null)
-      {
-          localStorage.clear();
-          localStorage.setItem('USER_INFO',jwt_temp);
-          this.storage.clear().then(() => {
-            this.router.navigate(['home-director']);
-          });
-          return;
-      }
 
       const alert = await this.alertController.create({
         header: 'LBS Plus Demo',
@@ -1271,7 +1137,7 @@ this.pillMenu.animacion();
   public test(){	
     //temporal: variable e if temporal; cuando se inicia la aplicaion hace dos veces click	
   
-    if (this.numeroclicks>=2 && !this.estadoArriba){	
+    if (this.numeroclicks>=2){	
       setTimeout(() => {	
         this.divArriba(); 	
       }, 200);	
@@ -1281,11 +1147,10 @@ this.pillMenu.animacion();
   }
 
   divArriba(){	
-    	
-
+    /*console.log("this.estadoArriba")	
+    console.log(this.estadoArriba)	*/
   if(this.estadoArriba===false){	
-    console.log("divArriba")
-    this.swipeUp2 = true;
+    this.swipeUp = true;
     this.animacion(false, true);
     this.div2.nativeElement.click();
     this.estadoArriba = true;
@@ -1296,7 +1161,6 @@ this.pillMenu.animacion();
   }
  }
  divAbajo(){	
-  console.log("divAbajo")
   this.gesture.enable(true);	
 
   this.gesture.enable(true);
@@ -1314,7 +1178,7 @@ this.pillMenu.animacion();
  }
 
     public checkCodePush() {
-      return;
+      
       const downloadProgress = (progress) => { 
         console.log(`Downloaded ${progress.receivedBytes} of ${progress.totalBytes}`); 
       }
@@ -1394,6 +1258,60 @@ this.pillMenu.animacion();
         return true;
       else
         return false;
+    }
+    
+    public verEscolaridades() {
+      console.log("verEscolaridades");
+      
+      
+      let gruposComponent;
+      let escolaridadComponent = this.createComponent(EscolaridadComponent);
+      this.subscribeEscolaridad(escolaridadComponent);
+    }
+
+    public createComponent(component: any){
+      const factory = this.resolver.resolveComponentFactory(component);
+      let componentRef = this.container.createComponent(factory);
+      componentRef.location.nativeElement.style = `width:100%`;
+
+      return componentRef;
+    }
+
+    public subscribeEscolaridad(component: any) {
+      component.instance.detail.subscribe(data => {
+        component.destroy();
+        let gruposComponent = this.createComponent(GruposComponent);
+        this.subscribeGrupos(gruposComponent,data);
+      });
+    }
+
+    public subscribeGrupos(component: any,data: any) {
+      component.instance.data = data;
+
+      component.instance.detail.subscribe(dataGrupos => {
+        //index es la escolaridad tambien
+        dataGrupos.index = data.index;
+        dataGrupos.escolaridad = data.escolaridad;
+        component.destroy();
+        let alumnosComponent = this.createComponent(AlumnosComponent);
+        this.subscribeAlumnos(alumnosComponent,dataGrupos);
+      });
+
+      component.instance.backPage.subscribe(() => {
+        component.destroy(); 
+        let escolaridadComponent = this.createComponent(EscolaridadComponent);
+        this.subscribeEscolaridad(escolaridadComponent);
+      });
+    }
+
+    public subscribeAlumnos(component: any,data: any) {
+      component.instance.data = data;
+
+      component.instance.backPage.subscribe(dataBack => {
+        component.destroy(); 
+        let gruposComponent = this.createComponent(GruposComponent);
+        this.subscribeGrupos(gruposComponent,dataBack);
+      });
     }
 
 }

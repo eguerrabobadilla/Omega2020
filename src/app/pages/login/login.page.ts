@@ -41,7 +41,10 @@ export class LoginPage implements OnInit {
 
       this.webSocket.initSocket();
 
-      this.router.navigate(['home']);
+      if(this.getKeyToken("tipo")=="Director")
+        this.router.navigate(['home-director']);
+      else
+        this.router.navigate(['home']);
 
       await this.loadingController.dismiss();
 
@@ -59,6 +62,20 @@ export class LoginPage implements OnInit {
     
         await alert.present();
     }
+  }
+
+  getKeyToken(key: string): string {
+
+    const jwt = localStorage.getItem('USER_INFO');
+
+    const jwtData = jwt.split('.')[1];
+    // let decodedJwtJsonData = window.atob(jwtData);
+    const decodedJwtJsonData = decodeURIComponent(escape(window.atob(jwtData)));
+    const decodedJwtData = JSON.parse(decodedJwtJsonData);
+
+    const value = decodedJwtData[key];
+
+    return value;
   }
 
 }
