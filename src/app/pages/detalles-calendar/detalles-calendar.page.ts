@@ -72,7 +72,7 @@ export class DetallesCalendarPage implements OnInit {
 
     const alertTerminado = await this.alertCtrl.create({
       header: 'Tema creado con éxito',
-      message: '¿Está seguro de eliminar el evento?',
+      message: '¿Está seguro de ELIMINAR el evento?',
       buttons: [
         {
           text: 'No', handler: () =>  {
