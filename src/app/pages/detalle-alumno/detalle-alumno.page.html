@@ -13,7 +13,7 @@
 <ion-content>
   <ion-card class="ion-no-border" style="text-align: initial;" mode="ios">
     <ion-card-content>
-        <form [formGroup]="FrmItem" (ngSubmit)="crearNoticia()">
+        <form [formGroup]="FrmItem">
             <ion-grid>
                 <ion-row>
                     <ion-input hidden type="text" formControlName="Id" name="Id"></ion-input>
@@ -22,7 +22,7 @@
                             <ion-label color="light" position="floating" style="opacity: 0.6;">Nombre</ion-label>
                             <ion-input type="text" formControlName="Nombre" name="Nombre" readonly></ion-input>
                         </ion-item>
-                        <div *ngIf="!FrmItem.controls.Nombre.valid && (FrmItem.controls.Nombre.dirty || submitAttempt)">
+                        <div *ngIf="!FrmItem.controls.Nombre.valid && (FrmItem.controls.Nombre.dirty)">
                             <p class="text-error">Por favor ingresa un Nombre.</p>
                         </div>
                     </ion-col>
@@ -31,7 +31,7 @@
                           <ion-label color="light" position="floating" style="opacity: 0.6;">Apellido Paterno</ion-label>
                           <ion-input type="text" formControlName="ApellidoPaterno" name="ApellidoPaterno" readonly></ion-input>
                       </ion-item>
-                      <div *ngIf="!FrmItem.controls.ApellidoPaterno.valid && (FrmItem.controls.ApellidoPaterno.dirty || submitAttempt)">
+                      <div *ngIf="!FrmItem.controls.ApellidoPaterno.valid && (FrmItem.controls.ApellidoPaterno.dirty)">
                           <p class="text-error">Por favor ingresa un Apellido Paterno.</p>
                       </div>
                     </ion-col>
@@ -40,7 +40,7 @@
                           <ion-label color="light" position="floating" style="opacity: 0.6;">Apellido Materno</ion-label>
                           <ion-input type="text" formControlName="ApellidoMaterno" name="ApellidoMaterno" readonly></ion-input>
                       </ion-item>
-                      <div *ngIf="!FrmItem.controls.ApellidoMaterno.valid && (FrmItem.controls.ApellidoMaterno.dirty || submitAttempt)">
+                      <div *ngIf="!FrmItem.controls.ApellidoMaterno.valid && (FrmItem.controls.ApellidoMaterno.dirty)">
                           <p class="text-error">Por favor ingresa un Apellido Materno.</p>
                       </div>
                     </ion-col>
@@ -49,7 +49,7 @@
                           <ion-label color="light" position="floating" style="opacity: 0.6;">Escolaridad</ion-label>
                           <ion-input type="text" formControlName="Escolaridad" name="Escolaridad" readonly></ion-input>
                       </ion-item>
-                      <div *ngIf="!FrmItem.controls.Escolaridad.valid && (FrmItem.controls.Escolaridad.dirty || submitAttempt)">
+                      <div *ngIf="!FrmItem.controls.Escolaridad.valid && (FrmItem.controls.Escolaridad.dirty)">
                           <p class="text-error">Por favor ingresa una Escolaridad.</p>
                       </div>
                     </ion-col>
@@ -58,7 +58,7 @@
                           <ion-label color="light" position="floating" style="opacity: 0.6;">Grupo</ion-label>
                           <ion-input type="text" formControlName="Grupo" name="Grupo" readonly></ion-input>
                       </ion-item>
-                      <div *ngIf="!FrmItem.controls.Grupo.valid && (FrmItem.controls.Grupo.dirty || submitAttempt)">
+                      <div *ngIf="!FrmItem.controls.Grupo.valid && (FrmItem.controls.Grupo.dirty)">
                           <p class="text-error">Por favor ingresa un Grupo.</p>
                       </div>
                     </ion-col>
@@ -67,7 +67,7 @@
                           <ion-label color="light" position="floating" style="opacity: 0.6;">Usuario</ion-label>
                           <ion-input type="text" formControlName="Usuario" name="Usuario" readonly></ion-input>
                       </ion-item>
-                      <div *ngIf="!FrmItem.controls.Usuario.valid && (FrmItem.controls.Usuario.dirty || submitAttempt)">
+                      <div *ngIf="!FrmItem.controls.Usuario.valid && (FrmItem.controls.Usuario.dirty)">
                           <p class="text-error">Por favor ingresa un Usuario.</p>
                       </div>
                     </ion-col>
@@ -76,7 +76,7 @@
                           <ion-label color="light" position="floating" style="opacity: 0.6;">Password</ion-label>
                           <ion-input type="text" formControlName="Password" name="Password" readonly></ion-input>
                       </ion-item>
-                      <div *ngIf="!FrmItem.controls.Password.valid && (FrmItem.controls.Password.dirty || submitAttempt)">
+                      <div *ngIf="!FrmItem.controls.Password.valid && (FrmItem.controls.Password.dirty)">
                           <p class="text-error">Por favor ingresa un Usuario.</p>
                       </div>
                     </ion-col>
