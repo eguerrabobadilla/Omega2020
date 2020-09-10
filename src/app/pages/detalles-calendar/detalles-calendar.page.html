@@ -24,10 +24,10 @@
             {{item.Descripcion}}
         </ion-card-content>
 
-        <ion-item class="ion-no-border" lines="none">
+        <ion-item *ngIf="item.Tipo!='Noticias'" class="ion-no-border" lines="none">
             <ion-label><b>Grupo:</b> {{item.Grado}}{{item.Grupo}} {{item.Escolaridad}}</ion-label>
         </ion-item>
-        <ion-item class="ion-no-border" lines="none">
+        <ion-item *ngIf="item.Tipo!='Noticias'" class="ion-no-border" lines="none">
             <ion-label><b>Materia:</b> {{item.Materia.Nombre}}</ion-label>
         </ion-item>
     </ion-card>
