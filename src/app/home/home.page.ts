@@ -620,7 +620,8 @@ this.pillMenu.animacion();
 
 
       if (index === 1) {
-        this.tabs = ['Todos', 'Inglés'  , 'Español', 'Código'];
+        //this.tabs = ['Todos', 'Inglés'  , 'Español', 'Código'];
+        this.tabs = ['Todos', 'Inglés'  , 'Español'];
 
       } else if (index === 2) {
         this.tabs = ['Tareas', 'Foro', 'Recursos', 'Evidencias'];
@@ -742,7 +743,7 @@ this.pillMenu.animacion();
 
       this.iconos = ['book-outline', 'pencil', 'people-outline', 'person-outline', 'hammer-outline'];
       this.headersText = ['Books', 'Tasks', 'Community', 'Account', 'Support'];
-      this.tabs = ['Todos', 'Inglés'  , 'Español', 'Código'];
+      this.tabs = ['Todos', 'Inglés'  , 'Español'];
 
 
       this.gesture = this.gestureCtrl.create({
