@@ -71,7 +71,7 @@ export class DetallesCalendarPage implements OnInit {
     console.log(this.item);
 
     const alertTerminado = await this.alertCtrl.create({
-      header: 'Tema creado con éxito',
+      header: 'ELIMINAR',
       message: '¿Está seguro de ELIMINAR el evento?',
       buttons: [
         {
@@ -82,7 +82,7 @@ export class DetallesCalendarPage implements OnInit {
         {
           text: 'Si', handler: async () => {
             const loading = await this.loadingController.create({
-              message: 'Guardando...'
+              message: 'ELiminando...'
             });
         
             await loading.present();
