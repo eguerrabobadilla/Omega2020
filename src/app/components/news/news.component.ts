@@ -23,6 +23,7 @@ export class NewsComponent implements OnInit {
 
     this.apiNoticias.get().subscribe(data =>{
       this.LstNoticias = data;
+      console.log(this.LstNoticias);
       //console.log('this.LstNoticias yeah');
       //console.log(this.LstNoticias);
     });
