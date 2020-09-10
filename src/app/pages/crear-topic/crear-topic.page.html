@@ -15,6 +15,7 @@
           <form [formGroup]="FrmItem" (ngSubmit)="crearNoticia()">
               <ion-grid>
                   <ion-row>
+                    <ion-input hidden type="text" formControlName="Id" name="Id"></ion-input>
                     <ion-col size="12">
                         <ion-item button (click)="openPickerGrupos()" detail="false">
                             <ion-label color="light" position="floating">Grupo</ion-label>
@@ -58,7 +59,7 @@
                   </ion-row>
                   <ion-row>
                       <ion-col size="12">
-                          <ion-button expand="full" type="submit" block style="margin: 5% 0">Crear Tema</ion-button>
+                          <ion-button expand="full" type="submit" block style="margin: 5% 0">{{titulo}}</ion-button>
                       </ion-col>
                   </ion-row>
               </ion-grid>

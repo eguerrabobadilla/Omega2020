@@ -1,6 +1,6 @@
-import { Component, OnInit, ChangeDetectorRef, Renderer2,ViewChild,ElementRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, Renderer2,ViewChild,ElementRef,Input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ModalController, AlertController, PickerController,IonInput } from '@ionic/angular';
+import { ModalController, AlertController, PickerController,IonInput, LoadingController } from '@ionic/angular';
 import { ChatService } from 'src/app/api/chat.service';
 import { MateriasService } from 'src/app/api/materias.service';
 import { TemasService } from 'src/app/api/temas.service';
@@ -18,18 +18,25 @@ export class CrearTopicPage implements OnInit {
   public FrmItem: FormGroup;
   public  texto_adjuntar_portada: string = 'Adjuntar Tema';
   public submitAttempt: boolean = false;
-  private item: any;
+  //private item: any;
   private files: any;
   grupos: any[] = [];
   materias: any[] = [];
   gradoSeleccionado: any;
   grupoSeleccionado: any;
   MateriaSeleccionada: any;
+  titulo: any;
+  evento: any;
+  loading: any;
+
+  @Input() item;
 
   constructor(private modalCtrl: ModalController,private formBuilder: FormBuilder,private cd:ChangeDetectorRef,
               private alertCtrl: AlertController,private pickerController: PickerController,private renderer: Renderer2,
-              private apiChat: ChatService,private apiMaterias: MateriasService,private apiTemas: TemasService) { 
+              private apiChat: ChatService,private apiMaterias: MateriasService,private apiTemas: TemasService,
+              public loadingController: LoadingController) { 
           this.FrmItem = formBuilder.group({
+            Id:   [0, Validators.compose([Validators.required])],
             Grupo:   ['', Validators.compose([Validators.required])],
             MateriaId:   ['', Validators.compose([Validators.required])],
             Titulo: ['', Validators.compose([Validators.required])],
@@ -41,8 +48,34 @@ export class CrearTopicPage implements OnInit {
 
   }
 
+  ionViewWillEnter() {
+    if(this.item != undefined) {
+
+      //El recursoId sale de la tabla calendario
+      this.apiTemas.get(this.item.RecursoId).subscribe(data => {
+        this.FrmItem.patchValue(data);
+      
+        this.gradoSeleccionado = this.item.Grado;
+        this.grupoSeleccionado = this.item.Grupo;
+        this.txtGradoGrupo.value = this.item.Grado + ' / ' + this.item.Grupo;
+  
+        this.txtMateria.value = this.item.Materia.Nombre;
+        this.MateriaSeleccionada = this.item.MateriaId;
+  
+        this.titulo = 'Modificar Tema';
+      });
+    } else {
+      this.titulo = 'Crear Tema';
+    }
+  }
+
   async crearNoticia() {
     this.submitAttempt = true;
+
+    const loading = await this.loadingController.create({
+      message: 'Guardando...'
+    });
+
 
     if (!this.FrmItem.valid) {
 
@@ -57,31 +90,54 @@ export class CrearTopicPage implements OnInit {
       return;
     }
 
-    console.log(this.FrmItem.value);
+    await loading.present();
+
+    //console.log(this.FrmItem.value);
     this.item = this.FrmItem.value;
     this.item.MateriaId= this.MateriaSeleccionada;
     this.item.Grado = this.gradoSeleccionado;
     this.item.Grupo = this.grupoSeleccionado;
 
 
-    const temasWS = await this.apiTemas.save(this.item).toPromise();
+    //const temasWS = await this.apiTemas.save(this.item).toPromise();9
+    if(this.item.Id == 0)
+      await await this.apiTemas.save(this.item).toPromise();
+    else
+      this.evento = await this.apiTemas.update(this.item).toPromise();
+
+    //console.log(this.evento);
 
     this.submitAttempt = false;
 
-    const alertTerminado = await this.alertCtrl.create({
-      header: 'Tema creado con éxito',
-      message: 'Se creó el recurso ' + this.FrmItem.get('Titulo').value + ', ¿desea crear otro tema?',
-      buttons: [
-        {
-           text: 'No', handler: () =>  this.modalCtrl.dismiss()
-        },
-        {
-          text: 'Crear otro', handler: () => this.FrmItem.reset()
-        }
-      ]
-    });
+    this.loadingController.dismiss();
 
-    await alertTerminado.present();
+    if(this.item.Id == 0) {
+      const alertTerminado = await this.alertCtrl.create({
+        header: 'Tema creado con éxito',
+        message: 'Se creó el recurso ' + this.FrmItem.get('Titulo').value + ', ¿desea crear otro tema?',
+        buttons: [
+          {
+            text: 'No', handler: () =>  this.modalCtrl.dismiss()
+          },
+          {
+            text: 'Crear otro', handler: () => this.FrmItem.reset()
+          }
+        ]
+      });
+
+      await alertTerminado.present();
+    } else {
+      const alertTerminado = await this.alertCtrl.create({
+        header: 'Tema modoficado con éxito',
+        message: 'Se modifico el Tema ' + this.FrmItem.get('Titulo').value,
+        buttons: [
+          {
+            text: 'Continuar', handler: () =>  this.modalCtrl.dismiss(this.evento)
+          }
+        ]
+      });
+      await alertTerminado.present();
+    }
   }
 
   async openPickerGrupos() {

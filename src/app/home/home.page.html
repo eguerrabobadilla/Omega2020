@@ -192,9 +192,9 @@ top: 0;" mode="ios">
                 <app-codes (librosDescargados)="librosDescargados($event)" *ngIf="codigoVisible"></app-codes>
                 <app-books [librosIN]="libros | filter : 'Espanol' : 'Idioma'" *ngIf="!codigoVisible"> </app-books>
             </ion-slide>
-            <ion-slide>
+            <!--<ion-slide>
                 <app-codes (librosDescargados)="librosDescargados($event)"></app-codes>
-            </ion-slide>
+            </ion-slide>-->
         </ion-slides>
 
         <ion-slides #slideDown [options]="slideOptsdos" (ionSlideTouchEnd)="ionSlideTouchEnd(slideUp,slideDown)" *ngIf="selectSeccion == 2" style="min-height: 72.6vh;">

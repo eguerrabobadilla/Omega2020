@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, Input, ViewEncapsulation } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { ModalController, LoadingController } from '@ionic/angular';
 import { mobiscroll, MbscCalendarOptions, MbscEventcalendarOptions,MbscCalendar,MbscEventcalendar } from '@mobiscroll/angular';
 import { HttpClient } from '@angular/common/http';
 import { DetallesCalendarPage } from '../detalles-calendar/detalles-calendar.page';
@@ -23,9 +23,10 @@ mobiscroll.settings = {
 export class CalendarEventsPage implements OnInit {
   @Input() item;
   @ViewChild('mobi',{static: false}) mobi: MbscEventcalendar; 
+  banderaEdito: boolean=false;
 
   constructor(private modalCtrl: ModalController, private http: HttpClient,private modalCrl: ModalController,
-              private apiCalendario: CalendarioService ) { }
+              private apiCalendario: CalendarioService,public loadingController: LoadingController) { }
 
 
   events: Array < any > ;
@@ -50,7 +51,6 @@ export class CalendarEventsPage implements OnInit {
     },
     onEventSelect: (event, inst) => {
       // tslint:disable-next-line: semicolon
-
      
       this.abrirDetalleCalendario(event.event);
    },
@@ -74,24 +74,40 @@ export class CalendarEventsPage implements OnInit {
 };
 
   ngOnInit() {
+    //console.log(this.item);
+    this.cargar();
+  }
 
-  const strDate1 = `${this.item.date.getFullYear().toString().padStart(2, "0")}
+  async cargar() {
+
+    const loading = await this.loadingController.create({
+      message: 'Cargando...'
+    });
+
+    await loading.present();
+
+    const strDate1 = `${this.item.date.getFullYear().toString().padStart(2, "0")}
                   -${(this.item.date.getMonth()+1).toString().padStart(2, "0")}
                   -${this.item.date.getDate().toString().padStart(2, "0")}`;
 
-  this.apiCalendario.getCalendarioFecha(strDate1).subscribe(data => {
-    //console.log(data);
-    this.events = data;
-  });
-
+    this.apiCalendario.getCalendarioFecha(strDate1).subscribe(data => {
+      //console.log(data);
+      this.events = data;
+      this.loadingController.dismiss();
+    });
   }
   
   closeModal() {
-    this.modalCtrl.dismiss();
+    if(this.banderaEdito==true)
+      this.modalCtrl.dismiss({
+        banderaEdito : this.banderaEdito
+      });
+    else
+      this.modalCtrl.dismiss();
+    
   }
 
   async abrirDetalleCalendario(item) {
-
     const modal = await this.modalCrl.create({
       component: DetallesCalendarPage,
       // cssClass: 'my-custom-modal-css',
@@ -103,6 +119,13 @@ export class CalendarEventsPage implements OnInit {
     });
 
     await modal.present();
+
+    modal.onDidDismiss().then( async (data) => {
+      if(data.data != undefined) {
+        this.cargar();
+        this.banderaEdito=true;
+      }
+    });
 
   }
 
