@@ -1,18 +1,32 @@
-<ion-virtual-scroll  [items]="LstNoticias" approxItemHeight="320px">
-    <ion-card style="text-align: initial;border-radius: 13px;" class="ion-activatable ripple-parent" mode="ios" *virtualItem="let item; let itemBounds = bounds;" (click)="openDetail($event,item)">
-        <ion-ripple-effect></ion-ripple-effect>
-        <img src="https://www.alfalbs.app/ApiOmega/images/{{item.Image}}"/>
-        <!-- <ion-card-header>-->
-        <ion-card-header style="padding-top: 0;">
-            <ion-item style="z-index: -1;--padding-start: 0;" lines="none">
-                <ion-avatar slot="start" style="height: 23px;width: 23px;margin: 0;">
-                    <img src="assets/img/unnamed.png">
-                </ion-avatar>
-                <ion-label style="font-size: 13px;padding-left: 8px;">Colegio Inglés</ion-label>
-            </ion-item>
+<!--<ion-virtual-scroll  [items]="LstNoticias" approxItemHeight="320px">-->
+<!--<ion-list>-->
+    <!--<ion-card style="text-align: initial;border-radius: 13px;" class="ion-activatable ripple-parent" mode="ios" *virtualItem="let item; let itemBounds = bounds;" (click)="openDetail($event,item)">-->
 
-            <ion-card-title>{{ item.Titulo }}</ion-card-title>
-        </ion-card-header>
-        <ion-card-content>{{ item.DescripcionCorta }}</ion-card-content>
-    </ion-card>
-</ion-virtual-scroll>
+<ion-grid fixed>
+    <ion-row class="ion-no-padding">
+        <ion-col *ngFor="let item of LstNoticias" size="12" size-lg="4" size-md="6" size-sm="6" size-xs="12" class="ion-no-padding">
+            <ion-card style="text-align: initial;border-radius: 13px;" class="ion-activatable ripple-parent" mode="ios"  (click)="openDetail($event,item)">
+                <ion-ripple-effect></ion-ripple-effect>
+                <div style="width: 100%;height:150px;overflow: hidden;">
+                    <img src="https://www.alfalbs.app/ApiOmega/images/{{item.Image}}" style="object-fit: cover;width: 100%;"/>
+                </div>
+                <!-- <ion-card-header>-->
+                <ion-card-header style="padding-top: 0;">
+                    <ion-item style="z-index: -1;--padding-start: 0;" lines="none">
+                        <ion-avatar slot="start" style="height: 23px;width: 23px;margin: 0;">
+                            <ion-img src="assets/img/unnamed.png"></ion-img>
+                        </ion-avatar>
+                        <ion-label style="font-size: 13px;padding-left: 8px;">Colegio Inglés</ion-label>
+                    </ion-item>
+
+                    <ion-card-title style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
+                        {{ item.Titulo }}
+                    </ion-card-title>
+                </ion-card-header>
+                <ion-card-content class="fade" style="min-height: 3.6em;">{{ item.DescripcionCorta }}</ion-card-content>-
+            </ion-card>
+        </ion-col>
+    </ion-row>
+</ion-grid>
+<!--</ion-list>-->
+<!--</ion-virtual-scroll>-->

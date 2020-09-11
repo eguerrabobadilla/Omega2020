@@ -82,7 +82,7 @@ export class DetallesCalendarPage implements OnInit {
         {
           text: 'Si', handler: async () => {
             const loading = await this.loadingController.create({
-              message: 'ELiminando...'
+              message: 'Eliminando...'
             });
         
             await loading.present();

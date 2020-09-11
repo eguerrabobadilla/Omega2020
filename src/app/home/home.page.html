@@ -150,7 +150,7 @@ top: 0;" mode="ios">
 
 </div>
 
-<ion-fab mode="ios" vertical="bottom" horizontal="start" slot="fixed" style="margin-left: 23vw;">
+<ion-fab mode="ios" vertical="bottom" horizontal="center" slot="fixed" style="transform: translateX(-57px);/*margin-left: 23vw;*/">
     <ion-fab-button #fabstart (click)="openPicker()" mode="ios" size="small" style="--box-shadow:none ;--background-activated: #F4315D;  --background: #F4315D;width: 46px;
     height:46px;transform: scale(0);display: none;">
         <ion-icon name="list-outline"></ion-icon>
@@ -162,7 +162,7 @@ top: 0;" mode="ios">
         <ion-icon name="chevron-down-outline" style="font-size: 24px;"></ion-icon>
     </ion-fab-button>
 </ion-fab>
-<ion-fab mode="ios" vertical="bottom" horizontal="end" slot="fixed" style="margin-right: 21vw;">
+<ion-fab mode="ios" vertical="bottom" horizontal="center" slot="fixed" style="transform: translateX(57px);/*margin-right: 21vw;*/">
     <ion-fab-button #fabend (click)="nuevoRecurso($event)" mode="ios" size="small" style="--box-shadow:none ;--background-activated: #F4315D;  --background: #F4315D;width: 46px;
     height:46px;transform: scale(0);display: none;">
         <ion-icon name="add-outline"></ion-icon>
@@ -208,7 +208,7 @@ top: 0;" mode="ios">
                         <ion-card-content>{{ item.descripcion }}</ion-card-content>
                     </ion-card>
                 </ion-virtual-scroll>-->
-                <ion-list>
+                <ion-list style="width: 100%;">
                     <ion-card style="text-align: initial;" class="ion-activatable ripple-parent" mode="ios" *ngFor="let item of LstTareas" (click)="openDetail($event,item)">
                         <ion-ripple-effect></ion-ripple-effect>
                         <ion-card-header>
