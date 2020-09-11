@@ -1,0 +1,16 @@
+.fade {
+    position: relative;
+    /*height: 3.6em; /* exactly three lines */
+    height: 1.2em; /* exactly two lines */
+}
+
+.fade:after {
+    content: "";
+    text-align: right;
+    position: absolute;
+    bottom: -6px;
+    right: 0;
+    width: 80%;
+    height: 1.2em;
+    background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1) 50%);
+}
