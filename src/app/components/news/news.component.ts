@@ -35,7 +35,7 @@ export class NewsComponent implements OnInit {
         cssClass: 'my-custom-modal-css',
         mode: 'ios',
         backdropDismiss: true,
-        showBackdrop: true,
+        showBackdrop: false,
         componentProps: {item}
       });
       

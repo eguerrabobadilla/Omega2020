@@ -26,8 +26,8 @@
             <ion-card-subtitle style="padding-top: 10px;">{{ item.FechaPublicacion | date:'fullDate' }}</ion-card-subtitle>
 
         </ion-card-header>
-        <ion-card-content>
-            {{item.Descripcion}}
+        <ion-card-content [innerHTML]="item.Descripcion">
+            
         </ion-card-content>
         <!--<ion-card-content>
           <ion-img [src]="item.image"></ion-img>

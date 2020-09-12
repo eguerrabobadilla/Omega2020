@@ -151,8 +151,10 @@ export class CrearTopicPage implements OnInit {
           {
             text: 'Aceptar',
             handler:  (value: any) => {
+              console.log(value);
                 const gradoGrupo = value.Grupos.value.split("/");
-                this.txtGradoGrupo.value = gradoGrupo[0] + ' / ' + gradoGrupo[1];
+                //this.txtGradoGrupo.value = gradoGrupo[0] + ' / ' + gradoGrupo[1];
+                this.txtGradoGrupo.value = value.Grupos.text
                 this.gradoSeleccionado = gradoGrupo[0];
                 this.grupoSeleccionado = gradoGrupo[1];
 
@@ -177,11 +179,12 @@ export class CrearTopicPage implements OnInit {
 
     
     this.grupos = await this.apiChat.getGruposMaestros().toPromise();
+    //console.log(this.grupos);
     
     //options.push({text: 'Todas' , value: 0});
 
     this.grupos.forEach(x => {
-      options.push({text: x.Grado + x.Grupo , value: x.Grado+'/'+x.Grupo});
+      options.push({text: x.Grado + x.Grupo + ' ' + x.Escolaridad, value: x.Grado+'/'+x.Grupo});
     });
 
     return options;

@@ -1102,9 +1102,10 @@ this.pillMenu.animacion();
         await modal.present();
 
         modal.onDidDismiss().then( async (data) => {
-          this.cargandoAnimation();
+          await this.cargandoAnimation();
 
           this.apiCalendario.getCalendario().subscribe(data => {
+            
             this.events = data;
             this.loadingController.dismiss();
           });
@@ -1141,7 +1142,7 @@ this.pillMenu.animacion();
 
     async cargandoAnimation() {
       this.loading = await this.loadingController.create({
-        message: 'Guardando...'
+        message: 'Cargando...'
       });
 
       await this.loading.present();

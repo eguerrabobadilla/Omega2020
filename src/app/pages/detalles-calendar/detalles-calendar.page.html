@@ -20,8 +20,8 @@
                 <ion-card-title>{{item.Tipo}} <span *ngIf="item.Titulo !=''">- {{item.Titulo}}</span></ion-card-title>
             </ion-toolbar>
         </ion-card-header>
-        <ion-card-content>
-            {{item.Descripcion}}
+        <ion-card-content [innerHTML]="item.Descripcion">
+            
         </ion-card-content>
 
         <ion-item *ngIf="item.Tipo!='Noticias'" class="ion-no-border" lines="none">
