@@ -5,6 +5,7 @@ import { File,FileEntry } from '@ionic-native/file/ngx';
 import { FileOpener } from '@ionic-native/file-opener/ngx';
 import { Plugins } from '@capacitor/core';
 import { apiBase } from '../api/apiBase';
+import { async } from '@angular/core/testing';
 
 @Component({
   selector: 'app-detalle',
@@ -30,37 +31,39 @@ export class DetallePage implements OnInit {
   }
 
   async openFile(item) {
-    this.loading =await this.loadingController.create({
-      //cssClass: 'my-custom-class',
-      message: 'Cargando...',
-      duration: 120000
-    });
-
-    this.loading.present();
+    setTimeout(async () => {
+        this.loading =await this.loadingController.create({
+          //cssClass: 'my-custom-class',
+          message: 'Cargando...',
+          duration: 120000
+        });
     
-    console.log(item);
-    const { Browser } = Plugins;
-    if (this.platform.is('cordova')) {
-      this.download(`${this.api.url}/images/${item.Image}`);
-      //this.download(`http://192.168.0.16:5000/resources/${item.PathRecurso}`);
-    } else {
-      await Browser.open({ url: `${this.api.url}/images/${item.Image}` });
-      this.loadingController.dismiss();
-    }
+        this.loading.present();
+        
+        console.log(item);
+        const { Browser } = Plugins;
+        if (this.platform.is('cordova')) {
+          this.download(`${this.api.url}/images/${item.Image}`);
+          //this.download(`http://192.168.0.16:5000/resources/${item.PathRecurso}`);
+        } else {
+          await Browser.open({ url: `${this.api.url}/images/${item.Image}` });
+          this.loadingController.dismiss();
+        }
+    }, 300);
   }
 
   download(url) {
     const fileTransfer: FileTransferObject = this.transfer.create();
-    const extension = url.split('.').pop(); 
+    const extension = url.split('/').pop(); 
 
-    fileTransfer.download(url, this.file.dataDirectory + 'file.'+ extension).then((entry) => {
+    fileTransfer.download(url, this.file.dataDirectory + this.item.Image).then((entry) => {
         console.log('download complete: ' + entry.toURL());
 
         let files = entry as FileEntry;
         files.file(success =>{
             //success.name;
 
-            this.fileOpener.open(this.file.dataDirectory + 'file.' + extension , success.type)
+            this.fileOpener.open(this.file.dataDirectory + this.item.Image, success.type)
             .then(() => { console.log('File is opened'); this.loading.dismiss(); })
             .catch(e => console.log('Error opening file', e));
         });
@@ -68,6 +71,7 @@ export class DetallePage implements OnInit {
       // handle error
       console.log(error);
       alert(error.exception);
+      this.loadingController.dismiss();
     });
 
   }

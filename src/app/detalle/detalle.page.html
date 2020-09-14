@@ -25,11 +25,18 @@
         <ion-card-content>
             {{item.Descripcion}}
         </ion-card-content>
-        <ion-item class="ion-no-border">
-            <ion-chip outline color="dark" (click)="openFile(item)" *ngIf=" item.Image != undefined">
+        <ion-item class="ion-no-border" lines="none">
+            <!--<ion-chip outline color="dark" (click)="openFile(item)" *ngIf=" item.Image != undefined">
                 <ion-icon name="attach-outline"></ion-icon>
                 <ion-label>{{item.Image}}</ion-label>
-            </ion-chip>
+            </ion-chip>-->
+            <div class="ion-activatable ripple-parent" (click)="openFile(item)" style="width: 100%;height:200px;overflow: hidden;" *ngIf=" item.Image != undefined">
+                <!--<ion-img [src]="item.image"></ion-img>-->
+                <ion-icon name="eye" class="downLoadSytle"></ion-icon>
+                <app-circle-progress [item]="item" style="position: absolute;z-index: 3;top: 52%;left: 50%;margin-right: -50%;transform: translate(-50%, -50%);"></app-circle-progress>
+                <img src="https://www.alfalbs.app/ApiOmega/images/{{item.Image}}" style="object-fit: cover;width: 100%;"/>
+                <ion-ripple-effect></ion-ripple-effect>
+            </div>
         </ion-item>
         <ion-item class="ion-no-border" lines="none">
             <ion-label><b>Grupo:</b> {{item.Grado}}{{item.Grupo}} {{item.Escolaridad}}</ion-label>
@@ -39,14 +46,6 @@
         </ion-item>
         <!--<ion-card-content>
             <ion-img [src]="item.image"></ion-img>
-        </ion-card-content>-->
-        <!--<ion-card-content>
-            Lorem iuis aute irure dol cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est Lorem iuis aute irure dol cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est Lorem iuis aute irure dol cupidatat non proident,
-            sunt in culpa qui officia deserunt mollit anim id est Lorem iuis aute irure dol cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
-        </ion-card-content>
-        <ion-card-content>
-            Lorem iuis aute irure dol cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est Lorem iuis aute irure dol cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est Lorem iuis aute irure dol cupidatat non proident,
-            sunt in culpa qui officia deserunt mollit anim id est Lorem iuis aute irure dol cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
         </ion-card-content>-->
     </ion-card>
 </ion-content>
