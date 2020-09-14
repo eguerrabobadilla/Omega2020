@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { PickerController, Platform, ModalController,LoadingController } from '@ionic/angular';
+import { PickerController, Platform, ModalController,LoadingController, AlertController } from '@ionic/angular';
 import { RecursosService } from '../../api/recursos.service';
 import { Plugins } from '@capacitor/core';
 import { File,FileEntry } from '@ionic-native/file/ngx';
@@ -25,7 +25,8 @@ export class ListResourceComponent implements OnInit {
   loading: any;
 
   constructor(private pickerController: PickerController, private apiRecursos: RecursosService, private transfer: FileTransfer,
-              private file: File, private platform: Platform,private fileOpener: FileOpener,private api: apiBase,private modalCrl: ModalController,public loadingController: LoadingController) {
+              private file: File, private platform: Platform,private fileOpener: FileOpener,private api: apiBase,
+              private modalCrl: ModalController,public loadingController: LoadingController, private alertCtrl: AlertController) {
   }
 
 ngOnInit() {
@@ -44,21 +45,33 @@ ngOnInit() {
       this.LstRecursos = data;
     });
   }
+  async cargandoAnimation() {
+    this.loading = await this.loadingController.create({
+      message: 'Cargando...'
+    });
 
-  public cargar(materiaId) {
+    await this.loading.present();
+  }
+
+  public async cargar(materiaId) {
     this.materiaId = materiaId;
     console.log(this.materiaId);
     //0=todas 1=Filtrado por materia
+
+    await this.cargandoAnimation();
+
     if(materiaId==0){
       this.apiRecursos.getByMonth(this.mesActual).subscribe(data => {
         //console.log(data);
         this.LstRecursos = data;
+        this.loadingController.dismiss();
       });
     }
     else{
       this.apiRecursos.getRecursosMaterias(materiaId,this.mesActual).subscribe(data => {
         //console.log(data);
         this.LstRecursos = data;
+        this.loadingController.dismiss();
       });
     }
   }
@@ -204,11 +217,52 @@ ngOnInit() {
     });
   }
 
+  public async eliminar(event,item) {
+    event.stopPropagation();
+    //console.log(item);
+
+    const alertTerminado = await this.alertCtrl.create({
+      header: 'ELIMINAR',
+      message: '¿Está seguro de ELIMINAR el recurso?',
+      buttons: [
+        {
+          text: 'No', handler: () =>  {
+            return;
+          }
+        },
+        {
+          text: 'Si', handler: async () => {
+            const loading = await this.loadingController.create({
+              message: 'Eliminando...'
+            });
+        
+            await loading.present();
+        
+            await this.apiRecursos.delete(item.Id).toPromise();
+
+            this.LstRecursos = this.LstRecursos.filter(obj => obj !== item);
+
+            await this.loadingController.dismiss();
+
+            //this.alertCtrl.dismiss();
+          }
+        }
+      ]
+    });
+
+    alertTerminado.present();
+  }
+
   public permisoEditar() {
     if(this.getKeyToken('tipo')=='Profesor')
       return true;
     else
       return false;
+  }
+
+  public datosClase(item){
+     let html = `<br><br><b>Grupo:</b> ${item.Grado} ${item.Grupo} ${item.Escolaridad }<br><b>Materia:</b> ${item.Materia.Nombre }`;
+     return html;
   }
 
   getKeyToken(key: string): string {
