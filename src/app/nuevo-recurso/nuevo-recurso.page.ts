@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectorRef,ViewChild,ElementRef,Input } from '@angular/core';
-import { ModalController, AlertController, PickerController,IonInput } from '@ionic/angular';
+import { ModalController, AlertController, PickerController,IonInput, LoadingController } from '@ionic/angular';
 import { FormGroup, FormBuilder,Validators  } from '@angular/forms';
 import { TareasService } from '../api/tareas.service';
 import { ChatService } from '../api/chat.service';
@@ -32,7 +32,7 @@ export class NuevoRecursoPage implements OnInit {
 
   constructor(private modalCtrl: ModalController,private formBuilder: FormBuilder, private cd:ChangeDetectorRef,
               private alertCtrl: AlertController,private apiTareas: TareasService,private apiChat: ChatService,
-              private apiMaterias: MateriasService,private pickerController: PickerController) {
+              private apiMaterias: MateriasService,private pickerController: PickerController,public loadingController: LoadingController) {
     this.FrmItem = formBuilder.group({
       Id:   [0, Validators.compose([Validators.required])],
       Grupo:   ['', Validators.compose([Validators.required])],
@@ -75,6 +75,10 @@ export class NuevoRecursoPage implements OnInit {
   async crearNoticia() {
     this.submitAttempt = true;
 
+    const loading = await this.loadingController.create({
+      message: 'Guardando...'
+    });
+
     if (!this.FrmItem.valid) {
 
       const alert = await  this.alertCtrl.create({
@@ -87,6 +91,8 @@ export class NuevoRecursoPage implements OnInit {
       await alert.present();
       return;
     }
+
+    await loading.present();
 
     
     this.item = this.FrmItem.value;
@@ -116,6 +122,8 @@ export class NuevoRecursoPage implements OnInit {
     }
 
     this.submitAttempt = false;
+
+    this.loadingController.dismiss();
 
     if(this.item.Id == 0) {
       const alertTerminado = await this.alertCtrl.create({

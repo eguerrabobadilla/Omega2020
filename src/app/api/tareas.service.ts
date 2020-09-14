@@ -30,4 +30,8 @@ export class TareasService  extends apiBase {
     return this.http.get<any[]>(`${this.url}/${this.Ws}/materia/${id}`);
   }
 
+  delete(Id: any) {
+    return this.http.delete(`${this.url}/${this.Ws}/${Id}`);
+  }
+
 }

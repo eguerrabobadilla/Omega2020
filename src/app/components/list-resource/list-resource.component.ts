@@ -146,6 +146,7 @@ ngOnInit() {
       //this.download(`http://192.168.0.16:5000/resources/${item.PathRecurso}`);
     } else {
       await Browser.open({ url: `${this.api.url}/resources/${item.PathRecurso}` });
+      this.loadingController.dismiss();
     }
   }
 

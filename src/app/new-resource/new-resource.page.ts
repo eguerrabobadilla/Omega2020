@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectorRef, ViewChild, ElementRef, Renderer2,Input} from '@angular/core';
-import { ModalController, AlertController, PickerController, IonInput } from '@ionic/angular';
+import { ModalController, AlertController, PickerController, IonInput, LoadingController } from '@ionic/angular';
 import { FormGroup, FormBuilder,Validators  } from '@angular/forms';
 import { RecursosService } from '../api/recursos.service';
 import { ChatService } from '../api/chat.service';
@@ -37,7 +37,7 @@ export class NewResourcePage implements OnInit {
 
   constructor(private modalCtrl: ModalController, private formBuilder: FormBuilder, private cd:ChangeDetectorRef,
               private alertCtrl: AlertController, private apiRecursos: RecursosService, private pickerController: PickerController,
-              private renderer: Renderer2,private apiChat: ChatService,private apiMaterias: MateriasService) {
+              private renderer: Renderer2,private apiChat: ChatService,private apiMaterias: MateriasService,public loadingController: LoadingController) {
     this.FrmItem = formBuilder.group({
       Id:   [0, Validators.compose([Validators.required])],
       Grupo:   ['', Validators.compose([Validators.required])],
@@ -165,6 +165,10 @@ export class NewResourcePage implements OnInit {
   async crearNoticia() {
     this.submitAttempt = true;
 
+    const loading = await this.loadingController.create({
+      message: 'Guardando...'
+    });
+
     if (!this.FrmItem.valid) {
 
       const alert = await  this.alertCtrl.create({
@@ -177,6 +181,8 @@ export class NewResourcePage implements OnInit {
       await alert.present();
       return;
     }
+
+    await loading.present();
 
     console.log(this.FrmItem.value);
     this.item = this.FrmItem.value;
@@ -203,6 +209,7 @@ export class NewResourcePage implements OnInit {
 
     this.submitAttempt = false;
 
+    this.loadingController.dismiss();
 
     if(this.item.Id == 0) {
       const alertTerminado = await this.alertCtrl.create({

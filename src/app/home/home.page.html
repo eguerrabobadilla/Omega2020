@@ -212,11 +212,19 @@ top: 0;" mode="ios">
                     <ion-card style="text-align: initial;" class="ion-activatable ripple-parent" mode="ios" *ngFor="let item of LstTareas" (click)="openDetail($event,item)">
                         <ion-ripple-effect></ion-ripple-effect>
                         <ion-card-header>
-                            <ion-card-title>{{ item.Titulo }}</ion-card-title>
+                            <ion-card-title style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{ item.Titulo }}</ion-card-title>
                         </ion-card-header>
-                        <ion-card-content>{{ item.Descripcion }}</ion-card-content>
-                        <ion-item>
-                            <ion-button *ngIf="permisoEditar()" fill="outline" slot="end" (click)="editaTarea($event,item)">Editar</ion-button>
+                        <ion-card-content>
+                            {{ item.Descripcion }}
+                            <br><br>
+                            <b>Grupo:</b> {{ item.Grado }}{{ item.Grupo }} {{ item.Escolaridad }}
+                            <br>
+                            <b>Materia:</b> {{ item.Materia.Nombre }}
+                        </ion-card-content>
+                        <ion-item *ngIf="permisoEditar()">
+                            <ion-label>{{item.FechaPublicacion | date:'mediumDate'}}</ion-label>
+                            <ion-button style="transform: translateX(12px);" fill="outline" slot="end" (click)="eliminar($event,item)">Borrar</ion-button>
+                            <ion-button fill="outline" slot="end" (click)="editaTarea($event,item)">Editar</ion-button>
                         </ion-item>
                     </ion-card>
                 </ion-list>
