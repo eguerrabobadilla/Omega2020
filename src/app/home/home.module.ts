@@ -88,6 +88,6 @@ import { GlobalModule } from '../modules/GoblaModule';
   ],
   declarations: [ HomePage, BooksComponent, CodesComponent, ListComponent, 
     ChatsComponent, FilterPipe, ListResourceComponent, NewsComponent, ForumComponent,GraphicsComponent,CalendarComponent
-    , EvidencesComponent,SubjectsComponent, QuestionsComponent, ContactComponent, PerfilComponent,LinkifyPipe,CircleProgressComponent]
+    , EvidencesComponent,SubjectsComponent, QuestionsComponent, ContactComponent, PerfilComponent,LinkifyPipe]
 })
 export class HomePageModule {}

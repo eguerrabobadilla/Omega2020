@@ -73,7 +73,7 @@ right: 0px;" mode="ios">
     </ion-fab-button>
 </ion-fab>
 
-<div #div2 (click)="clickDiv()" class="edu1" style="transform: translateY(60vh)">
+<div #div2 class="edu1" style="transform: translateY(60vh)">
     <div (click)="test()" style="position: -webkit-sticky;top: 0;font-size: 29px;z-index: 999;position: sticky;">    
         <app-pill-menu #pillMenu [itemsMenu]="tabs" [selectOption]="selectOption" (indicatorChanged)="segmentChanged($event)" (clickFab)="nuevoRecurso($event)" (clickFiltro)="openPicker()"></app-pill-menu>
     </div>
@@ -87,6 +87,7 @@ right: 0px;" mode="ios">
                 <div style="display: none" #processContainer></div>
             </ion-slide>
             <ion-slide>
+                <div style="display: none" #processContainer2></div>
                 <!--<app-codes (librosDescargados)="librosDescargados($event)" *ngIf="codigoVisible"></app-codes>
                 <app-books [librosIN]="libros | filter : 'Ingles' : 'Idioma'" *ngIf="!codigoVisible"> </app-books>-->
             </ion-slide>

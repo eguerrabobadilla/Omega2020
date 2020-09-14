@@ -35,6 +35,8 @@ import { PerfilComponent } from 'src/app/components/perfil/perfil.component';
 import { EscolaridadComponent } from 'src/app/components/escolaridad/escolaridad.component';
 import { GruposComponent } from 'src/app/components/grupos/grupos.component';
 import { AlumnosComponent } from 'src/app/components/alumnos/alumnos.component';
+import { EscolaridadDocentesComponent } from 'src/app/components/escolaridad-docentes/escolaridad-docentes.component';
+import { GruposDocentesComponent } from 'src/app/components/grupos-docentes/grupos-docentes.component';
 
 
 
@@ -68,30 +70,6 @@ export class HomeDirectorPage {
   hayConexion= true;
   numeroclicks=0;
 
-  settings: MbscCalendarOptions = {
-    theme: 'mobiscroll',
-    display: 'inline',
-    themeVariant: 'light',
-    calendarScroll: 'vertical',
-    months: 1,
-  onShow: (event, inst) => {
-    setTimeout(() => { //temporal
-      this.activarEventoTouch();
-      this.apiCalendario.getCalendario().subscribe(data => {
-        console.log("getCalendario");
-        this.events = data;
-      });
-    }, 100);
-
-
-  },
-  onDayChange : (event, inst) => {
-   this.abrirCalendarioSemana(event);
-
-  }
-  
-};
-
   @ViewChild('slideDown', {static: false}) slideDown: IonSlides;
   @ViewChild('slideUp', {static: false}) slideUp: IonSlides;
   @ViewChild('slideVertical', {static: true}) slideVertical: IonSlides;
@@ -122,7 +100,8 @@ export class HomeDirectorPage {
   @ViewChild('avatarUser', {read: ElementRef, static: false}) avatarUser: ElementRef;
   @ViewChild('mobi', {static: false}) mobi: MbscCalendar; 
 
-  @ViewChild('processContainer', { read: ViewContainerRef,static: false }) container;
+  @ViewChild('processContainer', { read: ViewContainerRef,static: false }) container; //Container Alumnos
+  @ViewChild('processContainer2', { read: ViewContainerRef,static: false }) containerDocentes;
 
   public fabVisible: boolean = true;
   public fabVisibleFilters: boolean = false;
@@ -568,7 +547,6 @@ this.pillMenu.animacion();
 
      // set status bar to white
       this.statusBar.backgroundColorByHexString('#FFFFFF');
-      this.llenar_libros();
       this.selectSeccion = 1;
     //  this.statusBar.hide();
 
@@ -723,6 +701,7 @@ this.pillMenu.animacion();
 
       setTimeout(() => {
         this.verEscolaridades();
+        this.verEscolaridadesDocente();
       }, 100);
 
       this.gesture = this.gestureCtrl.create({
@@ -797,212 +776,6 @@ this.pillMenu.animacion();
       // this.slideUp.slideTo(event.detail.value);
     } 
 
-    async openPicker() {
-      const picker = await this.pickerController.create({
-          mode : 'ios',
-          buttons: [
-            {
-              text: 'Cancelar',
-              role: 'cancel'
-            },
-            {
-              text: 'Aceptar',
-              handler:  (value: any) => {
-                  console.log()
-                  const itemOption =this.pillMenu.itemsMenu[this.pillMenu.indexAnterior];
-                  if(itemOption==="Tareas") {
-                    if (value.Meses.value === 0) {
-                      this.apiTareas.get().subscribe(data => {
-                        this.LstTareas = data;
-                      });
-                    } else {
-                        this.apiTareas.getTareasMaterias(value.Meses.value).subscribe(data => {
-                        this.LstTareas = data;
-                      });
-                    }
-                  }
-                  else if(itemOption==="Foro") {
-                    if (value.Meses.value === 0) {
-                        this.forumComponent.cargar(0);
-                    } else {
-                       this.forumComponent.cargar(value.Meses.value);
-                    } 
-                  }
-                  else if(itemOption==="Recursos") {
-                    if (value.Meses.value === 0) {
-                        this.resourceComponent.cargar(0);
-                    } else {
-                       this.resourceComponent.cargar(value.Meses.value);
-                    } 
-                  }
-              }
-            }
-          ],
-          columns: [{
-              name: 'Meses',
-              options: await this.getColumnOptionsMeses()
-            }
-          ]
-      });
-      
-      picker.present();
-  
-    }
-
-    async getColumnOptionsMeses() {
-      const options = [];
-
-
-      this.materias = await this.apiMaterias.get().toPromise();
-    
-      options.push({text: 'Todas' , value: 0});
-
-      this.materias.forEach(x => {
-        options.push({text: x.Nombre , value: x.Id});
-      });
-  
-      return options;
-    }
-
-    async nuevoRecurso(itemOption) {
-      
-      itemOption = this.pillMenu.itemsMenu[this.pillMenu.indexAnterior];
-
-      if (itemOption === 'Tareas') {
-          const modal = await this.modalCrl.create({
-            component: NuevoRecursoPage,
-            // cssClass: 'my-custom-modal-css',
-            cssClass: 'my-custom-modal-css-capturas',
-            showBackdrop: false,
-            mode: 'ios',
-            backdropDismiss: true
-          });
-
-          await modal.present();
-
-          modal.onDidDismiss().then( async (data) => {
-              this.LstTareas = await this.apiTareas.get().toPromise();
-          });
-      } else if (itemOption === 'Mensajes') {
-        const modal = await this.modalCrl.create({
-          component: CrearChatPage,
-          // cssClass: 'my-custom-modal-css',
-          cssClass: 'my-custom-modal-css-capturas',
-          showBackdrop: false,
-          mode: 'ios',
-          backdropDismiss: true
-        });
-
-        await modal.present();
-
-        modal.onDidDismiss().then( async (data) => {
-          // this.forumComponent.cargar();
-        });
-
-      } else if (itemOption === 'Recursos') {
-        const modal = await this.modalCrl.create({
-          component: NewResourcePage,
-          // cssClass: 'my-custom-modal-css',
-          cssClass: 'my-custom-modal-css-capturas',
-          showBackdrop: false,
-          mode: 'ios',
-          backdropDismiss: true
-        });
-
-        await modal.present();
-
-        modal.onDidDismiss().then( async (data) => {
-          this.resourceComponent.cargar(0);
-        });
-
-      } else if (itemOption === 'Noticias') {
-        const modal = await this.modalCrl.create({
-          component: CrearNewsPage,
-          // cssClass: 'my-custom-modal-css',
-          cssClass: 'my-custom-modal-css-capturas',
-          showBackdrop: false,
-          mode: 'ios',
-          backdropDismiss: true
-        });
-
-        await modal.present();
-
-        modal.onDidDismiss().then( async (data) => {
-          this.newsComponent.cargar();
-        });
-
-      }else if (itemOption === 'Foro') {
-        const modal = await this.modalCrl.create({
-          component: CrearForumPage,
-          // cssClass: 'my-custom-modal-css',
-          cssClass: 'my-custom-modal-css-capturas',
-          showBackdrop: false,
-          mode: 'ios',
-          backdropDismiss: true
-        });
-
-        await modal.present();
-
-        modal.onDidDismiss().then( async (data) => {
-          this.forumComponent.cargar(0);
-        });
-
-      }
-      else if (itemOption === 'Evidencias') {
-        const modal = await this.modalCrl.create({
-          component: CrearEvidencePage,
-          // cssClass: 'my-custom-modal-css',
-          cssClass: 'my-custom-modal-css-capturas',
-          showBackdrop: false,
-          mode: 'ios',
-          backdropDismiss: true
-        });
-
-        await modal.present();
-
-        modal.onDidDismiss().then( async (data) => {
-          this.evidenceComponent.cargar();
-        });
-
-      }
-      else if (itemOption === 'Calendario') {
-        const modal = await this.modalCrl.create({
-          component: CrearTopicPage,
-          // cssClass: 'my-custom-modal-css',
-          cssClass: 'my-custom-modal-css-capturas',
-          showBackdrop: false,
-          mode: 'ios',
-          backdropDismiss: true
-        });
-
-        await modal.present();
-
-        modal.onDidDismiss().then( async (data) => {
-          this.apiCalendario.getCalendario().subscribe(data => {
-            this.events = data;
-            });
-        });
-      }
-    }
-
-   async abrirCalendarioSemana(item){
-
-      const modal = await this.modalCrl.create({
-        component: CalendarEventsPage,
-        // cssClass: 'my-custom-modal-css',
-        cssClass: 'my-custom-modal-css-capturas',
-        showBackdrop: false,
-        mode: 'ios',
-        backdropDismiss: true,
-        componentProps: {item}
-      });
-
-      await modal.present();
-
-    }
-
-
-
     async ionSlideTouchEnd(slideSelect: IonSlides, notSlideSlect: IonSlides) {
       // notSlideSlect.slideTo(await slideSelect.getActiveIndex());
       //console.log(await (await this.slideDown.getActiveIndex()).toString());
@@ -1010,38 +783,6 @@ this.pillMenu.animacion();
       //const itemOption = this.pillMenu.itemsMenu[index];
 
       this.pillMenu.nextSegment(index);
-    }
-
-    async openDetail(event: Event, item) {
-    const modal = await this.modalCrl.create({
-        component: DetallePage,
-        cssClass: 'my-custom-modal-css',
-        mode: 'ios',
-        backdropDismiss: true,
-        componentProps: {item}
-      });
-    return await modal.present();
-    }
-
-
-    clickDiv() {
-     // console.log("Click Div")
-
-    }
-
-    clickHoyCalendario(){
-      console.log("clickHoyCalendario");
-      this.mobi.instance.navigate(new Date(Date.now()), true);
-    }
-
-    clickCalendario(){
-
-    }
-
-    ////// logica libros quitar cuando se cuando se cambie a componente
-    llenar_libros() {
-
-      // this.libros = this.booksService.getPost();
     }
 
     async Salir() {
@@ -1160,22 +901,22 @@ this.pillMenu.animacion();
    this.checkCodePush();
   }
  }
- divAbajo(){	
-  this.gesture.enable(true);	
+  divAbajo(){	
+      this.gesture.enable(true);	
 
-  this.gesture.enable(true);
-  //console.log("entro al if de swipeDown")
-//   if (this.pocisionInicial === true) { causante del problema que no bajaba cuando haciamos swipe para abajo
-//     this.gesture.enable(false);
-//    this.renderer.setStyle(this.div2.nativeElement, 'touch-action', 'none');
-  this.div2.nativeElement.click();
-  this.scrollenable = false;
- 
-  this.animacion(true, true); 
-//    this.scrollenable = false;
-  this.estadoArriba = false;
-// }
- }
+      this.gesture.enable(true);
+      //console.log("entro al if de swipeDown")
+    //   if (this.pocisionInicial === true) { causante del problema que no bajaba cuando haciamos swipe para abajo
+    //     this.gesture.enable(false);
+    //    this.renderer.setStyle(this.div2.nativeElement, 'touch-action', 'none');
+      this.div2.nativeElement.click();
+      this.scrollenable = false;
+    
+      this.animacion(true, true); 
+    //    this.scrollenable = false;
+      this.estadoArriba = false;
+    // }
+    }
 
     public checkCodePush() {
       
@@ -1233,40 +974,11 @@ this.pillMenu.animacion();
       }
     }
 
-    public async editaTarea(event,item){
-      event.stopPropagation();
-      
-      const modal = await this.modalCrl.create({
-        component: NuevoRecursoPage,
-        // cssClass: 'my-custom-modal-css',
-        cssClass: 'my-custom-modal-css-capturas',
-        showBackdrop: false,
-        componentProps: {item},
-        mode: 'ios',
-        backdropDismiss: true
-      });
-
-      await modal.present();
-
-      modal.onDidDismiss().then( async (data) => {
-          this.LstTareas = await this.apiTareas.get().toPromise();
-      });
-    }
-
     public permisoEditar() {
       if(this.getKeyToken('tipo')=='Profesor')
         return true;
       else
         return false;
-    }
-    
-    public verEscolaridades() {
-      console.log("verEscolaridades");
-      
-      
-      let gruposComponent;
-      let escolaridadComponent = this.createComponent(EscolaridadComponent);
-      this.subscribeEscolaridad(escolaridadComponent);
     }
 
     public createComponent(component: any){
@@ -1275,6 +987,24 @@ this.pillMenu.animacion();
       componentRef.location.nativeElement.style = `width:100%`;
 
       return componentRef;
+    }
+
+    public createComponentDocente(component: any){
+      const factory = this.resolver.resolveComponentFactory(component);
+      let componentRef = this.containerDocentes.createComponent(factory);
+      componentRef.location.nativeElement.style = `width:100%`;
+
+      return componentRef;
+    }
+    
+    /************************ Inicia logica alumnos***************************/
+    public verEscolaridades() {
+      console.log("verEscolaridades");
+      
+      
+      let gruposComponent;
+      let escolaridadComponent = this.createComponent(EscolaridadComponent);
+      this.subscribeEscolaridad(escolaridadComponent);
     }
 
     public subscribeEscolaridad(component: any) {
@@ -1313,32 +1043,43 @@ this.pillMenu.animacion();
         this.subscribeGrupos(gruposComponent,dataBack);
       });
     }
+    /************************ Termina logica alumnos***************************/
+    /************************ Inicia logica alumnos***************************/
+    public verEscolaridadesDocente() {
+      console.log("verEscolaridadesDocentes");
+      
+      
+      let gruposComponent;
+      let escolaridadDocenteComponent = this.createComponentDocente(EscolaridadDocentesComponent);
+      this.subscribeEscolaridadDocente(escolaridadDocenteComponent);
+    }
 
+    public subscribeEscolaridadDocente(component: any) {
+      component.instance.detail.subscribe(data => {
+        component.destroy();
+        let gruposComponent = this.createComponentDocente(GruposDocentesComponent);
+        //this.subscribeGruposDocentes(gruposComponent,data);
+      });
+    }
+
+    public subscribeGruposDocentes(component: any,data: any) {
+      component.instance.data = data;
+
+      component.instance.detail.subscribe(dataGrupos => {
+        //index es la escolaridad tambien
+        dataGrupos.index = data.index;
+        dataGrupos.escolaridad = data.escolaridad;
+        component.destroy();
+        let alumnosComponent = this.createComponent(AlumnosComponent);
+        this.subscribeAlumnos(alumnosComponent,dataGrupos);
+      });
+
+      component.instance.backPage.subscribe(() => {
+        component.destroy(); 
+        let escolaridadComponent = this.createComponent(EscolaridadComponent);
+        this.subscribeEscolaridad(escolaridadComponent);
+      });
+    }
+
+    /************************ Termina logica alumnos***************************/
 }
-
-const lorem = 'Lorem iuis aute irure dol cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.';
-
-const images = [
-  'bandit',
-  'batmobile',
-  'blues-brothers',
-  'bueller',
-  'delorean',
-  'eleanor',
-  'general-lee',
-  'ghostbusters',
-  'knight-rider',
-  'mirth-mobile'
-];
-
-function getImgSrc() {
-  const src = 'https://dummyimage.com/600x400/${Math.round( Math.random() * 99999)}/fff.png';
-  // tslint:disable-next-line: no-use-before-declare
-  rotateImg++;
-  if (rotateImg === images.length) {
-    rotateImg = 0;
-  }
-  return src;
-}
-
-let rotateImg = 0;

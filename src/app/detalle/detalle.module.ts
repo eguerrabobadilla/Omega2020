@@ -8,6 +8,7 @@ import { IonicModule } from '@ionic/angular';
 import { DetallePageRoutingModule } from './detalle-routing.module';
 
 import { DetallePage } from './detalle.page';
+import { GlobalModule } from '../modules/GoblaModule';
 
 @NgModule({
   imports: [ 
@@ -15,7 +16,8 @@ import { DetallePage } from './detalle.page';
     CommonModule,
     FormsModule,
     IonicModule,
-    DetallePageRoutingModule
+    DetallePageRoutingModule,
+    GlobalModule
   ],
   declarations: [DetallePage]
 })

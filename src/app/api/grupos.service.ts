@@ -16,4 +16,8 @@ export class GruposService  extends apiBase {
   getGruposEscolaridad(index): Observable<any[]> {
     return this.http.get<any[]>(`${this.url}/${this.Ws}/${index}`);
   }
+
+  getGruposEscolaridadDocentes(index): Observable<any[]> {
+    return this.http.get<any[]>(`${this.url}/${this.Ws}/docentes/${index}`);
+  }
 }

@@ -3,24 +3,20 @@ import { GruposService } from 'src/app/api/grupos.service';
 import { LoadingController } from '@ionic/angular';
 
 @Component({
-  selector: 'app-grupos',
-  templateUrl: './grupos.component.html',
-  styleUrls: ['./grupos.component.scss'],
+  selector: 'app-grupos-docentes',
+  templateUrl: './grupos-docentes.component.html',
+  styleUrls: ['./grupos-docentes.component.scss'],
 })
-export class GruposComponent implements OnInit {
+export class GruposDocentesComponent implements OnInit {
   @Output() detail = new EventEmitter();
   @Output() backPage = new EventEmitter();
   @Input() data;
   LstGrupos: any[] = [];
   loading: any;
 
-  constructor(private apiGrupos: GruposService,public loadingController: LoadingController) {
+  constructor(private apiGrupos: GruposService,public loadingController: LoadingController) { }
 
-  }
-
-  ngOnInit() {
-    console.log(this.data);
-  }
+  ngOnInit() {}
 
   ngAfterViewInit() {
     this.cargar();
@@ -33,7 +29,8 @@ export class GruposComponent implements OnInit {
 
     await loading.present();
 
-    this.apiGrupos.getGruposEscolaridad(this.data.index).subscribe(data =>{
+    this.apiGrupos.getGruposEscolaridadDocentes(this.data.index).subscribe(data =>{
+      console.log(data);
       this.LstGrupos= data;
       this.loadingController.dismiss();
     });

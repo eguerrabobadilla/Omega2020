@@ -52,6 +52,8 @@ import { HomePageModule } from 'src/app/home/home.module';
 import { GlobalModule } from 'src/app/modules/GoblaModule';
 import { DetalleAlumnoPage } from '../detalle-alumno/detalle-alumno.page';
 import { DetalleAlumnoPageModule } from '../detalle-alumno/detalle-alumno.module';
+import { EscolaridadDocentesComponent } from 'src/app/components/escolaridad-docentes/escolaridad-docentes.component';
+import { GruposDocentesComponent } from 'src/app/components/grupos-docentes/grupos-docentes.component';
 
 
 @NgModule({
@@ -71,6 +73,8 @@ import { DetalleAlumnoPageModule } from '../detalle-alumno/detalle-alumno.module
     GruposComponent,
     AlumnosComponent,
     DetalleAlumnoPage,
+    EscolaridadDocentesComponent,
+    GruposDocentesComponent
   ],
   imports: [ 
     MbscModule,  
@@ -97,6 +101,7 @@ import { DetalleAlumnoPageModule } from '../detalle-alumno/detalle-alumno.module
     DetalleAlumnoPageModule,
     GlobalModule,
   ],
-  declarations: [HomeDirectorPage,EscolaridadComponent,GruposComponent,AlumnosComponent]
+  declarations: [HomeDirectorPage,EscolaridadComponent,GruposComponent,AlumnosComponent,
+                  EscolaridadDocentesComponent,GruposDocentesComponent]
 })
 export class HomeDirectorPageModule {}
