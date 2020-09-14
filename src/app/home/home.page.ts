@@ -1005,7 +1005,11 @@ this.pillMenu.animacion();
           await modal.present();
 
           modal.onDidDismiss().then( async (data) => {
+              await this.cargandoAnimation();
+
               this.LstTareas = await this.apiTareas.get().toPromise();
+
+              this.loadingController.dismiss();
           });
       } else if (itemOption === 'Mensajes') {
         const modal = await this.modalCrl.create({
@@ -1407,7 +1411,12 @@ this.pillMenu.animacion();
       await modal.present();
 
       modal.onDidDismiss().then( async (data) => {
+
+          await this.cargandoAnimation();
+        
           this.LstTareas = await this.apiTareas.get().toPromise();
+
+          this.loadingController.dismiss();
       });
     }
 
@@ -1416,6 +1425,43 @@ this.pillMenu.animacion();
         return true;
       else
         return false;
+    }
+
+    //Eliminar tarea
+    public async eliminar(event,item) {
+      event.stopPropagation();
+      console.log(item);
+  
+      const alertTerminado = await this.alertController.create({
+        header: 'ELIMINAR',
+        message: '¿Está seguro de ELIMINAR la tarea?',
+        buttons: [
+          {
+            text: 'No', handler: () =>  {
+              return;
+            }
+          },
+          {
+            text: 'Si', handler: async () => {
+              const loading = await this.loadingController.create({
+                message: 'Eliminando...'
+              });
+          
+              await loading.present();
+          
+              await this.apiTareas.delete(item.Id).toPromise();
+
+              this.LstTareas = this.LstTareas.filter(obj => obj !== item);
+  
+              this.loadingController.dismiss();
+  
+              this.alertController.dismiss();
+            }
+          }
+        ]
+      });
+  
+      alertTerminado.present();
     }
 
 }

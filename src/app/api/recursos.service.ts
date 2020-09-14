@@ -33,4 +33,9 @@ export class RecursosService  extends apiBase {
   getRecursosMaterias(id,mes): Observable<any[]> {
     return this.http.get<any[]>(`${this.url}/${this.Ws}/materia/${id}/${mes}`);
   }
+
+  delete(Id: any) {
+    return this.http.delete(`${this.url}/${this.Ws}/${Id}`);
+  }
+  
 }
