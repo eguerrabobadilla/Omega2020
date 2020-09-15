@@ -224,6 +224,7 @@ ngOnInit() {
     const alertTerminado = await this.alertCtrl.create({
       header: 'ELIMINAR',
       message: '¿Está seguro de ELIMINAR el recurso?',
+      backdropDismiss: false,
       buttons: [
         {
           text: 'No', handler: () =>  {

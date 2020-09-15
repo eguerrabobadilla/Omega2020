@@ -214,6 +214,7 @@ export class NewResourcePage implements OnInit {
     if(this.item.Id == 0) {
       const alertTerminado = await this.alertCtrl.create({
         header: 'Recurso creada con éxito',
+        backdropDismiss: false,
         message: 'Se creó el recurso ' + this.FrmItem.get('Titulo').value + ', ¿desea crear otra tarea?',
         buttons: [
           {
@@ -232,6 +233,7 @@ export class NewResourcePage implements OnInit {
     } else {
       const alertTerminado = await this.alertCtrl.create({
         header: 'Recurso modificado con éxito',
+        backdropDismiss: false,
         message: 'Se modificó el recurso ' + this.FrmItem.get('Titulo').value,
         buttons: [
           {

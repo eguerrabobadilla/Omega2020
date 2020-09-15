@@ -147,6 +147,7 @@ export class CrearEvidencePage implements OnInit {
 
     const alertTerminado = await this.alertCtrl.create({
       header: 'Evidencia creada con éxito',
+      backdropDismiss: false,
       message: 'Se creó la evidencia ' + this.FrmItem.get('Titulo').value + ', ¿desea crear otra evidencia?',
       buttons: [
         {

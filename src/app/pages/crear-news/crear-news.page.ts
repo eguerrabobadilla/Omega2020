@@ -63,6 +63,7 @@ export class CrearNewsPage implements OnInit {
 
     const alertTerminado = await this.alertCtrl.create({
       header: 'Noticia creada con éxito',
+      backdropDismiss: false,
       message: 'Se creó la noticia ' + this.FrmItem.get('Titulo').value + ', ¿desea crear otra notcia?',
       buttons: [
         {
