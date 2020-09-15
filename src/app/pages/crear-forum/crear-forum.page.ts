@@ -120,7 +120,7 @@ export class CrearForumPage implements OnInit {
     } else {
       const alertTerminado = await this.alertCtrl.create({
         header: 'Foro modoficado con éxito',
-        message: 'Se modifico el Foro ' + this.FrmItem.get('Nombre').value,
+        message: 'Se modificó el Foro ' + this.FrmItem.get('Nombre').value,
         buttons: [
           {
             text: 'Continuar', handler: () =>  this.modalCtrl.dismiss()

@@ -37,6 +37,7 @@ import { GruposComponent } from 'src/app/components/grupos/grupos.component';
 import { AlumnosComponent } from 'src/app/components/alumnos/alumnos.component';
 import { EscolaridadDocentesComponent } from 'src/app/components/escolaridad-docentes/escolaridad-docentes.component';
 import { GruposDocentesComponent } from 'src/app/components/grupos-docentes/grupos-docentes.component';
+import { DocentesComponent } from 'src/app/components/docentes/docentes.component';
 
 
 
@@ -1001,7 +1002,6 @@ this.pillMenu.animacion();
     public verEscolaridades() {
       console.log("verEscolaridades");
       
-      
       let gruposComponent;
       let escolaridadComponent = this.createComponent(EscolaridadComponent);
       this.subscribeEscolaridad(escolaridadComponent);
@@ -1048,7 +1048,6 @@ this.pillMenu.animacion();
     public verEscolaridadesDocente() {
       console.log("verEscolaridadesDocentes");
       
-      
       let gruposComponent;
       let escolaridadDocenteComponent = this.createComponentDocente(EscolaridadDocentesComponent);
       this.subscribeEscolaridadDocente(escolaridadDocenteComponent);
@@ -1058,7 +1057,7 @@ this.pillMenu.animacion();
       component.instance.detail.subscribe(data => {
         component.destroy();
         let gruposComponent = this.createComponentDocente(GruposDocentesComponent);
-        //this.subscribeGruposDocentes(gruposComponent,data);
+        this.subscribeGruposDocentes(gruposComponent,data);
       });
     }
 
@@ -1070,14 +1069,24 @@ this.pillMenu.animacion();
         dataGrupos.index = data.index;
         dataGrupos.escolaridad = data.escolaridad;
         component.destroy();
-        let alumnosComponent = this.createComponent(AlumnosComponent);
-        this.subscribeAlumnos(alumnosComponent,dataGrupos);
+        let docentesComponent = this.createComponentDocente(DocentesComponent);
+        this.subscribeAlumnosDocentes(docentesComponent,dataGrupos);
       });
 
       component.instance.backPage.subscribe(() => {
         component.destroy(); 
-        let escolaridadComponent = this.createComponent(EscolaridadComponent);
-        this.subscribeEscolaridad(escolaridadComponent);
+        let escolaridadComponent = this.createComponentDocente(EscolaridadDocentesComponent);
+        this.subscribeEscolaridadDocente(escolaridadComponent);
+      });
+    }
+
+    public subscribeAlumnosDocentes(component: any,data: any) {
+      component.instance.data = data;
+
+      component.instance.backPage.subscribe(dataBack => {
+        component.destroy(); 
+        let gruposComponent = this.createComponentDocente(GruposDocentesComponent);
+        this.subscribeGruposDocentes(gruposComponent,dataBack);
       });
     }
 

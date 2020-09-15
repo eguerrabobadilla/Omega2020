@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 export class DetalleAlumnoPage implements OnInit {
   public FrmItem: FormGroup;
   @Input() item;
+  titulo: any
 
   constructor(private modalCtrl: ModalController,private formBuilder: FormBuilder,private alertCtrl: AlertController,
               private apiLogin: LoginService,private loadingController:LoadingController,private router: Router) { 
@@ -33,6 +34,7 @@ export class DetalleAlumnoPage implements OnInit {
 
   ionViewWillEnter() {
     if(this.item != undefined) {
+      this.titulo = this.item.Tipo=="Alumno" ? "Alumno" : "Docente";
 
       let escolaridad="";
       if(this.item.Escolaridad == 'Elementary School')

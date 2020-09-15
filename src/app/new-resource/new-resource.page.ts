@@ -229,7 +229,7 @@ export class NewResourcePage implements OnInit {
     } else {
       const alertTerminado = await this.alertCtrl.create({
         header: 'Recurso modificado con éxito',
-        message: 'Se modifico el recurso ' + this.FrmItem.get('Titulo').value,
+        message: 'Se modificó el recurso ' + this.FrmItem.get('Titulo').value,
         buttons: [
           {
             text: 'Continuar', handler: () =>  this.modalCtrl.dismiss()

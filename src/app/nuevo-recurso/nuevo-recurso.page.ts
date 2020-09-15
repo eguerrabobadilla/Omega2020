@@ -142,7 +142,7 @@ export class NuevoRecursoPage implements OnInit {
     } else {
       const alertTerminado = await this.alertCtrl.create({
         header: 'Tarea modificada con éxito',
-        message: 'Se modifico la tarea ' + this.FrmItem.get('Titulo').value,
+        message: 'Se modificó la tarea ' + this.FrmItem.get('Titulo').value,
         buttons: [
           {
             text: 'Continuar', handler: () =>  this.modalCtrl.dismiss()
