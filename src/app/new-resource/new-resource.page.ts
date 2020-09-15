@@ -220,7 +220,10 @@ export class NewResourcePage implements OnInit {
              text: 'No', handler: () =>  this.modalCtrl.dismiss()
           },
           {
-            text: 'Crear otro', handler: () => this.FrmItem.reset()
+            text: 'Crear otro', handler: () => { 
+              this.FrmItem.reset() 
+              this.FrmItem.controls['Id'].setValue(0);
+            }
           }
         ]
       });
@@ -229,7 +232,7 @@ export class NewResourcePage implements OnInit {
     } else {
       const alertTerminado = await this.alertCtrl.create({
         header: 'Recurso modificado con éxito',
-        message: 'Se modifico el recurso ' + this.FrmItem.get('Titulo').value,
+        message: 'Se modificó el recurso ' + this.FrmItem.get('Titulo').value,
         buttons: [
           {
             text: 'Continuar', handler: () =>  this.modalCtrl.dismiss()

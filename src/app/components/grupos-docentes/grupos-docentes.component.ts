@@ -30,7 +30,6 @@ export class GruposDocentesComponent implements OnInit {
     await loading.present();
 
     this.apiGrupos.getGruposEscolaridadDocentes(this.data.index).subscribe(data =>{
-      console.log(data);
       this.LstGrupos= data;
       this.loadingController.dismiss();
     });

@@ -120,7 +120,10 @@ export class CrearTopicPage implements OnInit {
             text: 'No', handler: () =>  this.modalCtrl.dismiss()
           },
           {
-            text: 'Crear otro', handler: () => this.FrmItem.reset()
+            text: 'Crear otro', handler: () => { 
+              this.FrmItem.reset();
+              this.FrmItem.controls['Id'].setValue(0);
+            }
           }
         ]
       });
@@ -129,7 +132,7 @@ export class CrearTopicPage implements OnInit {
     } else {
       const alertTerminado = await this.alertCtrl.create({
         header: 'Tema modoficado con éxito',
-        message: 'Se modifico el Tema ' + this.FrmItem.get('Titulo').value,
+        message: 'Se modificó el Tema ' + this.FrmItem.get('Titulo').value,
         buttons: [
           {
             text: 'Continuar', handler: () =>  this.modalCtrl.dismiss(this.evento)
