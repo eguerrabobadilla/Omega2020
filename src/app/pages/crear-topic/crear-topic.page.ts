@@ -120,7 +120,10 @@ export class CrearTopicPage implements OnInit {
             text: 'No', handler: () =>  this.modalCtrl.dismiss()
           },
           {
-            text: 'Crear otro', handler: () => this.FrmItem.reset()
+            text: 'Crear otro', handler: () => { 
+              this.FrmItem.reset();
+              this.FrmItem.controls['Id'].setValue(0);
+            }
           }
         ]
       });

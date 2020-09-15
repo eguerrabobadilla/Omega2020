@@ -50,7 +50,6 @@ export class NuevoRecursoPage implements OnInit {
   }
 
   ionViewWillEnter() {
-    console.log(this.item);
     if(this.item != undefined) {
       this.FrmItem.patchValue(this.item);
       
@@ -79,6 +78,7 @@ export class NuevoRecursoPage implements OnInit {
       message: 'Guardando...'
     });
 
+    console.log(this.FrmItem);
     if (!this.FrmItem.valid) {
 
       const alert = await  this.alertCtrl.create({
@@ -134,7 +134,10 @@ export class NuevoRecursoPage implements OnInit {
             text: 'No', handler: () =>  this.modalCtrl.dismiss()
           },
           {
-            text: 'Crear otra', handler: () => this.FrmItem.reset()
+            text: 'Crear otra', handler: () =>{ 
+              this.FrmItem.reset(); 
+              this.FrmItem.controls['Id'].setValue(0);
+            }
           }
         ]
       });
