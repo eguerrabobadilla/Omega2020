@@ -114,6 +114,7 @@ export class CrearTopicPage implements OnInit {
     if(this.item.Id == 0) {
       const alertTerminado = await this.alertCtrl.create({
         header: 'Tema creado con éxito',
+        backdropDismiss: false,
         message: 'Se creó el recurso ' + this.FrmItem.get('Titulo').value + ', ¿desea crear otro tema?',
         buttons: [
           {
@@ -132,6 +133,7 @@ export class CrearTopicPage implements OnInit {
     } else {
       const alertTerminado = await this.alertCtrl.create({
         header: 'Tema modoficado con éxito',
+        backdropDismiss: false,
         message: 'Se modificó el Tema ' + this.FrmItem.get('Titulo').value,
         buttons: [
           {

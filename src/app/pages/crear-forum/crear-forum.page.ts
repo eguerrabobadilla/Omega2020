@@ -105,6 +105,7 @@ export class CrearForumPage implements OnInit {
     if(this.item.Id == 0) {
         const alertTerminado = await this.alertCtrl.create({
           header: 'Foro creado con éxito',
+          backdropDismiss: false,
           message: 'Se creó el foro ' + this.FrmItem.get('Nombre').value + ', ¿desea crear otro foro?',
           buttons: [
             {
@@ -119,7 +120,8 @@ export class CrearForumPage implements OnInit {
         await alertTerminado.present();
     } else {
       const alertTerminado = await this.alertCtrl.create({
-        header: 'Foro modoficado con éxito',
+        header: 'Foro modificado con éxito',
+        backdropDismiss: false,
         message: 'Se modificó el Foro ' + this.FrmItem.get('Nombre').value,
         buttons: [
           {
