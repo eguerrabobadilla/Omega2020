@@ -55,19 +55,19 @@ right: 0px;" mode="ios">
 </div>
 
 <ion-fab mode="ios" vertical="bottom" horizontal="start" slot="fixed" style="margin-left: 23vw;">
-    <ion-fab-button #fabstart (click)="openPicker()" mode="ios" size="small" style="--box-shadow:none ;--background-activated: #F4315D;  --background: #F4315D;width: 46px;
+    <ion-fab-button #fabstart mode="ios" size="small" style="--box-shadow:none ;--background-activated: #F4315D;  --background: #F4315D;width: 46px;
     height:46px;transform: scale(0);display: none;">
         <ion-icon name="list-outline"></ion-icon>
     </ion-fab-button>
 </ion-fab>
 <ion-fab mode="ios" vertical="bottom" horizontal="center" slot="fixed">
-    <ion-fab-button (click)="mover()" mode="ios" size="small" #fab style="--box-shadow:none ;--background-activated: #F4315D;  --background: #F4315D;width: 46px;
+    <ion-fab-button  mode="ios" size="small" #fab style="--box-shadow:none ;--background-activated: #F4315D;  --background: #F4315D;width: 46px;
     height:46px;transform: scale(0);">
         <ion-icon name="chevron-down-outline" style="font-size: 24px;"></ion-icon>
     </ion-fab-button>
 </ion-fab>
 <ion-fab mode="ios" vertical="bottom" horizontal="end" slot="fixed" style="margin-right: 21vw;">
-    <ion-fab-button #fabend (click)="nuevoRecurso($event)" mode="ios" size="small" style="--box-shadow:none ;--background-activated: #F4315D;  --background: #F4315D;width: 46px;
+    <ion-fab-button #fabend  mode="ios" size="small" style="--box-shadow:none ;--background-activated: #F4315D;  --background: #F4315D;width: 46px;
     height:46px;transform: scale(0);display: none;">
         <ion-icon name="add-outline"></ion-icon>
     </ion-fab-button>
@@ -75,7 +75,7 @@ right: 0px;" mode="ios">
 
 <div #div2 class="edu1" style="transform: translateY(60vh)">
     <div (click)="test()" style="position: -webkit-sticky;top: 0;font-size: 29px;z-index: 999;position: sticky;">    
-        <app-pill-menu #pillMenu [itemsMenu]="tabs" [selectOption]="selectOption" (indicatorChanged)="segmentChanged($event)" (clickFab)="nuevoRecurso($event)" (clickFiltro)="openPicker()"></app-pill-menu>
+        <app-pill-menu #pillMenu [itemsMenu]="tabs" [selectOption]="selectOption" (indicatorChanged)="segmentChanged($event)"></app-pill-menu>
     </div>
     <ion-header [translucent]="false" mode="ios"></ion-header>
     <ion-content #IonContentScroll [scrollY]="scrollenable" style="--background: #ffffff;">
