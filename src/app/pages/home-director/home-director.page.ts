@@ -146,103 +146,92 @@ export class HomeDirectorPage {
 
   async animacion(isRegreso: boolean, click: boolean) {
 
-   // if (this.primeraVez) {this.primeraVez = false; return; }
-   
-
-    let animation2: Animation;
-    let animation4: Animation;
-    let animation3: Animation;
-    let animation5: Animation;
-    let animation6: Animation;
-    let animation7: Animation;
-    let animation8: Animation;
-    let animation9: Animation;
-    let animation10: Animation;
-
-    if (!isRegreso) {
-   //   this.gesture.enable(false);
-    //  this.gesture2.enable(false);
-    //  this.renderer.setStyle(this.contentref2.nativeElement, 'z-index', `-1`);
-
-      setTimeout(() => {
-       // this.renderer.addClass(this.toolbar2.nativeElement, 'inverted-border-radius');
-        this.pillMenu.aplicarSombra();
-      }, 70);
-   //   this.renderer.addClass(this.foot.nativeElement, 'sombraFooter');
-      if (this.estadoArriba) { return; }
-
-    // el ion tool bar le vamos hacer un trnasfor en el eje de la Y  hasta transform: translateY(-5vh);
-      animation2 = this.animationCtrl.create('identifier2-a')
-    .addElement(this.toolbar.nativeElement)
+    // if (this.primeraVez) {this.primeraVez = false; return; }
+    
+ 
+     let animation2: Animation;
+     let animation4: Animation;
+     let animation3: Animation;
+     let animation5: Animation;
+     let animation6: Animation;
+     let animation7: Animation;
+     let animation8: Animation;
+     let animation9: Animation;
+     let animation10: Animation;
+ 
+     if (!isRegreso) {
+    //   this.gesture.enable(false);
+     //  this.gesture2.enable(false);
+     //  this.renderer.setStyle(this.contentref2.nativeElement, 'z-index', `-1`);
+ 
+       setTimeout(() => {
+        // this.renderer.addClass(this.toolbar2.nativeElement, 'inverted-border-radius');
+         this.pillMenu.aplicarSombra();
+       }, 70);
+    //   this.renderer.addClass(this.foot.nativeElement, 'sombraFooter');
+       if (this.estadoArriba) { return; }
+ 
+     // el ion tool bar le vamos hacer un trnasfor en el eje de la Y  hasta transform: translateY(-5vh);
+       animation2 = this.animationCtrl.create('identifier2-a')
+     .addElement(this.toolbar.nativeElement)
+     .duration(300)
+     .delay(50)
+     .easing('cubic-bezier(0,.70,.45,1)') // muy lento al ultimo -> cubic-bezier(0,.70,.45,1)
+     .fromTo('transform', 'translateY(0)', 'translateY(-3vh)');
+ 
+       animation4 = this.animationCtrl.create('identifier4-a')
+     .addElement(this.toolbar1.nativeElement)
+     .beforeAddClass('colortoolbarUP')
+     .duration(300)
+     .delay(50)
+     .easing('cubic-bezier(0,.70,.45,1)') // muy lento al ultimo -> cubic-bezier(0,.70,.45,1)
+     .fromTo('transform', 'translateY(0)', 'translateY(-7vh)');
+ 
+       animation3 = this.animationCtrl.create('identifier3-a')
+     .addElement(this.text.nativeElement)
+     .duration(300)
+     .delay(50)
+     .easing('cubic-bezier(0,.70,.45,1)') // muy lento al ultimo -> cubic-bezier(0,.70,.45,1)
+     // tslint:disable-next-line: max-line-length
+     .fromTo('transform', ' perspective(1px) translateY(0) translateZ(0) translateX(0) scale(1)', 'perspective(1px) translateY(2.01vh) translateZ(0) translateX(-8.01vw) scale(0.8)');
+ 
+   /*    animation5 = this.animationCtrl.create('my-animation-identifier3')
+     .addElement(this.footer.nativeElement)
+     .afterAddClass('zindexFooterin')
+     .duration(240)
+     .delay(0)
+     .fromTo('opacity', ' 1', '0');*/
+ 
+ 
+ 
+ 
+       animation6 = this.animationCtrl.create('identifier6-a')
+     .addElement(this.fab.nativeElement)
+     .afterAddClass('zindexFooter')
+     .duration(700)
+     .delay(20)
+     .easing('cubic-bezier(.61,1,.88,1)')
+    .keyframes([{ offset: 0, transform: 'scale(0)' },
+    { offset: 0.2, transform: 'scale(1)' },
+    { offset: 0.5, transform: 'scale(1.3)' },
+    { offset: 1, transform: 'scale(1)' }, ]);
+ 
+       animation7 = this.animationCtrl.create('identifier7-a')
+    .addElement(this.animation7.nativeElement)
     .duration(300)
     .delay(50)
-    .easing('cubic-bezier(0,.70,.45,1)') // muy lento al ultimo -> cubic-bezier(0,.70,.45,1)
-    .fromTo('transform', 'translateY(0)', 'translateY(-3vh)');
-
-      animation4 = this.animationCtrl.create('identifier4-a')
-    .addElement(this.toolbar1.nativeElement)
-    .beforeAddClass('colortoolbarUP')
+    .easing('cubic-bezier(.51,1,.88,1)')
+    .fromTo('transform', 'perspective(1px) translateY(0) translateZ(0) translateX(0) scale(1)', 'perspective(1px) translateY(-20vh) translateZ(0) translateX(-'+ this.tamañoMover() + 'vh) scale(calc(1/2))');
+ 
+       animation8 = this.animationCtrl.create('identifier8-a')
+    .addElement(this.animation8.nativeElement)
     .duration(300)
-    .delay(50)
-    .easing('cubic-bezier(0,.70,.45,1)') // muy lento al ultimo -> cubic-bezier(0,.70,.45,1)
-    .fromTo('transform', 'translateY(0)', 'translateY(-7vh)');
-
-      animation3 = this.animationCtrl.create('identifier3-a')
-    .addElement(this.text.nativeElement)
-    .duration(300)
-    .delay(50)
-    .easing('cubic-bezier(0,.70,.45,1)') // muy lento al ultimo -> cubic-bezier(0,.70,.45,1)
-    // tslint:disable-next-line: max-line-length
-    .fromTo('transform', ' perspective(1px) translateY(0) translateZ(0) translateX(0) scale(1)', 'perspective(1px) translateY(2.01vh) translateZ(0) translateX(-8.01vw) scale(0.8)');
-
-  /*    animation5 = this.animationCtrl.create('my-animation-identifier3')
-    .addElement(this.footer.nativeElement)
-    .afterAddClass('zindexFooterin')
-    .duration(240)
-    .delay(0)
-    .fromTo('opacity', ' 1', '0');*/
-
-
-
-
-      animation6 = this.animationCtrl.create('identifier6-a')
-    .addElement(this.fab.nativeElement)
-    .afterAddClass('zindexFooter')
-    .duration(700)
-    .delay(20)
-    .easing('cubic-bezier(.61,1,.88,1)')
-   .keyframes([{ offset: 0, transform: 'scale(0)' },
-   { offset: 0.2, transform: 'scale(1)' },
-   { offset: 0.5, transform: 'scale(1.3)' },
-   { offset: 1, transform: 'scale(1)' }, ]);
-
-      animation7 = this.animationCtrl.create('identifier7-a')
-   .addElement(this.animation7.nativeElement)
-   .duration(300)
-   .delay(50)
-   .easing('cubic-bezier(.51,1,.88,1)')
-   .fromTo('transform', 'perspective(1px) translateY(0) translateZ(0) translateX(0) scale(1)', 'perspective(1px) translateY(-20vh) translateZ(0) translateX(-'+ this.tamañoMover() + 'vh) scale(calc(1/2))');
-
-      animation8 = this.animationCtrl.create('identifier8-a')
-   .addElement(this.animation8.nativeElement)
-   .duration(300)
-   .delay(40)
-   .easing('cubic-bezier(.51,1,.88,1)')
-   .fromTo('transform', ' translate(0, 0)', 'translate(-2vw, -15.5vh)');
-
-      animation9 = this.animationCtrl.create('identifier9-a')
-       .addElement(this.fabstart.nativeElement)
-       .afterAddClass('zindexFooter')
-       .duration(700)
-       .delay(20)
-       .easing('cubic-bezier(.61,1,.88,1)')
-      .keyframes([{ offset: 0, transform: 'scale(0)' },
-      { offset: 0.2, transform: 'scale(1)' },
-      { offset: 0.5, transform: 'scale(1.3)' },
-      { offset: 1, transform: 'scale(1)' }, ]);
-
-      animation10 = this.animationCtrl.create('identifier10-a')
-        .addElement(this.fabend.nativeElement)
+    .delay(40)
+    .easing('cubic-bezier(.51,1,.88,1)')
+    .fromTo('transform', ' translate(0, 0)', 'translate(-2vw, -15.5vh)');
+ 
+       animation9 = this.animationCtrl.create('identifier9-a')
+        .addElement(this.fabstart.nativeElement)
         .afterAddClass('zindexFooter')
         .duration(700)
         .delay(20)
@@ -251,138 +240,149 @@ export class HomeDirectorPage {
        { offset: 0.2, transform: 'scale(1)' },
        { offset: 0.5, transform: 'scale(1.3)' },
        { offset: 1, transform: 'scale(1)' }, ]);
-
-
-      animation2.play();
-      animation3.play();
-      animation4.play();
-    //  animation5.play();
-      animation6.play();
-      animation7.play();
-      animation8.play();
-      animation9.play();
-      animation10.play();
-
-     // if (click) {
-      this.moveScroll(true);
-    //  this.scrollenable = true;
-      this.animacionBounce(true);
-
-      // }
-      this.estadoArriba = true;
-  } else {
-
-
-    this.moveScroll(false);
-    if (this.estadoArriba === false ) { return; }
-  //  this.renderer.removeClass(this.toolbar2.nativeElement, 'inverted-border-radius');
-  //  this.renderer.removeClass(this.foot.nativeElement, 'sombraFooter');
-    
-    this.pillMenu.quitarSombra();
-    animation2 = this.animationCtrl.create('identifier2-b')
-    .addElement(this.toolbar.nativeElement)
-    .duration(300)
-    .delay(50)
-    .easing('cubic-bezier(0,.70,.45,1)') // muy lento al ultimo -> cubic-bezier(0,.70,.45,1)
-    .fromTo('transform', 'translateY(-3vh)', 'translateY(0)');
-
-    animation4 = this.animationCtrl.create('identifier4-b')
-    .addElement(this.toolbar1.nativeElement)
-    .beforeAddClass('colortoolbarDOWN')
-    .duration(300)
-    .delay(50)
-    .easing('cubic-bezier(0,.70,.45,1)') // muy lento al ultimo -> cubic-bezier(0,.70,.45,1)
-    .fromTo('transform', 'translateY(-7vh)', 'translateY(0)');
-
-
-    animation3 = this.animationCtrl.create('identifier3-b')
-    .addElement(this.text.nativeElement)
-    .duration(300)
-    .delay(50)
-    .easing('cubic-bezier(0,.70,.45,1)') // muy lento al ultimo -> cubic-bezier(0,.70,.45,1)
-    // tslint:disable-next-line: max-line-length
-    .fromTo('transform', ' perspective(1px) translateY(2.01vh) translateZ(0) translateX(-8.01vw) scale(0.8)', 'perspective(1px) translateY(0) translateZ(0) translateX(0) scale(1)');
-
-
-  /*  animation5 = this.animationCtrl.create('my-animation-identifier3')
-    .addElement(this.footer.nativeElement)
-    .afterAddClass('zindexFooterout')
-    .duration(100)
-    .delay(10)
-    .fromTo('opacity', '0', '1');*/
-
-
-
-
-    animation6 = this.animationCtrl.create('identifier6-b')
-    .addElement(this.fab.nativeElement)
-    .afterAddClass('zindexFooter')
-    .duration(200)
-    .delay(0)
-    .easing('cubic-bezier(.12,0,.39,0)')
-   .keyframes([{ offset: 0, transform: 'scale(1)' },
-
-   { offset: 1, transform: 'scale(0)' }, ]);
-
-    animation7 = this.animationCtrl.create('identifier7-b')
-   .addElement(this.animation7.nativeElement)
-   .duration(300)
-   .delay(50)
-   .easing('cubic-bezier(.51,1,.88,1)')
-   .fromTo('transform', 'perspective(1px) translateY(-20vh) translateZ(0) translateX(-'+ this.tamañoMover() + 'vh) scale(calc(1/2))', ' perspective(1px) translateY(0) translateZ(0) translateX(0) scale(1)');
-
-    animation8 = this.animationCtrl.create('identifier8-b')
-   .addElement(this.animation8.nativeElement)
-   .duration(280)
-   .delay(0)
-   .fromTo('transform' , 'translate(-2vw, -15.5vh)', 'translate(0, 0)');
-    
-
-      animation9 = this.animationCtrl.create('identifier9-b')
-     .addElement(this.fabstart.nativeElement)
+ 
+       animation10 = this.animationCtrl.create('identifier10-a')
+         .addElement(this.fabend.nativeElement)
+         .afterAddClass('zindexFooter')
+         .duration(700)
+         .delay(20)
+         .easing('cubic-bezier(.61,1,.88,1)')
+        .keyframes([{ offset: 0, transform: 'scale(0)' },
+        { offset: 0.2, transform: 'scale(1)' },
+        { offset: 0.5, transform: 'scale(1.3)' },
+        { offset: 1, transform: 'scale(1)' }, ]);
+ 
+ 
+       animation2.play();
+       animation3.play();
+       animation4.play();
+     //  animation5.play();
+       animation6.play();
+       animation7.play();
+       animation8.play();
+       animation9.play();
+       animation10.play();
+ 
+      // if (click) {
+       this.moveScroll(true);
+     //  this.scrollenable = true;
+       this.animacionBounce(true);
+ 
+       // }
+       this.estadoArriba = true;
+   } else {
+ 
+ 
+     this.moveScroll(false);
+     if (this.estadoArriba === false ) { return; }
+   //  this.renderer.removeClass(this.toolbar2.nativeElement, 'inverted-border-radius');
+   //  this.renderer.removeClass(this.foot.nativeElement, 'sombraFooter');
+     
+     this.pillMenu.quitarSombra();
+     animation2 = this.animationCtrl.create('identifier2-b')
+     .addElement(this.toolbar.nativeElement)
+     .duration(300)
+     .delay(50)
+     .easing('cubic-bezier(0,.70,.45,1)') // muy lento al ultimo -> cubic-bezier(0,.70,.45,1)
+     .fromTo('transform', 'translateY(-3vh)', 'translateY(0)');
+ 
+     animation4 = this.animationCtrl.create('identifier4-b')
+     .addElement(this.toolbar1.nativeElement)
+     .beforeAddClass('colortoolbarDOWN')
+     .duration(300)
+     .delay(50)
+     .easing('cubic-bezier(0,.70,.45,1)') // muy lento al ultimo -> cubic-bezier(0,.70,.45,1)
+     .fromTo('transform', 'translateY(-7vh)', 'translateY(0)');
+ 
+ 
+     animation3 = this.animationCtrl.create('identifier3-b')
+     .addElement(this.text.nativeElement)
+     .duration(300)
+     .delay(50)
+     .easing('cubic-bezier(0,.70,.45,1)') // muy lento al ultimo -> cubic-bezier(0,.70,.45,1)
+     // tslint:disable-next-line: max-line-length
+     .fromTo('transform', ' perspective(1px) translateY(2.01vh) translateZ(0) translateX(-8.01vw) scale(0.8)', 'perspective(1px) translateY(0) translateZ(0) translateX(0) scale(1)');
+ 
+ 
+   /*  animation5 = this.animationCtrl.create('my-animation-identifier3')
+     .addElement(this.footer.nativeElement)
+     .afterAddClass('zindexFooterout')
+     .duration(100)
+     .delay(10)
+     .fromTo('opacity', '0', '1');*/
+ 
+ 
+ 
+ 
+     animation6 = this.animationCtrl.create('identifier6-b')
+     .addElement(this.fab.nativeElement)
      .afterAddClass('zindexFooter')
      .duration(200)
      .delay(0)
      .easing('cubic-bezier(.12,0,.39,0)')
     .keyframes([{ offset: 0, transform: 'scale(1)' },
-  
+ 
     { offset: 1, transform: 'scale(0)' }, ]);
-   
-
-   
-       animation10 = this.animationCtrl.create('identifier10-b')
-      .addElement(this.fabend.nativeElement)
+ 
+     animation7 = this.animationCtrl.create('identifier7-b')
+    .addElement(this.animation7.nativeElement)
+    .duration(300)
+    .delay(50)
+    .easing('cubic-bezier(.51,1,.88,1)')
+    .fromTo('transform', 'perspective(1px) translateY(-20vh) translateZ(0) translateX(-'+ this.tamañoMover() + 'vh) scale(calc(1/2))', ' perspective(1px) translateY(0) translateZ(0) translateX(0) scale(1)');
+ 
+     animation8 = this.animationCtrl.create('identifier8-b')
+    .addElement(this.animation8.nativeElement)
+    .duration(280)
+    .delay(0)
+    .fromTo('transform' , 'translate(-2vw, -15.5vh)', 'translate(0, 0)');
+     
+ 
+       animation9 = this.animationCtrl.create('identifier9-b')
+      .addElement(this.fabstart.nativeElement)
       .afterAddClass('zindexFooter')
       .duration(200)
       .delay(0)
       .easing('cubic-bezier(.12,0,.39,0)')
      .keyframes([{ offset: 0, transform: 'scale(1)' },
+   
      { offset: 1, transform: 'scale(0)' }, ]);
     
-
-
-
-      animation2.play();
-      animation3.play();
-      animation4.play();
-   //   animation5.play();
-      animation6.play();
-      animation7.play();
-      animation8.play();
-     animation9.play();
-     animation10.play();
-  
-      this.animacionBounce(false);
+ 
+    
+        animation10 = this.animationCtrl.create('identifier10-b')
+       .addElement(this.fabend.nativeElement)
+       .afterAddClass('zindexFooter')
+       .duration(200)
+       .delay(0)
+       .easing('cubic-bezier(.12,0,.39,0)')
+      .keyframes([{ offset: 0, transform: 'scale(1)' },
+      { offset: 1, transform: 'scale(0)' }, ]);
+     
+ 
+ 
+ 
+       animation2.play();
+       animation3.play();
+       animation4.play();
+    //   animation5.play();
+       animation6.play();
+       animation7.play();
+       animation8.play();
+      animation9.play();
+      animation10.play();
    
-
-    this.estadoArriba = false;
-
-
-
-  }
-
-
-  }
+       this.animacionBounce(false);
+    
+ 
+     this.estadoArriba = false;
+ 
+ 
+ 
+   }
+ 
+ 
+   }
 
 
   async moveScroll(directionUp: boolean) {
@@ -430,78 +430,78 @@ export class HomeDirectorPage {
     this.IonContentScroll.scrollToPoint(0, 0, 400);
   }
 
-librosDescargados(Libros) {
-    this.libros = Libros;
-    this.codigoVisible = false;
-    this.numeroclicks=1;
-    this.pillMenu.nextSegment('0');
-}
+  librosDescargados(Libros) {
+      this.libros = Libros;
+      this.codigoVisible = false;
+      this.numeroclicks=1;
+      this.pillMenu.nextSegment('0');
+  }
 
 
- async  animacionBounce(esHaciaArriba: boolean) {
+  async  animacionBounce(esHaciaArriba: boolean) {
 
-   /*
+    /*
 
-const animation5: Animation = this.animationCtrl.create('bouceEduardo')
+  const animation5: Animation = this.animationCtrl.create('bouceEduardo')
     .addElement(this.div2.nativeElement)
     .duration(700)
     .delay(0)
-// .beforeStyles({bottom:'-16vh'})
- // .afterStyles({bottom:'-16vh'})
- //   .fromTo('transform', 'translate3d(0, 0, 0)', 'translate3d(0, 40px, 0)')
- //   .fromTo('transform', 'translate3d(0, 40px, 0)', 'translate3d(0, 35px, 0)');
-   .keyframes([{ offset: 0, transform: 'translate3d(0, 0px, 0)' },
- { offset: 0.7, transform: 'translate3d(0, 8px, 0)' },
- { offset: 1, transform: 'translate3d(0, 0px, 0)' }, ]);
+  // .beforeStyles({bottom:'-16vh'})
+  // .afterStyles({bottom:'-16vh'})
+  //   .fromTo('transform', 'translate3d(0, 0, 0)', 'translate3d(0, 40px, 0)')
+  //   .fromTo('transform', 'translate3d(0, 40px, 0)', 'translate3d(0, 35px, 0)');
+    .keyframes([{ offset: 0, transform: 'translate3d(0, 0px, 0)' },
+  { offset: 0.7, transform: 'translate3d(0, 8px, 0)' },
+  { offset: 1, transform: 'translate3d(0, 0px, 0)' }, ]);
 
-await animation5.play();
-this.content.scrollToPoint(0, 11,0);
+  await animation5.play();
+  this.content.scrollToPoint(0, 11,0);
 
-this.renderer.addClass(this.div2.nativeElement, 'quitarBottom');
+  this.renderer.addClass(this.div2.nativeElement, 'quitarBottom');
 
 
-   //  animation5.destroy();
-   // animation5.stop();
+    //  animation5.destroy();
+    // animation5.stop();
   //  animation5.destroy();
-*/
-let duracion;
+  */
+  let duracion;
 
-if(!this.platform.is("ipad") || !this.platform.is("iphone") || !this.platform.is("ios")){
-   console.log("android")
-   duracion= 700;
-}
-else{
+  if(!this.platform.is("ipad") || !this.platform.is("iphone") || !this.platform.is("ios")){
+    console.log("android")
+    duracion= 700;
+  }
+  else{
   duracion= 700;
-}
-if (esHaciaArriba) {
-const animation5: Animation = this.animationCtrl.create('bouceEduardo-b')
+  }
+  if (esHaciaArriba) {
+  const animation5: Animation = this.animationCtrl.create('bouceEduardo-b')
     .addElement(this.div2.nativeElement)
     .duration(600)	
     .delay(10)	
     //para android .easing('cubic-bezier(0,.70,.45,1)')	
     .easing('cubic-bezier(.42,.97,.52,1.1)')	
-     .beforeStyles({height: '80vh'})	
-     .afterStyles({height: '74vh'})	
-     .keyframes([{ offset: 0, transform: 'translate3d(0, 60vh, 0)' },	
-     { offset: 0.7, transform: 'translate3d(0, -10.5vh, 0)' },	
-     { offset: 0.8, transform: 'translate3d(0, -8.5vh, 0)' },	
-     { offset: 0.9, transform: 'translate3d(0, -6.5vh, 0)' },	
-     { offset: 1, transform: 'translate3d(0, -7vh, 0)' }, ]);	
-   // .fromTo('transform', 'translate3d(0, 67vh, 0)', 'translate3d(0, -7vh, 0)')	
+      .beforeStyles({height: '80vh'})	
+      .afterStyles({height: '74vh'})	
+      .keyframes([{ offset: 0, transform: 'translate3d(0, 60vh, 0)' },	
+      { offset: 0.7, transform: 'translate3d(0, -10.5vh, 0)' },	
+      { offset: 0.8, transform: 'translate3d(0, -8.5vh, 0)' },	
+      { offset: 0.9, transform: 'translate3d(0, -6.5vh, 0)' },	
+      { offset: 1, transform: 'translate3d(0, -7vh, 0)' }, ]);	
+    // .fromTo('transform', 'translate3d(0, 67vh, 0)', 'translate3d(0, -7vh, 0)')	
     // .fromTo('transform', 'translate3d(0, 67vh, 0)', 'translate3d(0, 0vh, 0)');	
   /*   .keyframes([{ offset: 0, transform: 'translate3d(0, 60vh, 0)' },	
-     { offset: 0.6, transform: 'translate3d(0, -10.5vh, 0)' },	
-     { offset: 0.9, transform: 'translate3d(0, -5.0vh, 0)' },	
-     { offset: 1, transform: 'translate3d(0, -7vh, 0)' }, ]);*/
+      { offset: 0.6, transform: 'translate3d(0, -10.5vh, 0)' },	
+      { offset: 0.9, transform: 'translate3d(0, -5.0vh, 0)' },	
+      { offset: 1, transform: 'translate3d(0, -7vh, 0)' }, ]);*/
 
 
 
 
 
-   //  this.gesture.enable(false);
-animation5.play();
-this.pillMenu.animacion();
-   // this.scrollenable=true;
+    //  this.gesture.enable(false);
+  animation5.play();
+  this.pillMenu.animacion();
+    // this.scrollenable=true;
 
 
       // this.renderer.addClass(this.toolbar2.nativeElement, 'inverted-border-radius');
@@ -510,19 +510,19 @@ this.pillMenu.animacion();
 
 
     } else {
-     // this.scrollenable=false;
+      // this.scrollenable=false;
       const animation5: Animation = this.animationCtrl.create('bouceEduardo-c')
   .addElement(this.div2.nativeElement)
   .duration(350)
   .delay(0)
   .easing(' cubic-bezier(0.61, 1, 0.88, 1)')
-// .beforeStyles({bottom:'-16vh'})
-// .afterStyles({bottom:'-16vh'})
-//   .fromTo('transform', 'translate3d(0, 0, 0)', 'translate3d(0, 40px, 0)')
-.fromTo('transform', 'translate3d(0, -6vh, 0)', 'translate3d(0, 60vh, 0)');
+  // .beforeStyles({bottom:'-16vh'})
+  // .afterStyles({bottom:'-16vh'})
+  //   .fromTo('transform', 'translate3d(0, 0, 0)', 'translate3d(0, 40px, 0)')
+  .fromTo('transform', 'translate3d(0, -6vh, 0)', 'translate3d(0, 60vh, 0)');
   // this.content.scrollToPoint(0, 0, 0);
       this.gesture.enable(false);
- //  this.scrollenable=false;
+  //  this.scrollenable=false;
 
       await animation5.play();
       this.gesture.enable(true);
@@ -533,6 +533,7 @@ this.pillMenu.animacion();
 
 
   }
+
   detalle() {
 
   }
@@ -597,7 +598,7 @@ this.pillMenu.animacion();
 
 
       if (index === 1) {
-        this.tabs = ['Alumnos', 'Docentes', 'Cordinadores'];
+        this.tabs = ['Alumnos', 'Docentes', 'Buscar'];
       }
 
       this.selectOption = '0';
@@ -635,6 +636,8 @@ this.pillMenu.animacion();
     }
 
     activarEventoTouch(){
+      
+
       this.gesture2 = this.gestureCtrl.create({
           el: this.calendar.nativeElement,
           gestureName: 'calendar',
@@ -698,7 +701,7 @@ this.pillMenu.animacion();
 
       this.iconos = ['book-outline', 'pencil', 'people-outline', 'person-outline', 'hammer-outline'];
       this.headersText = ['Director', 'Tasks', 'Community', 'Account', 'Support'];
-      this.tabs = ['Alumnos', 'Docentes', 'Cordinadores'];
+      this.tabs = ['Alumnos', 'Docentes', 'Buscar'];
 
       setTimeout(() => {
         this.verEscolaridades();
@@ -920,7 +923,6 @@ this.pillMenu.animacion();
     }
 
     public checkCodePush() {
-      
       const downloadProgress = (progress) => { 
         console.log(`Downloaded ${progress.receivedBytes} of ${progress.totalBytes}`); 
       }

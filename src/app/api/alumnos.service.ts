@@ -17,4 +17,8 @@ export class AlumnosService extends apiBase {
     return this.http.get<any[]>(`${this.url}/${this.Ws}/${index}/${grado}/${grupo}`);
   }
 
+  getTotales(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.url}/api/grupos/totales/alumnos`);
+  }
+
 }

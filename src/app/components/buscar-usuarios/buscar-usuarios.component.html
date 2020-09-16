@@ -1,0 +1,23 @@
+<ion-header translucent>
+  <ion-toolbar>
+    <ion-searchbar inputmode="text" 
+                  mode="ios" autocorrect="off" 
+                  (ionChange)="ionChange($event)"
+                  placeholder="Buscar Usuario"
+                  debounce="250"></ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+<ion-content fullscreen>
+  <ion-list>
+    <ion-item button detail="false" mode="ios" *ngFor="let item of LstUsuario" (click)="verUsuario(item)">
+      <ion-avatar slot="start">
+        <img src="assets/img/unnamed.png">
+      </ion-avatar>
+      <ion-label style="text-transform: capitalize;">
+        <h2><b>{{ item.Tipo }}:</b> {{ item.ApellidoPaterno }} {{ item.ApellidoMaterno }} {{ item.Nombre }} </h2>
+        <h3>{{ item.Escolaridad }} {{ item.Grado }}{{ item.Grupo }}</h3>
+        <p>Usuario: {{ item.Usuario }}</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>

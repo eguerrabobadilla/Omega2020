@@ -61,6 +61,12 @@ export class DetallesCalendarPage implements OnInit {
   }
 
   public permisoEditar() {
+    const jwt_temp = localStorage.getItem('USER_INFO_TEMP');
+    if(jwt_temp != null)
+    {
+        return false;
+    }
+    
     if(this.getKeyToken('tipo')=='Profesor' && this.item.Tipo=='Tema')
       return true;
     else

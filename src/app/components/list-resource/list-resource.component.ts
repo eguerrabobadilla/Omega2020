@@ -255,6 +255,12 @@ ngOnInit() {
   }
 
   public permisoEditar() {
+    const jwt_temp = localStorage.getItem('USER_INFO_TEMP');
+    if(jwt_temp != null)
+    {
+        return false;
+    }
+    
     if(this.getKeyToken('tipo')=='Profesor')
       return true;
     else

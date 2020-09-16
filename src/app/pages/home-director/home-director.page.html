@@ -48,7 +48,7 @@ right: 0px;" mode="ios">
 
     <ion-slides #slideUp type="ios" style="transform: translateY(4vh);height: 100%;" (ionSlideTransitionStart)="ionSlideTransitionStart()" (ionSlideTouchStart)="ionSlideTouchStart()" (ionSlideTouchEnd)="ionSlideTouchEndSlide()" [options]="slideOpts">
         <ion-slide>
-            <div class="animated zoomIn fast" style="margin-bottom: 90pxn; width: 100%;height:100%;background-image: url(assets/img/1.svg);background-repeat: no-repeat;background-size: 100% 100%;"></div>
+            <div class="animated zoomIn fast" style="margin-bottom: 90pxn; width: 100%;height:100%;background-image: url(assets/img/06_director.svg);background-repeat: no-repeat;background-size: 100% 100%;"></div>
         </ion-slide>
     </ion-slides>
 
@@ -61,7 +61,7 @@ right: 0px;" mode="ios">
     </ion-fab-button>
 </ion-fab>
 <ion-fab mode="ios" vertical="bottom" horizontal="center" slot="fixed">
-    <ion-fab-button  mode="ios" size="small" #fab style="--box-shadow:none ;--background-activated: #F4315D;  --background: #F4315D;width: 46px;
+    <ion-fab-button (click)="mover()" mode="ios" size="small" #fab style="--box-shadow:none ;--background-activated: #F4315D;  --background: #F4315D;width: 46px;
     height:46px;transform: scale(0);">
         <ion-icon name="chevron-down-outline" style="font-size: 24px;"></ion-icon>
     </ion-fab-button>
@@ -82,21 +82,13 @@ right: 0px;" mode="ios">
         <div #elementsToProcess style="bottom: -0.1vh;position: relative;"></div>
         <ion-slides [options]="slideOptsdos" #slideDown (ionSlideTouchEnd)="ionSlideTouchEnd(slideUp,slideDown)" *ngIf="selectSeccion == 1" style="min-height: 72.6vh;">
             <ion-slide>
-                <!--<app-codes (librosDescargados)="librosDescargados($event)" *ngIf="codigoVisible"></app-codes>
-                <app-books [librosIN]="libros" *ngIf="!codigoVisible"> </app-books>-->
                 <div style="display: none" #processContainer></div>
             </ion-slide>
             <ion-slide>
                 <div style="display: none" #processContainer2></div>
-                <!--<app-codes (librosDescargados)="librosDescargados($event)" *ngIf="codigoVisible"></app-codes>
-                <app-books [librosIN]="libros | filter : 'Ingles' : 'Idioma'" *ngIf="!codigoVisible"> </app-books>-->
             </ion-slide>
             <ion-slide>
-                <!--<app-codes (librosDescargados)="librosDescargados($event)" *ngIf="codigoVisible"></app-codes>
-                <app-books [librosIN]="libros | filter : 'Espanol' : 'Idioma'" *ngIf="!codigoVisible"> </app-books>-->
-            </ion-slide>
-            <ion-slide>
-                <!--<app-codes (librosDescargados)="librosDescargados($event)"></app-codes>-->
+                <app-buscar-usuarios style="width: 100%;"></app-buscar-usuarios>
             </ion-slide>
         </ion-slides>
         
