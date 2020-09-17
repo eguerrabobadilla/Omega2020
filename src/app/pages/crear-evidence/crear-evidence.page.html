@@ -45,7 +45,7 @@
                             </div>
                         </ion-col>
                         <ion-col size="8">
-                            <input #inputFilePortada style="opacity:0;display: none;" name="Image" (change)="onFileChange($event)" type="file" accept="image/*" />
+                            <input #inputFilePortada style="opacity:0;display: none;" name="Image" (change)="onFileChange($event)" type="file"/>
                             <ion-button expand="full" type="button" icon-start outline block (click)="inputFilePortada.click()">
                                 <ion-icon name="images"></ion-icon><span style="margin-left: 5px;">{{texto_adjuntar_portada}}</span>
                             </ion-button>
