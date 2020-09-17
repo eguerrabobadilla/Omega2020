@@ -598,8 +598,7 @@ export class HomeDirectorPage {
 
 
       if (index === 1) {
-        //this.tabs = ['Alumnos', 'Docentes', 'Buscar'];
-        this.tabs = ['Alumnos', 'Docentes'];
+        this.tabs = ['Alumnos', 'Docentes', 'Buscar'];
       }
 
       this.selectOption = '0';
@@ -702,8 +701,7 @@ export class HomeDirectorPage {
 
       this.iconos = ['book-outline', 'pencil', 'people-outline', 'person-outline', 'hammer-outline'];
       this.headersText = ['Director', 'Tasks', 'Community', 'Account', 'Support'];
-      //this.tabs = ['Alumnos', 'Docentes', 'Buscar'];
-      this.tabs = ['Alumnos', 'Docentes'];
+      this.tabs = ['Alumnos', 'Docentes', 'Buscar'];
 
       setTimeout(() => {
         this.verEscolaridades();
