@@ -34,7 +34,7 @@ right: 0px;" mode="ios">
     padding-top: 3vh;
     font-size: 3vh;
     color: aliceblue;">
-        0{{user.grado}}°</div>
+        V36</div>
 
 </ion-header>
 
@@ -73,8 +73,8 @@ right: 0px;" mode="ios">
     </ion-fab-button>
 </ion-fab>
 
-<div #div2 class="edu1" style="transform: translateY(60vh)">
-    <div (click)="test()" style="position: -webkit-sticky;top: 0;font-size: 29px;z-index: 999;position: sticky;">    
+<div #div2 (click)="clickDiv()" class="edu1" style="transform: translateY(60vh)">
+    <div  style="position: -webkit-sticky;top: 0;font-size: 29px;z-index: 999;position: sticky;">    
         <app-pill-menu #pillMenu [itemsMenu]="tabs" [selectOption]="selectOption" (indicatorChanged)="segmentChanged($event)"></app-pill-menu>
     </div>
     <ion-header [translucent]="false" mode="ios"></ion-header>
