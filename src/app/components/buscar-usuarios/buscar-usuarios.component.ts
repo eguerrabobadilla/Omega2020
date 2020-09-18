@@ -22,6 +22,8 @@ export class BuscarUsuariosComponent implements OnInit {
   ngOnInit() {}
 
   ionChange(event) {
+    this.LstUsuario = [];
+
     if(event.detail.value.length < 4) return;
 
     this.textoBuscar = event.detail.value;
@@ -29,32 +31,7 @@ export class BuscarUsuariosComponent implements OnInit {
     this.apiUsuarios.getUsuarios(this.textoBuscar,this.contadorInfinieScroll,100).subscribe(data => {
       if(data.length!=0) {
         this.LstUsuario = data;
-        console.log(this.LstUsuario);
         this.contadorInfinieScroll += 100;
-        console.log(this.contadorInfinieScroll);
-      }
-    });
-  }
-  
-  cargar() {
-    this.apiUsuarios.getUsuarios(this.textoBuscar,this.contadorInfinieScroll,100).subscribe(data => {
- 
-      if(data.length!=0) {
-        console.log(data.length);
-
-        /*this.LstUsuarioTemp = this.LstUsuario;
-        this.LstUsuarioTemp.push(data);
-        this.LstUsuario = this.LstUsuarioTemp;*/
-        
-        this.LstUsuario.push(data);
-        setTimeout(() => {
-          console.log("this.applicationRef.tick()");
-          this.applicationRef.tick();  
-        }, 500);
-        
-        console.log(this.LstUsuario);
-        this.contadorInfinieScroll += 100;
-        console.log(this.contadorInfinieScroll);
       }
     });
   }
@@ -73,9 +50,22 @@ export class BuscarUsuariosComponent implements OnInit {
   }
 
   loadData(event) {
-    console.log(event);
-    event.target.complete();
-    this.cargar();  
+    this.apiUsuarios.getUsuarios(this.textoBuscar,this.contadorInfinieScroll,100).subscribe(data => {
+ 
+      if(data.length!=0) {
+        for (let i = 0; i < data.length; i++) {
+          this.LstUsuario.push(data[i]);
+        }
+
+        event.target.complete();
+
+        this.contadorInfinieScroll += 100;
+      }
+      else {
+        console.log("fin scroll");
+        event.target.disabled = true;
+      }
+    });
   }
 
 }
