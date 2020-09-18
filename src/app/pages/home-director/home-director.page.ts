@@ -987,7 +987,7 @@ export class HomeDirectorPage {
   public test(){	
     //temporal: variable e if temporal; cuando se inicia la aplicaion hace dos veces click	
   
-    if (this.numeroclicks>=2){	
+    if (this.numeroclicks>=2 && !this.estadoArriba){	
       setTimeout(() => {	
         this.divArriba(); 	
       }, 200);	
