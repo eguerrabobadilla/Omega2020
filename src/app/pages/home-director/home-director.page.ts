@@ -133,7 +133,6 @@ export class HomeDirectorPage {
   };
   events: any;
 
-
   // tslint:disable-next-line: max-line-length
   constructor(private statusBar: StatusBar, public platform: Platform, private animationCtrl: AnimationController,
               // tslint:disable-next-line: max-line-length
@@ -602,8 +601,7 @@ export class HomeDirectorPage {
 
 
       if (index === 1) {
-        //this.tabs = ['Alumnos', 'Docentes', 'Buscar'];
-        this.tabs = ['Alumnos', 'Docentes'];
+        this.tabs = ['Alumnos', 'Docentes', 'Buscar'];
       }
 
       this.selectOption = '0';
@@ -707,8 +705,7 @@ export class HomeDirectorPage {
       
       this.iconos = ['search-outline','book-outline', 'pencil', 'people-outline', 'person-outline'];
       this.headersText = ['Users', 'Tasks', 'Community', 'Account', 'Support'];
-      //this.tabs = ['Alumnos', 'Docentes', 'Buscar'];
-      this.tabs = ['Alumnos', 'Docentes'];
+      this.tabs = ['Alumnos', 'Docentes', 'Buscar'];
 
       setTimeout(() => {
         this.verEscolaridades();

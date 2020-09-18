@@ -1,5 +1,5 @@
-import { ApplicationRef, Component, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { ApplicationRef, Component, OnInit,ViewChild } from '@angular/core';
+import { IonInfiniteScroll, ModalController } from '@ionic/angular';
 import { UsuariosService } from 'src/app/api/usuarios.service';
 import { DetalleAlumnoPage } from 'src/app/pages/detalle-alumno/detalle-alumno.page';
 
@@ -14,12 +14,17 @@ export class BuscarUsuariosComponent implements OnInit {
   LstUsuario: any[] = [];
   LstUsuarioTemp: any[] = [];
   contadorInfinieScroll: number = 0;
+  public spinnerLoad: boolean=false;
+  @ViewChild(IonInfiniteScroll,{static: false}) infiniteScroll: IonInfiniteScroll;
+
 
   constructor(private apiUsuarios: UsuariosService,private modalCtrl: ModalController, private applicationRef: ApplicationRef) {
 
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    console.log(this.spinnerLoad);
+  }
 
   ionChange(event) {
     this.LstUsuario = [];
@@ -28,11 +33,15 @@ export class BuscarUsuariosComponent implements OnInit {
 
     this.textoBuscar = event.detail.value;
     this.contadorInfinieScroll=0;
+    this.spinnerLoad=true;
+    this.infiniteScroll.disabled =false;
+    
     this.apiUsuarios.getUsuarios(this.textoBuscar,this.contadorInfinieScroll,100).subscribe(data => {
       if(data.length!=0) {
         this.LstUsuario = data;
         this.contadorInfinieScroll += 100;
       }
+      this.spinnerLoad=false;
     });
   }
 

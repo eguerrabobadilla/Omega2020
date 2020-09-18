@@ -7,16 +7,24 @@
                   debounce="250"></ion-searchbar>
   </ion-toolbar>
 </ion-header>
-<ion-content style="min-height: 72.6vh;">
-  <ion-spinner style="    margin-top: 13px;width: 40px;height: 40px;"></ion-spinner>
+<!--<ion-content style="min-height: 72.6vh;">-->
+  <ion-spinner *ngIf="spinnerLoad==true" style="margin-top: 13px;width: 40px;height: 40px;"></ion-spinner>
   <ion-list style="padding-bottom: 55px;">
     <ion-item button detail="false" mode="ios" *ngFor="let item of LstUsuario" (click)="verUsuario(item)">
       <ion-avatar slot="start">
         <img src="assets/img/unnamed.png">
       </ion-avatar>
       <ion-label style="text-transform: capitalize;">
-        <h2><b>{{ item.Tipo }}:</b> {{ item.ApellidoPaterno }} {{ item.ApellidoMaterno }} {{ item.Nombre }} </h2>
-        <h3>{{ item.Escolaridad }} {{ item.Grado }}{{ item.Grupo }}</h3>
+        <h2><b><ion-label *ngIf="item.Tipo=='Profesor'">Docente</ion-label>
+               <ion-label *ngIf="item.Tipo=='Alumno'">Alumno</ion-label></b> 
+              {{ item.ApellidoPaterno }} {{ item.ApellidoMaterno }} {{ item.Nombre }} </h2>
+        <h3>
+          <span *ngIf="item.Escolaridad=='Elementary School' || item.Escolaridad=='Primaria'">Primaria</span>
+          <span *ngIf="item.Escolaridad=='Junior High School' || item.Escolaridad=='Secundaria'">Secundaria</span>
+          <span *ngIf="item.Escolaridad=='High School' || item.Escolaridad=='Preparatoria'">Preparatoria</span>
+          <span *ngIf="item.Escolaridad=='Kinder' || item.Escolaridad=='Kinder'">Kinder</span>
+          {{ item.Grado }}{{ item.Grupo }}
+        </h3>
         <p>Usuario: {{ item.Usuario }}</p>
       </ion-label>
     </ion-item>
@@ -27,4 +35,4 @@
       loadingText="Cargando mas usuarios...">
     </ion-infinite-scroll-content>
   </ion-infinite-scroll>
-</ion-content>
+<!--</ion-content>-->
