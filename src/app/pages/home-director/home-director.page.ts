@@ -114,9 +114,12 @@ export class HomeDirectorPage {
   nombreIcono = 'pie-chart-outline';
   iconos: any[];
   public swipeUp = false;
+  public swipeUp2 = false;
   public swipeDown = false;
+  public swipeDown2 = false;
   public gesture;
   public gesture2;
+  public gesture3;
   public user = {
     nombre : '',
     grado  : '',
@@ -560,10 +563,10 @@ export class HomeDirectorPage {
         entries.forEach((entry: any) => {
           if (!entry.isIntersecting) {
             this.pocisionInicial = false;
-            this.gesture.enable(false);
+            this.gesture3.enable(false);
           } else {
             this.pocisionInicial = true;
-            this.gesture.enable(true);
+            this.gesture3.enable(true);
           }
         });
       }, {threshold: 0});
@@ -717,7 +720,7 @@ export class HomeDirectorPage {
         el: this.contentref.nativeElement,
         gestureName: 'test-swipe',
         direction: 'y',
-        threshold: 20,
+        threshold: 8,
         passive: true,
         disableScroll: true,
         onStart: (detail) => {
@@ -750,7 +753,7 @@ export class HomeDirectorPage {
            } else {
               if (this.swipeDown === true && this.estadoArriba) {
 
-                this.divAbajo();
+               // this.divAbajo();
 
              }
             }
@@ -760,6 +763,83 @@ export class HomeDirectorPage {
       });
 
       this.gesture.enable();
+
+
+      this.gesture3 = this.gestureCtrl.create({
+
+        el: this.div2.nativeElement,
+        gestureName: 'test-swipedown',
+        direction: 'y',
+        threshold: 20,
+        passive: true,
+        disableScroll: true,
+        onStart: (detail) => {
+
+          //  this.renderer.setStyle(this.div2.nativeElement, 'transition', `none`);
+        },
+        onMove: (detail) => {
+        
+          if (detail.velocityY < -0.50) {
+            this.swipeUp2 = true;
+            //console.log("onmoveUp");
+          //  this.scrollenable = false
+          
+           }else{
+            //console.log("onmoveDown");
+            this.swipeDown2 = true;
+        //    this.scrollenable = false;
+            }
+
+        },
+        onEnd: (detail) => {
+         //   this.scrollenable = false;
+            //console.log("SwipeUP",this.swipeUp);
+            //console.log("SwipeDown",this.swipeDown);
+            
+            if (this.swipeUp2 === true && !this.estadoArriba) {
+              console.log("this.swipeUp2 === true && !this.estadoArriba Uppppp");
+            //  this.divArriba();
+          /*   this.swipeUp2 = true;
+                          this.div2.nativeElement.click();
+             this.estadoArriba = true;
+             this.scrollenable = true;
+             this.div2.nativeElement.click();
+            this.pocisionInicial === true;
+             this.animacion(false, true);
+             this.div2.nativeElement.click();
+             this.estadoArriba = true;
+             this.scrollenable = true;
+             this.div2.nativeElement.click();
+            this.pocisionInicial === true;
+            this.checkCodePush();*/
+
+
+           } else {
+              if ((this.swipeDown2 === true && this.estadoArriba)&& this.swipeUp2=== false) {
+                console.log("this.swipeDown2 === true && this.estadoArriba)&& this.swipeUp2=== false down");
+                this.divAbajo();
+             /*  this.gesture.enable(true);	
+
+               this.gesture.enable(true);
+               //console.log("entro al if de swipeDown")
+             //   if (this.pocisionInicial === true) { causante del problema que no bajaba cuando haciamos swipe para abajo
+             //     this.gesture.enable(false);
+             //    this.renderer.setStyle(this.div2.nativeElement, 'touch-action', 'none');
+               this.div2.nativeElement.click();
+               this.scrollenable = false;
+              
+               this.animacion(true, true); 
+             //    this.scrollenable = false;
+               this.estadoArriba = false;
+              */
+             }
+            }
+            this.swipeUp2 = false;
+            this.swipeDown2 = false;
+          }
+      });
+
+      this.gesture3.enable();
     }
 
 
@@ -948,6 +1028,7 @@ export class HomeDirectorPage {
     }
 
     public checkCodePush() {
+      return;
       const downloadProgress = (progress) => { 
         console.log(`Downloaded ${progress.receivedBytes} of ${progress.totalBytes}`); 
       }
@@ -981,6 +1062,11 @@ export class HomeDirectorPage {
         },
       );*/
     }
+
+    clickDiv() {
+      // console.log("Click Div")
+ 
+     }
     onSyncStatusChange(SyncStatus){
       switch (SyncStatus) {
           case SyncStatus.CHECKING_FOR_UPDATE:
