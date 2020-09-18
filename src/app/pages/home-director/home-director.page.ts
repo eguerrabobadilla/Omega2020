@@ -110,8 +110,8 @@ export class HomeDirectorPage {
   estadoArriba  = false;
   primeraVez = true;
   headersText: any = [];
-  header = 'Director';
-  nombreIcono = 'book-outline';
+  header = 'Users';
+  nombreIcono = 'pie-chart-outline';
   iconos: any[];
   public swipeUp = false;
   public swipeUp2 = false;
@@ -122,7 +122,8 @@ export class HomeDirectorPage {
   public gesture3;
   public user = {
     nombre : '',
-    grado  : ''
+    grado  : '',
+    campus : ''
   };
   slideOpts = {
     loop: false,
@@ -601,7 +602,8 @@ export class HomeDirectorPage {
 
 
       if (index === 1) {
-        this.tabs = ['Alumnos', 'Docentes', 'Buscar'];
+        //this.tabs = ['Alumnos', 'Docentes', 'Buscar'];
+        this.tabs = ['Alumnos', 'Docentes'];
       }
 
       this.selectOption = '0';
@@ -674,6 +676,7 @@ export class HomeDirectorPage {
       //let nombre = this.capitalizeFirstLetter(this.user.nombre.split(' ')[0]);
       //console.log(nombre);
       this.user.grado = this.getKeyToken('grado');
+      this.user.campus = this.getCampusUsuario();
     }
 
     capitalizeFirstLetter(string) {
@@ -701,10 +704,11 @@ export class HomeDirectorPage {
       this.subscribeToEvents();
 
       //this.LstTareas = await this.apiTareas.get().toPromise();
-
-      this.iconos = ['book-outline', 'pencil', 'people-outline', 'person-outline', 'hammer-outline'];
-      this.headersText = ['Director', 'Tasks', 'Community', 'Account', 'Support'];
-      this.tabs = ['Alumnos', 'Docentes', 'Buscar'];
+      
+      this.iconos = ['pie-chart-outline','book-outline', 'pencil', 'people-outline', 'person-outline'];
+      this.headersText = ['Users', 'Tasks', 'Community', 'Account', 'Support'];
+      //this.tabs = ['Alumnos', 'Docentes', 'Buscar'];
+      this.tabs = ['Alumnos', 'Docentes'];
 
       setTimeout(() => {
         this.verEscolaridades();
@@ -912,6 +916,27 @@ export class HomeDirectorPage {
       const value = decodedJwtData[key];
 
       return value;
+    }
+
+    getCampusUsuario() {
+      let campusId=this.getKeyToken('campusid');
+      let abreviatura='';
+
+      if(campusId=='1' || campusId=='5' || campusId=='8') {
+          abreviatura="DU"; //Durango
+      } else if(campusId=='2' || campusId=='7') { 
+          abreviatura="CU"; //Cualican
+      } else if(campusId=='4' || campusId=='6') { 
+        abreviatura="CJ"; //Ciudad Juarez
+      } else if(campusId=='3' || campusId=='12') { 
+        abreviatura="TO"; //Torreon
+      } else if(campusId=='11') {  
+        abreviatura="SA"; //Saltio
+      } else {
+        abreviatura="NA"; //Sin abreviatura
+      }
+
+      return abreviatura;
     }
 
     private subscribeToEvents(): void {

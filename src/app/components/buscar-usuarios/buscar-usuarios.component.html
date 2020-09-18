@@ -8,6 +8,7 @@
   </ion-toolbar>
 </ion-header>
 <ion-content style="min-height: 72.6vh;">
+  <ion-spinner style="    margin-top: 13px;width: 40px;height: 40px;"></ion-spinner>
   <ion-list style="padding-bottom: 55px;">
     <ion-item button detail="false" mode="ios" *ngFor="let item of LstUsuario" (click)="verUsuario(item)">
       <ion-avatar slot="start">
@@ -20,10 +21,10 @@
       </ion-label>
     </ion-item>
   </ion-list>
-  <ion-infinite-scroll threshold="200px" (ionInfinite)="loadData($event)">
+  <ion-infinite-scroll threshold="200px" (ionInfinite)="loadData($event)" style="transform: translateY(-51%);">
     <ion-infinite-scroll-content
       loadingSpinner="bubbles"
-      loadingText="Loading more data...">
+      loadingText="Cargando mas usuarios...">
     </ion-infinite-scroll-content>
   </ion-infinite-scroll>
 </ion-content>

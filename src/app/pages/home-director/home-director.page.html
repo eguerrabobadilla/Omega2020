@@ -5,7 +5,7 @@ border-radius: 0px 0px 0px 50px;" mode="ios">
         <ion-title #text class="etitle">
             <ion-icon name="add-circle" #avatarUser style="color: black; transform: translateY(0.8vh);
             font-size: 27px;font-size: 4vh;"></ion-icon>
-            <span style="opacity:0;    margin-right: -10px;">-</span> Hola, {{user.nombre}}.
+            <span style="opacity:0;margin-right: -10px;">-</span> Hola, {{user.nombre}}.
         </ion-title>
     </ion-toolbar>
 </ion-header>
@@ -40,7 +40,7 @@ right: 0px;" mode="ios">
 
 <div #content id="container" style="background-color: #6228cf;" slot="fixed">
     <ion-title #animation7 mode="ios" style="left: 0px;bottom: 0px;padding-bottom: 49vh;padding-left: 30px;padding-right: 90px;padding-top: -1vh;/* padding-bottom: 16vh; *//* padding-bottom: 0px; */position: absolute;width: 100%;height: 100%;transform: translateZ(0px);font-size: 73px;font-weight: 500;text-align: left;box-sizing: border-box;pointer-events: none;--color: #fff;z-index: 5;/* letter-spacing: 3px;*/">
-        0{{user.grado}}°</ion-title>
+        {{user.campus}}</ion-title>
         
     <ion-icon #animation8 style="color: white;left: 0px;bottom: 0px;padding-bottom: 65vh;padding-left: 37px;padding-right: 79px;padding-top: -1vh;position: absolute;font-size: 34px;font-weight: 500;text-align: left;box-sizing: border-box;pointer-events: none;z-index: 5;" [name]="nombreIcono"></ion-icon>
 
@@ -87,9 +87,9 @@ right: 0px;" mode="ios">
             <ion-slide>
                 <div style="display: none" #processContainer2></div>
             </ion-slide>
-            <ion-slide>
+            <!--<ion-slide>
                 <app-buscar-usuarios style="width: 100%;"></app-buscar-usuarios>
-            </ion-slide>
+            </ion-slide>-->
         </ion-slides>
         
     </ion-content>
