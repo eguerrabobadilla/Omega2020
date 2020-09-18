@@ -1005,11 +1005,13 @@ this.pillMenu.animacion();
           await modal.present();
 
           modal.onDidDismiss().then( async (data) => {
-              await this.cargandoAnimation();
-
-              this.LstTareas = await this.apiTareas.get().toPromise();
-
-              this.loadingController.dismiss();
+              console.log(data);
+              if(data.data.banderaEdito==true)
+              {
+                  await this.cargandoAnimation();
+                  this.LstTareas = await this.apiTareas.get().toPromise();
+                  this.loadingController.dismiss();
+              }
           });
       } else if (itemOption === 'Mensajes') {
         const modal = await this.modalCrl.create({
@@ -1040,7 +1042,10 @@ this.pillMenu.animacion();
         await modal.present();
 
         modal.onDidDismiss().then( async (data) => {
-          this.resourceComponent.cargar(0);
+          if(data.data.banderaEdito==true)
+          {
+            this.resourceComponent.cargar(0);
+          }
         });
 
       } else if (itemOption === 'Noticias') {
@@ -1412,11 +1417,12 @@ this.pillMenu.animacion();
 
       modal.onDidDismiss().then( async (data) => {
 
-          await this.cargandoAnimation();
-        
-          this.LstTareas = await this.apiTareas.get().toPromise();
-
-          this.loadingController.dismiss();
+          if(data.data.banderaEdito==true)
+          {
+              await this.cargandoAnimation();
+              this.LstTareas = await this.apiTareas.get().toPromise();
+              this.loadingController.dismiss();
+          }
       });
     }
 

@@ -7,8 +7,8 @@
                   debounce="250"></ion-searchbar>
   </ion-toolbar>
 </ion-header>
-<ion-content fullscreen>
-  <ion-list>
+<ion-content style="min-height: 72.6vh;">
+  <ion-list style="padding-bottom: 55px;">
     <ion-item button detail="false" mode="ios" *ngFor="let item of LstUsuario" (click)="verUsuario(item)">
       <ion-avatar slot="start">
         <img src="assets/img/unnamed.png">
@@ -20,4 +20,10 @@
       </ion-label>
     </ion-item>
   </ion-list>
+  <ion-infinite-scroll threshold="200px" (ionInfinite)="loadData($event)">
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="Loading more data...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 </ion-content>

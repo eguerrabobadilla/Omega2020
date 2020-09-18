@@ -19,7 +19,7 @@
         <ion-item>
             <ion-chip outline color="dark" (click)="openFile(item)" *ngIf=" item.PathRecurso != undefined">
                 <ion-icon name="attach-outline"></ion-icon>
-                <ion-label>{{item.PathRecurso}}</ion-label>
+                <ion-label style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{item.PathRecursoUser}}</ion-label>
             </ion-chip>
         </ion-item>
         <ion-item *ngIf="permisoEditar()" style="margin-top: -6px;">
@@ -51,7 +51,7 @@
         <ion-item>
             <ion-chip outline color="dark" (click)="openFile(item)" *ngIf=" item.PathRecurso != undefined">
                 <ion-icon name="attach-outline"></ion-icon>
-                <ion-label>{{item.PathRecurso}}</ion-label>
+                <ion-label style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{item.PathRecursoUser}}</ion-label>
             </ion-chip>
         </ion-item>
         <ion-item *ngIf="permisoEditar()" style="margin-top: -6px;">
@@ -83,7 +83,7 @@
         <ion-item>
             <ion-chip outline color="dark" (click)="openFile(item)" *ngIf=" item.PathRecurso != undefined">
                 <ion-icon name="attach-outline"></ion-icon>
-                <ion-label>{{item.PathRecurso}}</ion-label>
+                <ion-label style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{item.PathRecursoUser}}</ion-label>
             </ion-chip>
         </ion-item>
         <ion-item  *ngIf="permisoEditar()" style="margin-top: -6px;">
@@ -116,7 +116,7 @@
         <ion-item>
             <ion-chip outline color="dark" (click)="openFile(item)" *ngIf=" item.PathRecurso != undefined">
                 <ion-icon name="attach-outline"></ion-icon>
-                <ion-label>{{item.PathRecurso}}</ion-label>
+                <ion-label style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{item.PathRecursoUser}}</ion-label>
             </ion-chip>
         </ion-item>
         <ion-item  *ngIf="permisoEditar()"  style="margin-top: -6px;">

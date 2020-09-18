@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectorRef,ViewChild,ElementRef,Input } from '@angular/core';
-import { ModalController, AlertController, PickerController,IonInput, LoadingController } from '@ionic/angular';
+import { ModalController, AlertController, PickerController,IonInput, LoadingController, ToastController } from '@ionic/angular';
 import { FormGroup, FormBuilder,Validators  } from '@angular/forms';
 import { TareasService } from '../api/tareas.service';
 import { ChatService } from '../api/chat.service';
@@ -27,12 +27,14 @@ export class NuevoRecursoPage implements OnInit {
   MateriaSeleccionada: any;
   titulo: any;
   tituloBoton: any;
+  banderaEdito: boolean=false;
 
   @Input() item;
 
   constructor(private modalCtrl: ModalController,private formBuilder: FormBuilder, private cd:ChangeDetectorRef,
               private alertCtrl: AlertController,private apiTareas: TareasService,private apiChat: ChatService,
-              private apiMaterias: MateriasService,private pickerController: PickerController,public loadingController: LoadingController) {
+              private apiMaterias: MateriasService,private pickerController: PickerController,public loadingController: LoadingController,
+              public toastController: ToastController) {
     this.FrmItem = formBuilder.group({
       Id:   [0, Validators.compose([Validators.required])],
       Grupo:   ['', Validators.compose([Validators.required])],
@@ -121,6 +123,7 @@ export class NuevoRecursoPage implements OnInit {
         const tareaUpload =await this.apiTareas.update(payload).toPromise();
     }
 
+    this.banderaEdito=true;
     this.submitAttempt = false;
 
     this.loadingController.dismiss();
@@ -132,7 +135,7 @@ export class NuevoRecursoPage implements OnInit {
         message: 'Se creó la tarea ' + this.FrmItem.get('Titulo').value + ', ¿desea crear otra tarea?',
         buttons: [
           {
-            text: 'No', handler: () =>  this.modalCtrl.dismiss()
+            text: 'No', handler: () =>  this.closeModal()
           },
           {
             text: 'Crear otra', handler: () =>{ 
@@ -150,7 +153,7 @@ export class NuevoRecursoPage implements OnInit {
         message: 'Se modificó la tarea ' + this.FrmItem.get('Titulo').value,
         buttons: [
           {
-            text: 'Continuar', handler: () =>  this.modalCtrl.dismiss()
+            text: 'Continuar', handler: () =>  this.closeModal()
           }
         ]
       });
@@ -161,6 +164,15 @@ export class NuevoRecursoPage implements OnInit {
 
   onFileChange($event: any) {
     if( $event.target.files &&  $event.target.files.length) {
+      const re = new RegExp('image\/(png|jpg|bmp|jpeg|gif|svg+xml)', 'g');      
+      
+      //Solo se permiten formatos de imagen;
+      if(re.test($event.target.files[0].type)==false) {
+        this.presentToast("Archivo no valido, solo se permite subir imágenes.");
+        this.texto_adjuntar_portada = 'Foto de Portada';
+        return;
+      }
+
       this.texto_adjuntar_portada = 'Foto de Portada Seleccionada';
 
       this.FrmItem.patchValue({
@@ -172,6 +184,18 @@ export class NuevoRecursoPage implements OnInit {
       this.cd.markForCheck();
     }
 
+  }
+
+  async presentToast(text) {
+    const toast = await this.toastController.create({
+      message: text,
+      color: "dark",
+      mode: "ios",
+      cssClass : "toastCenter",
+      duration: 3000
+    });
+
+    toast.present();
   }
 
   async openPickerGrupos() {
@@ -262,7 +286,9 @@ export class NuevoRecursoPage implements OnInit {
   }
 
   closeModal() {
-    this.modalCtrl.dismiss();
+    this.modalCtrl.dismiss({
+      banderaEdito : this.banderaEdito
+    });
   }
 
 }

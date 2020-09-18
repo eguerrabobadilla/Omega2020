@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectorRef, ViewChild, ElementRef, Renderer2,Input} from '@angular/core';
-import { ModalController, AlertController, PickerController, IonInput, LoadingController } from '@ionic/angular';
+import { ModalController, AlertController, PickerController, IonInput, LoadingController, ToastController } from '@ionic/angular';
 import { FormGroup, FormBuilder,Validators  } from '@angular/forms';
 import { RecursosService } from '../api/recursos.service';
 import { ChatService } from '../api/chat.service';
@@ -34,10 +34,12 @@ export class NewResourcePage implements OnInit {
   titulo: any;
   tituloBoton: any;
   @Input() item;
+  banderaEdito: boolean=false;
 
   constructor(private modalCtrl: ModalController, private formBuilder: FormBuilder, private cd:ChangeDetectorRef,
               private alertCtrl: AlertController, private apiRecursos: RecursosService, private pickerController: PickerController,
-              private renderer: Renderer2,private apiChat: ChatService,private apiMaterias: MateriasService,public loadingController: LoadingController) {
+              private renderer: Renderer2,private apiChat: ChatService,private apiMaterias: MateriasService,public loadingController: LoadingController,
+              public toastController: ToastController) {
     this.FrmItem = formBuilder.group({
       Id:   [0, Validators.compose([Validators.required])],
       Grupo:   ['', Validators.compose([Validators.required])],
@@ -207,6 +209,7 @@ export class NewResourcePage implements OnInit {
     else
       await this.apiRecursos.update(payload).toPromise();
 
+    this.banderaEdito=true;
     this.submitAttempt = false;
 
     this.loadingController.dismiss();
@@ -215,10 +218,10 @@ export class NewResourcePage implements OnInit {
       const alertTerminado = await this.alertCtrl.create({
         header: 'Recurso creada con éxito',
         backdropDismiss: false,
-        message: 'Se creó el recurso ' + this.FrmItem.get('Titulo').value + ', ¿desea crear otra tarea?',
+        message: 'Se creó el recurso ' + this.FrmItem.get('Titulo').value + ', ¿desea subir otro recurso?',
         buttons: [
           {
-             text: 'No', handler: () =>  this.modalCtrl.dismiss()
+             text: 'No', handler: () =>  this.closeModal()
           },
           {
             text: 'Crear otro', handler: () => { 
@@ -237,7 +240,7 @@ export class NewResourcePage implements OnInit {
         message: 'Se modificó el recurso ' + this.FrmItem.get('Titulo').value,
         buttons: [
           {
-            text: 'Continuar', handler: () =>  this.modalCtrl.dismiss()
+            text: 'Continuar', handler: () =>  this.closeModal()
           }
         ]
       });
@@ -249,7 +252,17 @@ export class NewResourcePage implements OnInit {
   }
 
   onFileChange($event: any) {
+    console.log($event.target.files[0].type);
     if( $event.target.files &&  $event.target.files.length) {
+      const re = new RegExp('(application|text)\/(x-msdownload|javascript|x-pkcs12|html)', 'g');   
+
+      //No se permite subir archivo con extesione exe;
+      if(re.test($event.target.files[0].type)==true) {
+        this.presentToast("No se permite subir este tipo de archivo");
+        this.texto_adjuntar_portada = 'Foto de Portada';
+        return;
+      }
+
       this.texto_adjuntar_portada = 'Recurso Seleccionado';
 
       this.FrmItem.patchValue({
@@ -260,6 +273,18 @@ export class NewResourcePage implements OnInit {
       // need to run CD since file load runs outside of zone
       this.cd.markForCheck();
     }
+  }
+
+  async presentToast(text) {
+    const toast = await this.toastController.create({
+      message: text,
+      color: "dark",
+      mode: "ios",
+      cssClass : "toastCenter",
+      duration: 3000
+    });
+
+    toast.present();
   }
 
   async openPickerGrupos() {
@@ -350,7 +375,10 @@ export class NewResourcePage implements OnInit {
 
 
   closeModal() {
-    this.modalCtrl.dismiss();
+    this.modalCtrl.dismiss({
+      banderaEdito : this.banderaEdito
+    });
   }
+
 
 }

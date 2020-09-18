@@ -13,7 +13,7 @@ export class UsuariosService extends apiBase {
     this.Ws = 'api/usuarios';
   }
 
-  getUsuarios(text): Observable<any[]> {
-    return this.http.get<any[]>(`${this.url}/${this.Ws}/${text}`);
+  getUsuarios(text,skip,take): Observable<any[]> {
+    return this.http.get<any[]>(`${this.url}/${this.Ws}/filter/${text}/${skip}/${take}`);
   }
 }
