@@ -154,9 +154,9 @@ ngOnInit() {
     
     console.log(item);
     const { Browser } = Plugins;
+
     if (this.platform.is('cordova')) {
-      this.download(`${this.api.url}/resources/${item.PathRecurso}`);
-      //this.download(`http://192.168.0.16:5000/resources/${item.PathRecurso}`);
+      this.download(`${this.api.url}/resources/${item.PathRecurso}`,item.PathRecursoUser);
     } else {
       await Browser.open({ url: `${this.api.url}/resources/${item.PathRecurso}` });
       this.loadingController.dismiss();
@@ -173,18 +173,21 @@ ngOnInit() {
     // return text.replace(urlRegex, '<a href="$1">$1</a>')
   }
 
-  download(url) {
+  download(url,NameFile) {
     const fileTransfer: FileTransferObject = this.transfer.create();
-    const extension = url.split('.').pop(); 
+    const extension = url.split('.').pop();
+    const pathDownload = this.platform.is("android") ? this.file.dataDirectory  :  this.file.dataDirectory;
+    //const pathDownload = this.platform.is("android") ? this.file.externalDataDirectory :  this.file.documentsDirectory;
+    //const pathDownload = this.platform.is("android") ? this.file.externalRootDirectory + "download/" :  this.file.documentsDirectory;
 
-    fileTransfer.download(url, this.file.dataDirectory + 'file.'+ extension).then((entry) => {
+    fileTransfer.download(url, pathDownload + NameFile).then((entry) => {
         console.log('download complete: ' + entry.toURL());
 
         let files = entry as FileEntry;
         files.file(success =>{
             //success.name;
 
-            this.fileOpener.open(this.file.dataDirectory + 'file.' + extension , success.type)
+            this.fileOpener.open(pathDownload + NameFile , success.type)
             .then(() => { console.log('File is opened'); this.loading.dismiss(); })
             .catch(e => console.log('Error opening file', e));
         });
@@ -212,8 +215,11 @@ ngOnInit() {
     await modal.present();
 
     modal.onDidDismiss().then( async (data) => {
-        console.log(this.materiaId);
-        this.cargar(this.materiaId);
+        if(data.data.banderaEdito==true)
+        {
+          console.log(this.materiaId);
+          this.cargar(this.materiaId);
+        }
     });
   }
 

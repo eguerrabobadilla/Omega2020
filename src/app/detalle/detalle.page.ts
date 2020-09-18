@@ -55,17 +55,21 @@ export class DetallePage implements OnInit {
   download(url) {
     const fileTransfer: FileTransferObject = this.transfer.create();
     const extension = url.split('/').pop(); 
+    const pathDownload = this.platform.is("android") ? this.file.dataDirectory  :  this.file.dataDirectory;
+    //const pathDownload = this.platform.is("android") ? this.file.externalDataDirectory :  this.file.documentsDirectory;
+    //const pathDownload = this.platform.is("android") ? this.file.externalRootDirectory + "download/" :  this.file.documentsDirectory;
 
-    fileTransfer.download(url, this.file.dataDirectory + this.item.Image).then((entry) => {
+    fileTransfer.download(url, pathDownload + this.item.ImageUser).then((entry) => {
         console.log('download complete: ' + entry.toURL());
 
         let files = entry as FileEntry;
         files.file(success =>{
             //success.name;
 
-            this.fileOpener.open(this.file.dataDirectory + this.item.Image, success.type)
+            this.fileOpener.open(pathDownload + this.item.ImageUser, success.type)
             .then(() => { console.log('File is opened'); this.loading.dismiss(); })
             .catch(e => console.log('Error opening file', e));
+
         });
     }, (error) => {
       // handle error

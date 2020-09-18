@@ -104,7 +104,6 @@ export class CalendarEventsPage implements OnInit {
       });
     else
       this.modalCtrl.dismiss();
-    
   }
 
   async abrirDetalleCalendario(item) {
