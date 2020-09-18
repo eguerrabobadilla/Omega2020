@@ -111,7 +111,7 @@ export class HomeDirectorPage {
   primeraVez = true;
   headersText: any = [];
   header = 'Users';
-  nombreIcono = 'pie-chart-outline';
+  nombreIcono = 'search-outline';
   iconos: any[];
   public swipeUp = false;
   public swipeUp2 = false;
@@ -705,7 +705,7 @@ export class HomeDirectorPage {
 
       //this.LstTareas = await this.apiTareas.get().toPromise();
       
-      this.iconos = ['pie-chart-outline','book-outline', 'pencil', 'people-outline', 'person-outline'];
+      this.iconos = ['search-outline','book-outline', 'pencil', 'people-outline', 'person-outline'];
       this.headersText = ['Users', 'Tasks', 'Community', 'Account', 'Support'];
       //this.tabs = ['Alumnos', 'Docentes', 'Buscar'];
       this.tabs = ['Alumnos', 'Docentes'];
