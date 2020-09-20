@@ -1198,6 +1198,11 @@ this.pillMenu.animacion();
       // this.libros = this.booksService.getPost();
     }
 
+    updateAutoHeightSlider(){
+      console.log("updateAutoHeightSlider");
+      this.slideDown.updateAutoHeight();
+    }
+
     async Salir() {
       //Busca si se existe un sesion del director iniciada
       const jwt_temp = localStorage.getItem('USER_INFO_TEMP');
@@ -1206,7 +1211,7 @@ this.pillMenu.animacion();
       {
           localStorage.clear();
           localStorage.setItem('USER_INFO',jwt_temp);
-          this.storage.clear().then(() => {
+          this.storage.remove("books2020").then(() => {
             this.router.navigate(['home-director']);
           });
           return;
@@ -1227,7 +1232,7 @@ this.pillMenu.animacion();
           }, {
             text: 'Si',
             handler: () => {
-              this.storage.clear().then(() => {
+              this.storage.remove("books2020").then(() => {
                 this.authenticationService.logout().then( data => {
                   this.webSocket.finishWebScoket();
                 });

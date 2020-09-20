@@ -5,6 +5,7 @@ import { Storage } from '@ionic/storage';
 import { WebsocketService } from 'src/app/services/websocket.service';
 import { convertActionBinding } from '@angular/compiler/src/compiler_util/expression_converter';
 import { Libroscodigos } from 'src/app/models/Libroscodigos';
+import { GlobalService } from 'src/app/services/global.service';
 
 @Component({
   selector: 'app-codes',
@@ -14,13 +15,14 @@ import { Libroscodigos } from 'src/app/models/Libroscodigos';
 export class CodesComponent implements OnInit {
   libros: any[];
   @Output() librosDescargados = new EventEmitter();
-
+  pathStorage:any;
   FrmCodigo = {
     codigo : ''
   };
 
   constructor(private loadingController: LoadingController, private booksService: BooksService,
-              private alertController: AlertController,private storage: Storage,public  webSocket: WebsocketService) {    
+              private alertController: AlertController,private storage: Storage,public  webSocket: WebsocketService,
+              private globalServicies: GlobalService) {    
   }
 
   ngOnInit() {
@@ -29,8 +31,13 @@ export class CodesComponent implements OnInit {
     }, 1000);
   }
 
+  ngAfterViewInit (){
+    console.log("ngAfterViewInit");
+    this.pathStorage = this.globalServicies.getNameStorage();
+  }
+
   iniciarValidacion() {
-    this.storage.get('books2020').then((librosLocales) => {
+    this.storage.get(this.pathStorage).then((librosLocales) => {
       const status = this.webSocket.getStatusSocket() == 1 ? true : false;
       //console.log(librosLocales);
       //console.log(status);
@@ -46,7 +53,7 @@ export class CodesComponent implements OnInit {
           this.booksService.getBooksGrado().subscribe(data => {
             data.forEach(element => { element.descargado="no"});
             this.libros = data;
-            this.storage.set('books2020',this.libros).then( () =>{
+            this.storage.set(this.pathStorage,this.libros).then( () =>{
               this.librosDescargados.emit(this.libros);
             });
           });
@@ -74,7 +81,7 @@ export class CodesComponent implements OnInit {
            });
 
             this.libros = librosLocales;
-            this.storage.set('books2020',this.libros).then( () => {
+            this.storage.set(this.pathStorage,this.libros).then( () => {
               this.librosDescargados.emit(this.libros);
             });
           });
@@ -119,7 +126,7 @@ export class CodesComponent implements OnInit {
       const code = this.FrmCodigo.codigo;
       this.libros =  await this.booksService.getBooks(code).toPromise();
 
-      await this.storage.set('books2020',this.libros);
+      await this.storage.set(this.pathStorage,this.libros);
 
       await this.loadingController.dismiss();
 

@@ -110,8 +110,8 @@ export class HomeDirectorPage {
   estadoArriba  = false;
   primeraVez = true;
   headersText: any = [];
-  header = 'Users';
-  nombreIcono = 'search-outline';
+  header = 'Books';
+  nombreIcono = 'book-outline';
   iconos: any[];
   public swipeUp = false;
   public swipeUp2 = false;
@@ -577,7 +577,7 @@ export class HomeDirectorPage {
       }, 500);
       
 
-    }
+  }
     async  ionSlideTouchStart() {
 
      if (this.estadoArriba) {
@@ -591,18 +591,32 @@ export class HomeDirectorPage {
 
     }
     async ionSlideTouchEndSlide() {
+      console.log("ionSlideTouchEndSlide");
       let index = await this.slideUp.getActiveIndex();
-
+      console.log("index primero",index);
       // Por mientras
-      index = index === 1 ? 1 : index;
+      index = index === 1 ? 2 : index;
       index = index === 0 ? 1 : index;
+      //console.log("index",index);
+
       this.header = this.headersText[index - 1];
       this.nombreIcono = this.iconos[index - 1];
 
 
       if (index === 1) {
+        this.tabs = ['Todos', 'Inglés'  , 'Español'];
+      }  else if (index === 2) {
+        
+        setTimeout(() => {
+          //Esta validacion es para que no se dibujen dos veces los componentes de escolaridad
+          if(this.container._data.renderElement.nextElementSibling==null) {
+            this.verEscolaridades();
+            this.verEscolaridadesDocente();
+          }
+        }, 100);
+
         this.tabs = ['Alumnos', 'Docentes', 'Buscar'];
-      }
+     }
 
       this.selectOption = '0';
       // console.log(await this.slideDown.getActiveIndex().toString());
@@ -611,6 +625,7 @@ export class HomeDirectorPage {
 
       this.selectSeccion = index;
 
+      return;
       if (index === 1) {
          this.fabVisible = false; /*this.pillMenu.visibleFab(false);*/ 
          this.renderer.setStyle(this.fabend.nativeElement,'display','none');
@@ -630,11 +645,11 @@ export class HomeDirectorPage {
          
          this.renderer.setStyle(this.fabstart.nativeElement,'display','none');
      } 
-      else { 
-          this.fabVisibleFilters = false; /*this.pillMenu.visibleFabFilters(false)*/ 
-          this.renderer.setStyle(this.fabend.nativeElement,'display','none');
-          this.renderer.setStyle(this.fabstart.nativeElement,'display','none');
-      }
+    else { 
+        this.fabVisibleFilters = false; /*this.pillMenu.visibleFabFilters(false)*/ 
+        this.renderer.setStyle(this.fabend.nativeElement,'display','none');
+        this.renderer.setStyle(this.fabstart.nativeElement,'display','none');
+    }
 
     }
 
@@ -661,6 +676,7 @@ export class HomeDirectorPage {
   }
 
     ionSlideTransitionStart() {
+      console.log("ionSlideTransitionStart");
       setTimeout(() => {
         this.numeroclicks=1;
         this.pillMenu.nextSegment('0');
@@ -675,6 +691,11 @@ export class HomeDirectorPage {
       //console.log(nombre);
       this.user.grado = this.getKeyToken('grado');
       this.user.campus = this.getCampusUsuario();
+    }
+
+    updateAutoHeightSlider(){
+      console.log("updateAutoHeightSlider");
+      this.slideDown.updateAutoHeight();
     }
 
     capitalizeFirstLetter(string) {
@@ -703,14 +724,10 @@ export class HomeDirectorPage {
 
       //this.LstTareas = await this.apiTareas.get().toPromise();
       
-      this.iconos = ['search-outline','book-outline', 'pencil', 'people-outline', 'person-outline'];
-      this.headersText = ['Users', 'Tasks', 'Community', 'Account', 'Support'];
-      this.tabs = ['Alumnos', 'Docentes', 'Buscar'];
+      this.iconos = ['book-outline','search-outline'];
+      this.headersText = ['Books', 'Users'];
+      this.tabs = ['Todos', 'Inglés', 'Español'];
 
-      setTimeout(() => {
-        this.verEscolaridades();
-        this.verEscolaridadesDocente();
-      }, 100);
 
       this.gesture = this.gestureCtrl.create({
 
@@ -887,7 +904,7 @@ export class HomeDirectorPage {
           }, {
             text: 'Si',
             handler: () => {
-              this.storage.clear().then(() => {
+              this.storage.remove("books2020").then(() => {
                 this.authenticationService.logout().then( data => {
                   this.webSocket.finishWebScoket();
                 });

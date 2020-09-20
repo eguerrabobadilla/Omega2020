@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChildren, QueryList } from '@angular/core';
+import { Component, OnInit, Input, ViewChildren, QueryList,ApplicationRef,Output,EventEmitter } from '@angular/core';
 import { WebsocketService } from 'src/app/services/websocket.service';
 import { DownloadFileService } from 'src/app/services/download-file.service';
 import { FileTransfer, FileTransferObject } from '@ionic-native/file-transfer/ngx';
@@ -13,6 +13,7 @@ import { WebView } from '@ionic-native/ionic-webview/ngx';
 import { BehaviorSubject} from 'rxjs';
 import { CircleProgressComponent } from '../circle-progress/circle-progress.component';
 import { Storage } from '@ionic/storage';
+import { GlobalService } from 'src/app/services/global.service';
 
 @Component({
   selector: 'app-books',
@@ -24,10 +25,12 @@ export class BooksComponent implements OnInit {
   //private  BackgroundGeolocation: modusecho;
   @ViewChildren(CircleProgressComponent) ArrayCircleProgress: QueryList<CircleProgressComponent>;
   @Input() librosIN: any[];
+  @Output() updateAutoHeightSlider = new EventEmitter();
+  pathStorage:any;
 
   constructor(public  webSocket: WebsocketService,private serviceDownload: DownloadFileService,private transfer: FileTransfer,
               private file: File,private platform: Platform,private booksService: BooksService,private zip: Zip,
-              private webview: WebView,private storage: Storage) {
+              private webview: WebView,private storage: Storage,private applicationRef:ApplicationRef,private globalServicies: GlobalService) {
   }
 
   ngOnInit() {
@@ -40,6 +43,12 @@ export class BooksComponent implements OnInit {
 
   ngAfterViewInit (){
     console.log("ngAfterViewInit");
+
+    this.pathStorage = this.globalServicies.getNameStorage();
+
+    setTimeout(() => {
+      this.updateAutoHeightSlider.emit();
+    }, 2500);
     /*this.ArrayCircleProgress.changes.subscribe((items: Array<CircleProgressComponent>) => {
       //messages.forEach((item: SystemMessageComponent) => console.log(item.message));
       console.log(items);
@@ -84,7 +93,8 @@ export class BooksComponent implements OnInit {
   }
 
   async openBook(item){
-    //console.log(item);
+    console.log(item);
+    
     const { Browser } = Plugins;
 
     if(item.status=="descargando")
@@ -217,7 +227,7 @@ export class BooksComponent implements OnInit {
       item.descargado="si";
       item.progreso=0;
 
-      this.storage.set('books2020',this.libros).then( () => {
+      this.storage.set(this.pathStorage,this.libros).then( () => {
         console.log("guardo libros");
       });
     })
@@ -236,7 +246,7 @@ export class BooksComponent implements OnInit {
       const circleP=this.ArrayCircleProgress.toArray().find(x => x.item.Id===item.Id);
       circleP.restartProgress();
 
-      this.storage.set('books2020',this.libros).then( () => {
+      this.storage.set(this.pathStorage,this.libros).then( () => {
         console.log("guardo libros");
       });
     });
