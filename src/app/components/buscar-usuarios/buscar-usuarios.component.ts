@@ -1,5 +1,5 @@
 import { ApplicationRef, Component, OnInit,ViewChild } from '@angular/core';
-import { IonInfiniteScroll, ModalController } from '@ionic/angular';
+import { IonInfiniteScroll, IonVirtualScroll, ModalController } from '@ionic/angular';
 import { UsuariosService } from 'src/app/api/usuarios.service';
 import { DetalleAlumnoPage } from 'src/app/pages/detalle-alumno/detalle-alumno.page';
 
@@ -16,6 +16,7 @@ export class BuscarUsuariosComponent implements OnInit {
   contadorInfinieScroll: number = 0;
   public spinnerLoad: boolean=false;
   @ViewChild(IonInfiniteScroll,{static: false}) infiniteScroll: IonInfiniteScroll;
+  @ViewChild(IonVirtualScroll,{static: false}) virtualScroll: IonVirtualScroll;
 
 
   constructor(private apiUsuarios: UsuariosService,private modalCtrl: ModalController, private applicationRef: ApplicationRef) {
@@ -67,6 +68,7 @@ export class BuscarUsuariosComponent implements OnInit {
         }
 
         event.target.complete();
+        this.virtualScroll.checkEnd();
 
         this.contadorInfinieScroll += 100;
       }
