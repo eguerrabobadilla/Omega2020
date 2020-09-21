@@ -1,26 +1,164 @@
-<div class="images">
-    <div class="one-image" *ngFor="let item of libros">
-        <!--<div style="width: 100px;height: 100px;background-color: red;position: absolute;z-index: 2;top: 40%;left: 50%;margin-right: -50%;transform: translate(-50%, -50%);"></div>-->
-        <app-circle-progress [ngStyle] ="{'display' : item.descarga}" [item]="item" (click)="openBook(item)" style="position: absolute;z-index: 3;top: 40%;left: 50%;margin-right: -50%;transform: translate(-50%, -50%);"></app-circle-progress>
-        <ion-icon name="cloud-download" [ngStyle] ="{'display' : item.flecha}" class="downLoadSytle" (click)="openBook(item)"></ion-icon>
-        <ion-spinner name="crescent"  [ngStyle] ="{'display' : item.spinner}" class="spinnerStyle"></ion-spinner>
-        <div style="position:relative">
-            <!--<ion-progress-bar value="{{item.progreso}}" mode="ios" style="position: absolute;top: 40%;left: 16%;width: 71%;height: 3%;border-radius: 7px;"></ion-progress-bar>-->
-            <!--<img src="https://www.alfalbs.app/Wcflbs/cover/{{item.rutaThumbnails}}" class="image-rouder" width="100%">-->
-            <!--<img src="assets/img/cover/{{item.RutaThumbnails}}" class="image-rouder" [ngStyle] ="{'opacity' : item.opacity}" width="100%" (click)="openBook(item)">-->
-            <img src="assets/img/cover/{{item.RutaThumbnails}}" class="image-rouder" width="100%" style="min-height: 200px;" (click)="openBook(item)">
-            <div class="grid-container" style="position: relative;width: 100%">
-                <div class="grid-item item1">
-                    <div class="version">
-                        <span>{{item.Version}}</span>
+
+        <div *ngIf="getTipoUsuario()=='Director'; then izquierdaTemplate else derechaTemplate"></div>
+        <ng-template #izquierdaTemplate>
+            <!-- Kinder -->
+            <ion-item button lines="none" detail="false"  (click)="abrirKinder()">
+                <h1 #botonKinder class="accordion">Kinder</h1>
+            </ion-item>
+            <div class="images">
+                <div class="panel" #panelKinder style="max-height: 0;display: none;" status="close">
+                    <div class="one-image" *ngFor="let item of libros  | filter : 'Kinder' : 'Escolaridad'">
+                        <!--<div style="width: 100px;height: 100px;background-color: red;position: absolute;z-index: 2;top: 40%;left: 50%;margin-right: -50%;transform: translate(-50%, -50%);"></div>-->
+                        <app-circle-progress [ngStyle] ="{'display' : item.descarga}" [item]="item" (click)="openBook(item)" style="position: absolute;z-index: 3;top: 40%;left: 50%;margin-right: -50%;transform: translate(-50%, -50%);cursor: pointer;"></app-circle-progress>
+                        <ion-icon name="cloud-download" [ngStyle] ="{'display' : item.flecha}" class="downLoadSytle" (click)="openBook(item)"></ion-icon>
+                        <ion-spinner name="crescent"  [ngStyle] ="{'display' : item.spinner}" class="spinnerStyle"></ion-spinner>
+                        <div style="position:relative" style="cursor: pointer;">
+                            <!--<ion-progress-bar value="{{item.progreso}}" mode="ios" style="position: absolute;top: 40%;left: 16%;width: 71%;height: 3%;border-radius: 7px;"></ion-progress-bar>-->
+                            <!--<img src="https://www.alfalbs.app/Wcflbs/cover/{{item.rutaThumbnails}}" class="image-rouder" width="100%">-->
+                            <!--<img src="assets/img/cover/{{item.RutaThumbnails}}" class="image-rouder" [ngStyle] ="{'opacity' : item.opacity}" width="100%" (click)="openBook(item)">-->
+                            <img src="assets/img/cover/{{item.RutaThumbnails}}" class="image-rouder" width="100%" style="min-height: 200px;cursor: pointer;" (click)="openBook(item)">
+                            <div class="grid-container" style="position: relative;width: 100%">
+                                <div class="grid-item item1">
+                                    <div class="version">
+                                        <span>{{item.Version}}</span>
+                                    </div>
+                                    {{item.Nombre}}
+                                </div>
+                                <div class="grid-item item2" style="width: 30px;height: 30px;background-color: #6228cf; border-radius: 50%;text-align: left;">
+                                </div>
+                                <div class="grid-item item3">{{item.Grados}}{{item.Suffix}} Grade</div>
+                                <div class="grid-item item4">{{item.Escolaridad}}</div>
+                            </div>
+                        </div>
                     </div>
-                    {{item.Nombre}}
                 </div>
-                <div class="grid-item item2" style="width: 30px;height: 30px;background-color: #6228cf; border-radius: 50%;text-align: left;">
-                </div>
-                <div class="grid-item item3">{{item.Grados}}{{item.Suffix}} Grade</div>
-                <div class="grid-item item4">{{item.Escolaridad}}</div>
             </div>
-        </div>
-    </div>
-</div>
+             <!--Termina Kinder -->
+            <!-- Primaria -->
+            <ion-item button lines="none" detail="false" (click)="abrirPrimaria()">
+                <h1 #botonPrimaria class="accordion">Primaria</h1>
+            </ion-item>
+            <div class="images">
+                <div class="panel" #panelPrimaria style="max-height: 0;display: none;" status="close">
+                    <div class="one-image" *ngFor="let item of libros  | filter : 'Elementary School' : 'Escolaridad'">
+                        <!--<div style="width: 100px;height: 100px;background-color: red;position: absolute;z-index: 2;top: 40%;left: 50%;margin-right: -50%;transform: translate(-50%, -50%);"></div>-->
+                        <app-circle-progress [ngStyle] ="{'display' : item.descarga}" [item]="item" (click)="openBook(item)" style="position: absolute;z-index: 3;top: 40%;left: 50%;margin-right: -50%;transform: translate(-50%, -50%);cursor: pointer;"></app-circle-progress>
+                        <ion-icon name="cloud-download" [ngStyle] ="{'display' : item.flecha}" class="downLoadSytle" (click)="openBook(item)"></ion-icon>
+                        <ion-spinner name="crescent"  [ngStyle] ="{'display' : item.spinner}" class="spinnerStyle"></ion-spinner>
+                        <div style="position:relative" style="cursor: pointer;">
+                            <!--<ion-progress-bar value="{{item.progreso}}" mode="ios" style="position: absolute;top: 40%;left: 16%;width: 71%;height: 3%;border-radius: 7px;"></ion-progress-bar>-->
+                            <!--<img src="https://www.alfalbs.app/Wcflbs/cover/{{item.rutaThumbnails}}" class="image-rouder" width="100%">-->
+                            <!--<img src="assets/img/cover/{{item.RutaThumbnails}}" class="image-rouder" [ngStyle] ="{'opacity' : item.opacity}" width="100%" (click)="openBook(item)">-->
+                            <img src="assets/img/cover/{{item.RutaThumbnails}}" class="image-rouder" width="100%" style="min-height: 200px;cursor: pointer;" (click)="openBook(item)">
+                            <div class="grid-container" style="position: relative;width: 100%">
+                                <div class="grid-item item1">
+                                    <div class="version">
+                                        <span>{{item.Version}}</span>
+                                    </div>
+                                    {{item.Nombre}}
+                                </div>
+                                <div class="grid-item item2" style="width: 30px;height: 30px;background-color: #6228cf; border-radius: 50%;text-align: left;">
+                                </div>
+                                <div class="grid-item item3">{{item.Grados}}{{item.Suffix}} Grade</div>
+                                <div class="grid-item item4">{{item.Escolaridad}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+             <!--Termina Primaria -->
+            <!-- Secundaria -->
+            <ion-item button lines="none" detail="false" (click)="abrirSecundaria()">
+                <h1 #botonSecundaira class="accordion">Secundaria</h1>
+            </ion-item>
+            <div class="images">
+                <div class="panel" #panelSecundaria style="max-height: 0;display: none;" status="close">
+                    <div class="one-image" *ngFor="let item of libros  | filter : 'Junior High School' : 'Escolaridad'">
+                        <!--<div style="width: 100px;height: 100px;background-color: red;position: absolute;z-index: 2;top: 40%;left: 50%;margin-right: -50%;transform: translate(-50%, -50%);"></div>-->
+                        <app-circle-progress [ngStyle] ="{'display' : item.descarga}" [item]="item" (click)="openBook(item)" style="position: absolute;z-index: 3;top: 40%;left: 50%;margin-right: -50%;transform: translate(-50%, -50%);cursor: pointer;"></app-circle-progress>
+                        <ion-icon name="cloud-download" [ngStyle] ="{'display' : item.flecha}" class="downLoadSytle" (click)="openBook(item)"></ion-icon>
+                        <ion-spinner name="crescent"  [ngStyle] ="{'display' : item.spinner}" class="spinnerStyle"></ion-spinner>
+                        <div style="position:relative" style="cursor: pointer;">
+                            <!--<ion-progress-bar value="{{item.progreso}}" mode="ios" style="position: absolute;top: 40%;left: 16%;width: 71%;height: 3%;border-radius: 7px;"></ion-progress-bar>-->
+                            <!--<img src="https://www.alfalbs.app/Wcflbs/cover/{{item.rutaThumbnails}}" class="image-rouder" width="100%">-->
+                            <!--<img src="assets/img/cover/{{item.RutaThumbnails}}" class="image-rouder" [ngStyle] ="{'opacity' : item.opacity}" width="100%" (click)="openBook(item)">-->
+                            <img src="assets/img/cover/{{item.RutaThumbnails}}" class="image-rouder" width="100%" style="min-height: 200px;cursor: pointer;" (click)="openBook(item)">
+                            <div class="grid-container" style="position: relative;width: 100%">
+                                <div class="grid-item item1">
+                                    <div class="version">
+                                        <span>{{item.Version}}</span>
+                                    </div>
+                                    {{item.Nombre}}
+                                </div>
+                                <div class="grid-item item2" style="width: 30px;height: 30px;background-color: #6228cf; border-radius: 50%;text-align: left;">
+                                </div>
+                                <div class="grid-item item3">{{item.Grados}}{{item.Suffix}} Grade</div>
+                                <div class="grid-item item4">{{item.Escolaridad}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+             <!--Termina Secundaria -->
+            <!-- Preparatoria -->
+            <ion-item button lines="none" detail="false" (click)="abrirPreparatoria()">
+                <h1 #botonPreparatoria class="accordion">Preparatoria</h1>
+            </ion-item>
+            <div class="images">
+                <div class="panel" #panelPreparatoria style="max-height: 0;display: none;" status="close">
+                    <div class="one-image" *ngFor="let item of libros  | filter : 'High School' : 'Escolaridad'">
+                        <!--<div style="width: 100px;height: 100px;background-color: red;position: absolute;z-index: 2;top: 40%;left: 50%;margin-right: -50%;transform: translate(-50%, -50%);"></div>-->
+                        <app-circle-progress [ngStyle] ="{'display' : item.descarga}" [item]="item" (click)="openBook(item)" style="position: absolute;z-index: 3;top: 40%;left: 50%;margin-right: -50%;transform: translate(-50%, -50%);cursor: pointer;"></app-circle-progress>
+                        <ion-icon name="cloud-download" [ngStyle] ="{'display' : item.flecha}" class="downLoadSytle" (click)="openBook(item)"></ion-icon>
+                        <ion-spinner name="crescent"  [ngStyle] ="{'display' : item.spinner}" class="spinnerStyle"></ion-spinner>
+                        <div style="position:relative" style="cursor: pointer;">
+                            <!--<ion-progress-bar value="{{item.progreso}}" mode="ios" style="position: absolute;top: 40%;left: 16%;width: 71%;height: 3%;border-radius: 7px;"></ion-progress-bar>-->
+                            <!--<img src="https://www.alfalbs.app/Wcflbs/cover/{{item.rutaThumbnails}}" class="image-rouder" width="100%">-->
+                            <!--<img src="assets/img/cover/{{item.RutaThumbnails}}" class="image-rouder" [ngStyle] ="{'opacity' : item.opacity}" width="100%" (click)="openBook(item)">-->
+                            <img src="assets/img/cover/{{item.RutaThumbnails}}" class="image-rouder" width="100%" style="min-height: 200px;cursor: pointer;" (click)="openBook(item)">
+                            <div class="grid-container" style="position: relative;width: 100%">
+                                <div class="grid-item item1">
+                                    <div class="version">
+                                        <span>{{item.Version}}</span>
+                                    </div>
+                                    {{item.Nombre}}
+                                </div>
+                                <div class="grid-item item2" style="width: 30px;height: 30px;background-color: #6228cf; border-radius: 50%;text-align: left;">
+                                </div>
+                                <div class="grid-item item3">{{item.Grados}}{{item.Suffix}} Grade</div>
+                                <div class="grid-item item4">{{item.Escolaridad}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+             <!--Termina Preparatoria -->
+        </ng-template>
+        <ng-template #derechaTemplate>
+            <div class="images">
+            <div class="one-image" *ngFor="let item of libros">
+                <!--<div style="width: 100px;height: 100px;background-color: red;position: absolute;z-index: 2;top: 40%;left: 50%;margin-right: -50%;transform: translate(-50%, -50%);"></div>-->
+                <app-circle-progress [ngStyle] ="{'display' : item.descarga}" [item]="item" (click)="openBook(item)" style="position: absolute;z-index: 3;top: 40%;left: 50%;margin-right: -50%;transform: translate(-50%, -50%);cursor: pointer;"></app-circle-progress>
+                <ion-icon name="cloud-download" [ngStyle] ="{'display' : item.flecha}" class="downLoadSytle" (click)="openBook(item)"></ion-icon>
+                <ion-spinner name="crescent"  [ngStyle] ="{'display' : item.spinner}" class="spinnerStyle"></ion-spinner>
+                <div style="position:relative" style="cursor: pointer;">
+                    <!--<ion-progress-bar value="{{item.progreso}}" mode="ios" style="position: absolute;top: 40%;left: 16%;width: 71%;height: 3%;border-radius: 7px;"></ion-progress-bar>-->
+                    <!--<img src="https://www.alfalbs.app/Wcflbs/cover/{{item.rutaThumbnails}}" class="image-rouder" width="100%">-->
+                    <!--<img src="assets/img/cover/{{item.RutaThumbnails}}" class="image-rouder" [ngStyle] ="{'opacity' : item.opacity}" width="100%" (click)="openBook(item)">-->
+                    <img src="assets/img/cover/{{item.RutaThumbnails}}" class="image-rouder" width="100%" style="min-height: 200px;cursor: pointer;" (click)="openBook(item)">
+                    <div class="grid-container" style="position: relative;width: 100%">
+                        <div class="grid-item item1">
+                            <div class="version">
+                                <span>{{item.Version}}</span>
+                            </div>
+                            {{item.Nombre}}
+                        </div>
+                        <div class="grid-item item2" style="width: 30px;height: 30px;background-color: #6228cf; border-radius: 50%;text-align: left;">
+                        </div>
+                        <div class="grid-item item3">{{item.Grados}}{{item.Suffix}} Grade</div>
+                        <div class="grid-item item4">{{item.Escolaridad}}</div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </ng-template>

@@ -169,6 +169,22 @@ top: 0;" mode="ios">
     </ion-fab-button>
 </ion-fab>
 
+<!-- Botones para escritorio -->
+<ion-fab mode="ios" vertical="center" horizontal="end" slot="fixed">
+    <ion-fab-button #fabNext (click)="nextSlide()" mode="ios" size="small" style="--box-shadow:none ;--background-activated: #F4315D;  --background: #F4315D;width: 46px;
+    height:46px;">
+        <ion-icon name="chevron-forward-outline"></ion-icon>
+    </ion-fab-button>
+</ion-fab>
+
+<ion-fab mode="ios" vertical="center" horizontal="start" slot="fixed">
+    <ion-fab-button #fabPrev (click)="prevSlide()" mode="ios" size="small" style="--box-shadow:none ;--background-activated: #F4315D;  --background: #F4315D;width: 46px;
+    height:46px;">
+        <ion-icon name="chevron-back-outline"></ion-icon>
+    </ion-fab-button>
+</ion-fab>
+<!-- Termina botones para escritorio -->
+
 <div #div2 (click)="clickDiv()" class="edu1" style="transform: translateY(60vh)">
     <div  style="position: -webkit-sticky;top: 0;font-size: 29px;z-index: 999;position: sticky;">
        
@@ -186,11 +202,11 @@ top: 0;" mode="ios">
             </ion-slide>
             <ion-slide>
                 <app-codes (librosDescargados)="librosDescargados($event)" *ngIf="codigoVisible"></app-codes>
-                <app-books [librosIN]="libros | filter : 'Ingles' : 'Idioma'" *ngIf="!codigoVisible"> </app-books>
+                <app-books (updateAutoHeightSlider)="updateAutoHeightSlider()" [librosIN]="libros | filter : 'Ingles' : 'Idioma'" *ngIf="!codigoVisible"> </app-books>
             </ion-slide>
             <ion-slide>
                 <app-codes (librosDescargados)="librosDescargados($event)" *ngIf="codigoVisible"></app-codes>
-                <app-books [librosIN]="libros | filter : 'Espanol' : 'Idioma'" *ngIf="!codigoVisible"> </app-books>
+                <app-books (updateAutoHeightSlider)="updateAutoHeightSlider()" [librosIN]="libros | filter : 'Espanol' : 'Idioma'" *ngIf="!codigoVisible"> </app-books>
             </ion-slide>
             <!--<ion-slide>
                 <app-codes (librosDescargados)="librosDescargados($event)"></app-codes>

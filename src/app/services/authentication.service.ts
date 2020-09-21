@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject} from 'rxjs';
 import { Router } from '@angular/router';
 import { LoginService } from '../api/login.service';
-import { NavController } from '@ionic/angular';
+import { NavController, Platform } from '@ionic/angular';
+import { isDevMode } from '@angular/core';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,8 @@ export class AuthenticationService {
   constructor(
     private router: Router,
     private loginService: LoginService,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private platform: Platform
   ) {
     this.ifLoggedIn();
   }
@@ -45,7 +47,12 @@ export class AuthenticationService {
       this.authState.next(false);
       localStorage.clear();
       //this.router.navigate(['login']);
-      window.location.reload();
+      
+      if (this.platform.is('cordova') || isDevMode()==true) {
+          window.location.reload();
+      } else {
+        window.top.location.href = "http://lbsplus.mx/";
+      }
       resolve(this.authState.value);
     });
 

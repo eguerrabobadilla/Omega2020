@@ -110,6 +110,8 @@ export class HomePage {
   @ViewChild('fab', {read: ElementRef, static: true}) fab: ElementRef;
   @ViewChild('fabstart', {read: ElementRef, static: true}) fabstart: ElementRef;
   @ViewChild('fabend', {read: ElementRef, static: true}) fabend: ElementRef;
+  @ViewChild('fabNext', {read: ElementRef, static: true}) fabNext: ElementRef;
+  @ViewChild('fabPrev', {read: ElementRef, static: true}) fabPrev: ElementRef;
   @ViewChild('foot', {read: ElementRef, static: true}) foot: ElementRef;
   @ViewChild('animation7', {read: ElementRef, static: true}) animation7: ElementRef;
   @ViewChild('animation8', {read: ElementRef, static: true}) animation8: ElementRef;
@@ -442,6 +444,7 @@ export class HomePage {
   
   
     animation5.play();
+    this.animacionButonSlide(false);
   } else {
     this.div2.nativeElement.click();
     this.IonContentScroll.scrollToPoint(0, 0, 400);
@@ -1218,7 +1221,7 @@ this.pillMenu.animacion();
       }
 
       const alert = await this.alertController.create({
-        header: 'LBS Plus Demo',
+        header: 'LBS Plus',
         message: '<strong>¿Desea cerrar sesión?</strong>',
         mode: 'ios',
         buttons: [
@@ -1330,6 +1333,7 @@ this.pillMenu.animacion();
     this.div2.nativeElement.click();
    this.pocisionInicial === true;
    this.checkCodePush();
+   this.animacionButonSlide(true);
   }
  }
  divAbajo(){	
@@ -1345,6 +1349,7 @@ this.pillMenu.animacion();
   this.scrollenable = false;
  
   this.animacion(true, true); 
+  this.animacionButonSlide(false);
 //    this.scrollenable = false;
   this.estadoArriba = false;
 // }
@@ -1480,6 +1485,49 @@ this.pillMenu.animacion();
   
       alertTerminado.present();
     }
+
+    nextSlide(){
+      this.slideUp.slideNext();
+      this.ionSlideTouchEndSlide();
+    }
+
+    prevSlide(){
+      this.slideUp.slidePrev();
+      this.ionSlideTouchEndSlide();
+    }
+
+    animacionButonSlide(esHaciaArriba){
+      let animationButonSlide : Animation;
+      if(esHaciaArriba){
+         
+      animationButonSlide = this.animationCtrl.create('animationButonSlide')
+      .addElement([this.fabNext.nativeElement,this.fabPrev.nativeElement])
+      .duration(200)
+      .delay(0)
+      .easing('cubic-bezier(.12,0,.39,0)')
+     .keyframes([{ offset: 0, transform: 'scale(1)' },
+     { offset: 1, transform: 'scale(0)' }, ]);
+    }
+    else{
+
+      animationButonSlide = this.animationCtrl.create('animationButonSlide-b')
+      .addElement([this.fabNext.nativeElement,this.fabPrev.nativeElement])
+      .duration(700)
+      .delay(20)
+      .easing('cubic-bezier(.61,1,.88,1)')
+     .keyframes([{ offset: 0, transform: 'scale(0)' },
+     { offset: 0.2, transform: 'scale(1)' },
+     { offset: 0.5, transform: 'scale(1.3)' },
+     { offset: 1, transform: 'scale(1)' }, ]);
+
+    }
+     animationButonSlide.play();
+
+    }
+
+     
+
+
 
 }
 

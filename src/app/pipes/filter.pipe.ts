@@ -18,7 +18,8 @@ export class FilterPipe implements PipeTransform {
     // retrun the filtered array
     return items.filter(item => {
       if (item && item[fieldName]) {
-        return item[fieldName].toLowerCase().includes(searchText);
+        //return item[fieldName].toLowerCase().includes(searchText);
+        return item[fieldName].toLowerCase() == searchText;
       }
       return false;
     });

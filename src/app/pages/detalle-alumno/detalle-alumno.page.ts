@@ -85,7 +85,7 @@ export class DetalleAlumnoPage implements OnInit {
         await this.loadingController.dismiss();
 
         const alert = await this.alertCtrl.create({
-          header: 'LBS Plus Demo',
+          header: 'LBS Plus',
           //subHeader: 'Subtitle',
           message: err,
           buttons: ['Aceptar']

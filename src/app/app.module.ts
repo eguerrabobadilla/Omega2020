@@ -34,6 +34,8 @@ import { IonicStorageModule } from '@ionic/storage';
 import { Zip } from '@ionic-native/zip/ngx';
 import { WebView } from '@ionic-native/ionic-webview/ngx';
 import { CodePush } from '@ionic-native/code-push/ngx';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [AppComponent, AnimateItemsDirective],
@@ -53,7 +55,8 @@ import { CodePush } from '@ionic-native/code-push/ngx';
     DetallesChatPageModule,
     DetalleChatGroupPageModule,
     DetallesNewsPageModule,
-    FormsModule
+    FormsModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [
     StatusBar,

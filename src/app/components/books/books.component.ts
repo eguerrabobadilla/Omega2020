@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChildren, QueryList,ApplicationRef,Output,EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, ViewChildren, QueryList,ApplicationRef,Output,EventEmitter,ViewChild,ElementRef,Renderer2 } from '@angular/core';
 import { WebsocketService } from 'src/app/services/websocket.service';
 import { DownloadFileService } from 'src/app/services/download-file.service';
 import { FileTransfer, FileTransferObject } from '@ionic-native/file-transfer/ngx';
@@ -24,13 +24,110 @@ export class BooksComponent implements OnInit {
   libros: any[] = [];
   //private  BackgroundGeolocation: modusecho;
   @ViewChildren(CircleProgressComponent) ArrayCircleProgress: QueryList<CircleProgressComponent>;
+  @ViewChild('panelKinder', {read: ElementRef, static: false}) panelKinder: ElementRef;
+  @ViewChild('botonKinder', {read: ElementRef, static: false}) botonKinder: ElementRef;
+
+  @ViewChild('panelPrimaria', {read: ElementRef, static: false}) panelPrimaria: ElementRef;
+  @ViewChild('botonPrimaria', {read: ElementRef, static: false}) botonPrimaria: ElementRef;
+
+  @ViewChild('panelSecundaria', {read: ElementRef, static: false}) panelSecundaria: ElementRef;
+  @ViewChild('botonSecundaira', {read: ElementRef, static: false}) botonSecundaira: ElementRef;
+
+  @ViewChild('panelPreparatoria', {read: ElementRef, static: false}) panelPreparatoria: ElementRef;
+  @ViewChild('botonPreparatoria', {read: ElementRef, static: false}) botonPreparatoria: ElementRef;
+
+
   @Input() librosIN: any[];
   @Output() updateAutoHeightSlider = new EventEmitter();
   pathStorage:any;
+  tipoUsuario:any;
 
   constructor(public  webSocket: WebsocketService,private serviceDownload: DownloadFileService,private transfer: FileTransfer,
               private file: File,private platform: Platform,private booksService: BooksService,private zip: Zip,
-              private webview: WebView,private storage: Storage,private applicationRef:ApplicationRef,private globalServicies: GlobalService) {
+              private webview: WebView,private storage: Storage,private applicationRef:ApplicationRef,private globalServicies: GlobalService,
+              private renderer: Renderer2) {
+  }
+
+  abrirKinder(){
+    console.log("abrirKinder");
+    
+    const statusPanel = this.panelKinder.nativeElement.getAttribute("status");
+    if(statusPanel=="close") {
+      this.renderer.removeStyle(this.panelKinder.nativeElement, 'max-height');
+      this.renderer.addClass(this.botonKinder.nativeElement, 'active');
+      this.panelKinder.nativeElement.setAttribute('status','open');
+      this.renderer.removeStyle(this.panelKinder.nativeElement, 'display');
+    }
+    else {
+      this.renderer.setStyle(this.panelKinder.nativeElement, 'max-height','0');
+      this.renderer.removeClass(this.botonKinder.nativeElement, 'active');
+      this.panelKinder.nativeElement.setAttribute('status','close');
+      this.renderer.setStyle(this.panelKinder.nativeElement, 'display','none');
+    }
+
+    this.updateAutoHeightSlider.emit();
+  }
+
+  abrirPrimaria(){
+    console.log("abrirPrimaria");
+    
+    const statusPanel = this.panelPrimaria.nativeElement.getAttribute("status");
+    if(statusPanel=="close") {
+      this.renderer.removeStyle(this.panelPrimaria.nativeElement, 'max-height');
+      this.renderer.addClass(this.botonPrimaria.nativeElement, 'active');
+      this.panelPrimaria.nativeElement.setAttribute('status','open');
+      this.renderer.removeStyle(this.panelPrimaria.nativeElement, 'display');
+    }
+    else {
+      this.renderer.setStyle(this.panelPrimaria.nativeElement, 'max-height','0');
+      this.renderer.removeClass(this.botonPrimaria.nativeElement, 'active');
+      this.panelPrimaria.nativeElement.setAttribute('status','close');
+      this.renderer.setStyle(this.panelPrimaria.nativeElement, 'display','none');
+    }
+
+    this.updateAutoHeightSlider.emit();
+  }
+
+  abrirSecundaria() {
+    console.log("abrirSecundaria");
+    
+    const statusPanel = this.panelSecundaria.nativeElement.getAttribute("status");
+    if(statusPanel=="close") {
+      this.renderer.removeStyle(this.panelSecundaria.nativeElement, 'max-height');
+      this.renderer.addClass(this.botonSecundaira.nativeElement, 'active');
+      this.panelSecundaria.nativeElement.setAttribute('status','open');
+      this.renderer.removeStyle(this.panelSecundaria.nativeElement, 'display');
+    }
+    else {
+      this.renderer.setStyle(this.panelSecundaria.nativeElement, 'max-height','0');
+      this.renderer.removeClass(this.botonSecundaira.nativeElement, 'active');
+      this.panelSecundaria.nativeElement.setAttribute('status','close');
+      this.renderer.setStyle(this.panelSecundaria.nativeElement, 'display','none');
+    }
+
+    this.updateAutoHeightSlider.emit();
+  }
+
+  abrirPreparatoria(){
+    
+    
+    const statusPanel = this.panelPreparatoria.nativeElement.getAttribute("status");
+
+    if(statusPanel=="close") {
+      this.renderer.removeStyle(this.panelPreparatoria.nativeElement, 'max-height');
+      this.renderer.addClass(this.botonPreparatoria.nativeElement, 'active');
+      this.panelPreparatoria.nativeElement.setAttribute('status','open');
+      this.renderer.removeStyle(this.panelPreparatoria.nativeElement, 'display');
+    }
+    else {
+      this.renderer.setStyle(this.panelPreparatoria.nativeElement, 'max-height','0');
+      this.renderer.removeClass(this.botonPreparatoria.nativeElement, 'active');
+      this.panelPreparatoria.nativeElement.setAttribute('status','close');
+      this.renderer.setStyle(this.panelPreparatoria.nativeElement, 'display','none');
+    }
+
+    console.log("abrirPreparatoria");
+    this.updateAutoHeightSlider.emit();
   }
 
   ngOnInit() {
@@ -45,6 +142,7 @@ export class BooksComponent implements OnInit {
     console.log("ngAfterViewInit");
 
     this.pathStorage = this.globalServicies.getNameStorage();
+    this.tipoUsuario = this.globalServicies.getKeyToken("tipo");
 
     setTimeout(() => {
       this.updateAutoHeightSlider.emit();
@@ -92,6 +190,12 @@ export class BooksComponent implements OnInit {
       alert(message);
   }
 
+  getTipoUsuario() {
+    const tipo=this.globalServicies.getKeyToken("tipo");
+    
+    return tipo;
+  }
+
   async openBook(item){
     console.log(item);
     
@@ -106,8 +210,11 @@ export class BooksComponent implements OnInit {
     if (this.platform.is('cordova')) {
         this.verificarLibro(item);
     } else {
-      console.log("Opcion solo en celular")
+      console.log("Opcion solo en celular");
+      console.log(item.NombreArchivo);
       item.status="terminado";
+      window.open('https://desktop.alfalbs.app/books/' + item.NombreArchivo + '/index.html');
+      //window.open('../books/' + item.NombreArchivo + '/index.html');
     }
   }
 
