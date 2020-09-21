@@ -86,8 +86,8 @@ import { GlobalModule } from '../modules/GoblaModule';
     CrearTopicPageModule,
     GlobalModule
   ],
-  declarations: [ HomePage, BooksComponent, CodesComponent, ListComponent, 
-    ChatsComponent, FilterPipe, ListResourceComponent, NewsComponent, ForumComponent,GraphicsComponent,CalendarComponent
+  declarations: [ HomePage, ListComponent, 
+    ChatsComponent, ListResourceComponent, NewsComponent, ForumComponent,GraphicsComponent,CalendarComponent
     , EvidencesComponent,SubjectsComponent, QuestionsComponent, ContactComponent, PerfilComponent,LinkifyPipe]
 })
 export class HomePageModule {}

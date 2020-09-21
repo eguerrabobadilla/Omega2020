@@ -46,7 +46,10 @@ right: 0px;" mode="ios">
 
     <ion-title mode="ios" style="left: 0px;top: 0px;padding-left: 30px;padding-right: 90px;padding-top:67vh;padding-bottom: 0px;position: absolute;width: 100%;height: 100%;transform: translateZ(0px);font-size: 39px;font-weight: 700;text-align: left;box-sizing: border-box;pointer-events: none;z-index: 5;--color: #fff;letter-spacing: 3px;">{{header}}</ion-title>
 
-    <ion-slides #slideUp type="ios" style="transform: translateY(4vh);height: 100%;" (ionSlideTransitionStart)="ionSlideTransitionStart()" (ionSlideTouchStart)="ionSlideTouchStart()" (ionSlideTouchEnd)="ionSlideTouchEndSlide()" [options]="slideOpts">
+    <ion-slides #slideUp type="ios" style="transform: translateY(4vh);height: 100%;" (ionSlideTransitionStart)="ionSlideTransitionStart()" (ionSlideTouchEnd)="ionSlideTouchEndSlide()" [options]="slideOpts">
+        <ion-slide>
+            <div class="animated zoomIn fast" style="margin-bottom: 90pxn; width: 100%;height:100%;background-image: url(assets/img/1.svg);background-repeat: no-repeat;background-size: 100% 100%;"></div>
+        </ion-slide>
         <ion-slide>
             <div class="animated zoomIn fast" style="margin-bottom: 90pxn; width: 100%;height:100%;background-image: url(assets/img/06_director.svg);background-repeat: no-repeat;background-size: 100% 100%;"></div>
         </ion-slide>
@@ -80,7 +83,24 @@ right: 0px;" mode="ios">
     <ion-header [translucent]="false" mode="ios"></ion-header>
     <ion-content #IonContentScroll [scrollY]="scrollenable" style="--background: #ffffff;">
         <div #elementsToProcess style="bottom: -0.1vh;position: relative;"></div>
+        <!--Books-->
         <ion-slides [options]="slideOptsdos" #slideDown (ionSlideTouchEnd)="ionSlideTouchEnd(slideUp,slideDown)" *ngIf="selectSeccion == 1" style="min-height: 72.6vh;">
+            <ion-slide>
+                <app-codes (librosDescargados)="librosDescargados($event)" *ngIf="codigoVisible"></app-codes>
+                <app-books (updateAutoHeightSlider)="updateAutoHeightSlider()" [librosIN]="libros" *ngIf="!codigoVisible"> </app-books>
+            </ion-slide>
+            <ion-slide>
+                <app-codes (librosDescargados)="librosDescargados($event)" *ngIf="codigoVisible"></app-codes>
+                <app-books [librosIN]="libros | filter : 'Ingles' : 'Idioma'" *ngIf="!codigoVisible"> </app-books>
+            </ion-slide>
+            <ion-slide>
+                <app-codes (librosDescargados)="librosDescargados($event)" *ngIf="codigoVisible"></app-codes>
+                <app-books [librosIN]="libros | filter : 'Espanol' : 'Idioma'" *ngIf="!codigoVisible"> </app-books>
+            </ion-slide>
+        </ion-slides>
+
+        <!--Users-->
+        <ion-slides [options]="slideOptsdos" #slideDown (ionSlideTouchEnd)="ionSlideTouchEnd(slideUp,slideDown)" *ngIf="selectSeccion == 2" style="min-height: 72.6vh;">
             <ion-slide>
                 <div style="display: none" #processContainer></div>
             </ion-slide>
@@ -91,7 +111,6 @@ right: 0px;" mode="ios">
                 <app-buscar-usuarios style="width: 100%;"></app-buscar-usuarios>
             </ion-slide>
         </ion-slides>
-        
-    </ion-content>
 
+    </ion-content>
 </div>
