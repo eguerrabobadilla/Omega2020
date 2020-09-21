@@ -31,6 +31,7 @@ export class NewResourcePage implements OnInit {
   gradoSeleccionado: any;
   grupoSeleccionado: any;
   MateriaSeleccionada: any;
+  EscolaridadSeleccionada:any;
   titulo: any;
   tituloBoton: any;
   @Input() item;
@@ -62,7 +63,8 @@ export class NewResourcePage implements OnInit {
       
       this.gradoSeleccionado = this.item.Grado;
       this.grupoSeleccionado = this.item.Grupo;
-      this.txtGradoGrupo.value = this.item.Grado + ' / ' + this.item.Grupo;
+      this.EscolaridadSeleccionada = this.item.Escolaridad
+      this.txtGradoGrupo.value = this.item.Grado + ' / ' + this.item.Grupo + " " + this.item.Escolaridad;
 
       this.txtMateria.value = this.item.Materia.Nombre;
       this.MateriaSeleccionada = this.item.MateriaId;
@@ -299,9 +301,11 @@ export class NewResourcePage implements OnInit {
             text: 'Aceptar',
             handler:  (value: any) => {
                 const gradoGrupo = value.Grupos.value.split("/");
-                this.txtGradoGrupo.value = gradoGrupo[0] + ' / ' + gradoGrupo[1];
+                //this.txtGradoGrupo.value = gradoGrupo[0] + ' / ' + gradoGrupo[1];
+                this.txtGradoGrupo.value = value.Grupos.text;
                 this.gradoSeleccionado = gradoGrupo[0];
                 this.grupoSeleccionado = gradoGrupo[1];
+                this.EscolaridadSeleccionada = gradoGrupo[2];
 
                 this.txtMateria.value = "";
                 this.MateriaSeleccionada = "";
@@ -328,7 +332,7 @@ export class NewResourcePage implements OnInit {
     //options.push({text: 'Todas' , value: 0});
 
     this.grupos.forEach(x => {
-      options.push({text: x.Grado + x.Grupo , value: x.Grado+'/'+x.Grupo});
+      options.push({text: x.Grado + x.Grupo + ' ' + x.Escolaridad, value: x.Grado+'/'+x.Grupo+'/'+x.Escolaridad});
     });
 
     return options;
@@ -364,7 +368,7 @@ export class NewResourcePage implements OnInit {
   async getColumnMaterias() {
     const options = [];
 
-    this.grupos = await this.apiMaterias.getMateriasProfesor(this.gradoSeleccionado).toPromise();
+    this.grupos = await this.apiMaterias.getMateriasProfesor(this.EscolaridadSeleccionada,this.gradoSeleccionado,this.grupoSeleccionado).toPromise();
 
     this.grupos.forEach(x => {
       options.push({text: x.Nombre , value: x.Id});

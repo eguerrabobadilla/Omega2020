@@ -188,12 +188,13 @@ ngOnInit() {
             //success.name;
 
             this.fileOpener.open(pathDownload + NameFile , success.type)
-            .then(() => { console.log('File is opened'); this.loading.dismiss(); })
-            .catch(e => console.log('Error opening file', e));
+            .then(() => { console.log('File is opened'); this.loadingController.dismiss(); })
+            .catch(e => { console.log('Error opening file', e); this.loadingController.dismiss(); });
         });
     }, (error) => {
       // handle error
       console.log(error);
+      this.loadingController.dismiss();
       alert(error.exception);
     });
 
