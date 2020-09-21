@@ -1,17 +1,33 @@
 import { Injectable } from '@angular/core';
+import { Platform } from '@ionic/angular';
+import { ignoreElements } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GlobalService {
 
-  constructor() { }
+  constructor(private platform:Platform) { }
 
   public getNameStorage(){
     if(this.getKeyToken("tipo")=="Director")
       return "books" + this.getKeyToken("id");
     else
       return "books2020";
+  }
+
+  isMobileDevice(){
+    let isMobile:boolean;
+
+    if(this.platform.is("desktop")) {
+      console.log("not mobile device");
+      isMobile = false;
+    } else {
+      console.log("mobile device");
+      isMobile=true;
+    }
+
+    return isMobile;
   }
 
   getKeyToken(key: string): string {

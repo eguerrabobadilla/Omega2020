@@ -30,6 +30,7 @@ import { ListResourceComponent } from '../components/list-resource/list-resource
 import { CodePush,InstallMode, SyncStatus } from '@ionic-native/code-push/ngx';
 import { Storage } from '@ionic/storage';
 import { Router } from '@angular/router';
+import { GlobalService } from '../services/global.service';
 
 
 
@@ -150,6 +151,7 @@ export class HomePage {
     autoHeight: true
   };
   events: any;
+  isMobile: boolean=true;
 
 
   // tslint:disable-next-line: max-line-length
@@ -160,7 +162,7 @@ export class HomePage {
               public authenticationService: AuthenticationService ,
               private apiTareas: TareasService, public  webSocket: WebsocketService, private apiCalendario: CalendarioService,
               private pickerController: PickerController, private apiMaterias: MateriasService,
-              private codePush : CodePush,private storage: Storage,private router: Router) {
+              private codePush : CodePush,private storage: Storage,private router: Router,private globalServicies: GlobalService) {
     //  this.scrollenable = true;
 
 
@@ -568,7 +570,8 @@ this.pillMenu.animacion();
      // console.log(this.items);
      // let status bar overlay webview
    //  this.statusBar.overlaysWebView(true);
-
+    console.log("Es celular:",this.globalServicies.isMobileDevice())
+    this.isMobile =this.globalServicies.isMobileDevice();
      // set status bar to white
       this.statusBar.backgroundColorByHexString('#FFFFFF');
       this.llenar_libros();
@@ -1497,6 +1500,9 @@ this.pillMenu.animacion();
     }
 
     animacionButonSlide(esHaciaArriba){
+      if(this.isMobile==true) 
+          return;
+
       let animationButonSlide : Animation;
       if(esHaciaArriba){
          

@@ -38,6 +38,7 @@ import { AlumnosComponent } from 'src/app/components/alumnos/alumnos.component';
 import { EscolaridadDocentesComponent } from 'src/app/components/escolaridad-docentes/escolaridad-docentes.component';
 import { GruposDocentesComponent } from 'src/app/components/grupos-docentes/grupos-docentes.component';
 import { DocentesComponent } from 'src/app/components/docentes/docentes.component';
+import { GlobalService } from 'src/app/services/global.service';
 
 
 
@@ -70,6 +71,7 @@ export class HomeDirectorPage {
   LstTareas: any[] = [];
   hayConexion= true;
   numeroclicks=0;
+  isMobile: boolean;
 
   @ViewChild('slideDown', {static: false}) slideDown: IonSlides;
   @ViewChild('slideUp', {static: false}) slideUp: IonSlides;
@@ -143,7 +145,8 @@ export class HomeDirectorPage {
               public authenticationService: AuthenticationService ,
               private apiTareas: TareasService, public  webSocket: WebsocketService, private apiCalendario: CalendarioService,
               private pickerController: PickerController, private apiMaterias: MateriasService,
-              private codePush : CodePush,private storage: Storage,private router: Router,private resolver: ComponentFactoryResolver) {
+              private codePush : CodePush,private storage: Storage,private router: Router,private resolver: ComponentFactoryResolver,
+              private globalServicies: GlobalService) {
     //  this.scrollenable = true;
 
 
@@ -725,6 +728,9 @@ export class HomeDirectorPage {
     async ngOnInit() {
       this.subscribeToEvents();
 
+      console.log("Es celular:",this.globalServicies.isMobileDevice())
+      this.isMobile =this.globalServicies.isMobileDevice();
+
       //this.LstTareas = await this.apiTareas.get().toPromise();
       
       this.iconos = ['book-outline','search-outline'];
@@ -1047,7 +1053,6 @@ export class HomeDirectorPage {
     }
 
     public checkCodePush() {
-      return;
       const downloadProgress = (progress) => { 
         console.log(`Downloaded ${progress.receivedBytes} of ${progress.totalBytes}`); 
       }
@@ -1098,6 +1103,9 @@ export class HomeDirectorPage {
     }
 
     animacionButonSlide(esHaciaArriba){
+      if(this.isMobile==true) 
+          return;
+        
       let animationButonSlide : Animation;
       if(esHaciaArriba){
          

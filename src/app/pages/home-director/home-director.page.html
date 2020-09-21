@@ -34,7 +34,7 @@ right: 0px;" mode="ios">
     padding-top: 3vh;
     font-size: 3vh;
     color: aliceblue;">
-        V40</div>
+        V41</div>
 
 </ion-header>
 
@@ -77,14 +77,14 @@ right: 0px;" mode="ios">
 </ion-fab>
 
 <!-- Botones para escritorio -->
-<ion-fab mode="ios" vertical="center" horizontal="end" slot="fixed">
+<ion-fab mode="ios" vertical="center" horizontal="end" slot="fixed" [ngStyle]="{'display': !isMobile ? 'block' : 'none' }">
     <ion-fab-button #fabNext (click)="nextSlide()" mode="ios" size="small" style="--box-shadow:none ;--background-activated: #F4315D;  --background: #F4315D;width: 46px;
     height:46px;">
         <ion-icon name="chevron-forward-outline"></ion-icon>
     </ion-fab-button>
 </ion-fab>
 
-<ion-fab mode="ios" vertical="center" horizontal="start" slot="fixed">
+<ion-fab mode="ios" vertical="center" horizontal="start" slot="fixed" [ngStyle]="{'display': !isMobile ? 'block' : 'none' }">
     <ion-fab-button #fabPrev (click)="prevSlide()" mode="ios" size="small" style="--box-shadow:none ;--background-activated: #F4315D;  --background: #F4315D;width: 46px;
     height:46px;">
         <ion-icon name="chevron-back-outline"></ion-icon>
