@@ -1136,7 +1136,7 @@ export class HomeDirectorPage {
           case SyncStatus.DOWNLOADING_PACKAGE:
               // Show "downloading" notification
               console.log("DOWNLOADING_PACKAGE");
-              this.cargandoAnimation('Instalando actulizacion, favor no cerra la aplicacion');
+              this.cargandoAnimation('Instalando actualización, favor no cerrar la aplicación');
               //alert("DOWNLOADING_PACKAGE");
               break;
           case SyncStatus.INSTALLING_UPDATE:

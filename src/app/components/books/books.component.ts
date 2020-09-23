@@ -341,7 +341,7 @@ export class BooksComponent implements OnInit {
     .catch(err => {
       /*console.error(err);
       alert(err);*/
-      alert("Error con la conexión, por favor intente descargar de nuevo ");
+      alert("Error con la conexión, por favor intente descargar de nuevo");
 
       //reinicia el estado de la descarga
       item.spinner="none";
