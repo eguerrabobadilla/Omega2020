@@ -130,19 +130,20 @@ export class BooksComponent implements OnInit {
     this.updateAutoHeightSlider.emit();
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     
+    this.pathStorage = await this.globalServicies.getNameStorage();
+    console.log("pathStorage");
+    this.tipoUsuario = this.globalServicies.getKeyToken("tipo");
+
     setTimeout(() => {
       this.iniciarValidacion();
       //console.log(this.ArrayCircleProgress);
     }, 1000);
   }
 
-  ngAfterViewInit (){
+  async ngAfterViewInit (){
     console.log("ngAfterViewInit");
-
-    this.pathStorage = this.globalServicies.getNameStorage();
-    this.tipoUsuario = this.globalServicies.getKeyToken("tipo");
 
     setTimeout(() => {
       this.updateAutoHeightSlider.emit();

@@ -1219,9 +1219,10 @@ this.pillMenu.animacion();
       {
           localStorage.clear();
           localStorage.setItem('USER_INFO',jwt_temp);
-          this.storage.remove("books2020").then(() => {
+          /*this.storage.remove("books" + this.getKeyToken("id")).then(() => {
             this.router.navigate(['home-director']);
-          });
+          });*/
+          this.router.navigate(['home-director']);
           return;
       }
 
@@ -1240,10 +1241,13 @@ this.pillMenu.animacion();
           }, {
             text: 'Si',
             handler: () => {
-              this.storage.remove("books2020").then(() => {
+              /*this.storage.remove("books2020").then(() => {
                 this.authenticationService.logout().then( data => {
                   this.webSocket.finishWebScoket();
                 });
+              });*/
+              this.authenticationService.logout().then( data => {
+                this.webSocket.finishWebScoket();
               });
               // this.menu.close();
             }
@@ -1361,6 +1365,7 @@ this.pillMenu.animacion();
  }
 
     public checkCodePush() {
+      //return;
       const downloadProgress = (downloadProgress) => { 
         alert(downloadProgress.receivedBytes)
         console.log(`Downloaded ${downloadProgress.receivedBytes} of ${downloadProgress.totalBytes}`); 

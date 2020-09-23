@@ -912,10 +912,13 @@ export class HomeDirectorPage {
           }, {
             text: 'Si',
             handler: () => {
-              this.storage.remove("books2020").then(() => {
+             /* this.storage.remove("books2020").then(() => {
                 this.authenticationService.logout().then( data => {
                   this.webSocket.finishWebScoket();
                 });
+              });*/
+              this.authenticationService.logout().then( data => {
+                this.webSocket.finishWebScoket();
               });
               // this.menu.close();
             }
@@ -1052,6 +1055,7 @@ export class HomeDirectorPage {
     }
 
     public checkCodePush() {
+      //return;
       const downloadProgress = (downloadProgress) => { 
         alert(downloadProgress.receivedBytes)
         console.log(`Downloaded ${downloadProgress.receivedBytes} of ${downloadProgress.totalBytes}`); 

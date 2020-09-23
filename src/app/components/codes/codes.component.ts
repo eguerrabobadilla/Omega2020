@@ -25,15 +25,17 @@ export class CodesComponent implements OnInit {
               private globalServicies: GlobalService) {    
   }
 
-  ngOnInit() {
+  async ngOnInit() {
+    console.log("ngAfterViewInit");
+    this.pathStorage = await this.globalServicies.getNameStorage();
+
     setTimeout(() => {
       this.iniciarValidacion();
     }, 1000);
   }
 
-  ngAfterViewInit (){
-    console.log("ngAfterViewInit");
-    this.pathStorage = this.globalServicies.getNameStorage();
+  async ngAfterViewInit (){
+ 
   }
 
   iniciarValidacion() {

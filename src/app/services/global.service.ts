@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Platform } from '@ionic/angular';
+import { Storage } from '@ionic/storage';
 import { ignoreElements } from 'rxjs/operators';
 
 @Injectable({
@@ -7,13 +8,30 @@ import { ignoreElements } from 'rxjs/operators';
 })
 export class GlobalService {
 
-  constructor(private platform:Platform) { }
+  constructor(private platform:Platform,private storage: Storage) { }
 
-  public getNameStorage(){
+  async getNameStorage(){
+    //return "books2020"
     if(this.getKeyToken("tipo")=="Director")
       return "books" + this.getKeyToken("id");
-    else
-      return "books2020";
+    else {
+
+      let storageOld = await this.storage.get("books2020");
+      console.log(storageOld);
+      if(storageOld == null) {
+          return "books" + this.getKeyToken("id");
+      }
+      else {
+
+          const storagePath="books" + this.getKeyToken("id");
+          await this.storage.set(storagePath,storageOld);
+          
+          await this.storage.remove("books2020");
+
+          return storagePath;
+          //return "books2020";
+      }
+    }
   }
 
   isMobileDevice(){
