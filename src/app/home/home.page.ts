@@ -31,6 +31,7 @@ import { CodePush,InstallMode, SyncStatus } from '@ionic-native/code-push/ngx';
 import { Storage } from '@ionic/storage';
 import { Router } from '@angular/router';
 import { GlobalService } from '../services/global.service';
+import { async } from '@angular/core/testing';
 
 
 
@@ -1014,7 +1015,7 @@ this.pillMenu.animacion();
               console.log(data);
               if(data.data.banderaEdito==true)
               {
-                  await this.cargandoAnimation();
+                  await this.cargandoAnimation('Cargando...');
                   this.LstTareas = await this.apiTareas.get().toPromise();
                   this.loadingController.dismiss();
               }
@@ -1117,7 +1118,7 @@ this.pillMenu.animacion();
         await modal.present();
 
         modal.onDidDismiss().then( async (data) => {
-          await this.cargandoAnimation();
+          await this.cargandoAnimation('Cargando...');
 
           this.apiCalendario.getCalendario().subscribe(data => {
             
@@ -1144,7 +1145,7 @@ this.pillMenu.animacion();
 
       modal.onDidDismiss().then( async (data) => {
         if(data.data != undefined) {
-          this.cargandoAnimation();
+          this.cargandoAnimation('Cargando...');
           this.apiCalendario.getCalendario().subscribe(data => {
             console.log("getCalendario");
             this.events = data;
@@ -1155,9 +1156,10 @@ this.pillMenu.animacion();
 
     }
 
-    async cargandoAnimation() {
+    async cargandoAnimation(text) {
       this.loading = await this.loadingController.create({
-        message: 'Cargando...'
+        message: text,
+        duration: 60000
       });
 
       await this.loading.present();
@@ -1359,57 +1361,79 @@ this.pillMenu.animacion();
  }
 
     public checkCodePush() {
-      const downloadProgress = (progress) => { 
-        console.log(`Downloaded ${progress.receivedBytes} of ${progress.totalBytes}`); 
+      const downloadProgress = (downloadProgress) => { 
+        alert(downloadProgress.receivedBytes)
+        console.log(`Downloaded ${downloadProgress.receivedBytes} of ${downloadProgress.totalBytes}`); 
       }
+        
       this.codePush.sync({
+        ignoreFailedUpdates:false,
         updateDialog: {
           appendReleaseDescription:true,
           descriptionPrefix: "\n\nChange log:\n",
         },
         installMode: InstallMode.IMMEDIATE
-        }, downloadProgress).subscribe((syncStatus) => this.onSyncStatusChange(syncStatus));
-  
-      /*this.codePush.sync({
-        updateDialog: {
-          appendReleaseDescription:true,
-          descriptionPrefix: "\n\nChange log:\n",
-        },
-        installMode: InstallMode.IMMEDIATE
-      },
-  
-      (downloadProgress) =>  {
-      //   this.progres =`Downloaded ${downloadProgress.receivedBytes} of ${downloadProgress.totalBytes}`;
-      //   console.log(this.progres);
-      //   console.log(downloadProgress.receivedBytes)
-      },
-      ).subscribe(
-        (data)=>{
-          console.log('code push terminado' + data);
-        },
-        (err)=>{
-        console.log('code push terminado' + err);
-        },
-      );*/
+      },downloadProgress
+      ).subscribe(syncStatus => {
+        console.log("syncStatus");
+        console.log(syncStatus);
+        this.onSyncStatusChange(syncStatus);
+      })
+
     }
-    onSyncStatusChange(SyncStatus){
-      switch (SyncStatus) {
+
+
+   async onSyncStatusChange(syncStatus){
+      
+      switch (syncStatus) {
           case SyncStatus.CHECKING_FOR_UPDATE:
               // Show "Checking for update" notification
               console.log("CHECKING_FOR_UPDATE");
+              //alert("CHECKING_FOR_UPDATE");
               break;
           case SyncStatus.AWAITING_USER_ACTION:
               // Show "Checking for update" notification
               console.log("AWAITING_USER_ACTION");
+              //alert("AWAITING_USER_ACTION");
               break;
           case SyncStatus.DOWNLOADING_PACKAGE:
               // Show "downloading" notification
               console.log("DOWNLOADING_PACKAGE");
+              this.cargandoAnimation('Instalando actulizacion, favor no cerra la aplicacion');
+              //alert("DOWNLOADING_PACKAGE");
               break;
           case SyncStatus.INSTALLING_UPDATE:
               // Show "installing" notification
               console.log("INSTALLING_UPDATE:");
+              //alert("INSTALLING_UPDATE");
               break;
+          case SyncStatus.IN_PROGRESS:
+              // Show "installing" notification
+              console.log("IN_PROGRESS:");
+              //alert("IN_PROGRESS");
+              break;
+          case SyncStatus.UP_TO_DATE:
+                // Show "installing" notification
+                console.log("UP_TO_DATE:");
+                //alert("UP_TO_DATE");
+                break;
+        case SyncStatus.UPDATE_IGNORED:
+                // Show "installing" notification
+                console.log("UPDATE_IGNORED:");
+                //alert("UPDATE_IGNORED");
+                break;
+          case SyncStatus.UPDATE_INSTALLED:
+                // Show "installing" notification
+                console.log("UPDATE_INSTALLED:");
+                this.loadingController.dismiss();
+                //alert("UPDATE_INSTALLED");
+                break;
+          case SyncStatus.ERROR:
+                // Show "installing" notification
+                console.log("ERROR");
+                this.loadingController.dismiss();
+                //alert("ERROR");
+                break;
       }
     }
 
@@ -1432,7 +1456,7 @@ this.pillMenu.animacion();
 
           if(data.data.banderaEdito==true)
           {
-              await this.cargandoAnimation();
+              await this.cargandoAnimation('Cargando...');
               this.LstTareas = await this.apiTareas.get().toPromise();
               this.loadingController.dismiss();
           }

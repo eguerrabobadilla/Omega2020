@@ -38,6 +38,7 @@ import { AlumnosComponent } from 'src/app/components/alumnos/alumnos.component';
 import { EscolaridadDocentesComponent } from 'src/app/components/escolaridad-docentes/escolaridad-docentes.component';
 import { GruposDocentesComponent } from 'src/app/components/grupos-docentes/grupos-docentes.component';
 import { DocentesComponent } from 'src/app/components/docentes/docentes.component';
+import { GlobalService } from 'src/app/services/global.service';
 
 
 
@@ -122,6 +123,7 @@ export class HomeDirectorPage {
   public gesture;
   public gesture2;
   public gesture3;
+  loading: any;
   public user = {
     nombre : '',
     grado  : '',
@@ -134,6 +136,7 @@ export class HomeDirectorPage {
     autoHeight: true
   };
   events: any;
+  isMobile: boolean=true;
 
   // tslint:disable-next-line: max-line-length
   constructor(private statusBar: StatusBar, public platform: Platform, private animationCtrl: AnimationController,
@@ -143,7 +146,8 @@ export class HomeDirectorPage {
               public authenticationService: AuthenticationService ,
               private apiTareas: TareasService, public  webSocket: WebsocketService, private apiCalendario: CalendarioService,
               private pickerController: PickerController, private apiMaterias: MateriasService,
-              private codePush : CodePush,private storage: Storage,private router: Router,private resolver: ComponentFactoryResolver) {
+              private codePush : CodePush,private storage: Storage,private router: Router,private resolver: ComponentFactoryResolver,
+              private globalServicies: GlobalService) {
     //  this.scrollenable = true;
 
 
@@ -552,7 +556,8 @@ export class HomeDirectorPage {
      // console.log(this.items);
      // let status bar overlay webview
    //  this.statusBar.overlaysWebView(true);
-
+   console.log("Es celular:",this.globalServicies.isMobileDevice())
+   this.isMobile =this.globalServicies.isMobileDevice();
      // set status bar to white
       this.statusBar.backgroundColorByHexString('#FFFFFF');
       this.selectSeccion = 1;
@@ -1047,38 +1052,25 @@ export class HomeDirectorPage {
     }
 
     public checkCodePush() {
-      const downloadProgress = (progress) => { 
-        console.log(`Downloaded ${progress.receivedBytes} of ${progress.totalBytes}`); 
+      const downloadProgress = (downloadProgress) => { 
+        alert(downloadProgress.receivedBytes)
+        console.log(`Downloaded ${downloadProgress.receivedBytes} of ${downloadProgress.totalBytes}`); 
       }
+        
       this.codePush.sync({
+        ignoreFailedUpdates:false,
         updateDialog: {
           appendReleaseDescription:true,
           descriptionPrefix: "\n\nChange log:\n",
         },
         installMode: InstallMode.IMMEDIATE
-        }, downloadProgress).subscribe((syncStatus) => this.onSyncStatusChange(syncStatus));
-  
-      /*this.codePush.sync({
-        updateDialog: {
-          appendReleaseDescription:true,
-          descriptionPrefix: "\n\nChange log:\n",
-        },
-        installMode: InstallMode.IMMEDIATE
-      },
-  
-      (downloadProgress) =>  {
-      //   this.progres =`Downloaded ${downloadProgress.receivedBytes} of ${downloadProgress.totalBytes}`;
-      //   console.log(this.progres);
-      //   console.log(downloadProgress.receivedBytes)
-      },
-      ).subscribe(
-        (data)=>{
-          console.log('code push terminado' + data);
-        },
-        (err)=>{
-        console.log('code push terminado' + err);
-        },
-      );*/
+      },downloadProgress
+      ).subscribe(syncStatus => {
+        console.log("syncStatus");
+        console.log(syncStatus);
+        this.onSyncStatusChange(syncStatus);
+      })
+
     }
 
     clickDiv() {
@@ -1097,6 +1089,9 @@ export class HomeDirectorPage {
     }
 
     animacionButonSlide(esHaciaArriba){
+      if(this.isMobile==true) 
+        return;
+
       let animationButonSlide : Animation;
       if(esHaciaArriba){
          
@@ -1125,25 +1120,67 @@ export class HomeDirectorPage {
 
     }
 
-    onSyncStatusChange(SyncStatus){
-      switch (SyncStatus) {
+    async onSyncStatusChange(syncStatus){
+      
+      switch (syncStatus) {
           case SyncStatus.CHECKING_FOR_UPDATE:
               // Show "Checking for update" notification
               console.log("CHECKING_FOR_UPDATE");
+              //alert("CHECKING_FOR_UPDATE");
               break;
           case SyncStatus.AWAITING_USER_ACTION:
               // Show "Checking for update" notification
               console.log("AWAITING_USER_ACTION");
+              //alert("AWAITING_USER_ACTION");
               break;
           case SyncStatus.DOWNLOADING_PACKAGE:
               // Show "downloading" notification
               console.log("DOWNLOADING_PACKAGE");
+              this.cargandoAnimation('Instalando actulizacion, favor no cerra la aplicacion');
+              //alert("DOWNLOADING_PACKAGE");
               break;
           case SyncStatus.INSTALLING_UPDATE:
               // Show "installing" notification
               console.log("INSTALLING_UPDATE:");
+              //alert("INSTALLING_UPDATE");
               break;
+          case SyncStatus.IN_PROGRESS:
+              // Show "installing" notification
+              console.log("IN_PROGRESS:");
+              //alert("IN_PROGRESS");
+              break;
+          case SyncStatus.UP_TO_DATE:
+                // Show "installing" notification
+                console.log("UP_TO_DATE:");
+                //alert("UP_TO_DATE");
+                break;
+        case SyncStatus.UPDATE_IGNORED:
+                // Show "installing" notification
+                console.log("UPDATE_IGNORED:");
+                //alert("UPDATE_IGNORED");
+                break;
+          case SyncStatus.UPDATE_INSTALLED:
+                // Show "installing" notification
+                console.log("UPDATE_INSTALLED:");
+                this.loadingController.dismiss();
+                //alert("UPDATE_INSTALLED");
+                break;
+          case SyncStatus.ERROR:
+                // Show "installing" notification
+                console.log("ERROR");
+                this.loadingController.dismiss();
+                //alert("ERROR");
+                break;
       }
+    }
+
+    async cargandoAnimation(text) {
+      this.loading = await this.loadingController.create({
+        message: text,
+        duration: 60000
+      });
+
+      await this.loading.present();
     }
 
     public permisoEditar() {
