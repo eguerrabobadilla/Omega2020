@@ -19,7 +19,6 @@ export class BooksService extends apiBase {
   getPost() {
     return this.http.get('http://35.193.103.213/api/codigos/123456').pipe(tap(console.log));
     //return this.http.get<any[]>(`${this.url}/${this.Ws}`);
-    
   }
 
   getBooks(value: string) {

@@ -237,10 +237,21 @@ export class BooksComponent implements OnInit {
           (<any>window).modusecho.echo([directory + 'Libro'+ item.Id, item.Id ,"Lbs"]);
         }
         else {
-          (<any>window).modusecho.echo([directory + 'Libro'+ item.Id, item.Id ,"Lbs"]);
+          this.buscarActualizaciones(item).then(data => {
+            if(parseInt(data["version"]) > parseInt(item.Version))
+            {
+                item.spinner="block";
+                item.descarga="block";
+                item.progreso=0;
+                this.download(data["url"] + "/" + item.Version,item,data["version"],"update");
+            }
+            else 
+              (<any>window).modusecho.echo([directory + 'Libro'+ item.Id, item.Id ,"Lbs"]);
+          }).catch(() => {
+              //En caso de error abre el libro;
+              (<any>window).modusecho.echo([directory + 'Libro'+ item.Id, item.Id ,"Lbs"]);
+          });
         } 
-          //this.buscarActualizaciones();
-
         //console.log(this.webview.convertFileSrc(directory + 'Libro' + item.id + "/index.html"));
     }).catch(err => {
         console.log(err);
@@ -275,7 +286,7 @@ export class BooksComponent implements OnInit {
 
           //Solicita la url de descarga
           this.booksService.getBook(item.Id).subscribe(data => {
-            this.download(data["url"],item);
+            this.download(data["url"],item,data["version"],"install");
             reject();
           },err =>{
             //reinicia el estado de la descarga
@@ -292,11 +303,28 @@ export class BooksComponent implements OnInit {
     return promise;
   }
 
-  buscarActualizaciones() {
-      
+  buscarActualizaciones(item) {
+    const directory = this.file.dataDirectory + "books2020/";
+
+    var promise = new Promise((resolve, reject) => { 
+      this.booksService.getBook(item.Id).subscribe(data => {
+          resolve(data);
+      },err =>{
+        reject();
+        //reinicia el estado de la descarga
+        /*item.spinner="none";
+        item.descarga="block";
+        item.status="terminado";
+        item.flecha= "block";
+        item.progreso=0;
+        item.descargado="no";*/
+      });
+    });
+
+    return promise;
   }
 
-  download(url,item) {
+  download(url,item,version,tipo) {
     const fileTransfer: FileTransferObject = this.transfer.create();
 
     const nameFile ='Libro'+ item.Id + '.zip';
@@ -334,6 +362,7 @@ export class BooksComponent implements OnInit {
       item.status="terminado";
       item.descargado="si";
       item.progreso=0;
+      item.Version=version;
 
       this.storage.set(this.pathStorage,this.libros).then( () => {
         console.log("guardo libros");
@@ -343,21 +372,24 @@ export class BooksComponent implements OnInit {
       /*console.error(err);
       alert(err);*/
       alert("Error con la conexión, por favor intente descargar de nuevo");
+      
+      if(tipo=="install")
+      {
+        //reinicia el estado de la descarga
+        item.spinner="none";
+        item.descarga="block";
+        item.status="pendiente";
+        item.flecha= "block";
+        item.progreso=0;
+        item.descargado="no";
 
-      //reinicia el estado de la descarga
-      item.spinner="none";
-      item.descarga="block";
-      item.status="pendiente";
-      item.flecha= "block";
-      item.progreso=0;
-      item.descargado="no";
+        const circleP=this.ArrayCircleProgress.toArray().find(x => x.item.Id===item.Id);
+        circleP.restartProgress();
 
-      const circleP=this.ArrayCircleProgress.toArray().find(x => x.item.Id===item.Id);
-      circleP.restartProgress();
-
-      this.storage.set(this.pathStorage,this.libros).then( () => {
-        console.log("guardo libros");
-      });
+        this.storage.set(this.pathStorage,this.libros).then( () => {
+          console.log("guardo libros");
+        });
+      }
     });
 
     fileTransfer.onProgress(progress => {
