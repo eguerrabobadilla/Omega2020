@@ -14,16 +14,24 @@ export class LinkifyPipe implements PipeTransform {
 
     //URLs starting with http://, https://, or ftp://
     replacePattern1 = /(\b(https?|ftp):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gim;
-    replacedText = plainText.replace(replacePattern1, '<a href="$1" target="_blank">$1</a>');
+    //replacedText = plainText.replace(replacePattern1, '<a href="$1" onclick="alert()" target="_blank">$1</a>');
+    console.log(replacePattern1);
+    replacedText = plainText.replace(replacePattern1, '<div href="$1" onclick="alert()" target="_blank">$1</div>');
+    console.log(replacedText);
 
     //URLs starting with "www." (without // before it, or it'd re-link the ones done above).
-    replacePattern2 = /(^|[^\/])(www\.[\S]+(\b|$))/gim;
-    replacedText = replacedText.replace(replacePattern2, '$1<a href="http://$2" target="_blank">$2</a>');
+    //replacePattern2 = /(^|[^\/])(www\.[\S]+(\b|$))/gim;
+    //replacedText = replacedText.replace(replacePattern2, '$1<a href="http://$2" target="_blank">$2</a>');
 
     //Change email addresses to mailto:: links.
-    replacePattern3 = /(([a-zA-Z0-9\-\_\.])+@[a-zA-Z\_]+?(\.[a-zA-Z]{2,6})+)/gim;
-    replacedText = replacedText.replace(replacePattern3, '<a href="mailto:$1">$1</a>');
+    //replacePattern3 = /(([a-zA-Z0-9\-\_\.])+@[a-zA-Z\_]+?(\.[a-zA-Z]{2,6})+)/gim;
+    //replacedText = replacedText.replace(replacePattern3, '<a href="mailto:$1">$1</a>');
 
     return replacedText;
+   }
+
+   private openLink() {
+    console.log("openLink");
+      alert("openLink");
    }
 }
