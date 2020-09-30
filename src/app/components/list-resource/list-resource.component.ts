@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,HostListener  } from '@angular/core';
 import { PickerController, Platform, ModalController,LoadingController, AlertController } from '@ionic/angular';
 import { RecursosService } from '../../api/recursos.service';
 import { Plugins } from '@capacitor/core';
@@ -291,5 +291,16 @@ ngOnInit() {
     const value = decodedJwtData[key];
 
     return value;
+  }
+
+  @HostListener("click", ["$event"])
+  onClick(e) {
+    console.log(e);
+    if (e.target.classList.contains("link")) {
+      e.preventDefault();
+      console.log(e.target);
+      console.log(e.target.getAttribute("class"));
+      console.log(e.target.getAttribute("href"));
+    }
   }
 }
