@@ -8,6 +8,7 @@ import { FileOpener } from '@ionic-native/file-opener/ngx';
 import { apiBase } from 'src/app/api/apiBase';
 import { NewResourcePage } from 'src/app/new-resource/new-resource.page';
 import { CommentStmt } from '@angular/compiler';
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 
 @Component({
   selector: 'app-list-resource',
@@ -26,7 +27,8 @@ export class ListResourceComponent implements OnInit {
 
   constructor(private pickerController: PickerController, private apiRecursos: RecursosService, private transfer: FileTransfer,
               private file: File, private platform: Platform,private fileOpener: FileOpener,private api: apiBase,
-              private modalCrl: ModalController,public loadingController: LoadingController, private alertCtrl: AlertController) {
+              private modalCrl: ModalController,public loadingController: LoadingController, private alertCtrl: AlertController,
+              private inAppBrowser: InAppBrowser) {
   }
 
 ngOnInit() {
@@ -295,12 +297,18 @@ ngOnInit() {
 
   @HostListener("click", ["$event"])
   onClick(e) {
-    console.log(e);
-    if (e.target.classList.contains("link")) {
+    //console.log(e);
+    /*if (e.target.classList.contains("link")) {
       e.preventDefault();
-      console.log(e.target);
-      console.log(e.target.getAttribute("class"));
-      console.log(e.target.getAttribute("href"));
-    }
+      console.log(e);
+
+      if (this.platform.is('cordova')) {
+        this.inAppBrowser.create(e.target.getAttribute("href"), '_system');
+      } else {
+        const { Browser } = Plugins;
+
+        Browser.open({ url: e.target.getAttribute("href") });
+      }
+    }*/
   }
 }
