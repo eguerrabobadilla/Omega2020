@@ -139,7 +139,7 @@ export class CrearEvidencePage implements OnInit {
     }
 
 
-    const tareaUpload = await this.apiEvidencias.save(payload).toPromise();
+    const tareaUpload = await this.apiEvidencias.save(payload,0).toPromise();
 
     this.texto_adjuntar_portada = 'Adjuntar';
 

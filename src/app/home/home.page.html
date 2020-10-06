@@ -233,7 +233,7 @@ top: 0;" mode="ios">
                         <ion-card-content>
                             {{ item.Descripcion }}
                             <br><br>
-                            <b>Grupo:</b> {{ item.Grado }}{{ item.Grupo }} {{ item.Escolaridad }}
+                            <b>Grupo:</b> <span *ngIf="item.GrupoIngles=='SI'"> Level</span> {{ item.Grado }}{{ item.Grupo }} {{ item.Escolaridad }}
                             <br>
                             <b>Materia:</b> {{ item.Materia.Nombre }}
                         </ion-card-content>
@@ -251,7 +251,7 @@ top: 0;" mode="ios">
             <ion-slide>
                 <app-list-resource #resourceComponent style="width: 100%;"></app-list-resource>
             </ion-slide>
-            <ion-slide>
+            <ion-slide *ngIf="!permisoEditar()">
                 <app-evidences #evidenceComponent style="width: 100%;"></app-evidences>
             </ion-slide>
         </ion-slides>

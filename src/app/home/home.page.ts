@@ -631,7 +631,10 @@ this.pillMenu.animacion();
         this.tabs = ['Todos', 'Inglés'  , 'Español'];
 
       } else if (index === 2) {
-        this.tabs = ['Tareas', 'Foro', 'Recursos', 'Evidencias'];
+        if(this.getKeyToken('tipo')=='Profesor') 
+          this.tabs = ['Tareas', 'Foro', 'Recursos'];
+        else
+          this.tabs = ['Tareas', 'Foro', 'Recursos', 'Evidencias'];
      } else if (index === 3) {
       this.tabs = ['Noticias', 'Mensajes', 'Calendario'];
 
@@ -907,11 +910,13 @@ this.pillMenu.animacion();
      // console.log(itemOption);
       //Logica boton + evidencias
       if(this.selectSeccion==2) {
-        if(this.getKeyToken('tipo')=='Alumno' && itemOption=="Evidencias") {
+        /*if(this.getKeyToken('tipo')=='Alumno' && itemOption=="Evidencias") {
           this.renderer.setStyle(this.fabend.nativeElement,'display','block');
-        } else if(this.getKeyToken('tipo')=='Profesor' && itemOption=="Evidencias") {
+        } else*/ 
+        /*if(this.getKeyToken('tipo')=='Profesor' && itemOption=="Evidencias") {
           this.renderer.setStyle(this.fabend.nativeElement,'display','none');
-        } else if(this.getKeyToken('tipo')=='Profesor') {
+        } else*/
+         if(this.getKeyToken('tipo')=='Profesor') {
           this.renderer.setStyle(this.fabend.nativeElement,'display','block');
         } else if(this.getKeyToken('tipo')=='Alumno') {
           this.renderer.setStyle(this.fabend.nativeElement,'display','none');
@@ -1280,10 +1285,11 @@ this.pillMenu.animacion();
 
     public async inforConnectionScoket(status) {
       if (status == true) {
+          console.log("this.hayConexion = true;");
             this.hayConexion = true;
             this.renderer.setStyle(this.avatarUser.nativeElement, 'color', `#FF426D`);
             this.slideUp.lockSwipes(false);
-            this.LstTareas = await this.apiTareas.get().toPromise();
+            //this.LstTareas = await this.apiTareas.get().toPromise();
       } else {
             this.hayConexion = false;
             this.renderer.setStyle(this.avatarUser.nativeElement, 'color', `black`);
@@ -1487,7 +1493,7 @@ this.pillMenu.animacion();
   
       const alertTerminado = await this.alertController.create({
         header: 'ELIMINAR',
-        message: '¿Está seguro de ELIMINAR la tarea?',
+        message: '¿Está seguro de ELIMINAR la tarea?, si la tarea ya cuenta con evidencia serán eliminadas',
         buttons: [
           {
             text: 'No', handler: () =>  {

@@ -36,6 +36,7 @@ export class NewResourcePage implements OnInit {
   tituloBoton: any;
   @Input() item;
   banderaEdito: boolean=false;
+  GrupoIngles: any;
 
   constructor(private modalCtrl: ModalController, private formBuilder: FormBuilder, private cd:ChangeDetectorRef,
               private alertCtrl: AlertController, private apiRecursos: RecursosService, private pickerController: PickerController,
@@ -64,10 +65,14 @@ export class NewResourcePage implements OnInit {
       this.gradoSeleccionado = this.item.Grado;
       this.grupoSeleccionado = this.item.Grupo;
       this.EscolaridadSeleccionada = this.item.Escolaridad
-      this.txtGradoGrupo.value = this.item.Grado + ' / ' + this.item.Grupo + " " + this.item.Escolaridad;
+      if(this.item.GrupoIngles=='NO')
+        this.txtGradoGrupo.value = this.item.Grado + this.item.Grupo + " " + this.item.Escolaridad;
+      else
+        this.txtGradoGrupo.value = 'Level ' + this.item.Grado  + this.item.Grupo + " " + this.item.Escolaridad;
 
       this.txtMateria.value = this.item.Materia.Nombre;
       this.MateriaSeleccionada = this.item.MateriaId;
+      this.GrupoIngles = this.item.GrupoIngles;
 
       this.semanaSeleccionada = this.item.Semana;
       this.mesSeleccionado= this.item.Mes;
@@ -202,6 +207,7 @@ export class NewResourcePage implements OnInit {
     payload.append('MateriaId', this.MateriaSeleccionada);
     payload.append('Grado', this.gradoSeleccionado);
     payload.append('Grupo', this.grupoSeleccionado);
+    payload.append('GrupoIngles', this.GrupoIngles);
     //payload.append('ItemUpload', this.files, this.files.name);
     if(this.files != undefined) //Valida si se selecciono alguna imagen
       payload.append('ItemUpload', this.files, this.files.name);
@@ -306,6 +312,7 @@ export class NewResourcePage implements OnInit {
                 this.gradoSeleccionado = gradoGrupo[0];
                 this.grupoSeleccionado = gradoGrupo[1];
                 this.EscolaridadSeleccionada = gradoGrupo[2];
+                this.GrupoIngles =gradoGrupo[3];
 
                 this.txtMateria.value = "";
                 this.MateriaSeleccionada = "";
@@ -332,7 +339,14 @@ export class NewResourcePage implements OnInit {
     //options.push({text: 'Todas' , value: 0});
 
     this.grupos.forEach(x => {
-      options.push({text: x.Grado + x.Grupo + ' ' + x.Escolaridad, value: x.Grado+'/'+x.Grupo+'/'+x.Escolaridad});
+      if(x.GrupoIngles=="NO") {
+        options.push({text: x.Grado + x.Grupo + ' ' + x.Escolaridad, value: x.Grado+'/'+x.Grupo+'/'+x.Escolaridad+'/'+x.GrupoIngles});
+        //this.GrupoIngles="NO"
+      }
+      else {
+        options.push({text: 'Level ' + x.Grado + x.Grupo + ' ' + x.Escolaridad, value: x.Grado+'/'+x.Grupo+'/'+x.Escolaridad+'/'+x.GrupoIngles});
+        //this.GrupoIngles="SI"
+      }
     });
 
     return options;
@@ -368,7 +382,7 @@ export class NewResourcePage implements OnInit {
   async getColumnMaterias() {
     const options = [];
 
-    this.grupos = await this.apiMaterias.getMateriasProfesor(this.EscolaridadSeleccionada,this.gradoSeleccionado,this.grupoSeleccionado).toPromise();
+    this.grupos = await this.apiMaterias.getMateriasProfesor(this.EscolaridadSeleccionada,this.gradoSeleccionado,this.grupoSeleccionado,this.GrupoIngles).toPromise();
 
     this.grupos.forEach(x => {
       options.push({text: x.Nombre , value: x.Id});
