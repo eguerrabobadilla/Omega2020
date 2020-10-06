@@ -1,7 +1,7 @@
 import { MbscModule } from '@mobiscroll/angular';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
@@ -17,7 +17,8 @@ import { GlobalModule } from '../modules/GoblaModule';
     FormsModule,
     IonicModule,
     DetallePageRoutingModule,
-    GlobalModule
+    GlobalModule,
+    ReactiveFormsModule
   ],
   declarations: [DetallePage]
 })

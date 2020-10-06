@@ -17,7 +17,19 @@ export class EvidenciasService  extends apiBase  {
     return this.http.get<any[]>(`${this.url}/${this.Ws}`);
   }
 
-  save(item: any) {
-    return this.http.post(`${this.url}/${this.Ws}`, item);
+  getEvidenciasTarea(TareaId): Observable<any[]> {
+    return this.http.get<any[]>(`${this.url}/${this.Ws}/evidenciasTarea/${TareaId}`);
+  }
+
+  getEvidenciasAlumnos(TareaId,MateriaId): Observable<any[]> {
+    return this.http.get<any[]>(`${this.url}/${this.Ws}/evidenciasAlumnos/${TareaId}/${MateriaId}`);
+  }
+
+  getEvidenciasAlumnoProfesor(UsuarioId,TareaId): Observable<any[]> {
+    return this.http.get<any[]>(`${this.url}/${this.Ws}/profesor/${UsuarioId}/${TareaId}`);
+  }
+
+  save(TareaId,item: any) {
+    return this.http.post(`${this.url}/${this.Ws}/${TareaId}`, item);
   }
 }

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { UsuariosService } from 'src/app/api/usuarios.service';
 
 @Component({
   selector: 'app-perfil',
@@ -8,17 +9,39 @@ import { Component, OnInit } from '@angular/core';
 export class PerfilComponent implements OnInit {
 
   public user = {
-    nombre : '',
-    grado  : '',
-    usuario : ''
+    NombreCompleto : '',
+    Grado  : '',
+    Grupo : '',
+    Escolaridad: '',
+    GradoIngles: '',
+    GrupoIngles: '',
+    Usuario: '',
+    Tipo:''
   };
+  /*public user:any;*/
 
-  constructor() { }
+  constructor(private apiUsuarios: UsuariosService) { }
 
   ngOnInit() {
-    this.user.nombre = this.getKeyToken('nombre');
+    const UsuarioId =this.getKeyToken('id');
+    this.apiUsuarios.getUsuario(UsuarioId).subscribe(data => {
+       this.user.NombreCompleto = data["NombreCompleto"];
+       this.user.Grado = data["Grado"];
+       this.user.Grupo = data["Grupo"];
+       this.user.Escolaridad = data["Escolaridad"];
+       this.user.GradoIngles = data["GradoIngles"];
+       this.user.GrupoIngles = data["GrupoIngles"];
+       this.user.Usuario = data["Usuario"];
+       this.user.Tipo = data["Tipo"];
+    });
+
+    /*this.user.nombre = this.getKeyToken('nombre');
     this.user.grado = this.getKeyToken('grado');
-    this.user.usuario = this.getKeyToken('usuario');
+    this.user.usuario = this.getKeyToken('usuario');*/
+  }
+
+  ionViewDidEnter() { 
+    
   }
   getKeyToken(key: string): string {
 

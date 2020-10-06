@@ -277,7 +277,11 @@ ngOnInit() {
   }
 
   public datosClase(item){
-     let html = `<br><br><b>Grupo:</b> ${item.Grado} ${item.Grupo} ${item.Escolaridad }<br><b>Materia:</b> ${item.Materia.Nombre }`;
+     let html='';
+     if(item.GrupoIngles=="NO")
+      html = `<br><br><b>Grupo:</b> ${item.Grado} ${item.Grupo} ${item.Escolaridad }<br><b>Materia:</b> ${item.Materia.Nombre }`;
+    else
+      html = `<br><br><b>Grupo:</b> Level ${item.Grado} ${item.Grupo} ${item.Escolaridad }<br><b>Materia:</b> ${item.Materia.Nombre }`;
      return html;
   }
 

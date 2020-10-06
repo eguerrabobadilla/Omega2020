@@ -25,6 +25,7 @@ export class CrearForumPage implements OnInit {
   MateriaSeleccionada: any;
   EscolaridadSeleccionada:any;
   titulo: any;
+  GrupoIngles: any;
 
   @Input() item;
 
@@ -53,10 +54,14 @@ export class CrearForumPage implements OnInit {
       this.gradoSeleccionado = this.item.Grado;
       this.grupoSeleccionado = this.item.Grupo;
       this.EscolaridadSeleccionada = this.item.Escolaridad
-      this.txtGradoGrupo.value = this.item.Grado + ' / ' + this.item.Grupo + " " + this.item.Escolaridad;
+      if(this.item.GrupoIngles=='NO')
+        this.txtGradoGrupo.value = this.item.Grado + this.item.Grupo + " " + this.item.Escolaridad;
+      else
+        this.txtGradoGrupo.value = 'Level ' + this.item.Grado  + this.item.Grupo + " " + this.item.Escolaridad;
 
       this.txtMateria.value = this.item.Materia.Nombre;
       this.MateriaSeleccionada = this.item.MateriaId;
+      this.GrupoIngles = this.item.GrupoIngles;
 
       this.titulo = 'Modificar Foro';
     } else {
@@ -86,6 +91,7 @@ export class CrearForumPage implements OnInit {
     this.item.Grado = this.gradoSeleccionado;
     this.item.Grupo = this.grupoSeleccionado;
     this.item.MateriaId = this.MateriaSeleccionada;
+    this.item.GrupoIngles = this.GrupoIngles;
     /*const d = new Date(this.item.HoraPulicacion);
     console.log(d);
     tempHora = this.item.HoraPulicacion;
@@ -153,6 +159,7 @@ export class CrearForumPage implements OnInit {
                 this.gradoSeleccionado = gradoGrupo[0];
                 this.grupoSeleccionado = gradoGrupo[1];
                 this.EscolaridadSeleccionada = gradoGrupo[2];
+                this.GrupoIngles =gradoGrupo[3];
 
                 this.txtMateria.value = "";
                 this.MateriaSeleccionada = "";
@@ -179,7 +186,14 @@ export class CrearForumPage implements OnInit {
     //options.push({text: 'Todas' , value: 0});
 
     this.grupos.forEach(x => {
-      options.push({text: x.Grado + x.Grupo + ' ' + x.Escolaridad, value: x.Grado+'/'+x.Grupo+'/'+x.Escolaridad});
+      if(x.GrupoIngles=="NO") {
+        options.push({text: x.Grado + x.Grupo + ' ' + x.Escolaridad, value: x.Grado+'/'+x.Grupo+'/'+x.Escolaridad+'/'+x.GrupoIngles});
+        //this.GrupoIngles="NO"
+      }
+      else {
+        options.push({text: 'Level ' + x.Grado + x.Grupo + ' ' + x.Escolaridad, value: x.Grado+'/'+x.Grupo+'/'+x.Escolaridad+'/'+x.GrupoIngles});
+        //this.GrupoIngles="SI"
+      }
     });
 
     return options;
@@ -217,7 +231,7 @@ export class CrearForumPage implements OnInit {
 
 
 
-    this.grupos = await this.apiMaterias.getMateriasProfesor(this.EscolaridadSeleccionada,this.gradoSeleccionado,this.grupoSeleccionado).toPromise();
+    this.grupos = await this.apiMaterias.getMateriasProfesor(this.EscolaridadSeleccionada,this.gradoSeleccionado,this.grupoSeleccionado,this.GrupoIngles).toPromise();
 
     this.grupos.forEach(x => {
       options.push({text: x.Nombre , value: x.Id});
