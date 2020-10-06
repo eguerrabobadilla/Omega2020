@@ -8,13 +8,13 @@
     <ion-list-header>
         Semana 1
     </ion-list-header>
-    <ion-card style="text-align: initial;" class="ion-activatable ripple-parent" mode="ios" *ngFor="let item of LstRecursos | filter : 'Semana 1' : 'Semana'">
-        <ion-ripple-effect></ion-ripple-effect>
+    <ion-card style="text-align: initial;"  mode="ios" *ngFor="let item of LstRecursos | filter : 'Semana 1' : 'Semana'">
+       
         <ion-card-header>
             <ion-card-title>{{ item.Titulo }}</ion-card-title>
         </ion-card-header>
         <ion-card-content [innerHtml]="item.Descripcion + datosClase(item) | linkify">
-
+                
         </ion-card-content>
         <ion-item>
             <ion-chip outline color="dark" (click)="openFile(item)" *ngIf=" item.PathRecurso != undefined">
@@ -40,8 +40,7 @@
     <ion-list-header>
         Semana 2
     </ion-list-header>
-    <ion-card style="text-align: initial; " class="ion-activatable ripple-parent " mode="ios" *ngFor="let item of LstRecursos  | filter : 'Semana 2' : 'Semana'; let i=i ndex ">
-        <ion-ripple-effect></ion-ripple-effect>
+    <ion-card style="text-align: initial; " mode="ios" *ngFor="let item of LstRecursos  | filter : 'Semana 2' : 'Semana'; let i=i ndex ">
         <ion-card-header>
             <ion-card-title>{{ item.Titulo }}</ion-card-title>
         </ion-card-header>
@@ -72,8 +71,7 @@
     <ion-list-header>
         Semana 3
     </ion-list-header>
-    <ion-card style="text-align: initial; " class="ion-activatable ripple-parent " mode="ios" *ngFor="let item of LstRecursos  | filter : 'Semana 3' : 'Semana'; let i=i ndex ">
-        <ion-ripple-effect></ion-ripple-effect>
+    <ion-card style="text-align: initial; " mode="ios" *ngFor="let item of LstRecursos  | filter : 'Semana 3' : 'Semana'; let i=i ndex ">
         <ion-card-header>
             <ion-card-title>{{ item.Titulo }}</ion-card-title>
         </ion-card-header>
@@ -105,8 +103,7 @@
     <ion-list-header>
         Semana 4
     </ion-list-header>
-    <ion-card style="text-align: initial; " class="ion-activatable ripple-parent " mode="ios" *ngFor="let item of LstRecursos  | filter : 'Semana 4' : 'Semana'; let i=i ndex ">
-        <ion-ripple-effect></ion-ripple-effect>
+    <ion-card style="text-align: initial; " mode="ios" *ngFor="let item of LstRecursos  | filter : 'Semana 4' : 'Semana'; let i=i ndex ">
         <ion-card-header>
             <ion-card-title>{{ item.Titulo }}</ion-card-title>
         </ion-card-header>
@@ -130,5 +127,5 @@
             <ion-card-title>Ningun recurso</ion-card-title>
         </ion-card-header>
         <ion-card-content>No hay nada que mostrar</ion-card-content>
-    </ion-card>
+    </ion-card>åå
 </ion-list>

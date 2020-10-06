@@ -26,4 +26,9 @@ export class LinkifyPipe implements PipeTransform {
 
     return replacedText;
    }
+
+   private openLink() {
+    console.log("openLink");
+      alert("openLink");
+   }
 }

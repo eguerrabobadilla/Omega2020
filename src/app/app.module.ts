@@ -36,6 +36,7 @@ import { WebView } from '@ionic-native/ionic-webview/ngx';
 import { CodePush } from '@ionic-native/code-push/ngx';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 
 @NgModule({
   declarations: [AppComponent, AnimateItemsDirective],
@@ -68,6 +69,7 @@ import { environment } from '../environments/environment';
     WebView,
     Camera,
     CodePush,
+    InAppBrowser,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: HTTP_INTERCEPTORS,useClass: AuthInterceptorService,multi: true}
   ],
