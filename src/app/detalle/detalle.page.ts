@@ -209,12 +209,12 @@ export class DetallePage implements OnInit {
       if (this.platform.is('cordova')) {
         //Valida si el achivo se encuntra en la carpeta temporal de recursos
         if(item.CampusId===undefined) {
-          //this.download(`${this.api.url}/resources/temp/${item.PathRecurso}`,item.PathRecursoUser);
-          this.download(`http://192.168.137.1:5000/resources/temp/${item.PathRecurso}`,item.PathRecursoUser);
+          this.download(`${this.api.url}/resources/temp/${item.PathRecurso}`,item.PathRecursoUser);
+          //this.download(`http://192.168.137.1:5000/resources/temp/${item.PathRecurso}`,item.PathRecursoUser);
         }
         else {
-          //this.download(`${this.api.url}/resources/${item.PathRecurso}`,item.PathRecursoUser);
-          this.download(`http://192.168.137.1:5000/resources/${item.PathRecurso}`,item.PathRecursoUser);
+          this.download(`${this.api.url}/resources/${item.PathRecurso}`,item.PathRecursoUser);
+          //this.download(`http://192.168.137.1:5000/resources/${item.PathRecurso}`,item.PathRecursoUser);
         }
       } else {
         //Valida si el achivo se encuntra en la carpeta temporal de recursos
