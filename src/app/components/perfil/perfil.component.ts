@@ -15,7 +15,8 @@ export class PerfilComponent implements OnInit {
     Escolaridad: '',
     GradoIngles: '',
     GrupoIngles: '',
-    Usuario: ''
+    Usuario: '',
+    Tipo:''
   };
   /*public user:any;*/
 
@@ -31,6 +32,7 @@ export class PerfilComponent implements OnInit {
        this.user.GradoIngles = data["GradoIngles"];
        this.user.GrupoIngles = data["GrupoIngles"];
        this.user.Usuario = data["Usuario"];
+       this.user.Tipo = data["Tipo"];
     });
 
     /*this.user.nombre = this.getKeyToken('nombre');
