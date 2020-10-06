@@ -1,15 +1,20 @@
 <ion-card style="text-align: initial;" class="ion-activatable ripple-parent" mode="ios">
-    <ion-ripple-effect></ion-ripple-effect>
+    <!--<ion-ripple-effect></ion-ripple-effect>-->
     <ion-card-header>
-        <ion-card-title>Nombre
-            <ion-card-subtitle style="font-size: 20px;">{{user.nombre}}</ion-card-subtitle>
+        <ion-card-title style="padding-bottom: 8px;">Nombre
+            <ion-card-subtitle style="font-size: 20px;">{{user.NombreCompleto}}</ion-card-subtitle>
         </ion-card-title>
-        <ion-card-title>Grado
-            <ion-card-subtitle style="font-size: 20px;">{{user.grado}}°</ion-card-subtitle>
+        <ion-card-title style="padding-bottom: 8px;">Escolaridad
+            <ion-card-subtitle style="font-size: 20px;">{{user.Escolaridad}}</ion-card-subtitle>
         </ion-card-title>
-        <ion-card-title>Usuario
-            <ion-card-subtitle style="font-size: 20px;">{{user.usuario}}</ion-card-subtitle>
+        <ion-card-title style="padding-bottom: 8px;">Grado
+            <ion-card-subtitle style="font-size: 20px;">{{user.Grado}}{{user.Grupo}}</ion-card-subtitle>
+        </ion-card-title>
+        <ion-card-title *ngIf="user.Escolaridad != 'Elementary School' && user.Escolaridad != 'Kinder'" style="padding-bottom: 8px;">Nivel Ingles
+            <ion-card-subtitle style="font-size: 20px;">{{user.GradoIngles}}{{user.GrupoIngles}}</ion-card-subtitle>
+        </ion-card-title>
+        <ion-card-title  style="padding-bottom: 8px;">Usuario
+            <ion-card-subtitle style="font-size: 20px;">{{user.Usuario}}</ion-card-subtitle>
         </ion-card-title>
     </ion-card-header>
-
 </ion-card>

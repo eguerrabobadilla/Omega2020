@@ -16,4 +16,8 @@ export class UsuariosService extends apiBase {
   getUsuarios(text,skip,take): Observable<any[]> {
     return this.http.get<any[]>(`${this.url}/${this.Ws}/filter/${text}/${skip}/${take}`);
   }
+
+  getUsuario(Id): Observable<any[]> {
+    return this.http.get<any[]>(`${this.url}/${this.Ws}/${Id}`);
+  }
 }
