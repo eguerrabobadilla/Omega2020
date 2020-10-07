@@ -46,6 +46,7 @@ import { PerfilComponent } from '../components/perfil/perfil.component';
 import { LinkifyPipe } from '../pipes/linkifypipe ';
 import { CircleProgressComponent } from '../components/circle-progress/circle-progress.component';
 import { GlobalModule } from '../modules/GoblaModule';
+import { ListTareasComponent } from '../components/list-tareas/list-tareas.component';
 
 
 @NgModule({
@@ -88,6 +89,6 @@ import { GlobalModule } from '../modules/GoblaModule';
   ],
   declarations: [ HomePage, ListComponent, 
     ChatsComponent, ListResourceComponent, NewsComponent, ForumComponent,GraphicsComponent,CalendarComponent
-    , EvidencesComponent,SubjectsComponent, QuestionsComponent, ContactComponent, PerfilComponent,LinkifyPipe]
+    , EvidencesComponent,SubjectsComponent, QuestionsComponent, ContactComponent, PerfilComponent,LinkifyPipe,ListTareasComponent]
 })
 export class HomePageModule {}

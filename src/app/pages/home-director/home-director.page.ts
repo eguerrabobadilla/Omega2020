@@ -715,7 +715,7 @@ export class HomeDirectorPage {
         const status = this.webSocket.getStatusSocket() == 1 ? true : false;
         this.inforConnectionScoket(status);
         if(status==true) {
-          this.LstTareas = await this.apiTareas.get().toPromise();
+          //this.LstTareas = await this.apiTareas.get().toPromise();
         }
         else
         {
@@ -975,7 +975,7 @@ export class HomeDirectorPage {
             this.hayConexion = true;
             this.renderer.setStyle(this.avatarUser.nativeElement, 'color', `#FF426D`);
             this.slideUp.lockSwipes(false);
-            this.LstTareas = await this.apiTareas.get().toPromise();
+            //this.LstTareas = await this.apiTareas.get().toPromise();
       } else {
             this.hayConexion = false;
             this.renderer.setStyle(this.avatarUser.nativeElement, 'color', `black`);

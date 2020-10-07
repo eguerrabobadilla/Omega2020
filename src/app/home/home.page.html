@@ -215,35 +215,7 @@ top: 0;" mode="ios">
 
         <ion-slides #slideDown [options]="slideOptsdos" (ionSlideTouchEnd)="ionSlideTouchEnd(slideUp,slideDown)" *ngIf="selectSeccion == 2" style="min-height: 72.6vh;">
             <ion-slide>
-                <!-- <ion-virtual-scroll [items]="LstTareas" approxItemHeight="320px">
-                    <ion-card style="text-align: initial;" class="ion-activatable ripple-parent" mode="ios" *virtualItem="let item; let itemBounds = bounds;" (click)="openDetail($event,item)">
-                        <ion-ripple-effect></ion-ripple-effect>
-                        <ion-card-header>
-                            <ion-card-title>{{ item.titulo }}</ion-card-title>
-                        </ion-card-header>
-                        <ion-card-content>{{ item.descripcion }}</ion-card-content>
-                    </ion-card>
-                </ion-virtual-scroll>-->
-                <ion-list style="width: 100%;">
-                    <ion-card style="text-align: initial;" class="ion-activatable ripple-parent" mode="ios" *ngFor="let item of LstTareas" (click)="openDetail($event,item)">
-                        <ion-ripple-effect></ion-ripple-effect>
-                        <ion-card-header>
-                            <ion-card-title style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{ item.Titulo }}</ion-card-title>
-                        </ion-card-header>
-                        <ion-card-content>
-                            {{ item.Descripcion }}
-                            <br><br>
-                            <b>Grupo:</b> <span *ngIf="item.GrupoIngles=='SI'"> Level</span> {{ item.Grado }}{{ item.Grupo }} {{ item.Escolaridad }}
-                            <br>
-                            <b>Materia:</b> {{ item.Materia.Nombre }}
-                        </ion-card-content>
-                        <ion-item>
-                            <ion-label>{{item.FechaPublicacion | date:'mediumDate'}}</ion-label>
-                            <ion-button *ngIf="permisoEditar()" style="transform: translateX(12px);" fill="outline" slot="end" (click)="eliminar($event,item)">Borrar</ion-button>
-                            <ion-button *ngIf="permisoEditar()" fill="outline" slot="end" (click)="editaTarea($event,item)">Editar</ion-button>
-                        </ion-item>
-                    </ion-card>
-                </ion-list>
+                <app-list-tareas #tareasComponent style="width: 100%;"></app-list-tareas>
             </ion-slide>
             <ion-slide>
                 <app-forum #forumComponent style="width: 100%;"></app-forum>

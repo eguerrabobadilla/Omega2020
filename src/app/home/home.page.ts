@@ -32,6 +32,7 @@ import { Storage } from '@ionic/storage';
 import { Router } from '@angular/router';
 import { GlobalService } from '../services/global.service';
 import { async } from '@angular/core/testing';
+import { ListTareasComponent } from '../components/list-tareas/list-tareas.component';
 
 
 
@@ -64,7 +65,6 @@ export class HomePage {
   librosES: any[] = [];
   librosIN: any[] = []; 
   codigoVisible = true;
-  LstTareas: any[] = [];
   hayConexion= true;
   numeroclicks=0;
   loading: any;
@@ -120,6 +120,7 @@ export class HomePage {
   @ViewChild('pillMenu', {read: ElementRef, static: false}) pillMenuRef: ElementRef;
   @ViewChild('forumComponent', {static: false}) forumComponent: ForumComponent;
   @ViewChild('resourceComponent', {static: false}) resourceComponent: ListResourceComponent;
+  @ViewChild('tareasComponent', {static: false}) tareasComponent: ListTareasComponent;
   @ViewChild('evidenceComponent', {static: false}) evidenceComponent: EvidencesComponent;
   @ViewChild('newsComponent', {static: false}) newsComponent: NewsComponent;
   @ViewChild('avatarUser', {read: ElementRef, static: false}) avatarUser: ElementRef;
@@ -739,7 +740,7 @@ this.pillMenu.animacion();
         const status = this.webSocket.getStatusSocket() == 1 ? true : false;
         this.inforConnectionScoket(status);
         if(status==true) {
-          this.LstTareas = await this.apiTareas.get().toPromise();
+          //this.LstTareas = await this.apiTareas.get().toPromise();
         }
         else
         {
@@ -954,13 +955,9 @@ this.pillMenu.animacion();
                   const itemOption =this.pillMenu.itemsMenu[this.pillMenu.indexAnterior];
                   if(itemOption==="Tareas") {
                     if (value.Meses.value === 0) {
-                      this.apiTareas.get().subscribe(data => {
-                        this.LstTareas = data;
-                      });
+                      this.tareasComponent.cargar(0);
                     } else {
-                        this.apiTareas.getTareasMaterias(value.Meses.value).subscribe(data => {
-                        this.LstTareas = data;
-                      });
+                      this.tareasComponent.cargar(value.Meses.value);
                     }
                   }
                   else if(itemOption==="Foro") {
@@ -1026,9 +1023,9 @@ this.pillMenu.animacion();
               console.log(data);
               if(data.data.banderaEdito==true)
               {
-                  await this.cargandoAnimation('Cargando...');
-                  this.LstTareas = await this.apiTareas.get().toPromise();
-                  this.loadingController.dismiss();
+                  /*await this.cargandoAnimation('Cargando...');
+                  this.loadingController.dismiss();*/
+                  this.tareasComponent.cargar(0);
               }
           });
       } else if (itemOption === 'Mensajes') {
@@ -1185,16 +1182,6 @@ this.pillMenu.animacion();
       this.pillMenu.nextSegment(index);
     }
 
-    async openDetail(event: Event, item) {
-    const modal = await this.modalCrl.create({
-        component: DetallePage,
-        cssClass: 'my-custom-modal-css',
-        mode: 'ios',
-        backdropDismiss: true,
-        componentProps: {item}
-      });
-    return await modal.present();
-    }
 
 
     clickDiv() {
@@ -1453,32 +1440,6 @@ this.pillMenu.animacion();
       }
     }
 
-    public async editaTarea(event,item){
-      event.stopPropagation();
-      
-      const modal = await this.modalCrl.create({
-        component: NuevoRecursoPage,
-        // cssClass: 'my-custom-modal-css',
-        cssClass: 'my-custom-modal-css-capturas',
-        showBackdrop: false,
-        componentProps: {item},
-        mode: 'ios',
-        backdropDismiss: true
-      });
-
-      await modal.present();
-
-      modal.onDidDismiss().then( async (data) => {
-
-          if(data.data.banderaEdito==true)
-          {
-              await this.cargandoAnimation('Cargando...');
-              this.LstTareas = await this.apiTareas.get().toPromise();
-              this.loadingController.dismiss();
-          }
-      });
-    }
-
     public permisoEditar() {
       const jwt_temp = localStorage.getItem('USER_INFO_TEMP');
       if(jwt_temp != null)
@@ -1490,43 +1451,6 @@ this.pillMenu.animacion();
         return true;
       else
         return false;
-    }
-
-    //Eliminar tarea
-    public async eliminar(event,item) {
-      event.stopPropagation();
-      console.log(item);
-  
-      const alertTerminado = await this.alertController.create({
-        header: 'ELIMINAR',
-        message: '¿Está seguro de ELIMINAR la tarea?, si la tarea ya cuenta con evidencia serán eliminadas',
-        buttons: [
-          {
-            text: 'No', handler: () =>  {
-              return;
-            }
-          },
-          {
-            text: 'Si', handler: async () => {
-              const loading = await this.loadingController.create({
-                message: 'Eliminando...'
-              });
-          
-              await loading.present();
-          
-              await this.apiTareas.delete(item.Id).toPromise();
-
-              this.LstTareas = this.LstTareas.filter(obj => obj !== item);
-  
-              this.loadingController.dismiss();
-  
-              this.alertController.dismiss();
-            }
-          }
-        ]
-      });
-  
-      alertTerminado.present();
     }
 
     nextSlide(){
