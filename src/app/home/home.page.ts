@@ -68,6 +68,8 @@ export class HomePage {
   hayConexion= true;
   numeroclicks=0;
   loading: any;
+  /****Tipo seleccionado Rercuso****/
+  TipoSeleccionado: any = 'Archivos';
 
   settings: MbscCalendarOptions = {
     theme: 'mobiscroll',
@@ -147,7 +149,7 @@ export class HomePage {
     grado  : ''
   };
   slideOpts = {
-    loop: true,
+    loop: true
   };
   slideOptsdos = {
     autoHeight: true
@@ -1045,11 +1047,15 @@ this.pillMenu.animacion();
         });
 
       } else if (itemOption === 'Recursos') {
+
         const modal = await this.modalCrl.create({
           component: NewResourcePage,
           // cssClass: 'my-custom-modal-css',
           cssClass: 'my-custom-modal-css-capturas',
           showBackdrop: false,
+          componentProps: {
+            TipoRecurso : this.TipoSeleccionado
+          },
           mode: 'ios',
           backdropDismiss: true
         });
@@ -1062,7 +1068,7 @@ this.pillMenu.animacion();
             this.resourceComponent.cargar(0);
           }
         });
-
+      
       } else if (itemOption === 'Noticias') {
         const modal = await this.modalCrl.create({
           component: CrearNewsPage,
@@ -1364,6 +1370,7 @@ this.pillMenu.animacion();
  }
 
     public checkCodePush() {
+      return;
       const downloadProgress = (downloadProgress) => { 
         alert(downloadProgress.receivedBytes)
         console.log(`Downloaded ${downloadProgress.receivedBytes} of ${downloadProgress.totalBytes}`); 
@@ -1495,10 +1502,10 @@ this.pillMenu.animacion();
 
     }
 
-     
-
-
-
+    changeIonChipRecursos(data){
+      this.TipoSeleccionado = data;
+      console.log(this.TipoSeleccionado);
+    }
 }
 
 const lorem = 'Lorem iuis aute irure dol cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.';

@@ -1,131 +1,201 @@
-<ion-item button detail="false" slot="fixed">
+<!--<ion-slides #slideDown [options]="slideOptsdos">
+
+    <div #scrollh (click)="stop()" ondrag="stop()" scrollY="false" scrollX="true">
+
+        <ion-chip (click)="openPicker()" color="danger">
+            <ion-icon name="calendar-outline"></ion-icon>
+            <ion-label>{{mesActual}}</ion-label>
+        </ion-chip>
+        <ion-chip (click)="selected('Foto')" [outline]="outline[0].selected">
+            <ion-icon name="image-outline"></ion-icon>
+            <ion-label style="z-index: -1;">Foto</ion-label>
+        </ion-chip>
+        <ion-chip (click)="selected('Video')" [outline]="outline[1].selected">
+            <ion-icon name="videocam-outline"></ion-icon>
+            <ion-label>Video</ion-label>
+        </ion-chip>
+        <ion-chip (click)="selected('Video')" [outline]="outline[1].selected">
+            <ion-icon name="videocam-outline"></ion-icon>
+            <ion-label>Video</ion-label>
+        </ion-chip>
+        <ion-chip (click)="selected('Video')" [outline]="outline[1].selected">
+            <ion-icon name="videocam-outline"></ion-icon>
+            <ion-label>Video</ion-label>
+        </ion-chip>
+
+    </div>
+
+</ion-slides>-->
+<ion-item detail="false" slot="fixed">
     <ion-chip (click)="openPicker()" color="danger">
         <ion-icon name="calendar-outline"></ion-icon>
         <ion-label>{{mesActual}}</ion-label>
     </ion-chip>
+    <ion-chip (click)="selected('Zoom')" [outline]="outline[4].selected">
+        <ion-icon name="videocam-outline"></ion-icon>
+        <ion-label>Clases Virtuales</ion-label>
+    </ion-chip>
+    <ion-chip (click)="selected('Todos')" [outline]="outline[3].selected">
+        <ion-icon name="attach-outline"></ion-icon>
+        <ion-label>Archivos</ion-label>
+    </ion-chip>
 </ion-item>
-<ion-list mode="ios">
-    <ion-list-header>
-        Semana 1
-    </ion-list-header>
-    <ion-card style="text-align: initial;"  mode="ios" *ngFor="let item of LstRecursos | filter : 'Semana 1' : 'Semana'">
-       
-        <ion-card-header>
-            <ion-card-title>{{ item.Titulo }}</ion-card-title>
-        </ion-card-header>
-        <ion-card-content [innerHtml]="item.Descripcion + datosClase(item) | linkify">
-                
-        </ion-card-content>
-        <ion-item>
-            <ion-chip outline color="dark" (click)="openFile(item)" *ngIf=" item.PathRecurso != undefined">
-                <ion-icon name="attach-outline"></ion-icon>
-                <ion-label style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{item.PathRecursoUser}}</ion-label>
-            </ion-chip>
-        </ion-item>
-        <ion-item *ngIf="permisoEditar()" style="margin-top: -6px;">
-            <ion-button style="transform: translateX(12px);" fill="outline" slot="end" (click)="eliminar($event,item)">Borrar</ion-button>
-            <ion-button fill="outline" slot="end" (click)="edit($event,item)">Editar</ion-button>
-        </ion-item>
-    </ion-card>
-    <ion-card style="text-align: initial; " class="ion-activatable ripple-parent " mode="ios " *ngIf="(LstRecursos | filter : 'Semana 1' : 'Semana').length == 0 ">
-        <ion-ripple-effect></ion-ripple-effect>
-        <ion-card-header>
-            <ion-card-title>Ningun recurso</ion-card-title>
-        </ion-card-header>
-        <ion-card-content>No hay nada que mostrar</ion-card-content>
-    </ion-card>
-</ion-list>
+<div *ngIf="(!esConferencia)">
+    <ion-list mode="ios">
+        <ion-list-header>
+            Semana 1
+        </ion-list-header>
+        <ion-card style="text-align: initial;" mode="ios" *ngFor="let item of LstRecursos | filter : 'Semana 1' : 'Semana'">
 
-<ion-list mode="ios">
-    <ion-list-header>
-        Semana 2
-    </ion-list-header>
-    <ion-card style="text-align: initial; " mode="ios" *ngFor="let item of LstRecursos  | filter : 'Semana 2' : 'Semana'; let i=i ndex ">
-        <ion-card-header>
-            <ion-card-title>{{ item.Titulo }}</ion-card-title>
-        </ion-card-header>
-        <ion-card-content [innerHtml]="item.Descripcion + datosClase(item) | linkify">
+            <ion-card-header>
+                <ion-card-title>{{ item.Titulo }}</ion-card-title>
+            </ion-card-header>
+            <ion-card-content [innerHtml]="item.Descripcion + datosClase(item) | linkify">
 
-        </ion-card-content>
-        <ion-item>
-            <ion-chip outline color="dark" (click)="openFile(item)" *ngIf=" item.PathRecurso != undefined">
-                <ion-icon name="attach-outline"></ion-icon>
-                <ion-label style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{item.PathRecursoUser}}</ion-label>
-            </ion-chip>
-        </ion-item>
-        <ion-item *ngIf="permisoEditar()" style="margin-top: -6px;">
-            <ion-button style="transform: translateX(12px);" fill="outline" slot="end" (click)="eliminar($event,item)">Borrar</ion-button>
-            <ion-button fill="outline" slot="end" (click)="edit($event,item)">Editar</ion-button>
-        </ion-item>
-    </ion-card>
-    <ion-card style="text-align: initial; " class="ion-activatable ripple-parent " mode="ios" *ngIf="(LstRecursos | filter : 'Semana 2' : 'Semana').length == 0 ">
-        <ion-ripple-effect></ion-ripple-effect>
-        <ion-card-header>
-            <ion-card-title>Ningun recurso</ion-card-title>
-        </ion-card-header>
-        <ion-card-content>No hay nada que mostrar</ion-card-content>
-    </ion-card>
-</ion-list>
+            </ion-card-content>
+            <ion-item>
+                <ion-chip outline color="dark" (click)="openFile(item)" *ngIf=" item.PathRecurso != undefined">
+                    <ion-icon name="attach-outline"></ion-icon>
+                    <ion-label style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{item.PathRecursoUser}}</ion-label>
+                </ion-chip>
+            </ion-item>
+            <ion-item *ngIf="permisoEditar()" style="margin-top: -6px;">
+                <ion-button style="transform: translateX(12px);" fill="outline" slot="end" (click)="eliminar($event,item)">Borrar</ion-button>
+                <ion-button fill="outline" slot="end" (click)="edit($event,item)">Editar</ion-button>
+            </ion-item>
+        </ion-card>
+        <ion-card style="text-align: initial; " class="ion-activatable ripple-parent " mode="ios " *ngIf="!esConferencia && (LstRecursos | filter : 'Semana 1' : 'Semana').length == 0">
+            <ion-ripple-effect></ion-ripple-effect>
+            <ion-card-header>
+                <ion-card-title>Ningun recurso</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>No hay nada que mostrar</ion-card-content>
+        </ion-card>
+    </ion-list>
 
-<ion-list mode="ios">
-    <ion-list-header>
-        Semana 3
-    </ion-list-header>
-    <ion-card style="text-align: initial; " mode="ios" *ngFor="let item of LstRecursos  | filter : 'Semana 3' : 'Semana'; let i=i ndex ">
-        <ion-card-header>
-            <ion-card-title>{{ item.Titulo }}</ion-card-title>
-        </ion-card-header>
-        <ion-card-content [innerHtml]="item.Descripcion + datosClase(item) | linkify">
+    <ion-list mode="ios">
+        <ion-list-header>
+            Semana 2
+        </ion-list-header>
+        <ion-card style="text-align: initial; " mode="ios" *ngFor="let item of LstRecursos  | filter : 'Semana 2' : 'Semana'; let i=i ndex ">
+            <ion-card-header>
+                <ion-card-title>{{ item.Titulo }}</ion-card-title>
+            </ion-card-header>
+            <ion-card-content [innerHtml]="item.Descripcion + datosClase(item) | linkify">
 
-        </ion-card-content>
-        <ion-item>
-            <ion-chip outline color="dark" (click)="openFile(item)" *ngIf=" item.PathRecurso != undefined">
-                <ion-icon name="attach-outline"></ion-icon>
-                <ion-label style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{item.PathRecursoUser}}</ion-label>
-            </ion-chip>
-        </ion-item>
-        <ion-item  *ngIf="permisoEditar()" style="margin-top: -6px;">
-            <ion-button style="transform: translateX(12px);" fill="outline" slot="end" (click)="eliminar($event,item)">Borrar</ion-button>
-            <ion-button fill="outline" slot="end" (click)="edit($event,item)">Editar</ion-button>
-        </ion-item>
-    </ion-card>
+            </ion-card-content>
+            <ion-item>
+                <ion-chip outline color="dark" (click)="openFile(item)" *ngIf=" item.PathRecurso != undefined">
+                    <ion-icon name="attach-outline"></ion-icon>
+                    <ion-label style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{item.PathRecursoUser}}</ion-label>
+                </ion-chip>
+            </ion-item>
+            <ion-item *ngIf="permisoEditar()" style="margin-top: -6px;">
+                <ion-button style="transform: translateX(12px);" fill="outline" slot="end" (click)="eliminar($event,item)">Borrar</ion-button>
+                <ion-button fill="outline" slot="end" (click)="edit($event,item)">Editar</ion-button>
+            </ion-item>
+        </ion-card>
+        <ion-card style="text-align: initial; " class="ion-activatable ripple-parent " mode="ios" *ngIf="!esConferencia &&  (LstRecursos | filter : 'Semana 2' : 'Semana').length == 0 || !esConferencia ">
+            <ion-ripple-effect></ion-ripple-effect>
+            <ion-card-header>
+                <ion-card-title>Ningun recurso</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>No hay nada que mostrar</ion-card-content>
+        </ion-card>
+    </ion-list>
 
-    <ion-card style="text-align: initial; " class="ion-activatable ripple-parent " mode="ios" *ngIf="(LstRecursos | filter : 'Semana 3' : 'Semana').length == 0 ">
-        <ion-ripple-effect></ion-ripple-effect>
-        <ion-card-header>
-            <ion-card-title>Ningun recurso</ion-card-title>
-        </ion-card-header>
-        <ion-card-content>No hay nada que mostrar</ion-card-content>
-    </ion-card>
-</ion-list>
+    <ion-list mode="ios">
+        <ion-list-header>
+            Semana 3
+        </ion-list-header>
+        <ion-card style="text-align: initial; " mode="ios" *ngFor="let item of LstRecursos  | filter : 'Semana 3' : 'Semana'; let i=i ndex ">
+            <ion-card-header>
+                <ion-card-title>{{ item.Titulo }}</ion-card-title>
+            </ion-card-header>
+            <ion-card-content [innerHtml]="item.Descripcion + datosClase(item) | linkify">
 
-<ion-list mode="ios">
-    <ion-list-header>
-        Semana 4
-    </ion-list-header>
-    <ion-card style="text-align: initial; " mode="ios" *ngFor="let item of LstRecursos  | filter : 'Semana 4' : 'Semana'; let i=i ndex ">
-        <ion-card-header>
-            <ion-card-title>{{ item.Titulo }}</ion-card-title>
-        </ion-card-header>
-        <ion-card-content [innerHtml]="item.Descripcion + datosClase(item)  | linkify">
+            </ion-card-content>
+            <ion-item>
+                <ion-chip outline color="dark" (click)="openFile(item)" *ngIf=" item.PathRecurso != undefined">
+                    <ion-icon name="attach-outline"></ion-icon>
+                    <ion-label style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{item.PathRecursoUser}}</ion-label>
+                </ion-chip>
+            </ion-item>
+            <ion-item *ngIf="permisoEditar()" style="margin-top: -6px;">
+                <ion-button style="transform: translateX(12px);" fill="outline" slot="end" (click)="eliminar($event,item)">Borrar</ion-button>
+                <ion-button fill="outline" slot="end" (click)="edit($event,item)">Editar</ion-button>
+            </ion-item>
+        </ion-card>
 
-        </ion-card-content>
-        <ion-item>
-            <ion-chip outline color="dark" (click)="openFile(item)" *ngIf=" item.PathRecurso != undefined">
-                <ion-icon name="attach-outline"></ion-icon>
-                <ion-label style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{item.PathRecursoUser}}</ion-label>
-            </ion-chip>
-        </ion-item>
-        <ion-item  *ngIf="permisoEditar()"  style="margin-top: -6px;">
-            <ion-button style="transform: translateX(12px);" fill="outline" slot="end" (click)="eliminar($event,item)">Borrar</ion-button>
-            <ion-button fill="outline" slot="end" (click)="edit($event,item)">Editar</ion-button>
-        </ion-item>
-    </ion-card>
-    <ion-card style="text-align: initial; " class="ion-activatable ripple-parent " mode="ios" *ngIf="(LstRecursos | filter : 'Semana 4' : 'Semana').length == 0 ">
-        <ion-ripple-effect></ion-ripple-effect>
-        <ion-card-header>
-            <ion-card-title>Ningun recurso</ion-card-title>
-        </ion-card-header>
-        <ion-card-content>No hay nada que mostrar</ion-card-content>
-    </ion-card>åå
-</ion-list>
+        <ion-card style="text-align: initial; " class="ion-activatable ripple-parent " mode="ios" *ngIf="!esConferencia &&  (LstRecursos | filter : 'Semana 3' : 'Semana').length == 0 || !esConferencia ">
+            <ion-ripple-effect></ion-ripple-effect>
+            <ion-card-header>
+                <ion-card-title>Ningun recurso</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>No hay nada que mostrar</ion-card-content>
+        </ion-card>
+    </ion-list>
+
+    <ion-list mode="ios">
+        <ion-list-header>
+            Semana 4
+        </ion-list-header>
+        <ion-card style="text-align: initial; " mode="ios" *ngFor="let item of LstRecursos  | filter : 'Semana 4' : 'Semana'; let i=i ndex ">
+            <ion-card-header>
+                <ion-card-title>{{ item.Titulo }}</ion-card-title>
+            </ion-card-header>
+            <ion-card-content [innerHtml]="item.Descripcion + datosClase(item)  | linkify">
+
+            </ion-card-content>
+            <ion-item>
+                <ion-chip outline color="dark" (click)="openFile(item)" *ngIf=" item.PathRecurso != undefined">
+                    <ion-icon name="attach-outline"></ion-icon>
+                    <ion-label style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{item.PathRecursoUser}}</ion-label>
+                </ion-chip>
+            </ion-item>
+            <ion-item *ngIf="permisoEditar()" style="margin-top: -6px;">
+                <ion-button style="transform: translateX(12px);" fill="outline" slot="end" (click)="eliminar($event,item)">Borrar</ion-button>
+                <ion-button fill="outline" slot="end" (click)="edit($event,item)">Editar</ion-button>
+            </ion-item>
+        </ion-card>
+        <ion-card style="text-align: initial; " class="ion-activatable ripple-parent " mode="ios" *ngIf="!esConferencia && (LstRecursos | filter : 'Semana 4' : 'Semana').length == 0">
+            <ion-ripple-effect></ion-ripple-effect>
+            <ion-card-header>
+                <ion-card-title>Ningun recurso1</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>No hay nada que mostrar</ion-card-content>
+        </ion-card>
+    </ion-list>
+</div>
+<div *ngIf="(esConferencia)">
+    <ion-list mode="ios">
+
+        <ion-card style="text-align: initial;" mode="ios" *ngFor="let item of LstRecursos">
+
+            <ion-card-header>
+                <ion-card-title>{{ item.Titulo }}</ion-card-title>
+            </ion-card-header>
+            <ion-card-content [innerHtml]="item.Descripcion + datosClase(item) | linkify">
+
+            </ion-card-content>
+            <ion-item>
+                <ion-chip outline color="dark" (click)="openFile(item)" *ngIf=" item.PathRecurso != undefined">
+                    <ion-icon name="attach-outline"></ion-icon>
+                    <ion-label style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{item.PathRecursoUser}}</ion-label>
+                </ion-chip>
+            </ion-item>
+            <ion-item *ngIf="permisoEditar()" style="margin-top: -6px;">
+                <ion-label>{{item.Fecha | date:'mediumDate'}}</ion-label>
+                <ion-button style="transform: translateX(12px);" fill="outline" slot="end" (click)="eliminar($event,item)">Borrar</ion-button>
+                <ion-button fill="outline" slot="end" (click)="edit($event,item)">Editar</ion-button>
+            </ion-item>
+        </ion-card>
+        <ion-card style="text-align: initial; " class="ion-activatable ripple-parent " mode="ios " *ngIf="!esConferencia && (LstRecursos | filter : 'Semana 1' : 'Semana').length == 0">
+            <ion-ripple-effect></ion-ripple-effect>
+            <ion-card-header>
+                <ion-card-title>Ningun recurso</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>No hay nada que mostrar</ion-card-content>
+        </ion-card>
+    </ion-list>
+</div>

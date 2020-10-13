@@ -24,19 +24,29 @@
                                 <ion-input #txtGradoGrupo type="text" readonly formControlName="Grupo" name="Grupo" style="display: none;"></ion-input>
                             </ion-item>
                             <div *ngIf="!FrmItem.controls.Grupo.valid && (FrmItem.controls.Grupo.dirty || submitAttempt)">
-                              <p class="text-error">Por favor ingresa un Grupo.</p>
+                                <p class="text-error">Por favor ingresa un Grupo.</p>
                             </div>
-                          </ion-col>
-                          <ion-col size="12">
+                        </ion-col>
+                        <ion-col size="12">
                             <ion-item button (click)="openPickerMaterias()" detail="false">
                                 <ion-label color="light" position="floating">Materia</ion-label>
                                 <ion-label color="light" position="floating">{{ FrmItem.controls.MateriaId.value }}</ion-label>
                                 <ion-input #txtMateria type="text" readonly formControlName="MateriaId" name="MateriaId" style="display: none;"></ion-input>
                             </ion-item>
                             <div *ngIf="!FrmItem.controls.MateriaId.valid && (FrmItem.controls.MateriaId.dirty || submitAttempt)">
-                              <p class="text-error">Por favor ingresa una Materia.</p>
+                                <p class="text-error">Por favor ingresa una Materia.</p>
                             </div>
-                          </ion-col>
+                        </ion-col>
+                        <ion-col size="12">
+                            <ion-item button (click)="openPickerTipo()" detail="false">
+                                <ion-label color="light" position="floating">Tipo de Recurso</ion-label>
+                                <ion-label color="light" position="floating">{{ FrmItem.controls.Tipo.value }}</ion-label>
+                                <ion-input #txtTipo type="text" readonly formControlName="Tipo" name="Tipo" style="display: none;"></ion-input>
+                            </ion-item>
+                            <div *ngIf="!FrmItem.controls.Tipo.valid && (FrmItem.controls.Tipo.dirty || submitAttempt)">
+                                <p class="text-error">Por favor ingresa el tipo de recurso.</p>
+                            </div>
+                        </ion-col>
                         <ion-col size="12">
                             <ion-item>
                                 <ion-label color="light" position="floating">Título</ion-label>
@@ -48,7 +58,7 @@
                         </ion-col>
                         <ion-col size="12">
                             <ion-item>
-                                <ion-label color="light" position="floating">Descripción</ion-label>
+                                <ion-label color="light" position="floating">{{descripcion}}</ion-label>
                                 <ion-textarea rows="5" formControlName="Descripcion" name="Descripcion">
                                 </ion-textarea>
                             </ion-item>
@@ -56,7 +66,7 @@
                                 <p class="text-error">Por favor ingresa una descripción.</p>
                             </div>
                         </ion-col>
-                        <ion-col size="12">
+                        <ion-col size="12" *ngIf="TipoSeleccionada=='Archivo'">
                             <ion-item button (click)="openPicker()" detail="false">
                                 <ion-label color="light" position="floating">Fecha</ion-label>
                                 <ion-label color="light" position="floating">{{ FrmItem.controls.FechaPublicacion.value }}</ion-label>
@@ -66,8 +76,17 @@
                                 <p class="text-error">Por favor ingresa una fecha.</p>
                             </div>
                         </ion-col>
-                        <ion-col size="12">
-                            <input #inputFilePortada style="opacity:0" name="Image" (change)="onFileChange($event)" type="file"/>
+                        <ion-col size="12" *ngIf="TipoSeleccionada=='Clase Virtual'">
+                            <ion-item>
+                                <ion-label color="light" position="floating">Fecha</ion-label>
+                                <ion-datetime formControlName="FechaPublicacionClaseVirtual" name="FechaPublicacionClaseVirtual" displayFormat="DDDD DD MMM, YYYY" pickerFormat="DD MMMM YYYY"></ion-datetime>
+                            </ion-item>
+                            <div *ngIf="!FrmItem.controls.FechaPublicacionClaseVirtual.valid && (FrmItem.controls.FechaPublicacionClaseVirtual.dirty || submitAttempt)">
+                                <p class="text-error">Por favor ingresa una fecha.</p>
+                            </div>
+                        </ion-col>
+                        <ion-col size="12" *ngIf="TipoSeleccionada=='Archivo'">
+                            <input #inputFilePortada style="opacity:0" name="Image" (change)="onFileChange($event)" type="file" />
                             <ion-button expand="full" type="button" icon-start outline block (click)="inputFilePortada.click()">
                                 <ion-icon name="images"></ion-icon>
                                 {{texto_adjuntar_portada}}
