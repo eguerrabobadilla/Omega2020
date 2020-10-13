@@ -51,10 +51,15 @@ export class DetallesForumPage implements OnInit {
       this.modalCtrl.dismiss();
   }
 
-  async crearNoticia() {
+  async enviarMensaje() {
 
   //  console.log(this.FrmItem.value);
     this.item = this.FrmItem.value;
+    if(this.item.mensaje==='') return;
+
+    this.FrmItem.patchValue({
+      mensaje: ""
+    });
   //  console.log(this.detalleId);
 
     this.item.foroId = this.detalleId;
@@ -87,6 +92,9 @@ export class DetallesForumPage implements OnInit {
   private subscribeToEvents(): void {
 
     this.webSocket.commentReceived.subscribe((comment: any) => {
+        comment.Hora.Minutes = comment.Hora.Minutes.length == 1 ? `0${comment.Hora.Minutes}` : comment.Hora.Minutes;
+        comment.Hora.Seconds = comment.Hora.Seconds.length == 1 ? `0${comment.Hora.Seconds}` : comment.Hora.Seconds;
+        comment.Hora = `${comment.Hora.Hours}:${comment.Hora.Minutes}:${comment.Hora.Seconds}`
         this.LstForo.unshift(comment);
         this.applicationRef.tick();
         console.log(comment);

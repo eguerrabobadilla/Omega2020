@@ -4,8 +4,6 @@
         <ion-buttons slot="end">
             <ion-button style="margin-top: 8px;margin-right: 8px;" (click)="closeModal()">
                 <ion-icon slot="icon-only" color="danger" name="close"></ion-icon>
-                <!--<ion-icon slot="icon-only" ios="ellips
-      is-vertical" md="ellipsis-vertical"></ion-icon>-->
             </ion-button>
         </ion-buttons>
     </ion-toolbar>
@@ -21,7 +19,7 @@
                 </ion-avatar>
                 <ion-card-content style="background-color: #e8e8e8;margin-left: 43px; margin-top: 23px;border-radius: 15px;">
 
-                    <h2 style="font-weight: 700;">....</h2>
+                    <h2 style="font-weight: 700;">{{item.Usuario.NombreCompleto}}</h2>
 
                     <p>{{item.Mensaje}}</p>
 
@@ -35,35 +33,28 @@
                         color: black;
                         transform: translateY(2px) scale(1.5);
                         padding-right: 5px;
-                        font-size: 11px;"></ion-icon> ...... </span>
+                        font-size: 11px;"></ion-icon> {{item.Fecha | date:'mediumDate'}} {{item.Hora}} </span>
 
                 </p>
             </div>
         </div>
     </ion-list>
-    <!--<ion-virtual-scroll [items]="LstForo" approxItemHeight="320px">
-        <ion-item lines="none" *virtualItem="let item; let itemBounds = bounds; let i = index">
-            <ion-avatar style="top: 22px;position: absolute;" slot="start">
-                <img src="assets/img/avatar-han.png">
-            </ion-avatar>
-            <ion-card-content style="background-color: #e8e8e8;margin-left: 43px; margin-top: 23px;border-radius: 30px;">
-
-                <h2 style="font-weight: 700;">Usuario Apellido</h2>
-                <p>{{item.Mensaje}}</p>
-
-            </ion-card-content>
-        </ion-item>
-    </ion-virtual-scroll>-->
 </ion-content>
 
 <ion-footer style="bottom: 22px;">
     <ion-toolbar>
-
-        <form [formGroup]="FrmItem" (ngSubmit)="crearNoticia()" style="display: flex;">
-            <ion-input formControlName="mensaje" name="mensaje" style="background-color: #e8e8e8;border-radius: 16px;width: 86%;padding-left: 15px !important;height: 38px;margin-top: 4px;" placeholder="Escribir mensaje"></ion-input>
+        <form [formGroup]="FrmItem" (ngSubmit)="enviarMensaje()" style="display: flex;">
+            <!--<ion-input formControlName="mensaje" name="mensaje" style="background-color: #e8e8e8;border-radius: 16px;width: 86%;padding-left: 15px !important;height: 38px;margin-top: 4px;" placeholder="Escribir mensaje"></ion-input>
             <ion-button type="submit" slot="end" style="border-radius: 105px;height: 45px;width: 45px;">
                 <ion-icon name="send"></ion-icon>
-            </ion-button>
+            </ion-button>-->
+            <!--<ion-input formControlName="mensaje" name="mensaje" style="background-color: #e8e8e8;border-radius: 16px;width: 86%;padding-left: 15px !important;height: 38px;margin-top: 4px; " placeholder="Escribir mensaje "></ion-input>-->
+            <ion-textarea enterkeyhint="enter" autoGrow="true" rows="1" mode="ios" formControlName="mensaje" name="mensaje" style="background-color: #e8e8e8;border-radius: 16px;width: 86%;padding-left: 15px !important;/*height: 38px*/;margin-top: 4px;margin-bottom: 6px;" placeholder="Escribir mensaje "></ion-textarea>
+            <div style="position: relative;width: 11%;">
+                <ion-button size="small" type="submit" slot="end" style="--border-radius: 34px;height: 40px;width: 40px;--background: #F4315D;--background-activated: #F4315D;    position: absolute;bottom: 3px;right: 0;">
+                    <ion-icon name="send"></ion-icon>
+                </ion-button>
+            </div>
         </form>
     </ion-toolbar>
 </ion-footer>

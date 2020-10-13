@@ -10,7 +10,7 @@
                 <ion-label>
                     <h2 style="font-weight: 600;font-size: 20px;">{{item.Nombre}}</h2>
                     <p>{{ item.Usario.Nombre }} {{ item.Usario.ApellidoPaterno }} {{ item.Usario.ApellidoMaterno }}
-                        <span>24 min</span>
+                        <span>{{item.FechaPublicacion | date:'mediumDate'}}</span>
                     </p>
                 </ion-label>
             </ion-item>
@@ -19,6 +19,10 @@
 
         <ion-card-content>
             {{item.Descrpcion}}
+            <br><br>
+            <b>Grupo:</b> <span *ngIf="item.GrupoIngles=='SI'"> Level</span> {{ item.Grado }}{{ item.Grupo }} {{ item.Escolaridad }}
+            <br>
+            <b>Materia:</b> {{ item.Materia.Nombre }}
         </ion-card-content>
 
         <ion-item lines="none">
