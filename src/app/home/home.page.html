@@ -1,6 +1,6 @@
 <ion-header #toolbar [translucent]="false" style="background-color: white;
 border-radius: 0px 0px 0px 50px;" mode="ios">
-    <ion-toolbar  style="height: 13vh;
+    <ion-toolbar style="height: 13vh;
    border-radius: 0px 0px 0px 50px;--background:ffffff00">
         <ion-title #text class="etitle">
             <ion-icon name="add-circle" #avatarUser style="color: black; transform: translateY(0.8vh);
@@ -170,7 +170,7 @@ top: 0;" mode="ios">
 </ion-fab>
 
 <!-- Botones para escritorio -->
-<ion-fab  mode="ios" vertical="center" horizontal="end" slot="fixed" [ngStyle]="{'display': !isMobile ? 'block' : 'none' }">
+<ion-fab mode="ios" vertical="center" horizontal="end" slot="fixed" [ngStyle]="{'display': !isMobile ? 'block' : 'none' }">
     <ion-fab-button #fabNext (click)="nextSlide()" mode="ios" size="small" style="--box-shadow:none ;--background-activated: #F4315D;  --background: #F4315D;width: 46px;
     height:46px;">
         <ion-icon name="chevron-forward-outline"></ion-icon>
@@ -186,9 +186,9 @@ top: 0;" mode="ios">
 <!-- Termina botones para escritorio -->
 
 <div #div2 (click)="clickDiv()" class="edu1" style="transform: translateY(60vh)">
-    <div  style="position: -webkit-sticky;top: 0;font-size: 29px;z-index: 999;position: sticky;">
-       
-        <app-pill-menu (click)="test()"    #pillMenu  [itemsMenu]="tabs" [selectOption]="selectOption" (indicatorChanged)="segmentChanged($event)" (clickFab)="nuevoRecurso($event)" (clickFiltro)="openPicker()"></app-pill-menu>
+    <div style="position: -webkit-sticky;top: 0;font-size: 29px;z-index: 999;position: sticky;">
+
+        <app-pill-menu (click)="test()" #pillMenu [itemsMenu]="tabs" [selectOption]="selectOption" (indicatorChanged)="segmentChanged($event)" (clickFab)="nuevoRecurso($event)" (clickFiltro)="openPicker()"></app-pill-menu>
     </div>
     <ion-header [translucent]="false" mode="ios"></ion-header>
 
@@ -221,7 +221,7 @@ top: 0;" mode="ios">
                 <app-forum #forumComponent style="width: 100%;"></app-forum>
             </ion-slide>
             <ion-slide>
-                <app-list-resource #resourceComponent style="width: 100%;"></app-list-resource>
+                <app-list-resource #resourceComponent (changeIonChip)="changeIonChipRecursos($event)" style="width: 100%;"></app-list-resource>
             </ion-slide>
             <ion-slide *ngIf="!permisoEditar()">
                 <app-evidences #evidenceComponent style="width: 100%;"></app-evidences>

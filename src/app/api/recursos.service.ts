@@ -29,9 +29,17 @@ export class RecursosService  extends apiBase {
   getByMonth(mes: string): Observable<any[]> {
     return this.http.get<any[]>(`${this.url}/${this.Ws}/${mes}`);
   }
+  getByMonthTipo(mes: string,tipo: string): Observable<any[]> {
+    https://localhost:5001/api/recursos/filtros/?mes=Octubre&tipo=Zoom&tipo=Documento
+    return this.http.get<any[]>(`${this.url}/${this.Ws}/filtros/?mes=${mes}&${tipo}`);
+  }
 
   getRecursosMaterias(id,mes): Observable<any[]> {
     return this.http.get<any[]>(`${this.url}/${this.Ws}/materia/${id}/${mes}`);
+  }
+
+  getByLink(mes): Observable<any[]> {
+    return this.http.get<any[]>(`${this.url}/${this.Ws}/${mes}`);
   }
 
   delete(Id: any) {

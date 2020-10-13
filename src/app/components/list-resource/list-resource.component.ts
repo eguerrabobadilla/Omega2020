@@ -1,5 +1,5 @@
-import { Component, OnInit,HostListener  } from '@angular/core';
-import { PickerController, Platform, ModalController,LoadingController, AlertController } from '@ionic/angular';
+import { Component, OnInit, HostListener, ElementRef, ViewChild, Output,EventEmitter } from '@angular/core';
+import { PickerController, Platform, ModalController, LoadingController, AlertController, GestureController, IonSlide, IonSlides } from '@ionic/angular';
 import { RecursosService } from '../../api/recursos.service';
 import { Plugins } from '@capacitor/core';
 import { File,FileEntry } from '@ionic-native/file/ngx';
@@ -18,17 +18,31 @@ import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 export class ListResourceComponent implements OnInit {
 
   rotateImg = 0;
+  public gesture2;
+  @Output() changeIonChip = new EventEmitter();
+  @ViewChild('scrollh', {read: ElementRef, static: true}) scrollh: ElementRef;
+  @ViewChild('slideDown', {static: false}) slideDown: IonSlides;
   items: any[] = [];
   meses: string[];
   mesActual: string = 'Mayo';
   LstRecursos: any[] = [];
   materiaId =0;
+  esConferencia=true;
   loading: any;
+  outline = [{id:'Foto', selected: true},
+             {id:'Video', selected: true},
+             {id:'Enlace', selected: true},
+             {id:'Todos', selected: true},
+             {id:'Zoom', selected: false}];
+  slideOptsdos = {
+
+              passiveListeners : false
+            };
 
   constructor(private pickerController: PickerController, private apiRecursos: RecursosService, private transfer: FileTransfer,
               private file: File, private platform: Platform,private fileOpener: FileOpener,private api: apiBase,
               private modalCrl: ModalController,public loadingController: LoadingController, private alertCtrl: AlertController,
-              private inAppBrowser: InAppBrowser) {
+              private inAppBrowser: InAppBrowser,private gestureCtrl: GestureController) {
   }
 
 ngOnInit() {
@@ -42,11 +56,38 @@ ngOnInit() {
     const d = new Date();
     this.mesActual= mesesReal[d.getMonth()];
 
-    this.apiRecursos.getByMonth(this.mesActual).subscribe(data => {
+    this.apiRecursos.getByMonthTipo(this.mesActual,'tipo=Zoom').subscribe(data => {
       //console.log(data);
       this.LstRecursos = data;
     });
+  //  this.activarEventoTouch();
+    this.slideDown.lockSwipes(true);
   }
+
+  activarEventoTouch(){
+      
+
+    this.gesture2 = this.gestureCtrl.create({
+        el: this.scrollh.nativeElement,
+        gestureName: 'stop',
+        direction: 'x',
+        disableScroll:false,
+        gesturePriority:100,
+        passive:true,
+        threshold: 0.5,
+        onStart: (detail) => {
+          
+
+          //this.gesture.disabled();
+          //  this.renderer.setStyle(this.div2.nativeElement, 'transition', `none`);
+        },
+        onMove: (detail) => {
+         console.log("test")
+          //  this.gesture.disabled();
+          },
+      });
+    this.gesture2.enable();
+}
   async cargandoAnimation() {
     this.loading = await this.loadingController.create({
       message: 'Cargando...'
@@ -60,16 +101,20 @@ ngOnInit() {
     console.log(this.materiaId);
     //0=todas 1=Filtrado por materia
 
-    await this.cargandoAnimation();
+
 
     if(materiaId==0){
-      this.apiRecursos.getByMonth(this.mesActual).subscribe(data => {
+        
+        const tipoValidate = this.esConferencia==true ? 'Zoom' : 'Todos';
+        this.selected(tipoValidate);
+     /* this.apiRecursos.getByMonth(this.mesActual).subscribe(data => {
         //console.log(data);
         this.LstRecursos = data;
         this.loadingController.dismiss();
-      });
+      });*/
     }
     else{
+      await this.cargandoAnimation();
       this.apiRecursos.getRecursosMaterias(materiaId,this.mesActual).subscribe(data => {
         //console.log(data);
         this.LstRecursos = data;
@@ -90,13 +135,15 @@ ngOnInit() {
             text: 'Aceptar',
             handler: (value: any) => {
               this.mesActual = value.Meses.value;
-              this.apiRecursos.getByMonth(this.mesActual).subscribe(data => {
+              this.apiRecursos.getByMonthTipo(this.mesActual,'tipo=Foto&tipo=Video&tipo=Enlace&tipo=Documento&tipo=Texto&').subscribe(data => {
                   this.LstRecursos = data;
               });
+
             }
-          }
+            }
         ],
-        columns: [{
+        columns: 
+        [{
             name: 'Meses',
             options: this.getColumnOptionsMeses()
           }
@@ -107,18 +154,51 @@ ngOnInit() {
 
   }
 
+  async selected(tipo){
+  //  this.outline.find(x => x.id === tipo).selected = !this.outline.find(x => x.id === tipo).selected ;
+    await this.cargandoAnimation();
+
+    if(tipo=='Zoom'){
+
+      console.log("zoom");
+      this.apiRecursos.getByMonthTipo(this.mesActual,'tipo=Zoom').subscribe(data => {
+        this.LstRecursos = data;
+        this.outline.find(x => x.id === tipo).selected = false;
+        this.outline.find(x => x.id === 'Todos').selected = true;
+        this.esConferencia = true;
+        this.loadingController.dismiss();
+        this.changeIonChip.emit('Clase Virtual');
+    });
+    }
+    else{
+      this.apiRecursos.getByMonthTipo(this.mesActual,'tipo=Foto&tipo=Video&tipo=Enlace&tipo=Documento&tipo=Texto&').subscribe(data => {
+        this.LstRecursos = data;
+        this.outline.find(x => x.id === 'Zoom').selected = true;
+        this.outline.find(x => x.id === 'Todos').selected = false;
+        this.esConferencia = false;
+        this.loadingController.dismiss();
+        this.changeIonChip.emit('Archivo');
+    });
+
+    }
+  }
+  stop(){
+    console.log("stop")
+  }
+
+
   getRealMonth() {
     /*
     Dado que el año escolar no inicia en Enero se tiene que ajustar para llenar el picker 
     ejemplo enero en lugar de ser index 1 es 6
     */
    console.log("getRealMonth");
-    const actualDate = new Date();
-    let month = actualDate.getMonth() + 1;
+   const actualDate = new Date();
+   let month = actualDate.getMonth() + 1;
 
-    console.log(month);
+   console.log(month);
 
-    if(month==1) month= 5;
+   if(month==1) month= 5;
     else if(month==2) month= 6;
     else if(month==3) month= 7;
     else if(month==4) month= 8;
@@ -131,8 +211,8 @@ ngOnInit() {
     else if(month==11) month= 3;
 
 
-    console.log(month);
-    return month;
+   console.log(month);
+   return month;
   }
 
   getColumnOptionsMeses() {
@@ -167,8 +247,8 @@ ngOnInit() {
 
   urlify(text) {
      console.log(text);
-    const urlRegex = /(https?:\/\/[^\s]+)/g;
-    return text.replace(urlRegex, function(url) {
+     const urlRegex = /(https?:\/\/[^\s]+)/g;
+     return text.replace(urlRegex, function(url) {
       return '<a href="' + url + '">' + url + '</a>';
     })
     // or alternatively
@@ -204,7 +284,7 @@ ngOnInit() {
 
   public async edit(event,item){
     event.stopPropagation();
-    
+
     const modal = await this.modalCrl.create({
       component: NewResourcePage,
       // cssClass: 'my-custom-modal-css',
