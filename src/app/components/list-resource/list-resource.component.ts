@@ -135,9 +135,14 @@ ngOnInit() {
             text: 'Aceptar',
             handler: (value: any) => {
               this.mesActual = value.Meses.value;
-              this.apiRecursos.getByMonthTipo(this.mesActual,'tipo=Foto&tipo=Video&tipo=Enlace&tipo=Documento&tipo=Texto').subscribe(data => {
+              /*this.apiRecursos.getByMonthTipo(this.mesActual,'tipo=Foto&tipo=Video&tipo=Enlace&tipo=Documento&tipo=Texto').subscribe(data => {
                   this.LstRecursos = data;
-              });
+              });*/
+              if(this.esConferencia) {
+                this.selected('Zoom')
+              } else {
+                this.selected('Todos')
+              }
 
             }
             }
