@@ -387,7 +387,7 @@ ngOnInit() {
   @HostListener("click", ["$event"])
   onClick(e) {
     //console.log(e);
-    /*if (e.target.classList.contains("link")) {
+    if (e.target.classList.contains("link")) {
       e.preventDefault();
       console.log(e);
 
@@ -398,6 +398,6 @@ ngOnInit() {
 
         Browser.open({ url: e.target.getAttribute("href") });
       }
-    }*/
+    }
   }
 }
