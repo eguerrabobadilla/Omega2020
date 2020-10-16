@@ -1390,7 +1390,6 @@ this.pillMenu.animacion();
  }
 
     public checkCodePush() {
-      return;
       const downloadProgress = (downloadProgress) => { 
         alert(downloadProgress.receivedBytes)
         console.log(`Downloaded ${downloadProgress.receivedBytes} of ${downloadProgress.totalBytes}`); 
