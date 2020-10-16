@@ -20,7 +20,7 @@ background-color: #ffffff00;">
         </ion-list-header>
 
 
-        <ion-item lines="none"  button detail="true" *ngFor="let itemGrupo of LstGrupos | filterChat:  SearText : 'grupo' "  (click)="addGroup(itemGrupo)">
+        <ion-item lines="none"  button detail="true" *ngFor="let itemGrupo of LstGrupos"  (click)="addGroup(itemGrupo)">
             <ion-avatar slot="start">
                 <!--<span style="
                         position: absolute;
@@ -47,7 +47,7 @@ background-color: #ffffff00;">
             Todos los profesores
         </ion-list-header>
 
-        <ion-item lines="none" button detail="true" *ngFor="let itemUsuario of LstUsuarios"  (click)="addContact(itemUsuario)">
+        <ion-item lines="none" button detail="true" *ngFor="let itemUsuario of LstUsuarios  | filterChat:  SearText : 'UsuarioId2Navigation.Nombre' "  (click)="addContact(itemUsuario)">
             <ion-avatar slot="start">
                 <!--<span style="
                         position: absolute;

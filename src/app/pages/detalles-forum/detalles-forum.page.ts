@@ -43,8 +43,11 @@ export class DetallesForumPage implements OnInit {
 
   async votar(item) {
     console.log(item);
-    await this.apiForum.addVoto(item.Id).toPromise();
-    item.Votos += 1;
+    const tipoVoto =await this.apiForum.addVoto(item.Id).toPromise();
+    if(tipoVoto['tipoVoto'] == "positivo")
+      item.Votos += 1;
+    else
+      item.Votos -= 1;
   }
 
   closeModal() {
