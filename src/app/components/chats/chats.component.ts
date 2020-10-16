@@ -13,6 +13,8 @@ export class ChatsComponent implements OnInit {
 
   public LstChat: any[] = [];
   public LstGrupos: any[] = [];
+  cargandoGrupos:boolean = false;
+  cargandoAlumnos:boolean = false;
 
   constructor( private modalCrl: ModalController,private apichat: ChatService) { 
     this.cargar();
@@ -20,13 +22,16 @@ export class ChatsComponent implements OnInit {
 
   public cargar() {
 
-    this.apichat.getConversaciones().subscribe(data =>{
+    /*this.apichat.getConversaciones().subscribe(data =>{
       this.LstChat = data;
     });
 
-    this.apichat.getGruposMaestros().subscribe(data => {
+    this.apichat.getGruposMaestrosChat().subscribe(data => {
       this.LstGrupos= data;
-    });
+    });*/
+
+    this.refrescarAlumnos();
+    this.refrescarGrupos();
 
   }
 
@@ -67,6 +72,49 @@ export class ChatsComponent implements OnInit {
     await modal.present();
   }
 
+  refrescarGrupos() {
+    this.cargandoGrupos=true;
+    this.apichat.getGruposMaestrosChat().subscribe(data => {
+      this.LstGrupos= data;
+      this.cargandoGrupos=false;
+    });
+  }
+
+  refrescarAlumnos() {
+    this.cargandoAlumnos=true;
+    this.apichat.getConversaciones().subscribe(data =>{
+      this.LstChat = data;
+      this.cargandoAlumnos=false;
+    });
+  }
+
   ngOnInit() {}
+
+  public permisoEditar() {
+    const jwt_temp = localStorage.getItem('USER_INFO_TEMP');
+    if(jwt_temp != null)
+    {
+        return false;
+    }
+    
+    if(this.getKeyToken('tipo')=='Profesor')
+      return true;
+    else
+      return false;
+  }
+  
+  getKeyToken(key: string): string {
+
+    const jwt = localStorage.getItem('USER_INFO');
+
+    const jwtData = jwt.split('.')[1];
+    // let decodedJwtJsonData = window.atob(jwtData);
+    const decodedJwtJsonData = decodeURIComponent(escape(window.atob(jwtData)));
+    const decodedJwtData = JSON.parse(decodedJwtJsonData);
+
+    const value = decodedJwtData[key];
+
+    return value;
+  }
 
 }

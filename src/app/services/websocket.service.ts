@@ -12,6 +12,7 @@ export class WebsocketService {
   messageReceived = new EventEmitter<Message>();
   positionReceived = new EventEmitter<Message>();
   commentReceived = new EventEmitter<Message>();
+  messageGroupReceived = new EventEmitter<Message>();
   connectionEstablished = new EventEmitter<Boolean>();
 
   private connectionIsEstablished = false;
@@ -94,6 +95,10 @@ export class WebsocketService {
 
     this._hubConnection.on('CommentReceived', (data: any) => {
       this.commentReceived.emit(data);
+    });
+
+    this._hubConnection.on('MessageGroupReceived', (data: any) => {
+      this.messageGroupReceived.emit(data);
     });
   }
 

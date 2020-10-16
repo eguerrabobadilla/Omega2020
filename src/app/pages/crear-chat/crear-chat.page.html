@@ -1,4 +1,4 @@
-<ion-header style="padding-top: 10px;
+<ion-header style="
 background-color: #ffffff00;">
     <ion-toolbar>
         <ion-title slot="start" style="text-align: initial;padding-left: 20px;font-size: 25px;">Usuarios</ion-title>
@@ -14,50 +14,55 @@ background-color: #ffffff00;">
 </ion-header>
 
 <ion-content fullscreen>
-    <ion-list>
+    <ion-list *ngIf="permisoEditar()">
         <ion-list-header>
             Grupos
         </ion-list-header>
 
 
-        <ion-item lines="none" *ngFor="let itemGrupo of LstGrupos | filterChat:  SearText : 'grupo' ">
-            <ion-avatar slot="start" style="background-color: blueviolet;">
-                <span style="
+        <ion-item lines="none"  button detail="true" *ngFor="let itemGrupo of LstGrupos | filterChat:  SearText : 'grupo' "  (click)="addGroup(itemGrupo)">
+            <ion-avatar slot="start">
+                <!--<span style="
                         position: absolute;
                         padding-top: 2%;
                         color: white;
                         font-weight: 600;
-                        padding-left: 3.3%;">L</span>
-
+                        padding-left: 3.3%;">L</span>-->
+                <img src="assets/img/groups.png">
             </ion-avatar>
             <ion-label>
                 <h2>Grupo {{itemGrupo.Grupo}}{{itemGrupo.Grado}}</h2>
                 <p>Elemtary school</p>
             </ion-label>
-            <ion-checkbox color="danger" checked="false" slot="end" style="--size: 21px;" (click)="addGroup(itemGrupo)"></ion-checkbox>
+            <!--<ion-checkbox color="danger" checked="false" slot="end" style="--size: 21px;" (click)="addGroup(itemGrupo)"></ion-checkbox>-->
+
         </ion-item>
     </ion-list>
 
     <ion-list>
-        <ion-list-header>
+        <ion-list-header *ngIf="permisoEditar()">
             Todos los alumnos
         </ion-list-header>
+        <ion-list-header *ngIf="!permisoEditar()">
+            Todos los profesores
+        </ion-list-header>
 
-        <ion-item lines="none" *ngFor="let itemUsuario of LstUsuarios">
-            <ion-avatar slot="start" style="background-color: blueviolet;">
-                <span style="
+        <ion-item lines="none" button detail="true" *ngFor="let itemUsuario of LstUsuarios"  (click)="addContact(itemUsuario)">
+            <ion-avatar slot="start">
+                <!--<span style="
                         position: absolute;
                         padding-top: 2%;
                         color: white;
                         font-weight: 600;
-                        padding-left: 3.3%;">E</span>
+                        padding-left: 3.3%;">E</span>-->
+                <img src="assets/img/unnamed.png">
                 <!-- <img src="./avatar-finn.png">-->
             </ion-avatar>
             <ion-label>
                 <h2>{{ itemUsuario.UsuarioId2Navigation.Nombre }} {{ itemUsuario.UsuarioId2Navigation.ApellidoPaterno }} {{ itemUsuario.UsuarioId2Navigation.ApellidoMaterno }}</h2>
-                <p>3A-2 Elemtary school </p>
+                <p>{{ itemUsuario.UsuarioId2Navigation.Grado }}{{ itemUsuario.UsuarioId2Navigation.Grupo }} {{ itemUsuario.UsuarioId2Navigation.Escolaridad }}   </p>
             </ion-label>
-            <ion-checkbox color="danger" checked="false" slot="end" style="--size: 21px;" (click)="addContact(itemUsuario)"></ion-checkbox>
+            <!--<ion-checkbox color="danger" checked="false" slot="end" style="--size: 21px;" (click)="addContact(itemUsuario)"></ion-checkbox>-->
         </ion-item>
 
         <!--<ion-item lines="none">
@@ -111,10 +116,10 @@ background-color: #ffffff00;">
 
 
 
-    <ion-fab horizontal="center" (click)="enpezarChat()" vertical="bottom" slot="fixed">
+    <!--<ion-fab horizontal="center" (click)="enpezarChat()" vertical="bottom" slot="fixed">
         <ion-fab-button size="small" color="danger">
             <ion-icon name="checkmark-outline"></ion-icon>
         </ion-fab-button>
-    </ion-fab>
+    </ion-fab>-->
 
 </ion-content>

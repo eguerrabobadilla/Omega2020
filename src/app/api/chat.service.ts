@@ -35,6 +35,10 @@ export class ChatService extends apiBase {
     return this.http.get<any[]>(`${this.url}/api/conversaciones/grupos`);
   }
 
+  getGruposMaestrosChat(){
+    return this.http.get<any[]>(`${this.url}/api/conversaciones/grupos/chat`);
+  }
+
   addMensajes(item) {
     return this.http.post(`${this.url}/${this.Ws}`, item);
   }

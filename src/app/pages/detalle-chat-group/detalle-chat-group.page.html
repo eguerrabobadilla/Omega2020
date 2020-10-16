@@ -1,4 +1,4 @@
-<ion-header translucent="false" class="ion-no-border" mode="ios">
+<ion-header class="ion-no-border" mode="ios"> <!--  translucent="false" -->
   <ion-toolbar>
       <ion-title style="margin-top: 6px;">{{title}}</ion-title>
       <ion-buttons slot="end">
@@ -11,19 +11,21 @@
 </ion-header>
 
 
-<ion-content #Content fullscreen="true" scrollX="true" scrollY="true">
-    <ion-list #chatList style="bottom: 30px;width: 100%;">
+<ion-content #Content> <!--fullscreen="true"  scrollX="true" scrollY="true"-->
+    <ion-list #chatList style="padding-bottom: 28px;width: 100%;">
       <div *ngFor="let itemChat of LstChats">
-          <div *ngIf="usuarioId==itemChat.usuarioId; then derechaTemplate else izquierdaTemplate"></div>
+          <div *ngIf="usuarioId==itemChat.UsuarioId; then derechaTemplate else izquierdaTemplate"></div>
           <ng-template #izquierdaTemplate>
               <ion-item lines="none">
                   <ion-avatar style="position: absolute;" slot="start">
                       <img src="assets/img/unnamed.png">
                   </ion-avatar>
                   <ion-card-content slot="start" style="background-color: #e8e8e8;margin-left: 43px; margin-top: 4px;border-radius: 15px;margin-right: 53px;padding: 10px">
-
-                      <p>{{itemChat.Mensaje}}</p>
-
+                     <h4 style="font-weight: 700;">{{itemChat.Usuario.NombreCompleto | titlecase }}</h4>
+                    <p>{{itemChat.Mensaje}}</p>
+                    <ion-label>
+                        <p style="font-size: 11px;">{{ itemChat.FechaMensaje | date:'mediumDate' }} {{ itemChat.HoraMensaje }}</p>
+                    </ion-label>
                   </ion-card-content>
               </ion-item>
           </ng-template>
@@ -31,9 +33,10 @@
               <ion-item lines="none">
                   <ion-card-content slot="end" style="background-color: #F4315D;margin-left: 66px; margin-top: 4px;border-radius: 15px;padding: 10px;color: white;">
 
-
                       <p>{{itemChat.Mensaje}}</p>
-
+                      <ion-label>
+                            <p style="font-size: 11px;">{{ itemChat.FechaMensaje | date:'mediumDate' }} {{ itemChat.HoraMensaje }}</p>
+                      </ion-label>
                   </ion-card-content>
               </ion-item>
           </ng-template>
@@ -44,10 +47,16 @@
 <ion-footer style="bottom: 22px; ">
   <ion-toolbar>
       <form [formGroup]="FrmItem" style="display: flex;" (ngSubmit)="crearMensaje()">
-          <ion-input formControlName="mensaje" name="mensaje" style="background-color: #e8e8e8;border-radius: 16px;width: 86%;padding-left: 15px !important;height: 38px;margin-top: 4px; " placeholder="Escribir mensaje "></ion-input>
+          <!--<ion-input formControlName="Mensaje" name="Mensaje" style="background-color: #e8e8e8;border-radius: 16px;width: 86%;padding-left: 15px !important;height: 38px;margin-top: 4px; " placeholder="Escribir mensaje "></ion-input>
           <ion-button size="small" type="submit" slot="end" style="--border-radius: 34px;;height: 40px;width: 40px;--background: #F4315D;--background-activated: #F4315D; ">
               <ion-icon name="send"></ion-icon>
-          </ion-button>
+          </ion-button>-->
+          <ion-textarea enterkeyhint="enter" autoGrow="true" rows="1" mode="ios" formControlName="Mensaje" name="Mensaje" style="background-color: #e8e8e8;border-radius: 16px;width: 86%;padding-left: 15px !important;/*height: 38px*/;margin-top: 4px;margin-bottom: 6px;" placeholder="Escribir mensaje "></ion-textarea>
+          <div style="position: relative;width: 11%;">
+            <ion-button size="small" type="submit" slot="end" style="--border-radius: 34px;height: 40px;width: 40px;--background: #F4315D;--background-activated: #F4315D;    position: absolute;bottom: 3px;right: 0;">
+                  <ion-icon name="send"></ion-icon>
+            </ion-button>
+          </div>
       </form>
   </ion-toolbar>
 </ion-footer>
