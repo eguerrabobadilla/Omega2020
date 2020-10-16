@@ -39,7 +39,8 @@ export class LoginPage implements OnInit {
       await loading.present();
       await this.authService.login(data);
 
-      this.webSocket.initSocket();
+      console.log("segund socket");
+      //this.webSocket.initSocket();
 
       if(this.getKeyToken("tipo")=="Director")
         this.router.navigate(['home-director']);
