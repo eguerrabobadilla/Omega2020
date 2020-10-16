@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ComponentFactoryResolver } from '@angular/core';
 
 import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
@@ -34,6 +34,7 @@ export class AppComponent {
     //Login
     this.authenticationService.authState.subscribe(state => {
       if (state) {
+        console.log("primer socket");
         this.webSocket.initSocket();
 
         //Busca si se quedo un sesion del director iniciada
