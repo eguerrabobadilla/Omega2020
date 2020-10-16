@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { ForumService } from '../../api/forum.service';
 import { DetallesForumPage } from '../../pages/detalles-forum/detalles-forum.page';
-import { ModalController } from '@ionic/angular';
+import { AlertController, ModalController, LoadingController } from '@ionic/angular';
 import { CrearForumPage } from 'src/app/pages/crear-forum/crear-forum.page';
 
 
@@ -16,8 +16,11 @@ import { CrearForumPage } from 'src/app/pages/crear-forum/crear-forum.page';
 export class ForumComponent implements OnInit {
   public LstForo: any[] = [];
   materiaId: any;
+  estadoFoto:any;
 
-  constructor(private apiForum: ForumService, private modalCrl: ModalController) {
+
+  constructor(private apiForum: ForumService, private modalCrl: ModalController,private alertController: AlertController,
+              private loadingController: LoadingController) {
 
   }
 
@@ -107,5 +110,43 @@ export class ForumComponent implements OnInit {
     const value = decodedJwtData[key];
 
     return value;
+  }
+
+  async estadoForo(event, item){
+    event.stopPropagation();
+    console.log(item);
+
+    const texto = item.Estado === 'Abierto' ? 'cerrar' : 'abrir';
+
+    const alertTerminado = await this.alertController.create({
+      header: 'Foro',
+      message: 'Está a punto de ' + texto + ' el foro; ¿Está seguro de realizar esta acción?',
+      buttons: [
+        {
+          text: 'No', handler: () =>  {
+            return;
+          }
+        },
+        {
+          text: 'Si', handler: async () => {
+            const loading = await this.loadingController.create({
+              message: 'Cambiado estado...'
+            });
+
+            await loading.present();
+
+            const estado = await this.apiForum.setEstadoForo(item).toPromise();
+            console.log(estado);
+            item.Estado = estado['Estado'];
+
+            this.loadingController.dismiss();
+
+            this.alertController.dismiss();
+          }
+        }
+      ]
+    });
+
+    alertTerminado.present();
   }
 }

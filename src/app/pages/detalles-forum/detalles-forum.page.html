@@ -10,38 +10,77 @@
 
 
 </ion-header>
-<ion-content fullscreen="true" scrollX="true" scrollY="true">
-    <ion-list>
-        <div *ngFor="let item of LstForo">
+<ion-content #Content fullscreen="true" scrollX="true" scrollY="true">
+    <ion-list #chatList *ngFor="let item of LstForo">
+        <ion-item-sliding (ionDrag)="drag($event)" (ionSwipe)="logDrag($event,item)" #slidingItem>
+            <ion-item-options side="start">
+                <ion-item-option (click)="presentActionSheet(item)" style="background: white;">
+                    <ion-button style="--background: #F4315D;--background-activated: #F4315D;"> Responder</ion-button>
+                </ion-item-option>
+            </ion-item-options>
             <ion-item lines="none">
                 <ion-avatar style="top: 22px;position: absolute;" slot="start">
                     <img src="assets/img/unnamed.png">
                 </ion-avatar>
-                <ion-card-content style="background-color: #e8e8e8;margin-left: 43px; margin-top: 23px;border-radius: 15px;">
+                <div *ngIf="item.EsRespuesta=='SI'; then chatRespuestaTempleate else chatSinRespuestaTempleate"></div>
+                <ng-template #chatRespuestaTempleate>
+                    <ion-card-content class="mensajeContent" style="background-color: #e8e8e8;margin-left: 43px; margin-top: 23px;border-radius: 15px; ">
+                        <ion-card-content class="respuestaContent">
 
-                    <h2 style="font-weight: 700;">{{item.Usuario.NombreCompleto}}</h2>
+                            <h2 style="font-weight: 700; ">{{ item.NombreUsuarioRespuesta | titlecase}}</h2>
 
-                    <p>{{item.Mensaje}}</p>
+                            <p>{{item.MensajeRespuesta}}</p>
 
-                </ion-card-content>
+                        </ion-card-content>
+
+                        <h2 style="font-weight: 700; ">{{item.Usuario.NombreCompleto | titlecase}}</h2>
+
+                        <p>{{item.Mensaje}}</p>
+
+                    </ion-card-content>
+                </ng-template>
+                <ng-template #chatSinRespuestaTempleate>
+                    <ion-card-content style="background-color: #e8e8e8;margin-left: 43px; margin-top: 23px;border-radius: 5px 15px 15px 5px; ">
+                        <h2 style="font-weight: 700; ">{{item.Usuario.NombreCompleto | titlecase}}</h2>
+
+                        <p>{{item.Mensaje}}</p>
+
+                    </ion-card-content>
+                </ng-template>
             </ion-item>
-            <div style="display: flex;">
-                <!-- <button style="margin-left: 83px;">a</button>-->
-                <ion-icon style="margin-left: 64px;padding-top: 3px;color: black;" name="checkmark-circle-outline" (click)="votar(item)"></ion-icon>
-                <p style="font-size:12px;font-weight: 400; color:rgba(0, 0, 0, 0.4);padding: 0;padding-left: 5px;padding-top: 4px;margin: 0;">{{item.Votos}} votos
-                    <span> <ion-icon name="time-outline" style="padding-left: 14px;
+        </ion-item-sliding>
+        <div style="display: flex;">
+            <!-- <button style="margin-left: 83px;">a</button>-->
+            <ion-icon style="margin-left: 64px;padding-top: 3px;color: black;" name="checkmark-circle-outline" (click)="votar(item)"></ion-icon>
+            <p style="font-size:12px;font-weight: 400; color:rgba(0, 0, 0, 0.4);padding: 0;padding-left: 5px;padding-top: 4px;margin: 0;">{{item.Votos}} votos
+                <span> <ion-icon name="time-outline" style="padding-left: 14px;
                         color: black;
                         transform: translateY(2px) scale(1.5);
                         padding-right: 5px;
                         font-size: 11px;"></ion-icon> {{item.Fecha | date:'mediumDate'}} {{item.Hora}} </span>
 
-                </p>
-            </div>
+            </p>
         </div>
+
     </ion-list>
 </ion-content>
 
 <ion-footer style="bottom: 22px;">
+    <ion-toolbar *ngIf="responder" style="--background: #e1e8e8;">
+        <ion-item style="font-weight: 700;--background: #e1e8e8;" lines="none">
+            Respondiendo a {{nombre}}
+
+            <ion-button slot="end" style="margin-top: 8px;margin-right: 8px; --background: #e1e8e8" (click)="closeRespuesta()">
+                <ion-icon slot="icon-only" color="danger" name="close"></ion-icon>
+            </ion-button>
+
+
+        </ion-item>
+        <ion-item style="--background: #e1e8e8;" lines="none">
+            <p>{{mensaje}}</p>
+
+        </ion-item>
+    </ion-toolbar>
     <ion-toolbar>
         <form [formGroup]="FrmItem" (ngSubmit)="enviarMensaje()" style="display: flex;">
             <!--<ion-input formControlName="mensaje" name="mensaje" style="background-color: #e8e8e8;border-radius: 16px;width: 86%;padding-left: 15px !important;height: 38px;margin-top: 4px;" placeholder="Escribir mensaje"></ion-input>
@@ -49,7 +88,8 @@
                 <ion-icon name="send"></ion-icon>
             </ion-button>-->
             <!--<ion-input formControlName="mensaje" name="mensaje" style="background-color: #e8e8e8;border-radius: 16px;width: 86%;padding-left: 15px !important;height: 38px;margin-top: 4px; " placeholder="Escribir mensaje "></ion-input>-->
-            <ion-textarea enterkeyhint="enter" autoGrow="true" rows="1" mode="ios" formControlName="mensaje" name="mensaje" style="background-color: #e8e8e8;border-radius: 16px;width: 86%;padding-left: 15px !important;/*height: 38px*/;margin-top: 4px;margin-bottom: 6px;" placeholder="Escribir mensaje "></ion-textarea>
+            <ion-textarea #input enterkeyhint="enter" autoGrow="true" rows="1" mode="ios" formControlName="mensaje" name="mensaje" style="background-color: #e8e8e8;border-radius: 16px;width: 86%;padding-left: 15px !important;/*height: 38px*/;margin-top: 4px;margin-bottom: 6px;"
+                placeholder="Escribir mensaje "></ion-textarea>
             <div style="position: relative;width: 11%;">
                 <ion-button size="small" type="submit" slot="end" style="--border-radius: 34px;height: 40px;width: 40px;--background: #F4315D;--background-activated: #F4315D;    position: absolute;bottom: 3px;right: 0;">
                     <ion-icon name="send"></ion-icon>

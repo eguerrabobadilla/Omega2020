@@ -24,6 +24,10 @@ export class ForumService  extends apiBase {
     return this.http.put(`${this.url}/${this.WsForo}/${item.Id}`, item);
   }
 
+  setEstadoForo(item: any) {
+    return this.http.put(`${this.url}/${this.WsForo}/estadoforo/${item.Id}`, item);
+  }
+
    saveForo(item: any) {
     return this.http.post(`${this.url}/${this.WsForo}`, item);
    }

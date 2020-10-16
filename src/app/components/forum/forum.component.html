@@ -1,5 +1,4 @@
-
-<ion-virtual-scroll  [items]="LstForo" approxItemHeight="320px">
+<ion-virtual-scroll [items]="LstForo" approxItemHeight="320px">
     <ion-card style="text-align: initial;" class="ion-activatable ripple-parent" mode="ios" *virtualItem="let item; let itemBounds = bounds;" (click)="openDetail($event,item,item.Id)">
         <ion-ripple-effect></ion-ripple-effect>
         <ion-card-header>
@@ -30,7 +29,9 @@
             <ion-label>
                 <p style="padding-left: 6px;"> {{item.NumRespuestas}} comentarios</p>
             </ion-label>
-            <ion-button  *ngIf="permisoEditar()" fill="outline" slot="end" (click)="edit($event,item)">Editar</ion-button>
+            <ion-button style="transform: translateX(12px);" *ngIf="permisoEditar() && item.Estado=='Abierto' " fill="outline" slot="end" (click)="estadoForo($event,item)">Cerrar foro</ion-button>
+            <ion-button style="transform: translateX(12px);" *ngIf="permisoEditar() && item.Estado=='Cerrado' " fill="outline" slot="end" (click)="estadoForo($event,item)">Abrir foro</ion-button>
+            <ion-button *ngIf="permisoEditar()" fill="outline" slot="end" (click)="edit($event,item)">Editar</ion-button>
         </ion-item>
 
     </ion-card>
