@@ -1,6 +1,6 @@
-<ion-header translucent="false" class="ion-no-border" mode="ios">
+<ion-header class="ion-no-border" mode="ios"> <!-- translucent="false"  -->
     <ion-toolbar>
-        <ion-title style="margin-top: 6px;">{{title}}</ion-title>
+        <ion-title style="margin-top: 6px;">{{title | titlecase}}</ion-title>
         <ion-buttons slot="end">
             <ion-button style="margin-top: 8px;margin-right: 8px;" (click)="closeModal()">
                 <ion-icon slot="icon-only" color="danger" name="close"></ion-icon>
@@ -10,8 +10,8 @@
         </ion-buttons>
     </ion-toolbar>
 </ion-header>
-<ion-content #Content fullscreen="true" scrollX="true" scrollY="true">
-    <ion-list #chatList style="bottom: 30px;width: 100%;">
+<ion-content #Content> <!-- fullscreen="true" scrollX="true" scrollY="true" -->
+    <ion-list #chatList style="padding-bottom: 28px;width: 100%;">
         <div *ngFor="let itemChat of LstChats">
             <div *ngIf="usuarioId==itemChat.UsuarioIdDestino; then izquierdaTemplate else derechaTemplate"></div>
             <ng-template #izquierdaTemplate>

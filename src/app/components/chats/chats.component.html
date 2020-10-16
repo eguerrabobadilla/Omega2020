@@ -4,19 +4,20 @@
     </ion-list-header>
 
     <ion-item button lines="none" (click)="openDetailGroups($event,item)" *ngFor="let item of LstGrupos" detail="false">
-        <ion-avatar slot="start" style="background-color: blueviolet;">
-            <span style="
+        <ion-avatar slot="start">
+            <!--<span style="
                     position: absolute;
                     padding-top: 2%;
                     color: white;
                     font-weight: 600;
-                    padding-left: 3.3%;">L</span>
-
+                    padding-left: 3.3%;">L</span>-->
+                    
+                <img src="assets/img/groups.png">
         </ion-avatar>
         <ion-label>
-            <h2>Grupo {{item.Grado}}{{item.Grupo}}</h2>
-            <p>Muy bien Profesor</p>
-            <p>12/06/2020</p>
+            <h2>Grupo {{item.Grado}}{{item.Grupo}} {{ item.Escolaridad }}</h2>
+            <p>{{ item.UltimoMensaje }}</p>
+            <p>{{ item.FechaUltimoMensaje | date:'mediumDate' }} {{ item.HoraUlimoMensaje }}</p>
         </ion-label>
 
     </ion-item>
@@ -32,7 +33,7 @@
             <img src="assets/img/unnamed.png">
         </ion-avatar>
         <ion-label>
-            <h2>{{item.UsuarioId2Navigation.Nombre}} {{item.UsuarioId2Navigation.ApellidoMaterno}} {{item.UsuarioId2Navigation.ApellidoPaterno}}</h2>
+            <h2>{{item.UsuarioId2Navigation.Nombre | titlecase }} {{item.UsuarioId2Navigation.ApellidoMaterno | titlecase}} {{item.UsuarioId2Navigation.ApellidoPaterno | titlecase}}</h2>
             <p>{{item.UltimoMensaje}}</p>
             <p>{{item.HoraUltimoMensaje}}</p>
         </ion-label>

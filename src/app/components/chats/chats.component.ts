@@ -24,7 +24,7 @@ export class ChatsComponent implements OnInit {
       this.LstChat = data;
     });
 
-    this.apichat.getGruposMaestros().subscribe(data => {
+    this.apichat.getGruposMaestrosChat().subscribe(data => {
       this.LstGrupos= data;
     });
 

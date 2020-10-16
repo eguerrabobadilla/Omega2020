@@ -54,6 +54,8 @@ export class CrearChatPage implements OnInit {
     } else {
       this.LstContactos.splice(this.LstContactos.findIndex(a => a.id === item.Id), 1);
     }
+
+    this.enpezarChat();
   }
 
   addGroup(item) {
@@ -62,6 +64,8 @@ export class CrearChatPage implements OnInit {
     } else {
       this.LstGruposContactos.splice(this.LstGruposContactos.findIndex(a => a.id === item.Id), 1);
     }
+
+    this.enpezarChat();
   }
 
   async enpezarChat() {
