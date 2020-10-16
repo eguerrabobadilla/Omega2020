@@ -15,5 +15,5 @@ export class apiBase  {
   //  url: string = "http://35.193.103.213";
     //  url: string = 'https://192.168.0.4:5001';
     url: string = 'https://www.alfalbs.app/ApiOmega';
- //   Ws: string;
+    Ws: string;
 }
