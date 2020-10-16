@@ -915,7 +915,7 @@ this.pillMenu.animacion();
 
     segmentChanged(event) {
       const itemOption = this.pillMenu.itemsMenu[event.detail.value];
-      //console.log(this.selectSeccion);
+      console.log(this.selectSeccion);
      // console.log(itemOption);
       //Logica boton + evidencias
       if(this.selectSeccion==2) {
@@ -936,6 +936,26 @@ this.pillMenu.animacion();
           this.renderer.setStyle(this.fabend.nativeElement,'display','none');
           this.renderer.setStyle(this.fabstart.nativeElement,'display','none');
         }
+      }
+
+      if(this.selectSeccion==3) {
+          if(this.getKeyToken('tipo')=='Alumno' && itemOption=="Mensajes") {
+            this.renderer.setStyle(this.fabend.nativeElement,'display','block');
+          } else
+          if(this.getKeyToken('tipo')=='Profesor' && itemOption=="Evidencias") {
+            this.renderer.setStyle(this.fabend.nativeElement,'display','block');
+          } else
+          if(this.getKeyToken('tipo')=='Profesor') {
+            this.renderer.setStyle(this.fabend.nativeElement,'display','block');
+          } else if(this.getKeyToken('tipo')=='Alumno') {
+            this.renderer.setStyle(this.fabend.nativeElement,'display','none');
+          }
+
+          //Si el usuario es un director disfrazado de otro usuario bloquea los add
+          if(this.getKeyToken("estatus")!=undefined) {
+            this.renderer.setStyle(this.fabend.nativeElement,'display','none');
+            this.renderer.setStyle(this.fabstart.nativeElement,'display','none');
+          }
       }
 
        this.slideDown.slideTo(event.detail.value);

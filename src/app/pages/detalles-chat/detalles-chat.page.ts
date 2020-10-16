@@ -52,7 +52,9 @@ export class DetallesChatPage implements OnInit {
     });
 
     this.mutationObserver = new MutationObserver((mutations) => {
-        this.contentArea.scrollToBottom();
+        setTimeout(() => {
+          this.contentArea.scrollToBottom(10);  
+        }, 50);
     });
 
     this.mutationObserver.observe(this.chatList.nativeElement, {
@@ -62,13 +64,17 @@ export class DetallesChatPage implements OnInit {
   }
 
   ionViewDidLoad() {
-
+    
   }
 
   async crearMensaje() {
       this.itemApiChat = this.FrmItem.value;
       this.itemApiChat.UsuarioIdOrigen = this.item.UsuarioId;
       this.itemApiChat.UsuarioIdDestino = this.item.UsuarioId2;
+      const today = new Date();
+      const time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+      this.itemApiChat.FechaMensaje= today;
+      this.itemApiChat.HoraMensaje= time;
 
       const tareaUpload = await this.apichat.addMensajes(this.itemApiChat).toPromise();
       this.FrmItem.reset();
@@ -84,6 +90,10 @@ export class DetallesChatPage implements OnInit {
   private subscribeToEvents(): void {
 
     this.webSocket.messageReceived.subscribe((message: any) => {
+        message.HoraMensaje.Minutes = message.HoraMensaje.Minutes.length == 1 ? `0${message.HoraMensaje.Minutes}` : message.HoraMensaje.Minutes;
+        message.HoraMensaje.Seconds = message.HoraMensaje.Seconds.length == 1 ? `0${message.HoraMensaje.Seconds}` : message.HoraMensaje.Seconds;
+        message.HoraMensaje = `${message.HoraMensaje.Hours}:${message.HoraMensaje.Minutes}:${message.HoraMensaje.Seconds}`;
+
         //this.LstChats.unshift(message);
         this.LstChats.push(message);
         this.applicationRef.tick();

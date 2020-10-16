@@ -141,4 +141,32 @@ export class CrearChatPage implements OnInit {
     animation2.play();
   }
 
+  
+  public permisoEditar() {
+    const jwt_temp = localStorage.getItem('USER_INFO_TEMP');
+    if(jwt_temp != null)
+    {
+        return false;
+    }
+    
+    if(this.getKeyToken('tipo')=='Profesor')
+      return true;
+    else
+      return false;
+  }
+
+  getKeyToken(key: string): string {
+
+    const jwt = localStorage.getItem('USER_INFO');
+
+    const jwtData = jwt.split('.')[1];
+    // let decodedJwtJsonData = window.atob(jwtData);
+    const decodedJwtJsonData = decodeURIComponent(escape(window.atob(jwtData)));
+    const decodedJwtData = JSON.parse(decodedJwtJsonData);
+
+    const value = decodedJwtData[key];
+
+    return value;
+  }
+
 }

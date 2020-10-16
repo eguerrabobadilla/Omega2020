@@ -14,7 +14,7 @@ background-color: #ffffff00;">
 </ion-header>
 
 <ion-content fullscreen>
-    <ion-list>
+    <ion-list *ngIf="permisoEditar()">
         <ion-list-header>
             Grupos
         </ion-list-header>
@@ -40,8 +40,11 @@ background-color: #ffffff00;">
     </ion-list>
 
     <ion-list>
-        <ion-list-header>
+        <ion-list-header *ngIf="permisoEditar()">
             Todos los alumnos
+        </ion-list-header>
+        <ion-list-header *ngIf="!permisoEditar()">
+            Todos los profesores
         </ion-list-header>
 
         <ion-item lines="none" button detail="true" *ngFor="let itemUsuario of LstUsuarios"  (click)="addContact(itemUsuario)">

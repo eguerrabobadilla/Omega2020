@@ -61,7 +61,9 @@ export class DetalleChatGroupPage implements OnInit {
     });
 
     this.mutationObserver = new MutationObserver((mutations) => {
-      this.contentArea.scrollToBottom();
+        setTimeout(() => {
+          this.contentArea.scrollToBottom(10);  
+        }, 50);
     });
 
     this.mutationObserver.observe(this.chatList.nativeElement, {
