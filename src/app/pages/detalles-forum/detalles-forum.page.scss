@@ -5,3 +5,52 @@
 .button-native {
     border-radius: 24px !important;
 }
+
+.mensajeContent {
+    background-color: #e8e8e8;
+    margin-left: 43px;
+    margin-top: 23px;
+    border-radius: 5px 15px 15px 5px;
+    padding-left: unset;
+    padding-right: unset;
+    -webkit-padding-start: 20px;
+    padding-inline-start: 20px;
+    -webkit-padding-end: 20px;
+    padding-inline-end: 23px;
+    padding-top: 6px;
+    padding-bottom: 16px;
+    font-size: 16px;
+    line-height: 1.4;
+}
+
+.respuestaContent {
+    //   background-color: #00000014;
+    padding-left: unset;
+    /* padding-right: unset; */
+    -webkit-padding-start: 20px;
+    padding-inline-start: 5px;
+    padding-inline-end: 7px;
+    -webkit-padding-end: 20px;
+    border-radius: 0px 15px 15px 0px;
+    -webkit-padding-end: 7px;
+    /* padding-inline-end: 0px; */
+    border-left: black;
+    border-width: 0;
+    border-left: inset;
+    border-left-width: 3px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    font-size: 16px;
+    line-height: 1.4;
+    border-color: #fb9bb0;
+    transform: translateX(-16px);
+    margin-top: 5px;
+}
+
+.display-none {
+    display: none;
+}
+
+.display-contents {
+    display: initial;
+}
