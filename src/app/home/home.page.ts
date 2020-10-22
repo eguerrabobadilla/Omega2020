@@ -648,7 +648,7 @@ this.pillMenu.animacion();
       this.tabs = ['Noticias', 'Mensajes', 'Calendario'];
 
      } else if (index === 4) {
-            this.tabs = ['Perfil', 'Materias', 'Estadísticas'];
+            this.tabs = ['Perfil', 'Materias', 'Estadísticas','Report'];
      } else if (index === 5) {
       this.tabs = ['Preguntas', 'Contacto'];
       }/* } else if (index === 6) {
@@ -1390,6 +1390,7 @@ this.pillMenu.animacion();
  }
 
     public checkCodePush() {
+      return;
       const downloadProgress = (downloadProgress) => { 
         alert(downloadProgress.receivedBytes)
         console.log(`Downloaded ${downloadProgress.receivedBytes} of ${downloadProgress.totalBytes}`); 
