@@ -47,6 +47,7 @@ import { LinkifyPipe } from '../pipes/linkifypipe ';
 import { CircleProgressComponent } from '../components/circle-progress/circle-progress.component';
 import { GlobalModule } from '../modules/GoblaModule';
 import { ListTareasComponent } from '../components/list-tareas/list-tareas.component';
+import { ReportComponent } from '../components/report/report.component';
 
 
 @NgModule({
@@ -89,6 +90,7 @@ import { ListTareasComponent } from '../components/list-tareas/list-tareas.compo
   ],
   declarations: [ HomePage, ListComponent, 
     ChatsComponent, ListResourceComponent, NewsComponent, ForumComponent,GraphicsComponent,CalendarComponent
-    , EvidencesComponent,SubjectsComponent, QuestionsComponent, ContactComponent, PerfilComponent,LinkifyPipe,ListTareasComponent]
+    , EvidencesComponent,SubjectsComponent, QuestionsComponent, ContactComponent, PerfilComponent,LinkifyPipe,ListTareasComponent,
+    ReportComponent]
 })
 export class HomePageModule {}

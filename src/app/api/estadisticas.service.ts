@@ -11,10 +11,17 @@ export class EstadisticasService extends apiBase {
 
   constructor(public http: HttpClient) { 
     super();
-    this.Ws = 'api/estadisticas/globales';
+    this.Ws = 'api/estadisticas';
   }
 
   get(): Observable<any[]> {
-   return this.http.get<any[]>(`${this.url}/${this.Ws}`);
+   return this.http.get<any[]>(`${this.url}/${this.Ws}/globales`);
   }
+
+
+  getEstadisticasAlumno(mes): Observable<any[]> {
+    return this.http.get<any[]>(`${this.url}/${this.Ws}/alumno/${mes}`);
+   }
+
+
 }

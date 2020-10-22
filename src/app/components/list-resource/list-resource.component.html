@@ -50,7 +50,7 @@
             <ion-card-header>
                 <ion-card-title>{{ item.Titulo }}</ion-card-title>
             </ion-card-header>
-            <ion-card-content [innerHtml]="item.Descripcion + datosClase(item) | linkify">
+            <ion-card-content [innerHtml]="item.Descripcion + datosClase(item) | linkify : item.Id">
 
             </ion-card-content>
             <ion-item>
@@ -81,7 +81,7 @@
             <ion-card-header>
                 <ion-card-title>{{ item.Titulo }}</ion-card-title>
             </ion-card-header>
-            <ion-card-content [innerHtml]="item.Descripcion + datosClase(item) | linkify">
+            <ion-card-content [innerHtml]="item.Descripcion + datosClase(item) | linkify : item.Id">
 
             </ion-card-content>
             <ion-item>
@@ -112,7 +112,7 @@
             <ion-card-header>
                 <ion-card-title>{{ item.Titulo }}</ion-card-title>
             </ion-card-header>
-            <ion-card-content [innerHtml]="item.Descripcion + datosClase(item) | linkify">
+            <ion-card-content [innerHtml]="item.Descripcion + datosClase(item) | linkify : item.Id">
 
             </ion-card-content>
             <ion-item>
@@ -144,7 +144,7 @@
             <ion-card-header>
                 <ion-card-title>{{ item.Titulo }}</ion-card-title>
             </ion-card-header>
-            <ion-card-content [innerHtml]="item.Descripcion + datosClase(item)  | linkify">
+            <ion-card-content [innerHtml]="item.Descripcion + datosClase(item)  | linkify : item.Id">
 
             </ion-card-content>
             <ion-item>
@@ -175,7 +175,7 @@
             <ion-card-header>
                 <ion-card-title>{{ item.Titulo }}</ion-card-title>
             </ion-card-header>
-            <ion-card-content [innerHtml]="item.Descripcion + datosClase(item) | linkify">
+            <ion-card-content [innerHtml]="item.Descripcion + datosClase(item) | linkify : item.Id">
 
             </ion-card-content>
             <ion-item>
@@ -184,10 +184,10 @@
                     <ion-label style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{item.PathRecursoUser}}</ion-label>
                 </ion-chip>
             </ion-item>
-            <ion-item *ngIf="permisoEditar()" style="margin-top: -6px;">
+            <ion-item style="margin-top: -6px;">
                 <ion-label>{{item.Fecha | date:'mediumDate'}}</ion-label>
-                <ion-button style="transform: translateX(12px);" fill="outline" slot="end" (click)="eliminar($event,item)">Borrar</ion-button>
-                <ion-button fill="outline" slot="end" (click)="edit($event,item)">Editar</ion-button>
+                <ion-button *ngIf="permisoEditar()" style="transform: translateX(12px);" fill="outline" slot="end" (click)="eliminar($event,item)">Borrar</ion-button>
+                <ion-button *ngIf="permisoEditar()"  fill="outline" slot="end" (click)="edit($event,item)">Editar</ion-button>
             </ion-item>
         </ion-card>
         <ion-card style="text-align: initial; " class="ion-activatable ripple-parent " mode="ios " *ngIf="!esConferencia && (LstRecursos | filter : 'Semana 1' : 'Semana').length == 0">

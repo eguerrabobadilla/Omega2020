@@ -6,7 +6,7 @@ import { Injectable } from '@angular/core';
 })
 export class apiBase  {
     //url  : string = "https://172.16.12.164:5001";
-    //url  : string = "http://172.16.12.164:5000";
+   // url  : string = "https://172.16.12.35:5001";
   //   url: string = "https://localhost:5001";
     //url: string = "https://192.168.0.15:5001";
     //url: string = "https://192.168.137.1:5001";

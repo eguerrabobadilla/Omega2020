@@ -386,17 +386,34 @@ ngOnInit() {
 
   @HostListener("click", ["$event"])
   onClick(e) {
-    //console.log(e);
     if (e.target.classList.contains("link")) {
       e.preventDefault();
       console.log(e);
+      
+      //Es un link de videocoferencia
+      if (((e.target.getAttribute("href").toLowerCase().includes('https://') || e.target.getAttribute("href").toLowerCase().includes('http://')) && e.target.getAttribute("href").toLowerCase().includes('zoom.us')))
+      {
+        const recursoId = e.target.getAttribute("hreflang");
+        this.apiRecursos.asistenciaConferencia(recursoId).subscribe(data => {
+            if (this.platform.is('cordova')) {
+              this.inAppBrowser.create(e.target.getAttribute("href"), '_system');
+            } else {
+              const { Browser } = Plugins;
+    
+              Browser.open({ url: e.target.getAttribute("href") });
+            }
+        });
+      }
+      else {
 
-      if (this.platform.is('cordova')) {
-        this.inAppBrowser.create(e.target.getAttribute("href"), '_system');
-      } else {
-        const { Browser } = Plugins;
+        if (this.platform.is('cordova')) {
+          this.inAppBrowser.create(e.target.getAttribute("href"), '_system');
+        } else {
+          const { Browser } = Plugins;
 
-        Browser.open({ url: e.target.getAttribute("href") });
+          Browser.open({ url: e.target.getAttribute("href") });
+        }
+
       }
     }
   }

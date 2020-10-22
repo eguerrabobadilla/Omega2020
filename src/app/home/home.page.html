@@ -274,6 +274,9 @@ top: 0;" mode="ios">
             <ion-slide>
                 <app-graphics style="width: 100%;"></app-graphics>
             </ion-slide>
+            <ion-slide>
+                <app-report (updateAutoHeightSlider)="updateAutoHeightSlider()" style="width: 100%;"></app-report>
+            </ion-slide>
         </ion-slides>
 
         <ion-slides #slideDown [options]="slideOptsdos" (ionSlideTouchEnd)="ionSlideTouchEnd(slideUp,slideDown)" *ngIf="selectSeccion == 5 || selectSeccion == 6 " style="min-height: 72.6vh;">
