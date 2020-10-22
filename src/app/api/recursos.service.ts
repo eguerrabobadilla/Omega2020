@@ -45,5 +45,9 @@ export class RecursosService  extends apiBase {
   delete(Id: any) {
     return this.http.delete(`${this.url}/${this.Ws}/${Id}`);
   }
+
+  asistenciaConferencia(RecursoId: any) {
+    return this.http.post(`${this.url}/${this.Ws}/asistenciazoom/${RecursoId}`,null);
+  }
   
 }

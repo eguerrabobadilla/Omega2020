@@ -223,7 +223,7 @@ export class NewResourcePage implements OnInit {
           
         }
      const descripcion = this.FrmItem.controls['Descripcion'].value
-     if (!((descripcion.toLowerCase().includes('https://') || descripcion.toLowerCase().includes('http://')) && descripcion.toLowerCase().includes('zoom.us')) ){
+     if (!((descripcion.toLowerCase().includes('https://') || descripcion.toLowerCase().includes('http://')) && descripcion.toLowerCase().includes('zoom.us'))) {
 
 
         const alert = await  this.alertCtrl.create({
