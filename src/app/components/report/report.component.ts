@@ -1,5 +1,6 @@
 import { Component, OnInit, ElementRef, Renderer2, ViewChild, Output, EventEmitter, ViewChildren, QueryList, Input } from '@angular/core';
-import { IonItem } from '@ionic/angular';
+import { IonItem, PickerController, LoadingController } from '@ionic/angular';
+import { EstadisticasService } from '../../api/estadisticas.service';
 
 @Component({
   selector: 'app-report',
@@ -8,6 +9,10 @@ import { IonItem } from '@ionic/angular';
 })
 export class ReportComponent implements OnInit {
   panel = "panelCerrado";
+  LstEstadisticas: any[] = [];
+  mesActual : string;
+  meses: string[];
+  loading: any;
   @ViewChildren(IonItem) ArrayItems: QueryList<IonItem>;
   @ViewChildren('itemsref', {read: ElementRef}) itemsref: QueryList<ElementRef>;
   @ViewChildren('itemsrefBoton', {read: ElementRef}) itemsrefBoton: QueryList<ElementRef>;
@@ -28,26 +33,24 @@ export class ReportComponent implements OnInit {
   items:any = [];
 
 
-  constructor(private renderer: Renderer2) { }
+  constructor(private renderer: Renderer2,private apiEstadisticas: EstadisticasService, private pickerController: PickerController,
+              private loadingController: LoadingController) { }
 
   ngOnInit() {
-    this.items=[{
-      id: 1,
-      nombre: 'Matemáticas I',
-    },
-    { 
-    id: 2,
-    nombre: 'Química I'
-    },
-    { 
-    id: 2,
-    nombre: 'Ética Y Valores'
-    },
-    { 
-    id: 2,
-    nombre: 'Tutorías I'
-    }
-  ];
+
+    this.meses = ['Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre',
+    'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio'];
+    
+    const mesesReal = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo',
+                  'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+    const d = new Date();
+    this.mesActual= mesesReal[d.getMonth()];
+
+    this.apiEstadisticas.getEstadisticasAlumno('10').subscribe(data => {
+    this.LstEstadisticas = data;
+    console.log(this.LstEstadisticas);
+  });
+
   }
 
   abrirMateria(index,ele){
@@ -59,7 +62,41 @@ export class ReportComponent implements OnInit {
       }
       });
 
-      this.updateAutoHeightSlider.emit();
+    this.updateAutoHeightSlider.emit();
+  }
+
+  async openPicker() {
+    const picker = await this.pickerController.create({
+        mode : 'ios',
+        buttons: [
+          {
+            text: 'Cancelar',
+            role: 'cancel'
+          },
+          {
+            text: 'Aceptar',
+            handler:  (value: any) => {
+              this.mesActual = value.Meses.text;
+              this.cargandoAnimation('Cargando...');
+              this.apiEstadisticas.getEstadisticasAlumno(value.Meses.value).subscribe(data => {
+                this.LstEstadisticas = data;
+                console.log(this.LstEstadisticas);
+                this.loadingController.dismiss();
+              });
+
+            }
+            }
+        ],
+        columns: 
+        [{
+            name: 'Meses',
+            options: this.getColumnOptionsMeses()
+          }
+        ]
+    });
+    picker.columns[0].selectedIndex = this.getRealMonth();
+    picker.present();
+
   }
 
   aplicarEstilos(item){
@@ -69,8 +106,8 @@ export class ReportComponent implements OnInit {
     if(statusPanel=="close") {
       this.renderer.removeStyle(item, 'max-height');
    //   this.renderer.addClass(item.botonKinder.nativeElement, 'active');
-        item.setAttribute('status','open');
-       this.renderer.removeStyle(item, 'display');
+      item.setAttribute('status','open');
+      this.renderer.removeStyle(item, 'display');
     }
     else {
       this.renderer.setStyle(item, 'max-height','0');
@@ -80,65 +117,66 @@ export class ReportComponent implements OnInit {
     }
   }
 
-  abrirMateria1(){
-    console.log("abrirKinder");
-    
-    const statusPanel = this.panelKinder1.nativeElement.getAttribute("status");
-    if(statusPanel=="close") {
-      this.renderer.removeStyle(this.panelKinder1.nativeElement, 'max-height');
-      this.renderer.addClass(this.botonKinder1.nativeElement, 'active');
-      this.panelKinder1.nativeElement.setAttribute('status','open');
-      this.renderer.removeStyle(this.panelKinder1.nativeElement, 'display');
-    }
-    else {
-      this.renderer.setStyle(this.panelKinder1.nativeElement, 'max-height','0');
-      this.renderer.removeClass(this.botonKinder1.nativeElement, 'active');
-      this.panelKinder1.nativeElement.setAttribute('status','close');
-      this.renderer.setStyle(this.panelKinder1.nativeElement, 'display','none');
-    }
 
-    this.updateAutoHeightSlider.emit();
+  getColumnOptionsMeses() {
+    const options = [];
+
+    this.meses.forEach((x, index) => {
+      let month = index+1;
+
+      if(month==1) month = 8;
+      else if(month==2) month = 9;
+      else if(month==3) month = 10;
+      else if(month==4) month = 11;
+      else if(month==5) month = 12;
+      else if(month==6) month = 1;
+      else if(month==7) month = 2;
+      else if(month==8) month = 3;
+      else if(month==9) month = 4;
+      else if(month==10) month = 5;
+      else if(month==11) month = 6;
+      else if(month==12) month = 7;
+
+      options.push({text: x , value: month});
+    });
+
+    return options;
   }
 
-  
-  abrirMateria2(){
-    console.log("abrirKinder");
-    
-    const statusPanel = this.panelKinder2.nativeElement.getAttribute("status");
-    if(statusPanel=="close") {
-      this.renderer.removeStyle(this.panelKinder2.nativeElement, 'max-height');
-      this.renderer.addClass(this.botonKinder2.nativeElement, 'active');
-      this.panelKinder2.nativeElement.setAttribute('status','open');
-      this.renderer.removeStyle(this.panelKinder2.nativeElement, 'display');
-    }
-    else {
-      this.renderer.setStyle(this.panelKinder2.nativeElement, 'max-height','0');
-      this.renderer.removeClass(this.botonKinder2.nativeElement, 'active');
-      this.panelKinder2.nativeElement.setAttribute('status','close');
-      this.renderer.setStyle(this.panelKinder2.nativeElement, 'display','none');
-    }
+  getRealMonth() {
+    /*
+    Dado que el año escolar no inicia en Enero se tiene que ajustar para llenar el picker 
+    ejemplo enero en lugar de ser index 1 es 6
+    */
+   console.log("getRealMonth");
+   const actualDate = new Date();
+   let month = actualDate.getMonth() + 1;
 
-    this.updateAutoHeightSlider.emit();
+   console.log(month);
+
+    if(month==1) month= 5;
+    else if(month==2) month= 6;
+    else if(month==3) month= 7;
+    else if(month==4) month= 8;
+    else if(month==5) month= 9;
+    else if(month==6) month= 10;
+    else if(month==7) month= 11;
+    else if(month==8) month= 0;
+    else if(month==9) month= 1;
+    else if(month==10) month= 2;
+    else if(month==11) month= 3;
+
+
+   console.log(month);
+   return month;
   }
 
+  async cargandoAnimation(text) {
+    this.loading = await this.loadingController.create({
+      message: text,
+      duration: 60000
+    });
 
-  abrirMateria3(){
-    console.log("abrirKinder");
-    
-    const statusPanel = this.panelKinder2.nativeElement.getAttribute("status");
-    if(statusPanel=="close") {
-      this.renderer.removeStyle(this.panelKinder3.nativeElement, 'max-height');
-      this.renderer.addClass(this.botonKinder3.nativeElement, 'active');
-      this.panelKinder3.nativeElement.setAttribute('status','open');
-      this.renderer.removeStyle(this.panelKinder3.nativeElement, 'display');
-    }
-    else {
-      this.renderer.setStyle(this.panelKinder3.nativeElement, 'max-height','0');
-      this.renderer.removeClass(this.botonKinder3.nativeElement, 'active');
-      this.panelKinder3.nativeElement.setAttribute('status','close');
-      this.renderer.setStyle(this.panelKinder3.nativeElement, 'display','none');
-    }
-
-    this.updateAutoHeightSlider.emit();
+    await this.loading.present();
   }
 }

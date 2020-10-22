@@ -1,15 +1,21 @@
+<ion-item detail="false" slot="fixed" lines="none">
+    <ion-chip (click)="openPicker()" color="danger">
+        <ion-icon name="calendar-outline"></ion-icon>
+        <ion-label>{{mesActual}}</ion-label>
+    </ion-chip>
+
+</ion-item>
 <ion-list style="width: 100%;">
     <ion-card style="text-align: initial;" mode="ios">
         <ion-card-header>
             <ion-card-title>Student's Progress Report</ion-card-title>
             <br>
-            <b>Monnth:</b> Octubre
+            <b>Monnth:</b> {{mesActual}}
             <br><br>
             <b>Level:</b> High School Semestre 1
             <br><br>
             <b>Grade and group:</b> 1 A
             <br><br><br>
-            <ion-card-subtitle><b style="font-weight: 700;">A:</b> Asignado <b style="font-weight: 700;">E:</b> Entregado </ion-card-subtitle>
         </ion-card-header>
         <ion-card-content>
             <!--      <ion-card-subtitle style="text-align: center;font-size: 17px; --color: #000;">Tareas</ion-card-subtitle>
@@ -372,9 +378,9 @@
             </div>
 -->
 
-            <div #contenedor *ngFor="let item of items; index as i">
+            <div #contenedor *ngFor="let item of LstEstadisticas; index as i">
                 <ion-item button lines="none" style="--padding-start: 0;" detail="false" (click)="abrirMateria(i,item)">
-                    <h1 #itemsrefBoton class="accordion" style="font-weight: 600;">{{item.nombre}}</h1>
+                    <h1 #itemsrefBoton class="accordion" style="font-weight: 600;font-size: 18px;white-space: nowrap;text-overflow: ellipsis;max-width: 254px;overflow: hidden;">{{item.Materia}}</h1>
                 </ion-item>
                 <div class="panel" #itemsref [id]="i" style="max-height: 0;display: none;    background-color: white;border-radius: 6px;" status="close">
                     <ion-grid style="background-color: white;border-radius: 4px;    max-width: 350px;margin-left: 0;">
@@ -387,7 +393,7 @@
                                 <div>Zoom</div>
                             </ion-col>
                             <ion-col size="4">
-                                <div>Foto</div>
+                                <div>Foro</div>
                             </ion-col>
                         </ion-row>
                         <ion-row style="text-align: center;
@@ -402,10 +408,10 @@
                                 <div style="font-weight: 700;font-size: 9px;">Entregado</div>
                             </ion-col>
                             <ion-col size="2">
-                                <div style="font-weight: 700;font-size: 9px;">Asignado</div>
+                                <div style="font-weight: 700;font-size: 9px;">Realizados</div>
                             </ion-col>
                             <ion-col size="2">
-                                <div style="font-weight: 700;font-size: 9px;">Entregado</div>
+                                <div style="font-weight: 700;font-size: 9px;">Faltas</div>
                             </ion-col>
                             <ion-col size="2">
                                 <div style="font-weight: 700;font-size: 9px;">Asignado</div>
@@ -416,29 +422,29 @@
                         </ion-row>
                         <ion-row style='text-align: center;transform: translateY(-9px);--ion-default-font: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Roboto", sans-serif;    font-size: 20px; color: #666666;'>
                             <ion-col size="2">
-                                <div style="display: inline-flex;transform: translateX(5px);">7
-                                    <p style="transform: translateX(11px) translateY(-3px);font-size: 25px;">-</p>
+                                <div style="display: inline-flex;transform: translateX(5px);">{{item.TareasAsignada}}
+                                    <!--<p style="transform: translateX(11px) translateY(-3px);font-size: 25px;">-</p>-->
                                 </div>
 
                             </ion-col>
                             <ion-col size="2">
-                                <div>6</div>
+                                <div>{{item.TareasEntragadas}}</div>
                             </ion-col>
                             <ion-col size="2">
-                                <div style="display: inline-flex;transform: translateX(5px);">9
-                                    <p style="transform: translateX(11px) translateY(-3px);font-size: 25px;">-</p>
+                                <div style="display: inline-flex;transform: translateX(5px);">{{item.ZoomAsignada}}
+                                    <!--<p style="transform: translateX(11px) translateY(-3px);font-size: 25px;">-</p>-->
                                 </div>
                             </ion-col>
                             <ion-col size="2">
-                                <div>9</div>
+                                <div>{{item.ZoomFaltas}}</div>
                             </ion-col>
                             <ion-col size="2">
-                                <div style="display: inline-flex;transform: translateX(5px);">8
-                                    <p style="transform: translateX(11px) translateY(-3px);font-size: 25px;">-</p>
+                                <div style="display: inline-flex;transform: translateX(5px);">{{item.ForossAsignada}}
+                                    <!--<p style="transform: translateX(11px) translateY(-3px);font-size: 25px;">-</p>-->
                                 </div>
                             </ion-col>
                             <ion-col size="2">
-                                <div>8</div>
+                                <div>{{item.ForosEntragadas}}</div>
                             </ion-col>
                         </ion-row>
                     </ion-grid>
