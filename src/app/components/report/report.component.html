@@ -6,7 +6,7 @@
 
 </ion-item>
 <ion-list style="width: 100%;">
-    <ion-card style="text-align: initial;" mode="ios">
+    <ion-card style="text-align: initial;box-shadow: none;" mode="ios">
         <ion-card-header>
             <ion-card-title>Student's Progress Report</ion-card-title>
             <br>
@@ -16,434 +16,80 @@
             <br><br>
             <b>Grade and group:</b> {{user.Grado}} {{user.Grupo}}
             <br><br><br>
+
+
+
         </ion-card-header>
         <ion-card-content>
-            <!--      <ion-card-subtitle style="text-align: center;font-size: 17px; --color: #000;">Tareas</ion-card-subtitle>
-            <ion-grid>
-                <ion-row style="text-align: center;">
-                    <ion-col>
-                        <div class="numeros">6</div>
-                    </ion-col>
-                    <ion-col>
-                        <div class="numeros">6</div>
-                    </ion-col>
-                </ion-row>
-                <ion-row style="text-align: center;">
-                    <ion-col>
-                        <div>Asignada</div>
-                    </ion-col>
-                    <ion-col>
-                        <div>Entregado</div>
-                    </ion-col>
-                </ion-row>
-            </ion-grid>
 
-
-
-            <ion-grid>
-                <ion-row style="text-align: center;">
-                    <ion-col>
-                        <ion-card-subtitle style="text-align: center;font-size: 17px; --color: #000;">Tareas</ion-card-subtitle>
-                    </ion-col>
-                    <ion-col>
-                        <ion-card-subtitle style="text-align: center;font-size: 17px; --color: #000;">Zoom</ion-card-subtitle>
-                    </ion-col>
-                    <ion-col>
-                        <ion-card-subtitle style="text-align: center;font-size: 17px; --color: #000;">Foro</ion-card-subtitle>
-                    </ion-col>
-                </ion-row>
-
-                <ion-row style="text-align: center;">
-                    <ion-col>
-                        <ion-card-subtitle style="text-align: center;font-size: 17px; --color: #000;">Asignado</ion-card-subtitle>
-                    </ion-col>
-                    <ion-col>
-                        <ion-card-subtitle style="text-align: center;font-size: 17px; --color: #000;">Entregado</ion-card-subtitle>
-                    </ion-col>
-                    <ion-col>
-                        <ion-card-subtitle style="text-align: center;font-size: 17px; --color: #000;">Asignado</ion-card-subtitle>
-                    </ion-col>
-                    <ion-col>
-                        <ion-card-subtitle style="text-align: center;font-size: 17px; --color: #000;">Entregado</ion-card-subtitle>
-                    </ion-col>
-                    <ion-col>
-                        <ion-card-subtitle style="text-align: center;font-size: 17px; --color: #000;">Asignado</ion-card-subtitle>
-                    </ion-col>
-                    <ion-col>
-                        <ion-card-subtitle style="text-align: center;font-size: 17px; --color: #000;">Entregado</ion-card-subtitle>
-                    </ion-col>
-                </ion-row>
-
-            </ion-grid>  -->
-            <!--        <ion-item button lines="none" style="--padding-start: 0;" detail="false" (click)="abrirMateria()">
-                <h1 #botonKinder class="accordion">Matemáticas I</h1>
-            </ion-item>
-            <div class="panel" #panelKinder style="max-height: 0;display: none;" status="close">
-                <ion-grid style="background-color: #f1f1f17d;
-                border-radius: 4px;">
-
-                    <ion-row style="text-align: center;">
-                        <ion-col size="4">
-                            <div>Tarea</div>
-                        </ion-col>
-                        <ion-col size="4">
-                            <div>Zoom</div>
-                        </ion-col>
-                        <ion-col size="4">
-                            <div>Foto</div>
-                        </ion-col>
-                    </ion-row>
-                    <ion-row style="text-align: center;    font-size: 12px;transform: translateY(-9px);">
-                        <ion-col size="2">
-                            <div style="font-weight: 700;">A</div>
-                        </ion-col>
-                        <ion-col size="2">
-                            <div style="font-weight: 700;">E</div>
-                        </ion-col>
-                        <ion-col size="2">
-                            <div style="font-weight: 700;">A</div>
-                        </ion-col>
-                        <ion-col size="2">
-                            <div style="font-weight: 700;">E</div>
-                        </ion-col>
-                        <ion-col size="2">
-                            <div style="font-weight: 700;">A</div>
-                        </ion-col>
-                        <ion-col size="2">
-                            <div style="font-weight: 700;">E</div>
-                        </ion-col>
-                    </ion-row>
-                    <ion-row style='text-align: center;
-                    /* font-size: 12px; */
-                    /* color: #000; */
-                    transform: translateY(-9px);
-                    --ion-default-font: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Roboto", sans-serif;
-                    font-size: 27px;
-                    color: #000;'>
-                        <ion-col size="2">
-                            <div style="display: inline-flex;transform: translateX(5px);">7
-                                <p style="transform: translateX(11px) translateY(-3px);font-size: 25px;">-</p>
-                            </div>
-
-                        </ion-col>
-                        <ion-col size="2">
-                            <div>6</div>
-                        </ion-col>
-                        <ion-col size="2">
-                            <div style="display: inline-flex;transform: translateX(5px);">9
-                                <p style="transform: translateX(11px) translateY(-3px);font-size: 25px;">-</p>
-                            </div>
-                        </ion-col>
-                        <ion-col size="2">
-                            <div>9</div>
-                        </ion-col>
-                        <ion-col size="2">
-                            <div style="display: inline-flex;transform: translateX(5px);">8
-                                <p style="transform: translateX(11px) translateY(-3px);font-size: 25px;">-</p>
-                            </div>
-                        </ion-col>
-                        <ion-col size="2">
-                            <div>8</div>
-                        </ion-col>
-                    </ion-row>
-                </ion-grid>
-            </div>
-
-
-            <ion-item button lines="none" style="--padding-start: 0;" detail="false" (click)="abrirMateria1()">
-                <h1 #botonKinder1 class="accordion">Química I</h1>
-            </ion-item>
-            <div class="panel" #panelKinder1 style="max-height: 0;display: none;" status="close">
-                <ion-grid style="background-color: #f1f1f17d;
-                border-radius: 4px;">
-
-                    <ion-row style="text-align: center;">
-                        <ion-col size="4">
-                            <div>Tarea</div>
-                        </ion-col>
-                        <ion-col size="4">
-                            <div>Zoom</div>
-                        </ion-col>
-                        <ion-col size="4">
-                            <div>Foto</div>
-                        </ion-col>
-                    </ion-row>
-                    <ion-row style="text-align: center;    font-size: 12px;transform: translateY(-9px);">
-                        <ion-col size="2">
-                            <div style="font-weight: 700;">A</div>
-                        </ion-col>
-                        <ion-col size="2">
-                            <div style="font-weight: 700;">E</div>
-                        </ion-col>
-                        <ion-col size="2">
-                            <div style="font-weight: 700;">A</div>
-                        </ion-col>
-                        <ion-col size="2">
-                            <div style="font-weight: 700;">E</div>
-                        </ion-col>
-                        <ion-col size="2">
-                            <div style="font-weight: 700;">A</div>
-                        </ion-col>
-                        <ion-col size="2">
-                            <div style="font-weight: 700;">E</div>
-                        </ion-col>
-                    </ion-row>
-                    <ion-row style='text-align: center;
-                    /* font-size: 12px; */
-                    /* color: #000; */
-                    transform: translateY(-9px);
-                    --ion-default-font: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Roboto", sans-serif;
-                    font-size: 27px;
-                    color: #000;'>
-                        <ion-col size="2">
-                            <div style="display: inline-flex;transform: translateX(5px);">7
-                                <p style="transform: translateX(11px) translateY(-3px);font-size: 25px;">-</p>
-                            </div>
-
-                        </ion-col>
-                        <ion-col size="2">
-                            <div>6</div>
-                        </ion-col>
-                        <ion-col size="2">
-                            <div style="display: inline-flex;transform: translateX(5px);">9
-                                <p style="transform: translateX(11px) translateY(-3px);font-size: 25px;">-</p>
-                            </div>
-                        </ion-col>
-                        <ion-col size="2">
-                            <div>9</div>
-                        </ion-col>
-                        <ion-col size="2">
-                            <div style="display: inline-flex;transform: translateX(5px);">8
-                                <p style="transform: translateX(11px) translateY(-3px);font-size: 25px;">-</p>
-                            </div>
-                        </ion-col>
-                        <ion-col size="2">
-                            <div>8</div>
-                        </ion-col>
-                    </ion-row>
-                </ion-grid>
-            </div>
-
-
-
-            <ion-item button lines="none" style="--padding-start: 0;" detail="false" (click)="abrirMateria2()">
-                <h1 #botonKinder2 class="accordion">Ética y Valores</h1>
-            </ion-item>
-            <div class="panel" #panelKinder2 style="max-height: 0;display: none;" status="close">
-                <ion-grid style="background-color: #f1f1f17d;
-                border-radius: 4px;">
-
-                    <ion-row style="text-align: center;">
-                        <ion-col size="4">
-                            <div>Tarea</div>
-                        </ion-col>
-                        <ion-col size="4">
-                            <div>Zoom</div>
-                        </ion-col>
-                        <ion-col size="4">
-                            <div>Foto</div>
-                        </ion-col>
-                    </ion-row>
-                    <ion-row style="text-align: center;    font-size: 12px;transform: translateY(-9px);">
-                        <ion-col size="2">
-                            <div style="font-weight: 700;">A</div>
-                        </ion-col>
-                        <ion-col size="2">
-                            <div style="font-weight: 700;">E</div>
-                        </ion-col>
-                        <ion-col size="2">
-                            <div style="font-weight: 700;">A</div>
-                        </ion-col>
-                        <ion-col size="2">
-                            <div style="font-weight: 700;">E</div>
-                        </ion-col>
-                        <ion-col size="2">
-                            <div style="font-weight: 700;">A</div>
-                        </ion-col>
-                        <ion-col size="2">
-                            <div style="font-weight: 700;">E</div>
-                        </ion-col>
-                    </ion-row>
-                    <ion-row style='text-align: center;
-                    /* font-size: 12px; */
-                    /* color: #000; */
-                    transform: translateY(-9px);
-                    --ion-default-font: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Roboto", sans-serif;
-                    font-size: 27px;
-                    color: #000;'>
-                        <ion-col size="2">
-                            <div style="display: inline-flex;transform: translateX(5px);">7
-                                <p style="transform: translateX(11px) translateY(-3px);font-size: 25px;">-</p>
-                            </div>
-
-                        </ion-col>
-                        <ion-col size="2">
-                            <div>6</div>
-                        </ion-col>
-                        <ion-col size="2">
-                            <div style="display: inline-flex;transform: translateX(5px);">9
-                                <p style="transform: translateX(11px) translateY(-3px);font-size: 25px;">-</p>
-                            </div>
-                        </ion-col>
-                        <ion-col size="2">
-                            <div>9</div>
-                        </ion-col>
-                        <ion-col size="2">
-                            <div style="display: inline-flex;transform: translateX(5px);">8
-                                <p style="transform: translateX(11px) translateY(-3px);font-size: 25px;">-</p>
-                            </div>
-                        </ion-col>
-                        <ion-col size="2">
-                            <div>8</div>
-                        </ion-col>
-                    </ion-row>
-                </ion-grid>
-            </div>
-
-
-
-
-            <ion-item button lines="none" style="--padding-start: 0;" detail="false" (click)="abrirMateria3()">
-                <h1 #botonKinder3 class="accordion">Tutorías I</h1>
-            </ion-item>
-            <div class="panel" #panelKinder3 style="max-height: 0;display: none;" status="close">
-                <ion-grid style="background-color: #f1f1f17d;
-                border-radius: 4px;">
-
-                    <ion-row style="text-align: center;">
-                        <ion-col size="4">
-                            <div>Tarea</div>
-                        </ion-col>
-                        <ion-col size="4">
-                            <div>Zoom</div>
-                        </ion-col>
-                        <ion-col size="4">
-                            <div>Foto</div>
-                        </ion-col>
-                    </ion-row>
-                    <ion-row style="text-align: center;    font-size: 12px;transform: translateY(-9px);">
-                        <ion-col size="2">
-                            <div style="font-weight: 700;">A</div>
-                        </ion-col>
-                        <ion-col size="2">
-                            <div style="font-weight: 700;">E</div>
-                        </ion-col>
-                        <ion-col size="2">
-                            <div style="font-weight: 700;">A</div>
-                        </ion-col>
-                        <ion-col size="2">
-                            <div style="font-weight: 700;">E</div>
-                        </ion-col>
-                        <ion-col size="2">
-                            <div style="font-weight: 700;">A</div>
-                        </ion-col>
-                        <ion-col size="2">
-                            <div style="font-weight: 700;">E</div>
-                        </ion-col>
-                    </ion-row>
-                    <ion-row style='text-align: center;
-                    /* font-size: 12px; */
-                    /* color: #000; */
-                    transform: translateY(-9px);
-                    --ion-default-font: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Roboto", sans-serif;
-                    font-size: 27px;
-                    color: #000;'>
-                        <ion-col size="2">
-                            <div style="display: inline-flex;transform: translateX(5px);">7
-                                <p style="transform: translateX(11px) translateY(-3px);font-size: 25px;">-</p>
-                            </div>
-
-                        </ion-col>
-                        <ion-col size="2">
-                            <div>6</div>
-                        </ion-col>
-                        <ion-col size="2">
-                            <div style="display: inline-flex;transform: translateX(5px);">9
-                                <p style="transform: translateX(11px) translateY(-3px);font-size: 25px;">-</p>
-                            </div>
-                        </ion-col>
-                        <ion-col size="2">
-                            <div>9</div>
-                        </ion-col>
-                        <ion-col size="2">
-                            <div style="display: inline-flex;transform: translateX(5px);">8
-                                <p style="transform: translateX(11px) translateY(-3px);font-size: 25px;">-</p>
-                            </div>
-                        </ion-col>
-                        <ion-col size="2">
-                            <div>8</div>
-                        </ion-col>
-                    </ion-row>
-                </ion-grid>
-            </div>
--->
 
             <div #contenedor *ngFor="let item of LstEstadisticas; index as i">
-                <ion-item button lines="none" style="--padding-start: 0;" detail="false" (click)="abrirMateria(i,item)">
-                    <h1 #itemsrefBoton class="accordion" style="font-weight: 600;font-size: 18px;white-space: nowrap;text-overflow: ellipsis;max-width: 254px;overflow: hidden;">{{item.Materia}}</h1>
+                <ion-item lines="none" style="--padding-start: 0;position: relative;" detail="false">
+                    <h1 #itemsrefBoton class="accordion " style="font-weight: 600;font-size: 18px;white-space: nowrap;text-overflow: ellipsis;max-width: 254px;overflow: hidden;display: inline-block; ">
+                        {{item.Materia}}
+                    </h1>
+                    <!--<div style="background-color: blue;display: inline-block;position: absolute;right: 0; ">-->
+                    <app-circle-progress-report [porcentaje]="item.Porcentaje" style="display: inline-block;position: absolute;right: -16px;top: 7px; "></app-circle-progress-report>
+                    <!--</div>-->
                 </ion-item>
-                <div class="panel" #itemsref [id]="i" style="max-height: 0;display: none;    background-color: white;border-radius: 6px;" status="close">
-                    <ion-grid style="background-color: white;border-radius: 4px;    max-width: 350px;margin-left: 0;">
+                <div class="panel " #itemsref [id]="i" status="close">
+                    <ion-grid style="background-color: white;border-radius: 4px; max-width: 350px;margin-left: 0; ">
 
-                        <ion-row style="text-align: center;">
-                            <ion-col size="4">
+                        <ion-row style="text-align: center; ">
+                            <ion-col size="4 ">
                                 <div>Tarea</div>
                             </ion-col>
-                            <ion-col size="4">
+                            <ion-col size="4 ">
                                 <div>Zoom</div>
                             </ion-col>
-                            <ion-col size="4">
+                            <ion-col size="4 ">
                                 <div>Foro</div>
                             </ion-col>
                         </ion-row>
-                        <ion-row style="text-align: center;
-                        transform: translateY(-9px);
-                        font-size: 9px;
-                        text-overflow: clip;
-                        white-space: nowrap;">
-                            <ion-col size="2">
-                                <div style="font-weight: 700;font-size: 9px;">Asignado</div>
+                        <ion-row style="text-align: center; transform: translateY(-9px); font-size: 9px; text-overflow: clip; white-space: nowrap; ">
+                            <ion-col size="2 ">
+                                <div style="font-weight: 700;font-size: 9px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis; ">Asignado</div>
                             </ion-col>
-                            <ion-col size="2">
-                                <div style="font-weight: 700;font-size: 9px;">Entregado</div>
+                            <ion-col size="2 ">
+                                <div style="font-weight: 700;font-size: 9px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis; ">Entregado</div>
                             </ion-col>
-                            <ion-col size="2">
-                                <div style="font-weight: 700;font-size: 9px;">Realizados</div>
+                            <ion-col size="2 ">
+                                <div style="font-weight: 700;font-size: 9px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis; ">Asignado</div>
                             </ion-col>
-                            <ion-col size="2">
-                                <div style="font-weight: 700;font-size: 9px;">Faltas</div>
+                            <ion-col size="2 ">
+                                <div style="font-weight: 700;font-size: 9px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis; ">Asistencia</div>
                             </ion-col>
-                            <ion-col size="2">
-                                <div style="font-weight: 700;font-size: 9px;">Asignado</div>
+                            <ion-col size="2 ">
+                                <div style="font-weight: 700;font-size: 9px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis; ">Asignado</div>
                             </ion-col>
-                            <ion-col size="2">
-                                <div style="font-weight: 700;font-size: 9px;">Entregado</div>
+                            <ion-col size="2 ">
+                                <div style="font-weight: 700;font-size: 9px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis; ">Entregado</div>
                             </ion-col>
                         </ion-row>
-                        <ion-row style='text-align: center;transform: translateY(-9px);--ion-default-font: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Roboto", sans-serif;    font-size: 20px; color: #666666;'>
-                            <ion-col size="2">
-                                <div style="display: inline-flex;transform: translateX(5px);">{{item.TareasAsignada}}
-                                    <!--<p style="transform: translateX(11px) translateY(-3px);font-size: 25px;">-</p>-->
+                        <ion-row style='text-align: center;transform: translateY(-9px);--ion-default-font: -apple-system, BlinkMacSystemFont, "Helvetica Neue ", "Roboto ", sans-serif;    font-size: 20px; color: #666666;'>
+                            <ion-col size="2 ">
+                                <div style="display: inline-flex;transform: translateX(5px); ">{{item.TareasAsignada}}
+                                    <!--<p style="transform: translateX(11px) translateY(-3px);font-size: 25px; ">-</p>-->
                                 </div>
 
                             </ion-col>
-                            <ion-col size="2">
+                            <ion-col size="2 ">
                                 <div>{{item.TareasEntragadas}}</div>
                             </ion-col>
-                            <ion-col size="2">
-                                <div style="display: inline-flex;transform: translateX(5px);">{{item.ZoomAsignada}}
-                                    <!--<p style="transform: translateX(11px) translateY(-3px);font-size: 25px;">-</p>-->
+                            <ion-col size="2 ">
+                                <div style="display: inline-flex;transform: translateX(5px); ">{{item.ZoomAsignada}}
+                                    <!--<p style="transform: translateX(11px) translateY(-3px);font-size: 25px; ">-</p>-->
                                 </div>
                             </ion-col>
-                            <ion-col size="2">
+                            <ion-col size="2 ">
                                 <div>{{item.ZoomFaltas}}</div>
                             </ion-col>
-                            <ion-col size="2">
-                                <div style="display: inline-flex;transform: translateX(5px);">{{item.ForossAsignada}}
-                                    <!--<p style="transform: translateX(11px) translateY(-3px);font-size: 25px;">-</p>-->
+                            <ion-col size="2 ">
+                                <div style="display: inline-flex;transform: translateX(5px); ">{{item.ForossAsignada}}
+                                    <!--<p style="transform: translateX(11px) translateY(-3px);font-size: 25px; ">-</p>-->
                                 </div>
                             </ion-col>
-                            <ion-col size="2">
+                            <ion-col size="2 ">
                                 <div>{{item.ForosEntragadas}}</div>
                             </ion-col>
                         </ion-row>

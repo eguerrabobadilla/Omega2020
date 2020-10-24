@@ -40,7 +40,7 @@ export class CircleProgressComponent implements OnInit {
 
         if (val < 0) { val = 0;}
         if (val > 100) { val = 100;}
-        
+
         const pct = ((100-val)/100)*c;
 
         this.renderer.setStyle(this.circleProgress.nativeElement,'stroke-dashoffset',pct);
