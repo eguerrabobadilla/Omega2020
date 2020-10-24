@@ -23,6 +23,7 @@
             <h2>Grupo {{item.Grado}}{{item.Grupo}} {{ item.Escolaridad }}</h2>
             <p>{{ item.UltimoMensaje }}</p>
             <p>{{ item.FechaUltimoMensaje | date:'mediumDate' }} {{ item.HoraUlimoMensaje }}</p>
+            <p><b>Docente:</b> {{ item.Usuario.NombreCompleto | titlecase}}</p>
         </ion-label>
     </ion-item>
 </ion-list>
