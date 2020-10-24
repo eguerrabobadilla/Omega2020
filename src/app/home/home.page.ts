@@ -33,6 +33,7 @@ import { Router } from '@angular/router';
 import { GlobalService } from '../services/global.service';
 import { async } from '@angular/core/testing';
 import { ListTareasComponent } from '../components/list-tareas/list-tareas.component';
+import { ReportComponent } from '../components/report/report.component';
 
 
 
@@ -108,6 +109,7 @@ export class HomePage {
   @ViewChild('calendar', {static: false}) calendar: ElementRef;
 
   @ViewChild('pillMenu', {static: false}) pillMenu: PillMenuComponent;
+  @ViewChild('appReport', {static: false}) appReport: ReportComponent;
   @ViewChild('content2', {read: ElementRef, static: true}) contentref2: ElementRef;
   @ViewChild('div2', {read: ElementRef, static: true}) div2: ElementRef;
   @ViewChild('footer', {read: ElementRef, static: true}) footer: ElementRef;
@@ -648,7 +650,7 @@ this.pillMenu.animacion();
       this.tabs = ['Noticias', 'Mensajes', 'Calendario'];
 
      } else if (index === 4) {
-            this.tabs = ['Perfil', 'Materias', 'Estadísticas','Report'];
+            this.tabs = ['Perfil', 'Materias', 'Estadísticas'];
      } else if (index === 5) {
       this.tabs = ['Preguntas', 'Contacto'];
       }/* } else if (index === 6) {
@@ -915,7 +917,12 @@ this.pillMenu.animacion();
 
     segmentChanged(event) {
       const itemOption = this.pillMenu.itemsMenu[event.detail.value];
+      console.log(itemOption);
       console.log(this.selectSeccion);
+      if(itemOption == 'Estadísticas' && this.permisoEditar() === false){
+
+          this.appReport.cargarEstadisticas();
+      }
      // console.log(itemOption);
       //Logica boton + evidencias
       if(this.selectSeccion==2) {

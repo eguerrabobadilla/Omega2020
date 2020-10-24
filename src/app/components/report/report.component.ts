@@ -2,6 +2,10 @@ import { Component, OnInit, ElementRef, Renderer2, ViewChild, Output, EventEmitt
 import { IonItem, PickerController, LoadingController } from '@ionic/angular';
 import { EstadisticasService } from '../../api/estadisticas.service';
 import { UsuariosService } from 'src/app/api/usuarios.service';
+import { Chart } from 'chart.js';
+import { CircleProgressReportComponent  } from '../circle-progress-report/circle-progress-report.component';
+
+
 
 @Component({
   selector: 'app-report',
@@ -14,6 +18,8 @@ export class ReportComponent implements OnInit {
   mesActual : string;
   meses: string[];
   loading: any;
+  bars: any;
+  colorArray: any;
   public user = {
     NombreCompleto : '',
     Grado  : '',
@@ -25,6 +31,7 @@ export class ReportComponent implements OnInit {
     Tipo: ''
   };
   @ViewChildren(IonItem) ArrayItems: QueryList<IonItem>;
+  @ViewChild('barChart', {read: ElementRef, static: false}) barChart: ElementRef;
   @ViewChildren('itemsref', {read: ElementRef}) itemsref: QueryList<ElementRef>;
   @ViewChildren('itemsrefBoton', {read: ElementRef}) itemsrefBoton: QueryList<ElementRef>;
   @ViewChild('contenedor', {read: ElementRef, static: false}) contenedor: ElementRef;
@@ -42,6 +49,8 @@ export class ReportComponent implements OnInit {
 
   @Output() updateAutoHeightSlider = new EventEmitter();
   items: any = [];
+  current= 1 ;
+  max= 2;
 
 
   constructor(private renderer: Renderer2, private apiEstadisticas: EstadisticasService, private pickerController: PickerController,
@@ -57,10 +66,6 @@ export class ReportComponent implements OnInit {
     const d = new Date();
     this.mesActual = mesesReal[d.getMonth()];
 
-    this.apiEstadisticas.getEstadisticasAlumno('10').subscribe(data => {
-    this.LstEstadisticas = data;
-    console.log(this.LstEstadisticas);
-  });
 
     const UsuarioId =this.getKeyToken('id');
     this.apiUsuarios.getUsuario(UsuarioId).subscribe(data => {
@@ -74,7 +79,14 @@ export class ReportComponent implements OnInit {
      this.user.Tipo = data["Tipo"];
   });
 
-
+  }
+  cargarEstadisticas(){
+    this.cargandoAnimation('Cargando...');
+    this.apiEstadisticas.getEstadisticasAlumno('10').subscribe(data => {
+      this.loadingController.dismiss();
+      this.LstEstadisticas = data;
+      console.log(this.LstEstadisticas);
+    });
   }
 
   abrirMateria(index, ele){
@@ -216,6 +228,12 @@ export class ReportComponent implements OnInit {
     const value = decodedJwtData[key];
 
     return value;
+  }
+
+
+  createBarChart() {
+
+    
   }
 
 
