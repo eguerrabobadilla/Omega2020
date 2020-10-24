@@ -11,7 +11,8 @@ export class SubjectsComponent implements OnInit {
   public user = {
     grupo : '',
     grado  : '',
-    tipo   :''
+    tipo   :'',
+    escolaridad: ''
   };
 
   constructor(private apiMaterias: MateriasService) { }
@@ -20,6 +21,7 @@ export class SubjectsComponent implements OnInit {
     this.user.grupo = this.getKeyToken('grupo');
     this.user.grado = this.getKeyToken('grado');
     this.user.tipo  = this.getKeyToken('tipo');
+    this.user.escolaridad  = this.getKeyToken('escolaridad');
 
     this.apiMaterias.get().subscribe(data => {
       this.LstMaterias = data;
