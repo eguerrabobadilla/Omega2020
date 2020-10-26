@@ -20,6 +20,7 @@ export class ReportComponent implements OnInit {
   loading: any;
   bars: any;
   colorArray: any;
+  private inicioVentana: boolean = true;
   public user = {
     NombreCompleto : '',
     Grado  : '',
@@ -31,7 +32,6 @@ export class ReportComponent implements OnInit {
     Tipo: ''
   };
   @ViewChildren(IonItem) ArrayItems: QueryList<IonItem>;
-  @ViewChild('barChart', {read: ElementRef, static: false}) barChart: ElementRef;
   @ViewChildren('itemsref', {read: ElementRef}) itemsref: QueryList<ElementRef>;
   @ViewChildren('itemsrefBoton', {read: ElementRef}) itemsrefBoton: QueryList<ElementRef>;
   @ViewChild('contenedor', {read: ElementRef, static: false}) contenedor: ElementRef;
@@ -47,10 +47,17 @@ export class ReportComponent implements OnInit {
   @ViewChild('panelKinder3', {read: ElementRef, static: false}) panelKinder3: ElementRef;
   @ViewChild('botonKinder3', {read: ElementRef, static: false}) botonKinder3: ElementRef;
 
+  @ViewChild('barChartGlobales', {read: ElementRef, static: true}) barChartGlobales: ElementRef;
+
   @Output() updateAutoHeightSlider = new EventEmitter();
   items: any = [];
   current= 1 ;
   max= 2;
+
+  /***Totales****/
+  totalesAsigados: any =[];
+  totalesEntregados: any =[];
+  /*********** */
 
 
   constructor(private renderer: Renderer2, private apiEstadisticas: EstadisticasService, private pickerController: PickerController,
@@ -85,8 +92,38 @@ export class ReportComponent implements OnInit {
     this.apiEstadisticas.getEstadisticasAlumno('10').subscribe(data => {
       this.loadingController.dismiss();
       this.LstEstadisticas = data;
-      console.log(this.LstEstadisticas);
+      this.calcularGrafica();  
     });
+  }
+
+  calcularGrafica() {
+    this.totalesAsigados=[];
+    this.totalesEntregados=[];
+
+    if(this.inicioVentana==true) {
+      this.totalesAsigados.push(this.LstEstadisticas.reduce((a, {TareasAsignada}) => a + TareasAsignada, 0));
+      this.totalesAsigados.push(this.LstEstadisticas.reduce((a, {ZoomAsignada}) => a + ZoomAsignada, 0));
+      this.totalesAsigados.push(this.LstEstadisticas.reduce((a, {ForossAsignada}) => a + ForossAsignada, 0));
+
+      this.totalesEntregados.push(this.LstEstadisticas.reduce((a, {TareasEntragadas}) => a + TareasEntragadas, 0));
+      this.totalesEntregados.push(this.LstEstadisticas.reduce((a, {ZoomFaltas}) => a + ZoomFaltas, 0));
+      this.totalesEntregados.push(this.LstEstadisticas.reduce((a, {ForosEntragadas}) => a + ForosEntragadas, 0));
+
+      this.inicioVentana=false;
+
+      this.createBarChart(this.barChartGlobales, '#6228cf');
+    }
+    else {
+      this.bars.data.datasets[0].data.push(this.LstEstadisticas.reduce((a, {TareasAsignada}) => a + TareasAsignada, 0),
+                                          this.LstEstadisticas.reduce((a, {ZoomAsignada}) => a + ZoomAsignada, 0),
+                                          this.LstEstadisticas.reduce((a, {ForossAsignada}) => a + ForossAsignada, 0));
+
+      this.bars.data.datasets[1].data.push(this.LstEstadisticas.reduce((a, {TareasEntragadas}) => a + TareasEntragadas, 0),
+                                          this.LstEstadisticas.reduce((a, {ZoomFaltas}) => a + ZoomFaltas, 0),
+                                          this.LstEstadisticas.reduce((a, {ForosEntragadas}) => a + ForosEntragadas, 0));
+
+      this.bars.update();
+    }
   }
 
   abrirMateria(index, ele){
@@ -114,9 +151,15 @@ export class ReportComponent implements OnInit {
             handler:  (value: any) => {
               this.mesActual = value.Meses.text;
               this.cargandoAnimation('Cargando...');
+
+              //Se limpia la grafica
+              this.removeData();
+              
               this.apiEstadisticas.getEstadisticasAlumno(value.Meses.value).subscribe(data => {
                 this.LstEstadisticas = data;
-                console.log(this.LstEstadisticas);
+                //console.log(this.LstEstadisticas);
+                this.calcularGrafica();
+                //this.bars.update();
                 this.loadingController.dismiss();
               });
 
@@ -230,11 +273,89 @@ export class ReportComponent implements OnInit {
     return value;
   }
 
+  generateColorArray(num) {
+    this.colorArray = [];
 
-  createBarChart() {
+   const porcentajeTareas= this.totalesEntregados[0]==0 && this.totalesAsigados[0]==0 ? 0 : (100 * this.totalesEntregados[0]) / this.totalesAsigados[0];
+   const porcentajeZoom= this.totalesEntregados[1]==0 && this.totalesAsigados[1]==0 ? 0 : (100 * this.totalesEntregados[1]) / this.totalesAsigados[1];
+   const porcentajeForos= this.totalesEntregados[2]==0 && this.totalesAsigados[2]==0 ? 0 : (100 * this.totalesEntregados[2]) / this.totalesAsigados[2];
 
-    
+   this.colorArray.push(this.getColor(porcentajeTareas));
+   this.colorArray.push(this.getColor(porcentajeZoom));
+   this.colorArray.push(this.getColor(porcentajeForos));
   }
 
+  removeData() {
+    this.bars.data.datasets.forEach((dataset) => {
+      dataset.data=[];
+    });
+
+    this.bars.update();
+  }
+
+  getColor(val) {
+    let color:any="";
+
+    if(val > 0 && val <= 33) {
+      color = 'red';
+    } else if (val > 33 && val <= 66) {
+      color = '#ffcc03';
+    } else if (val > 66 && val <= 100) {
+      color = 'green';
+    }
+
+    return color;
+  }
+
+  createBarChart(elemento: any, color: any) {
+    
+    let ctx = elemento.nativeElement;
+    ctx.height = 300;
+    this.generateColorArray(12);
+
+    this.bars = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['Tareas', 'Zoom', 'Foros'],
+        datasets: [
+          {
+            data: this.totalesAsigados,
+            //label: 'Asignadas',
+            backgroundColor: color, // array should have same number of elements as number of dataset
+        //   borderColor: 'rgb(38, 194, 129)',// array should have same number of elements as number of dataset
+        //   borderWidth: 1
+          },
+          {
+            data: this.totalesEntregados,
+            backgroundColor: this.colorArray, 
+            //label: 'Realizadas',
+          }
+        ]
+      },
+      options: {
+        legend: {
+          display: false
+        },
+        scales: {
+          xAxes: [{
+
+            gridLines: {
+              drawOnChartArea: false
+            },
+          }],
+          yAxes: [{
+            barPercentage: 0.6,
+            categoryPercentage: 0.6,
+            ticks: {
+              beginAtZero: true
+            },
+            gridLines: {
+              drawOnChartArea: false
+            }
+          }]
+        }
+      }
+    });
+  }
 
 }

@@ -10,19 +10,14 @@
         <ion-card-header>
             <ion-card-title>Student's Progress Report</ion-card-title>
             <br>
-            <b>Month:</b> {{mesActual}}
+            <b>Month:</b>  
             <br><br>
             <b>Level:</b> {{user.Escolaridad}}
             <br><br>
             <b>Grade and group:</b> {{user.Grado}} {{user.Grupo}}
             <br><br><br>
-
-
-
         </ion-card-header>
         <ion-card-content>
-
-
             <div #contenedor *ngFor="let item of LstEstadisticas; index as i">
                 <ion-item lines="none" style="--padding-start: 0;position: relative;" detail="false">
                     <h1 #itemsrefBoton class="accordion " style="font-weight: 600;font-size: 18px;white-space: nowrap;text-overflow: ellipsis;max-width: 254px;overflow: hidden;display: inline-block; ">
@@ -33,7 +28,7 @@
                     <!--</div>-->
                 </ion-item>
                 <div class="panel " #itemsref [id]="i" status="close">
-                    <ion-grid style="background-color: white;border-radius: 4px; max-width: 350px;margin-left: 0; ">
+                    <ion-grid style="background-color: white;border-radius: 4px;margin-left: 0; ">
 
                         <ion-row style="text-align: center; ">
                             <ion-col size="4 ">
@@ -96,6 +91,54 @@
                     </ion-grid>
                 </div>
             </div>
+            
+            <ion-card-subtitle style="text-align: center;font-size: 17px; --color: #000;margin-top: 8px;margin-bottom: 23px;">
+                Globales {{mesActual}}
+            </ion-card-subtitle>
+            <canvas #barChartGlobales>
+
+            </canvas>
+            
+            <!--<div style="display: inline-block;padding-left: 13px;">
+                <ion-icon name="stop" style="color:#6228cf"></ion-icon>
+                <ion-label style="padding-left: 5px;">Asignado</ion-label>
+            </div>
+
+            <div style="padding-left: 13px;display: inline-block;">
+                <ion-icon name="stop" style="color:green"></ion-icon>
+                <ion-label style="padding-left: 5px;">Muy Bien</ion-label>
+            </div>
+
+            <div style="padding-left: 13px;display: inline-block;">
+                <ion-icon name="stop" style="color:#ffcc03"></ion-icon>
+                <ion-label style="padding-left: 5px;">Bien</ion-label>
+            </div>
+
+            <div style="padding-left: 13px;display: inline-block;">
+                <ion-icon name="stop" style="color:red"></ion-icon>
+                <ion-label style="padding-left: 5px;">Regular</ion-label>
+            </div>-->
+
+            <ion-chip outline="true" style="border-color: white;z-index: -1;">
+                <ion-icon name="stop" style="color:#6228cf"></ion-icon>
+                <ion-label>Asignado</ion-label>
+            </ion-chip>
+            <ion-chip outline="true" style="border-color: white;z-index: -1;">
+                <ion-icon name="stop" style="color:green"></ion-icon>
+                <ion-label>Muy Bien</ion-label>
+            </ion-chip>
+            <ion-chip outline="true" style="border-color: white;z-index: -1;">
+                <ion-icon name="stop" style="color:#ffcc03"></ion-icon>
+                <ion-label>Bien</ion-label>
+            </ion-chip>
+            <ion-chip outline="true" style="border-color: white;z-index: -1;">
+                <ion-icon name="stop" style="color:red"></ion-icon>
+                <ion-label>Regular</ion-label>
+            </ion-chip>
+            
+            <ion-item lines="none">
+                
+            </ion-item>
         </ion-card-content>
 
     </ion-card>

@@ -37,7 +37,7 @@ export class CircleProgressReportComponent implements OnInit {
   }
 
   progress(val) {
-    console.log(val);
+    //console.log(val);
     if (isNaN(val)) {
         val = 100; 
     } else {

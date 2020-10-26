@@ -59,6 +59,7 @@ export class GraphicsComponent implements OnInit {
     let ctx = elemento.nativeElement;
     ctx.height = 300;
     this.generateColorArray(12);
+    
     this.bars = new Chart(ctx, {
       type: 'horizontalBar',
       data: {
