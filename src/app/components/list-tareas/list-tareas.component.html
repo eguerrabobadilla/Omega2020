@@ -7,23 +7,32 @@
         <ion-card-content>{{ item.descripcion }}</ion-card-content>
     </ion-card>
 </ion-virtual-scroll>-->
-<ion-list style="width: 100%;">
-  <ion-card style="text-align: initial;" class="ion-activatable ripple-parent" mode="ios" *ngFor="let item of LstTareas" (click)="openDetail($event,item)">
-      <ion-ripple-effect></ion-ripple-effect>
-      <ion-card-header>
-          <ion-card-title style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{ item.Titulo }}</ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
-          {{ item.Descripcion }}
-          <br><br>
-          <b>Grupo:</b> <span *ngIf="item.GrupoIngles=='SI'"> Level</span> {{ item.Grado }}{{ item.Grupo }} {{ item.Escolaridad }}
-          <br>
-          <b>Materia:</b> {{ item.Materia.Nombre }}
-      </ion-card-content>
-      <ion-item  class="ion-no-border" lines="none">
-          <ion-label>{{item.FechaPublicacion | date:'mediumDate'}}</ion-label>
-          <ion-button *ngIf="permisoEditar()" style="transform: translateX(12px);" fill="outline" slot="end" (click)="eliminar($event,item)">Borrar</ion-button>
-          <ion-button *ngIf="permisoEditar()" fill="outline" slot="end" (click)="editaTarea($event,item)">Editar</ion-button>
-      </ion-item>
-  </ion-card>
+<ion-list>
+    <ion-virtual-scroll [items]="LstTareas" approxItemHeight="320px" style="margin-bottom: 100px;z-index: 999999;">
+        <ion-card style="text-align: initial;max-height: 320px;" class="ion-activatable ripple-parent" mode="ios" *virtualItem="let item" (click)="openDetail($event,item)">
+            <ion-ripple-effect></ion-ripple-effect>
+            <ion-card-header>
+                <ion-card-title style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{ item.Titulo }}</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+                {{ item.Descripcion }}
+                <br><br>
+                <b>Grupo:</b> <span *ngIf="item.GrupoIngles=='SI'"> Level</span> {{ item.Grado }}{{ item.Grupo }} {{ item.Escolaridad }}
+                <br>
+                <b>Materia:</b> {{ item.Materia.Nombre }}
+            </ion-card-content>
+            <ion-item class="ion-no-border" lines="none">
+                <ion-label>{{item.FechaPublicacion | date:'mediumDate'}}</ion-label>
+                <ion-button *ngIf="permisoEditar()" style="transform: translateX(12px);" fill="outline" slot="end" (click)="eliminar($event,item)">Borrar</ion-button>
+                <ion-button *ngIf="permisoEditar()" fill="outline" slot="end" (click)="editaTarea($event,item)">Editar</ion-button>
+            </ion-item>
+            <ion-item ng-if="$last" lines="none" style="margin-bottom: -35px;"></ion-item>
+        </ion-card>
+    </ion-virtual-scroll>
+
 </ion-list>
+
+<ion-infinite-scroll threshold="400px" (ionInfinite)="loadData($event)" style="transform: translateY(-51%);">
+    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Cargando mas usuarios...">
+    </ion-infinite-scroll-content>
+</ion-infinite-scroll>

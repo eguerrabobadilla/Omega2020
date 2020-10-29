@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { AlertController, LoadingController, ModalController } from '@ionic/angular';
+import { Component, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
+import { AlertController, LoadingController, ModalController, IonInfiniteScroll, IonVirtualScroll } from '@ionic/angular';
 import { TareasService } from 'src/app/api/tareas.service';
 import { DetallePage } from 'src/app/detalle/detalle.page';
 import { NuevoRecursoPage } from 'src/app/nuevo-recurso/nuevo-recurso.page';
+import { HomePage } from '../../home/home.page';
+
 
 @Component({
   selector: 'app-list-tareas',
@@ -13,15 +15,23 @@ export class ListTareasComponent implements OnInit {
   LstTareas: any[] = [];
   materiaId: any;
   loading: any;
+  contadorInfinieScroll: number = 0;
+  @Output() updateAutoHeightSlider = new EventEmitter();
+  @ViewChild(IonInfiniteScroll,{static: false}) infiniteScroll: IonInfiniteScroll;
+  @ViewChild(IonVirtualScroll,{static: false}) virtualScroll: IonVirtualScroll;
 
 
-  constructor(private apiTareas: TareasService, private modalCrl: ModalController,private loadingController: LoadingController, private alertController: AlertController) { }
+  constructor(private apiTareas: TareasService, private modalCrl: ModalController, private loadingController: LoadingController, private alertController: AlertController) { 
+  }
 
   ngOnInit() {
     //this.cargar(0);
-    this.apiTareas.get().subscribe(data =>{
+     this.apiTareas.getInfinite(this.contadorInfinieScroll,10).subscribe(data => {
       this.LstTareas = data;
+      this.contadorInfinieScroll +=10;
+      this.updateAutoHeightSlider.emit();
     });
+    
   }
 
    public async cargar(materiaId) {
@@ -29,14 +39,14 @@ export class ListTareasComponent implements OnInit {
     this.materiaId = materiaId;
   
     await this.cargandoAnimation('Cargando...');
-    if(materiaId==0){
-      this.apiTareas.get().subscribe(data =>{
+    if (materiaId == 0){
+      this.apiTareas.get().subscribe(data => {
         this.LstTareas = data;
         this.loadingController.dismiss();
       });
     }
     else{
-      this.apiTareas.getTareasMaterias(materiaId).subscribe(data =>{
+      this.apiTareas.getTareasMaterias(materiaId).subscribe(data => {
         this.LstTareas = data;
         this.loadingController.dismiss();
       });
@@ -54,7 +64,7 @@ export class ListTareasComponent implements OnInit {
     return await modal.present();
   }
 
-  public async editaTarea(event,item){
+  public async editaTarea(event, item){
     event.stopPropagation();
     
     const modal = await this.modalCrl.create({
@@ -71,7 +81,7 @@ export class ListTareasComponent implements OnInit {
 
     modal.onDidDismiss().then( async (data) => {
 
-        if(data.data.banderaEdito==true)
+        if (data.data.banderaEdito == true)
         {
             await this.cargandoAnimation('Cargando...');
             this.LstTareas = await this.apiTareas.get().toPromise();
@@ -83,19 +93,19 @@ export class ListTareasComponent implements OnInit {
   
   public permisoEditar() {
     const jwt_temp = localStorage.getItem('USER_INFO_TEMP');
-    if(jwt_temp != null)
+    if (jwt_temp != null)
     {
         return false;
     }
     
-    if(this.getKeyToken('tipo')=='Profesor')
+    if (this.getKeyToken('tipo') == 'Profesor')
       return true;
     else
       return false;
   }
 
   //Eliminar tarea
-  public async eliminar(event,item) {
+  public async eliminar(event, item) {
     event.stopPropagation();
     console.log(item);
 
@@ -154,5 +164,54 @@ export class ListTareasComponent implements OnInit {
     return value;
   }
 
+  
+  loadData(event) {
+   /* this.apiTareas.getUsuarios(this.textoBuscar, this.contadorInfinieScroll, 5).subscribe(data => {
+ 
+      if (data.length != 0) {
+        for (let i = 0; i < data.length; i++) {
+          this.LstUsuario.push(data[i]);
+        }
 
-}
+        event.target.complete();
+        this.virtualScroll.checkEnd();
+
+        this.contadorInfinieScroll += 5;
+      }
+      else {
+        console.log("fin scroll");
+        event.target.disabled = true;
+      }
+    });*/
+
+
+    this.apiTareas.getInfinite(this.contadorInfinieScroll, 10).subscribe(data => {
+        console.log("getInfinite")
+        console.log(data);
+        if (data.length != 0) {
+          for (let i = 0; i < data.length; i++) {
+            console.log("dentro")
+            this.LstTareas.push(data[i]);
+          }
+
+          event.target.complete();
+          this.contadorInfinieScroll +=10;
+          setTimeout(() => {
+            this.updateAutoHeightSlider.emit();
+          }, 300);
+          this.virtualScroll.checkEnd();
+        }
+        else {
+          console.log("fin scroll");
+          event.target.disabled = true;
+          this.updateAutoHeightSlider.emit();
+        }
+
+      });
+      
+    }
+
+  }
+
+
+

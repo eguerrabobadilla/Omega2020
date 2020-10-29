@@ -215,7 +215,7 @@ top: 0;" mode="ios">
 
         <ion-slides #slideDown [options]="slideOptsdos" (ionSlideTouchEnd)="ionSlideTouchEnd(slideUp,slideDown)" *ngIf="selectSeccion == 2" style="min-height: 72.6vh;">
             <ion-slide>
-                <app-list-tareas #tareasComponent style="width: 100%;"></app-list-tareas>
+                <app-list-tareas #tareasComponent (updateAutoHeightSlider)="updateAutoHeightSlider()" style="width: 100%;"></app-list-tareas>
             </ion-slide>
             <ion-slide>
                 <app-forum #forumComponent style="width: 100%;"></app-forum>
