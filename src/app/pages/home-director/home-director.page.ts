@@ -599,15 +599,21 @@ export class HomeDirectorPage {
 
     }
     async ionSlideTouchEndSlide() {
-      console.log("ionSlideTouchEndSlide");
+      //console.log("ionSlideTouchEndSlide");
       let index = await this.slideUp.getActiveIndex();
       console.log("index primero",index);
       // Por mientras
-      index = index === 1 ? 2 : index;
-      index = index === 0 ? 1 : index;
-      //console.log("index",index);
+      //index = index === 3 ? 2 : index;
+      //index = index === 0 ? 1 : index;
+      
+      if(index==0) index=1;
+      else if(index==1) index=2;
+      else if(index==2) index=3;
+
+      console.log("index",index);
 
       this.header = this.headersText[index - 1];
+      console.log(this.header);
       this.nombreIcono = this.iconos[index - 1];
 
 
@@ -624,6 +630,8 @@ export class HomeDirectorPage {
         }, 100);
 
         this.tabs = ['Alumnos', 'Docentes', 'Buscar'];
+     } else if (index === 3) {
+        this.tabs = ['Noticias', 'Mensajes'];
      }
 
       this.selectOption = '0';
@@ -632,6 +640,12 @@ export class HomeDirectorPage {
 
 
       this.selectSeccion = index;
+
+      if (index === 3) {
+        this.fabVisible = false; /*this.pillMenu.visibleFab(false);*/ 
+        this.renderer.setStyle(this.fabend.nativeElement,'display','block');
+        this.renderer.setStyle(this.fabstart.nativeElement,'display','none');
+      } 
 
       return;
       if (index === 1) {
@@ -684,7 +698,7 @@ export class HomeDirectorPage {
   }
 
     ionSlideTransitionStart() {
-      console.log("ionSlideTransitionStart");
+      //console.log("ionSlideTransitionStart");
       setTimeout(() => {
         this.numeroclicks=1;
         this.pillMenu.nextSegment('0');
@@ -702,7 +716,7 @@ export class HomeDirectorPage {
     }
 
     updateAutoHeightSlider(){
-      console.log("updateAutoHeightSlider");
+      //console.log("updateAutoHeightSlider");
       this.slideDown.updateAutoHeight();
     }
 
@@ -733,7 +747,7 @@ export class HomeDirectorPage {
       //this.LstTareas = await this.apiTareas.get().toPromise();
       
       this.iconos = ['book-outline','search-outline'];
-      this.headersText = ['Books', 'Users'];
+      this.headersText = ['Books', 'Users','Community'];
       this.tabs = ['Todos', 'Inglés', 'Español'];
 
 
@@ -870,6 +884,8 @@ export class HomeDirectorPage {
       //console.log(this.selectSeccion);
      // console.log(itemOption);
       //Logica boton + evidencias
+
+      
       if(this.selectSeccion==2) {
         if(this.getKeyToken('tipo')=='Alumno' && itemOption=="Evidencias") {
           this.renderer.setStyle(this.fabend.nativeElement,'display','block');
@@ -927,6 +943,45 @@ export class HomeDirectorPage {
       });
 
       await alert.present();
+    }
+
+    async nuevoRecurso(itemOption) {
+      
+      itemOption = this.pillMenu.itemsMenu[this.pillMenu.indexAnterior];
+
+     if (itemOption === 'Mensajes') {
+        const modal = await this.modalCrl.create({
+          component: CrearChatPage,
+          // cssClass: 'my-custom-modal-css',
+          cssClass: 'my-custom-modal-css-capturas',
+          showBackdrop: false,
+          mode: 'ios',
+          backdropDismiss: true
+        });
+
+        await modal.present();
+
+        modal.onDidDismiss().then( async (data) => {
+          // this.forumComponent.cargar();
+        });
+
+      } else if (itemOption === 'Noticias') {
+        const modal = await this.modalCrl.create({
+          component: CrearNewsPage,
+          // cssClass: 'my-custom-modal-css',
+          cssClass: 'my-custom-modal-css-capturas',
+          showBackdrop: false,
+          mode: 'ios',
+          backdropDismiss: true
+        });
+
+        await modal.present();
+
+        modal.onDidDismiss().then( async (data) => {
+          this.newsComponent.cargar();
+        });
+
+      }
     }
 
     getKeyToken(key: string): string {
@@ -1006,7 +1061,7 @@ export class HomeDirectorPage {
       if (this.platform.width() >= 1250 && this.platform.width() <= 1299 ) {numberMover = 21; }	
       if (this.platform.width() >= 1300 && this.platform.width() <= 1349 ) {numberMover = 22; }	
       if (this.platform.width() >= 1350  ) {numberMover = 23; }	
-      console.log(numberMover);	
+      //console.log(numberMover);	
       return numberMover;	
   }	
   public test(){	
@@ -1212,7 +1267,7 @@ export class HomeDirectorPage {
     
     /************************ Inicia logica alumnos***************************/
     public verEscolaridades() {
-      console.log("verEscolaridades");
+      //console.log("verEscolaridades");
       
       let gruposComponent;
       let escolaridadComponent = this.createComponent(EscolaridadComponent);
@@ -1258,7 +1313,7 @@ export class HomeDirectorPage {
     /************************ Termina logica alumnos***************************/
     /************************ Inicia logica alumnos***************************/
     public verEscolaridadesDocente() {
-      console.log("verEscolaridadesDocentes");
+      //console.log("verEscolaridadesDocentes");
       
       let gruposComponent;
       let escolaridadDocenteComponent = this.createComponentDocente(EscolaridadDocentesComponent);

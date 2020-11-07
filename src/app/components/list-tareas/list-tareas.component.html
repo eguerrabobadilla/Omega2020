@@ -13,7 +13,7 @@
       <ion-card-header>
           <ion-card-title style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{ item.Titulo }}</ion-card-title>
       </ion-card-header>
-      <ion-card-content>
+      <ion-card-content style="white-space: pre-line;">
           {{ item.Descripcion }}
           <br><br>
           <b>Grupo:</b> <span *ngIf="item.GrupoIngles=='SI'"> Level</span> {{ item.Grado }}{{ item.Grupo }} {{ item.Escolaridad }}

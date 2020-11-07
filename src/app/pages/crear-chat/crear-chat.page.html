@@ -1,11 +1,11 @@
 <ion-header style="
 background-color: #ffffff00;">
     <ion-toolbar>
-        <ion-title slot="start" style="text-align: initial;padding-left: 20px;font-size: 25px;">Usuarios</ion-title>
+        <ion-title slot="start" style="text-align: initial;padding-left: 20px;font-size: 25px;">{{Busqueda}}</ion-title>
         <ion-searchbar showCancelButton="focus" #search [(ngModel)]="SearText" style="transform: translateX(84%);
-        --background: white;padding-top: 10px; --color: white;" (ionFocus)="focused()" (ionBlur)=blur()></ion-searchbar>
+        --background: white;padding-top: 10px; --color: white;display: none;" (ionFocus)="focused()" (ionBlur)="blur()" (ionClear)="ionClear()" (ionChange)="ionChange($event)"></ion-searchbar>
         <ion-button slot="end" style="margin-top: 2px;margin-right: 0px;--background: white;--background-activated: white;width: 10px;margin-right: 29px;" (click)="closeModal()">
-            <ion-icon style="position: absolute;" slot="icon-only" color="danger" name="close"></ion-icon>
+        <ion-icon style="position: absolute;" slot="icon-only" color="danger" name="close"></ion-icon>
             <!--<ion-icon slot="icon-only" ios="ellips
         is-vertical" md="ellipsis-vertical"></ion-icon>-->
         </ion-button>
@@ -13,57 +13,60 @@ background-color: #ffffff00;">
 
 </ion-header>
 
+<!--<ion-content fullscreen>-->
 <ion-content fullscreen>
-    <ion-list *ngIf="permisoEditar()">
-        <ion-list-header>
-            Grupos
-        </ion-list-header>
+    <div *ngIf="getTipoUsuario()=='Director'; then izquierdaTemplate else derechaTemplate"></div>
+    <ng-template #derechaTemplate>
+        <ion-list *ngIf="permisoEditar()">
+            <ion-list-header>
+                Grupos
+            </ion-list-header>
 
+            <ion-item lines="none"  button detail="true" *ngFor="let itemGrupo of LstGrupos"  (click)="addGroup(itemGrupo)">
+                <ion-avatar slot="start">
+                    <!--<span style="
+                            position: absolute;
+                            padding-top: 2%;
+                            color: white;
+                            font-weight: 600;
+                            padding-left: 3.3%;">L</span>-->
+                    <img src="assets/img/groups.png">
+                </ion-avatar>
+                <ion-label>
+                    <h2>Grupo {{itemGrupo.Grado}}{{itemGrupo.Grupo}}</h2>
+                    <p>{{itemGrupo.Escolaridad}} <span *ngIf="itemGrupo.GrupoIngles=='SI'">Ingles</span></p>
+                </ion-label>
+                <!--<ion-checkbox color="danger" checked="false" slot="end" style="--size: 21px;" (click)="addGroup(itemGrupo)"></ion-checkbox>-->
 
-        <ion-item lines="none"  button detail="true" *ngFor="let itemGrupo of LstGrupos"  (click)="addGroup(itemGrupo)">
-            <ion-avatar slot="start">
-                <!--<span style="
-                        position: absolute;
-                        padding-top: 2%;
-                        color: white;
-                        font-weight: 600;
-                        padding-left: 3.3%;">L</span>-->
-                <img src="assets/img/groups.png">
-            </ion-avatar>
-            <ion-label>
-                <h2>Grupo {{itemGrupo.Grado}}{{itemGrupo.Grupo}}</h2>
-                <p>{{itemGrupo.Escolaridad}}</p>
-            </ion-label>
-            <!--<ion-checkbox color="danger" checked="false" slot="end" style="--size: 21px;" (click)="addGroup(itemGrupo)"></ion-checkbox>-->
+            </ion-item>
+        </ion-list>
 
-        </ion-item>
-    </ion-list>
+        <ion-list>
+            <ion-list-header *ngIf="permisoEditar()">
+                Todos los alumnos
+            </ion-list-header>
+            <ion-list-header *ngIf="!permisoEditar()">
+                Todos los profesores
+            </ion-list-header>
 
-    <ion-list>
-        <ion-list-header *ngIf="permisoEditar()">
-            Todos los alumnos
-        </ion-list-header>
-        <ion-list-header *ngIf="!permisoEditar()">
-            Todos los profesores
-        </ion-list-header>
-
-        <ion-item lines="none" button detail="true" *ngFor="let itemUsuario of LstUsuarios  | filterChat:  SearText : 'UsuarioId2Navigation.Nombre' "  (click)="addContact(itemUsuario)">
-            <ion-avatar slot="start">
-                <!--<span style="
-                        position: absolute;
-                        padding-top: 2%;
-                        color: white;
-                        font-weight: 600;
-                        padding-left: 3.3%;">E</span>-->
-                <img src="assets/img/unnamed.png">
-                <!-- <img src="./avatar-finn.png">-->
-            </ion-avatar>
-            <ion-label>
-                <h2>{{ itemUsuario.UsuarioId2Navigation.Nombre }} {{ itemUsuario.UsuarioId2Navigation.ApellidoPaterno }} {{ itemUsuario.UsuarioId2Navigation.ApellidoMaterno }}</h2>
-                <p>{{ itemUsuario.UsuarioId2Navigation.Grado }}{{ itemUsuario.UsuarioId2Navigation.Grupo }} {{ itemUsuario.UsuarioId2Navigation.Escolaridad }}   </p>
-            </ion-label>
-            <!--<ion-checkbox color="danger" checked="false" slot="end" style="--size: 21px;" (click)="addContact(itemUsuario)"></ion-checkbox>-->
-        </ion-item>
+            <ion-item lines="none" button detail="true" *ngFor="let itemUsuario of LstUsuarios  | filterChat:  SearText : 'UsuarioId2Navigation.Nombre' "  (click)="addContact(itemUsuario)">
+                <ion-avatar slot="start">
+                    <!--<span style="
+                            position: absolute;
+                            padding-top: 2%;
+                            color: white;
+                            font-weight: 600;
+                            padding-left: 3.3%;">E</span>-->
+                    <img src="assets/img/unnamed.png">
+                    <!-- <img src="./avatar-finn.png">-->
+                </ion-avatar>
+                <ion-label>
+                    <h2>{{ itemUsuario.UsuarioId2Navigation.Nombre }} {{ itemUsuario.UsuarioId2Navigation.ApellidoPaterno }} {{ itemUsuario.UsuarioId2Navigation.ApellidoMaterno }}</h2>
+                    <p>{{ itemUsuario.UsuarioId2Navigation.Grado }}{{ itemUsuario.UsuarioId2Navigation.Grupo }} {{ itemUsuario.UsuarioId2Navigation.Escolaridad }}   </p>
+                </ion-label>
+                <!--<ion-checkbox color="danger" checked="false" slot="end" style="--size: 21px;" (click)="addContact(itemUsuario)"></ion-checkbox>-->
+            </ion-item>
+    
 
         <!--<ion-item lines="none">
             <ion-avatar slot="start" style="background-color: blueviolet;">
@@ -112,9 +115,66 @@ background-color: #ffffff00;">
             </ion-label>
             <ion-checkbox color="danger" checked="false" slot="end" style="--size: 21px;"></ion-checkbox>
         </ion-item>-->
-    </ion-list>
+        </ion-list>
+    </ng-template>
+    <ng-template #izquierdaTemplate>
+        <ion-item button lines="none" detail="false" (click)="abrirGrupos()">
+                <h3 #botonGrupos class="accordion">Grupos</h3>
+        </ion-item>
+        <ion-spinner #spinnerGrupos style="width: 100%;display: none;"></ion-spinner>
+        <ion-list #panelGrupos status="close" *ngIf="showGroups==true" style="max-height: 0;display: none;">
+            <ion-item lines="none"  button detail="true" *ngFor="let itemGrupo of LstGrupos"  (click)="addGroup(itemGrupo)">
+                <ion-avatar slot="start">
+                    <img src="assets/img/groups.png">
+                </ion-avatar>
+                <ion-label>
+                    <h2>Grupo {{itemGrupo.Grado}}{{itemGrupo.Grupo}}</h2>
+                    <p>{{itemGrupo.Escolaridad}} <span *ngIf="itemGrupo.GrupoIngles=='SI'">Ingles</span></p>
+                </ion-label>
+                <!--<ion-checkbox color="danger" checked="false" slot="end" style="--size: 21px;" (click)="addGroup(itemGrupo)"></ion-checkbox>-->
 
+            </ion-item>
+        </ion-list>
+        <!-- Profesores -->
+        <ion-item button lines="none" detail="false" (click)="abrirProfesores()">
+            <h3 #botonProfesores class="accordion">Docentes</h3>
+        </ion-item>
+        <ion-spinner #spinnerProfesores style="width: 100%;display: none;"></ion-spinner>
+        <ion-list #panelProfesores status="close" *ngIf="showTeachers==true" style="max-height: 0;display: none;">
+            <ion-item  status="close" lines="none" button detail="true" *ngFor="let itemUsuario of LstDocentesDirector"  (click)="addContact(itemUsuario)">
+                <ion-avatar slot="start">
+                    <img src="assets/img/unnamed.png">
+                </ion-avatar>
+                <ion-label>
+                    <h2>{{ itemUsuario.UsuarioId2Navigation.Nombre }} {{ itemUsuario.UsuarioId2Navigation.ApellidoPaterno }} {{ itemUsuario.UsuarioId2Navigation.ApellidoMaterno }}</h2>
+                    <p>{{ itemUsuario.UsuarioId2Navigation.Grado }}{{ itemUsuario.UsuarioId2Navigation.Grupo }} {{ itemUsuario.UsuarioId2Navigation.Escolaridad }}   </p>
+                </ion-label>
+            </ion-item>
+        </ion-list>
 
+        <!-- Alumnos -->
+        <ion-item button lines="none" detail="false" (click)="abrirAlumnos()">
+            <h3 #botonAlumnos class="accordion">Alumnos</h3>
+        </ion-item>
+        <ion-spinner #spinnerAlumnos style="width: 100%;display: none;"></ion-spinner>
+        <ion-list #panelAlumnos status="close" *ngIf="showStudents==true" style="max-height: 0;display: none;">
+            <ion-item  status="close" lines="none" button detail="true" *ngFor="let itemUsuario of LstDocentesAlumnos"  (click)="addContact(itemUsuario)">
+                <ion-avatar slot="start">
+                    <img src="assets/img/unnamed.png">
+                </ion-avatar>
+                <ion-label>
+                    <h2>{{ itemUsuario.UsuarioId2Navigation.Nombre }} {{ itemUsuario.UsuarioId2Navigation.ApellidoPaterno }} {{ itemUsuario.UsuarioId2Navigation.ApellidoMaterno }}</h2>
+                    <p>{{ itemUsuario.UsuarioId2Navigation.Grado }}{{ itemUsuario.UsuarioId2Navigation.Grupo }} {{ itemUsuario.UsuarioId2Navigation.Escolaridad }}   </p>
+                </ion-label>
+            </ion-item>
+        </ion-list>
+        <ion-infinite-scroll threshold="200px" (ionInfinite)="loadData($event)" style="transform: translateY(-20%);">
+            <ion-infinite-scroll-content
+              loadingSpinner="bubbles"
+              loadingText="Cargando mas usuarios...">
+            </ion-infinite-scroll-content>
+          </ion-infinite-scroll>
+    </ng-template>
 
     <!--<ion-fab horizontal="center" (click)="enpezarChat()" vertical="bottom" slot="fixed">
         <ion-fab-button size="small" color="danger">

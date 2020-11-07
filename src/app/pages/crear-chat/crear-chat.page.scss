@@ -3,3 +3,40 @@
     --cancel-button-color: #262626 !important;
     --color: #000 !important
 }
+
+.accordion {
+    /*background-color: #eee;
+    color: #444;
+    padding: 18px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 15px;*/
+    cursor: pointer;
+    transition: 0.4s;
+  }
+  
+  .active, .accordion:hover {
+    //background-color: #ccc;
+  }
+  
+  .accordion:after {
+    content: '\002B';
+    color: #777;
+    font-weight: bold;
+    position: absolute;
+    right: 17px;
+    //float: right;
+    margin-left: 5px;
+  }
+
+  .active:after {
+    content: "\2212";
+  }
+
+  .ripple-parent {
+    position: relative;
+    overflow: hidden;
+  }
+  

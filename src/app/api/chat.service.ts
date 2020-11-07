@@ -35,6 +35,14 @@ export class ChatService extends apiBase {
     return this.http.get<any[]>(`${this.url}/api/conversaciones/grupos`);
   }
 
+  getMaestrosDirector(text,skip,take){
+    return this.http.get<any[]>(`${this.url}/api/conversaciones/docentes/director/?skip=${skip}&take=${take}&text=${text}`);
+  }
+
+  getAlumnosDirector(text,skip,take){
+    return this.http.get<any[]>(`${this.url}/api/conversaciones/alumnos/director/?skip=${skip}&take=${take}&text=${text}`);
+  }
+
   getGruposMaestrosChat(){
     return this.http.get<any[]>(`${this.url}/api/conversaciones/grupos/chat`);
   }

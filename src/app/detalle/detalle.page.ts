@@ -353,40 +353,54 @@ export class DetallePage implements OnInit {
   }
 
   async guardar(){
-    console.log(this.LstFiles);
+    try {
+      console.log(this.LstFiles);
     
-    this.submitAttempt = true;
+      this.submitAttempt = true;
+  
+      const loading = await this.loadingController.create({
+        message: 'Guardando...'
+      });
+  
+      await loading.present();
+  
+      this.LstFiles.forEach(element => element.Descripcion=this.comentario);
+  
+      //if(this.item.Id == 0)
+        await this.apiEvidencias.save(this.item.Id,this.LstFiles).toPromise();
+      /*else
+        await this.apiRecursos.update(payload).toPromise();*/
+  
+      //this.banderaEdito=true;
+      this.submitAttempt = false;
+  
+      this.loadingController.dismiss();
+  
+      const alertTerminado = await this.alertCtrl.create({
+        header: this.mensaje=='Enviar' ? 'Evidencia enviada con éxito' : 'Evidencia editada con éxito' ,
+        backdropDismiss: false,
+        message: this.mensaje=='Enviar' ? 'Se envío la evidencia ' + this.item.Titulo : 'Se edito la evidencia ' + this.item.Titulo,
+        buttons: [
+          {
+             text: 'Aceptar', handler: () =>  this.modalCtrl.dismiss()
+          }
+        ]
+      });
+  
+      await alertTerminado.present();
+    }
+    catch(err) {
+      this.loadingController.dismiss();
 
-    const loading = await this.loadingController.create({
-      message: 'Guardando...'
-    });
-
-    await loading.present();
-
-    this.LstFiles.forEach(element => element.Descripcion=this.comentario);
-
-    //if(this.item.Id == 0)
-      await this.apiEvidencias.save(this.item.Id,this.LstFiles).toPromise();
-    /*else
-      await this.apiRecursos.update(payload).toPromise();*/
-
-    //this.banderaEdito=true;
-    this.submitAttempt = false;
-
-    this.loadingController.dismiss();
-
-    const alertTerminado = await this.alertCtrl.create({
-      header: this.mensaje=='Enviar' ? 'Evidencia enviada con éxito' : 'Evidencia editada con éxito' ,
-      backdropDismiss: false,
-      message: this.mensaje=='Enviar' ? 'Se envío la evidencia ' + this.item.Titulo : 'Se edito la evidencia ' + this.item.Titulo,
-      buttons: [
-        {
-           text: 'Aceptar', handler: () =>  this.modalCtrl.dismiss()
-        }
-      ]
-    });
-
-    await alertTerminado.present();
+      const alert = await this.alertCtrl.create({
+        header: 'LBS Plus',
+        //subHeader: 'Subtitle',
+        message: "Error con la conexión hacia el servidor, inténtelo de nuevo",
+        buttons: ['Aceptar']
+      });
+  
+      await alert.present();
+    }
   }
 
   removeAttach(event,item){
@@ -417,6 +431,7 @@ export class DetallePage implements OnInit {
       /*console.log($event.target.files[0].name);
       console.log($event.target.files[0].type);*/ 
 
+
       //No te permite subir dos archivos con el mismo nombre
       let fileD = this.LstFiles.filter(l => l.Name == $event.target.files[0].name);
       if(fileD.length > 0) return;
@@ -427,6 +442,11 @@ export class DetallePage implements OnInit {
       if(re.test($event.target.files[0].type)==true) {
         this.presentToast("No se permite subir este tipo de archivo");
         //this.texto_adjuntar_portada = 'Foto de Portada';
+        return;
+      }
+
+      if($event.target.files[0].size > 20000000) {
+        this.presentToast("No está permitido subir archivos mayores a 20mb");
         return;
       }
 
@@ -461,7 +481,7 @@ export class DetallePage implements OnInit {
     console.log("tomarFoto");
     
     const options: CameraOptions = {
-      quality: 100,
+      quality: 70,
       destinationType: this.camera.DestinationType.FILE_URI,
       encodingType: this.camera.EncodingType.JPEG,
       mediaType: this.camera.MediaType.PICTURE

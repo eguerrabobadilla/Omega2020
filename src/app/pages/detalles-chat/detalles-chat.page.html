@@ -21,7 +21,7 @@
                     </ion-avatar>
                     <ion-card-content slot="start" style="background-color: #e8e8e8;margin-left: 43px; margin-top: 4px;border-radius: 15px;margin-right: 53px;padding: 10px">
 
-                        <p>{{itemChat.Mensaje}}</p>
+                        <p style="white-space: pre-line;">{{itemChat.Mensaje}}</p>
                         <ion-label>
                             <p style="font-size: 11px;">{{ itemChat.FechaMensaje | date:'mediumDate' }} {{ itemChat.HoraMensaje }}</p>
                         </ion-label>
@@ -31,7 +31,7 @@
             <ng-template #derechaTemplate>
                 <ion-item lines="none">
                     <ion-card-content slot="end" style="background-color: #F4315D;margin-left: 66px; margin-top: 4px;border-radius: 15px;padding: 10px;color: white;">
-                        <p>{{itemChat.Mensaje}}</p>
+                        <p style="white-space: pre-line;">{{itemChat.Mensaje}}</p>
                         <ion-label>
                             <p style="font-size: 11px;">{{ itemChat.FechaMensaje | date:'mediumDate' }} {{ itemChat.HoraMensaje }}</p>
                         </ion-label>
