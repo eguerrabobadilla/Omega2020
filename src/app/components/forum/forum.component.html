@@ -1,17 +1,38 @@
-<ion-virtual-scroll [items]="LstForo" approxItemHeight="320px">
-    <ion-card style="text-align: initial;" class="ion-activatable ripple-parent" mode="ios" *virtualItem="let item; let itemBounds = bounds;" (click)="openDetail($event,item,item.Id)">
-        <ion-ripple-effect></ion-ripple-effect>
-        <ion-card-header>
+<ion-list>
+    <ion-virtual-scroll [items]="LstForo" approxItemHeight="320px" style="margin-bottom: 100px;z-index: 999999;">
+        <ion-card style="text-align: initial;" class="ion-activatable ripple-parent" mode="ios" *virtualItem="let item; let itemBounds = bounds;" (click)="openDetail($event,item,item.Id)">
+            <ion-ripple-effect></ion-ripple-effect>
+            <ion-card-header>
+                <ion-item lines="none">
+                    <ion-avatar slot="start" style="margin-left: -14px;height: 40px; width: 40px;">
+                        <img src="assets/img/groups.png">
+                    </ion-avatar>
+                    <ion-label>
+                        <h2 style="font-weight: 600;font-size: 20px;">{{item.Nombre}}</h2>
+                        <p>{{ item.Usario.Nombre }} {{ item.Usario.ApellidoPaterno }} {{ item.Usario.ApellidoMaterno }}
+                            <span>{{item.FechaPublicacion | date:'mediumDate'}}</span>
+                        </p>
+                    </ion-label>
+                </ion-item>
+            </ion-card-header>
+
+
+            <ion-card-content>
+                {{item.Descrpcion}}
+                <br><br>
+                <b>Grupo:</b> <span *ngIf="item.GrupoIngles=='SI'"> Level</span> {{ item.Grado }}{{ item.Grupo }} {{ item.Escolaridad }}
+                <br>
+                <b>Materia:</b> {{ item.Materia.Nombre }}
+            </ion-card-content>
+
             <ion-item lines="none">
-                <ion-avatar slot="start" style="margin-left: -14px;height: 40px; width: 40px;">
-                    <img src="assets/img/groups.png">
-                </ion-avatar>
+                <ion-icon style="font-size: 15px;color: #F4315D;" name="chatbubbles-outline"></ion-icon>
                 <ion-label>
-                    <h2 style="font-weight: 600;font-size: 20px;">{{item.Nombre}}</h2>
-                    <p>{{ item.Usario.Nombre }} {{ item.Usario.ApellidoPaterno }} {{ item.Usario.ApellidoMaterno }}
-                        <span>{{item.FechaPublicacion | date:'mediumDate'}}</span>
-                    </p>
+                    <p style="padding-left: 6px;"> {{item.NumRespuestas}} comentarios</p>
                 </ion-label>
+                <ion-button style="transform: translateX(12px);" *ngIf="permisoEditar() && item.Estado=='Abierto' " fill="outline" slot="end" (click)="estadoForo($event,item)">Cerrar foro</ion-button>
+                <ion-button style="transform: translateX(12px);" *ngIf="permisoEditar() && item.Estado=='Cerrado' " fill="outline" slot="end" (click)="estadoForo($event,item)">Abrir foro</ion-button>
+                <ion-button *ngIf="permisoEditar()" fill="outline" slot="end" (click)="edit($event,item)">Editar</ion-button>
             </ion-item>
         </ion-card-header>
 
@@ -24,15 +45,11 @@
             <b>Materia:</b> {{ item.Materia.Nombre }}
         </ion-card-content>
 
-        <ion-item lines="none">
-            <ion-icon style="font-size: 15px;color: #F4315D;" name="chatbubbles-outline"></ion-icon>
-            <ion-label>
-                <p style="padding-left: 6px;"> {{item.NumRespuestas}} comentarios</p>
-            </ion-label>
-            <ion-button style="transform: translateX(12px);" *ngIf="permisoEditar() && item.Estado=='Abierto' " fill="outline" slot="end" (click)="estadoForo($event,item)">Cerrar foro</ion-button>
-            <ion-button style="transform: translateX(12px);" *ngIf="permisoEditar() && item.Estado=='Cerrado' " fill="outline" slot="end" (click)="estadoForo($event,item)">Abrir foro</ion-button>
-            <ion-button *ngIf="permisoEditar()" fill="outline" slot="end" (click)="edit($event,item)">Editar</ion-button>
-        </ion-item>
+        </ion-card>
+    </ion-virtual-scroll>
+</ion-list>
 
-    </ion-card>
-</ion-virtual-scroll>
+<ion-infinite-scroll threshold="400px" (ionInfinite)="loadData($event)" style="transform: translateY(-51%);">
+    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Cargando mas usuarios...">
+    </ion-infinite-scroll-content>
+</ion-infinite-scroll>

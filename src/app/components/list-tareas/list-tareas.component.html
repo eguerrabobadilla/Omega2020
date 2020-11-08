@@ -8,19 +8,21 @@
     </ion-card>
 </ion-virtual-scroll>-->
 <ion-list>
-    <ion-virtual-scroll [items]="LstTareas" approxItemHeight="320px" style="margin-bottom: 100px;z-index: 999999;">
-        <ion-card style="text-align: initial;max-height: 320px;" class="ion-activatable ripple-parent" mode="ios" *virtualItem="let item" (click)="openDetail($event,item)">
+    <ion-virtual-scroll [items]="LstTareas" approxItemHeight="300px" style="margin-bottom: 100px;z-index: 999999;">
+        <ion-card style="text-align: initial;" class="ion-activatable ripple-parent" mode="ios" *virtualItem="let item" (click)="openDetail($event,item)">
             <ion-ripple-effect></ion-ripple-effect>
             <ion-card-header>
                 <ion-card-title style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{ item.Titulo }}</ion-card-title>
             </ion-card-header>
-            <ion-card-content style="white-space: pre-line;">
+            <ion-card-content style="white-space: pre-line;max-height: 200px;overflow: hidden;">
                 {{ item.Descripcion }}
-                <br><br>
+                <br>
+            </ion-card-content>
+            <div class="divCard" style="padding-top: 10px;">
                 <b>Grupo:</b> <span *ngIf="item.GrupoIngles=='SI'"> Level</span> {{ item.Grado }}{{ item.Grupo }} {{ item.Escolaridad }}
                 <br>
                 <b>Materia:</b> {{ item.Materia.Nombre }}
-            </ion-card-content>
+            </div>
             <ion-item class="ion-no-border" lines="none">
                 <ion-label>{{item.FechaPublicacion | date:'mediumDate'}}</ion-label>
                 <ion-button *ngIf="permisoEditar()" style="transform: translateX(12px);" fill="outline" slot="end" (click)="eliminar($event,item)">Borrar</ion-button>
@@ -31,7 +33,6 @@
     </ion-virtual-scroll>
 
 </ion-list>
-
 <ion-infinite-scroll threshold="400px" (ionInfinite)="loadData($event)" style="transform: translateY(-51%);">
     <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Cargando mas usuarios...">
     </ion-infinite-scroll-content>

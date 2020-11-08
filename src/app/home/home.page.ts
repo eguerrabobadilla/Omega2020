@@ -60,6 +60,7 @@ export class HomePage {
   now: number = Date.now();
   selectOption = '0';
   selectSeccion = 1;
+  pildora = 'Tareas';
   index = 1 ;
   libros: any[] = [];
   materias: any[] = [];
@@ -568,6 +569,10 @@ this.pillMenu.animacion();
 
   }
 
+  scrollToUp(){
+    this.IonContentScroll.scrollToPoint(0, 0, 0);
+  }
+
 
   // tslint:disable-next-line: use-lifecycle-interface
   ngAfterViewInit() {
@@ -918,6 +923,7 @@ this.pillMenu.animacion();
     segmentChanged(event) {
       const itemOption = this.pillMenu.itemsMenu[event.detail.value];
       console.log(itemOption);
+      this.pildora = itemOption;
       console.log(this.selectSeccion);
       if(itemOption == 'Estadísticas' && this.permisoEditar() === false){
 

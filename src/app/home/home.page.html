@@ -215,16 +215,16 @@ top: 0;" mode="ios">
 
         <ion-slides #slideDown [options]="slideOptsdos" (ionSlideTouchEnd)="ionSlideTouchEnd(slideUp,slideDown)" *ngIf="selectSeccion == 2" style="min-height: 72.6vh;">
             <ion-slide>
-                <app-list-tareas #tareasComponent (updateAutoHeightSlider)="updateAutoHeightSlider()" style="width: 100%;"></app-list-tareas>
+                <app-list-tareas *ngIf="pildora === 'Tareas'" #tareasComponent (updateAutoHeightSlider)="updateAutoHeightSlider()" style="width: 100%;"></app-list-tareas>
             </ion-slide>
             <ion-slide>
-                <app-forum #forumComponent style="width: 100%;"></app-forum>
+                <app-forum *ngIf="pildora === 'Foro'" #forumComponent (updateAutoHeightSlider)="updateAutoHeightSlider()" style="width: 100%;"></app-forum>
             </ion-slide>
             <ion-slide>
                 <app-list-resource #resourceComponent (changeIonChip)="changeIonChipRecursos($event)" style="width: 100%;"></app-list-resource>
             </ion-slide>
             <ion-slide *ngIf="!permisoEditar()">
-                <app-evidences #evidenceComponent style="width: 100%;"></app-evidences>
+                <app-evidences *ngIf="pildora === 'Evidencias'" #evidenceComponent (updateAutoHeightSlider)="updateAutoHeightSlider()" style="width: 100%;"></app-evidences>
             </ion-slide>
         </ion-slides>
 

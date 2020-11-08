@@ -1,27 +1,34 @@
-<ion-virtual-scroll [items]="LstEvidencias" approxItemHeight="320px">
-    <ion-card style="text-align: initial;" class="ion-activatable ripple-parent" mode="ios" *virtualItem="let item; let itemBounds = bounds;" (click)="openDetail()">
-        <!--<ion-ripple-effect></ion-ripple-effect>-->
-        <ion-card-header>
-            <ion-card-title>{{ item.Titulo }}</ion-card-title>
-        </ion-card-header>
-        <ion-card-content>
-            {{ item.Descripcion }}
-            <!--<ion-chip  *ngFor="let itemNested of item.Evidencias" outline color="dark" style="margin-top: 14px;" (click)="openFile(itemNested)">
+<ion-list>
+    <ion-virtual-scroll [items]="LstEvidencias" approxItemHeight="320px">
+        <ion-card style="text-align: initial;" class="ion-activatable ripple-parent" mode="ios" *virtualItem="let item; let itemBounds = bounds;" (click)="openDetail()">
+            <!--<ion-ripple-effect></ion-ripple-effect>-->
+            <ion-card-header>
+                <ion-card-title>{{ item.Titulo }}</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+                {{ item.Descripcion }}
+                <!--<ion-chip  *ngFor="let itemNested of item.Evidencias" outline color="dark" style="margin-top: 14px;" (click)="openFile(itemNested)">
                 <ion-icon name="attach-outline"></ion-icon>
                 <ion-label style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{itemNested.PathRecursoUser}}</ion-label>
             </ion-chip>-->
-            <ion-item detail="true" button class="ion-no-border" lines="none" *ngFor="let itemNested of item.Evidencias" (click)="openFile(itemNested)">
-                <ion-label>
-                    <p><ion-icon name="document-outline"></ion-icon> {{itemNested.PathRecursoUser}}</p>
-                </ion-label>
+                <ion-item detail="true" button class="ion-no-border" lines="none" *ngFor="let itemNested of item.Evidencias" (click)="openFile(itemNested)">
+                    <ion-label>
+                        <p>
+                            <ion-icon name="document-outline"></ion-icon> {{itemNested.PathRecursoUser}}</p>
+                    </ion-label>
+                </ion-item>
+                <br><br>
+                <b>Grupo:</b> <span *ngIf="item.GrupoIngles=='SI'"> Level</span> {{ item.Grado }}{{ item.Grupo }} {{ item.Escolaridad }}
+                <br>
+                <b>Materia:</b> {{ item.Materia.Nombre }}
+            </ion-card-content>
+            <ion-item class="ion-no-border" lines="none">
+                <ion-label>{{item.Evidencias[0].Fecha | date:'mediumDate'}}</ion-label>
             </ion-item>
-            <br><br>
-            <b>Grupo:</b> <span *ngIf="item.GrupoIngles=='SI'"> Level</span> {{ item.Grado }}{{ item.Grupo }} {{ item.Escolaridad }}
-            <br>
-            <b>Materia:</b> {{ item.Materia.Nombre }}
-        </ion-card-content>
-        <ion-item class="ion-no-border" lines="none" >
-            <ion-label>{{item.Evidencias[0].Fecha | date:'mediumDate'}}</ion-label>
-        </ion-item>
-    </ion-card>
-</ion-virtual-scroll>
+        </ion-card>
+    </ion-virtual-scroll>
+</ion-list>
+<ion-infinite-scroll threshold="400px" (ionInfinite)="loadData($event)" style="transform: translateY(-51%);">
+    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Cargando mas usuarios...">
+    </ion-infinite-scroll-content>
+</ion-infinite-scroll>
