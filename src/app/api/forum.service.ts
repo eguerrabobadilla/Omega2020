@@ -49,4 +49,8 @@ export class ForumService  extends apiBase {
   getForosMaterias(id): Observable<any[]> {
     return this.http.get<any[]>(`${this.url}/${this.WsForo}/materia/${id}`);
   }
+
+  getInfinite(skip,take): Observable<any[]> {
+    return this.http.get<any[]>(`${this.url}/${this.WsForo}/infinite/${skip}/${take}`);
+  }
 }

@@ -3,3 +3,72 @@ ion-button {
     --color: #F4315D;
     --background-activated: #F4315D;
 }
+
+.divCard {
+    padding-left: 20px;
+    --min-height: 44px;
+    --transition: background-color 200ms linear, opacity 200ms linear;
+    --padding-start: 20px;
+    --inner-padding-end: 10px;
+    --inner-border-width: 0px 0px 0.55px 0px;
+    --background: var(--ion-item-background, var(--ion-background-color, #fff));
+    --background-activated: #000;
+    --background-focused: #000;
+    --background-hover: currentColor;
+    --background-activated-opacity: 0.12;
+    --background-focused-opacity: 0.15;
+    --background-hover-opacity: 0.04;
+    --border-color: var(--ion-item-border-color, var(--ion-border-color, var(--ion-color-step-250, #c8c7cc)));
+    --color: var(--ion-item-color, var(--ion-text-color, #000));
+    --highlight-height: 0;
+    --highlight-color-focused: var(--ion-color-primary, #3880ff);
+    --highlight-color-valid: var(--ion-color-success, #2dd36f);
+    --highlight-color-invalid: var(--ion-color-danger, #eb445a);
+    font-size: 17px;
+}
+
+.overflow {
+    --max-lines: 3;
+    position: relative;
+    max-height: calc(var(--lh) * var(--max-lines));
+    overflow: hidden;
+    padding-right: 1rem;
+    /* space for ellipsis */
+}
+
+.overflow::before {
+    position: absolute;
+    content: "...";
+    /*   inset-block-end: 0;
+    inset-inline-end: 0; */
+    bottom: 0;
+    right: 0;
+    font-weight: 700;
+}
+
+.overflow::after {
+    content: "";
+    position: absolute;
+    /*   inset-inline-end: 0; */
+    right: 0;
+    width: 1rem;
+    height: 1rem;
+    background: white;
+}
+
+.fade {
+    position: relative;
+    height: 3.6em;
+    /* exactly three lines */
+}
+
+.fade:after {
+    content: "";
+    text-align: right;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 70%;
+    height: 1.2em;
+    background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1) 50%);
+}

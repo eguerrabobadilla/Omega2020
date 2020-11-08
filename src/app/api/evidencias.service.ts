@@ -32,4 +32,8 @@ export class EvidenciasService  extends apiBase  {
   save(TareaId,item: any) {
     return this.http.post(`${this.url}/${this.Ws}/${TareaId}`, item);
   }
+
+  getInfinite(skip,take): Observable<any[]> {
+    return this.http.get<any[]>(`${this.url}/${this.Ws}/infinite/${skip}/${take}`);
+  }
 }

@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, ViewChild } from '@angular/core';
 
 import { ForumService } from '../../api/forum.service';
 import { DetallesForumPage } from '../../pages/detalles-forum/detalles-forum.page';
-import { AlertController, ModalController, LoadingController } from '@ionic/angular';
+import { AlertController, ModalController, LoadingController, IonInfiniteScroll, IonVirtualScroll } from '@ionic/angular';
 import { CrearForumPage } from 'src/app/pages/crear-forum/crear-forum.page';
 
 
@@ -17,6 +17,10 @@ export class ForumComponent implements OnInit {
   public LstForo: any[] = [];
   materiaId: any;
   estadoFoto:any;
+  contadorInfinieScroll: number = 0;
+  @ViewChild(IonInfiniteScroll,{static: false}) infiniteScroll: IonInfiniteScroll;
+  @ViewChild(IonVirtualScroll,{static: false}) virtualScroll: IonVirtualScroll;
+  @Output() updateAutoHeightSlider = new EventEmitter();
 
 
   constructor(private apiForum: ForumService, private modalCrl: ModalController,private alertController: AlertController,
@@ -25,7 +29,12 @@ export class ForumComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.cargar(0);
+   // this.cargar(0);
+   this.apiForum.getInfinite(this.contadorInfinieScroll,10).subscribe(data => {
+    this.LstForo = data;
+    this.contadorInfinieScroll +=10;
+    this.updateAutoHeightSlider.emit();
+  });
   }
 
   public cargar(materiaId) {
@@ -149,4 +158,50 @@ export class ForumComponent implements OnInit {
 
     alertTerminado.present();
   }
+
+  loadData(event) {
+    /* this.apiTareas.getUsuarios(this.textoBuscar, this.contadorInfinieScroll, 5).subscribe(data => {
+  
+       if (data.length != 0) {
+         for (let i = 0; i < data.length; i++) {
+           this.LstUsuario.push(data[i]);
+         }
+ 
+         event.target.complete();
+         this.virtualScroll.checkEnd();
+ 
+         this.contadorInfinieScroll += 5;
+       }
+       else {
+         console.log("fin scroll");
+         event.target.disabled = true;
+       }
+     });*/
+ 
+ 
+     this.apiForum.getInfinite(this.contadorInfinieScroll, 10).subscribe(data => {
+         console.log("getInfinite")
+         console.log(data);
+         if (data.length != 0) {
+           for (let i = 0; i < data.length; i++) {
+             console.log("dentro")
+             this.LstForo.push(data[i]);
+           }
+ 
+           event.target.complete();
+           this.contadorInfinieScroll +=10;
+           setTimeout(() => {
+             this.updateAutoHeightSlider.emit();
+           }, 300);
+           this.virtualScroll.checkEnd();
+         }
+         else {
+           console.log("fin scroll");
+           event.target.disabled = true;
+           this.updateAutoHeightSlider.emit();
+         }
+ 
+       });
+       
+     }
 }

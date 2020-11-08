@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { PickerController, Platform, LoadingController } from '@ionic/angular';
+import { Component, OnInit, Output, EventEmitter, ViewChild } from '@angular/core';
+import { PickerController, Platform, LoadingController, IonInfiniteScroll, IonVirtualScroll } from '@ionic/angular';
 import { RecursosService } from '../../api/recursos.service';
 import { File,FileEntry } from '@ionic-native/file/ngx';
 import { FileOpener } from '@ionic-native/file-opener/ngx';
@@ -18,6 +18,10 @@ export class EvidencesComponent implements OnInit {
   LstEvidencias: any[] = [];
   meses: string[];
   loading: any;
+  contadorInfinieScroll: number = 0;
+  @Output() updateAutoHeightSlider = new EventEmitter();
+  @ViewChild(IonInfiniteScroll,{static: false}) infiniteScroll: IonInfiniteScroll;
+  @ViewChild(IonVirtualScroll,{static: false}) virtualScroll: IonVirtualScroll;
 
   constructor(private pickerController: PickerController, private apiEvidencias: EvidenciasService, private transfer: FileTransfer,
     private file: File, private platform: Platform, private fileOpener: FileOpener, private api: apiBase,public loadingController: LoadingController) { }
@@ -25,7 +29,13 @@ export class EvidencesComponent implements OnInit {
   ngOnInit() {
     this.meses = ['Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre',
     'Enero', 'Febreo', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio'];
-    this.cargar();
+    //this.cargar();
+
+    this.apiEvidencias.getInfinite(this.contadorInfinieScroll,10).subscribe(data => {
+      this.LstEvidencias = data;
+      this.contadorInfinieScroll +=10;
+      this.updateAutoHeightSlider.emit();
+    });
   }
 
   openDetail(){
@@ -81,6 +91,52 @@ export class EvidencesComponent implements OnInit {
       this.loadingController.dismiss();
     });
   }
+
+  loadData(event) {
+    /* this.apiTareas.getUsuarios(this.textoBuscar, this.contadorInfinieScroll, 5).subscribe(data => {
+  
+       if (data.length != 0) {
+         for (let i = 0; i < data.length; i++) {
+           this.LstUsuario.push(data[i]);
+         }
+ 
+         event.target.complete();
+         this.virtualScroll.checkEnd();
+ 
+         this.contadorInfinieScroll += 5;
+       }
+       else {
+         console.log("fin scroll");
+         event.target.disabled = true;
+       }
+     });*/
+ 
+ 
+     this.apiEvidencias.getInfinite(this.contadorInfinieScroll, 10).subscribe(data => {
+         console.log("getInfinite")
+         console.log(data);
+         if (data.length != 0) {
+           for (let i = 0; i < data.length; i++) {
+             console.log("dentro")
+             this.LstEvidencias.push(data[i]);
+           }
+ 
+           event.target.complete();
+           this.contadorInfinieScroll +=10;
+           setTimeout(() => {
+             this.updateAutoHeightSlider.emit();
+           }, 300);
+           this.virtualScroll.checkEnd();
+         }
+         else {
+           console.log("fin scroll");
+           event.target.disabled = true;
+           this.updateAutoHeightSlider.emit();
+         }
+ 
+       });
+       
+     }
 
 
 }
