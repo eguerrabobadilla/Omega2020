@@ -26,6 +26,10 @@ export class TareasService  extends apiBase {
     return this.http.get<any[]>(`${this.url}/${this.Ws}`);
   }
 
+  getInfinite(skip,take): Observable<any[]> {
+    return this.http.get<any[]>(`${this.url}/${this.Ws}/infinite/${skip}/${take}`);
+  }
+
   getTareasMaterias(id): Observable<any[]> {
     return this.http.get<any[]>(`${this.url}/${this.Ws}/materia/${id}`);
   }

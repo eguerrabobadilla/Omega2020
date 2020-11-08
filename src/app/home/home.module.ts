@@ -43,9 +43,11 @@ import { ContactComponent } from '../components/contact/contact.component';
 import { PerfilComponent } from '../components/perfil/perfil.component';
 import { LinkifyPipe } from '../pipes/linkifypipe ';
 import { CircleProgressComponent } from '../components/circle-progress/circle-progress.component';
+import { CircleProgressReportComponent } from '../components/circle-progress-report/circle-progress-report.component';
 import { GlobalModule } from '../modules/GoblaModule';
 import { ListTareasComponent } from '../components/list-tareas/list-tareas.component';
 import { ReportComponent } from '../components/report/report.component';
+
 
 
 @NgModule({
@@ -67,6 +69,7 @@ import { ReportComponent } from '../components/report/report.component';
     CommonModule,
     FormsModule,
     IonicModule,
+   
     RouterModule.forChild([
       {
         path: '',
