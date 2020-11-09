@@ -581,7 +581,13 @@ export class HomeDirectorPage {
       this.observer.observe(this.elementsToProcess.nativeElement);
       setTimeout(() => {
         this.checkCodePush();
+        if(!this.platform.is("ipad") || !this.platform.is("iphone") || !this.platform.is("ios")){
+          this.statusBar.show();
+          this.statusBar.backgroundColorByHexString('#FFFFFF');
+       }
+       else{
         this.statusBar.hide();
+      }
       }, 500);
       
 

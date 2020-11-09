@@ -651,6 +651,8 @@ this.pillMenu.animacion();
           this.tabs = ['Tareas', 'Foro', 'Recursos'];
         else
           this.tabs = ['Tareas', 'Foro', 'Recursos', 'Evidencias'];
+
+        this.pildora = 'Tareas';
      } else if (index === 3) {
       this.tabs = ['Noticias', 'Mensajes', 'Calendario'];
 
@@ -932,6 +934,7 @@ this.pillMenu.animacion();
      // console.log(itemOption);
       //Logica boton + evidencias
       if(this.selectSeccion==2) {
+        this.IonContentScroll.scrollToPoint(0, 0, 0);
         /*if(this.getKeyToken('tipo')=='Alumno' && itemOption=="Evidencias") {
           this.renderer.setStyle(this.fabend.nativeElement,'display','block');
         } else*/ 
@@ -986,9 +989,10 @@ this.pillMenu.animacion();
             {
               text: 'Aceptar',
               handler:  (value: any) => {
-                  console.log()
+                  this.IonContentScroll.scrollToPoint(0, 0, 0);
                   const itemOption =this.pillMenu.itemsMenu[this.pillMenu.indexAnterior];
                   if(itemOption==="Tareas") {
+                    
                     if (value.Meses.value === 0) {
                       this.tareasComponent.cargar(0);
                     } else {

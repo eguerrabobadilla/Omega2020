@@ -1,3 +1,4 @@
+<ion-progress-bar *ngIf="spiner" type="indeterminate"></ion-progress-bar>
 <ion-list>
     <ion-virtual-scroll [items]="LstForo" approxItemHeight="320px" style="margin-bottom: 100px;z-index: 999999;">
         <ion-card style="text-align: initial;" class="ion-activatable ripple-parent" mode="ios" *virtualItem="let item; let itemBounds = bounds;" (click)="openDetail($event,item,item.Id)">
@@ -16,7 +17,6 @@
                 </ion-item>
             </ion-card-header>
 
-
             <ion-card-content style="white-space: pre-line;">
                 {{item.Descrpcion}}
                 <br><br>
@@ -34,7 +34,6 @@
                 <ion-button style="transform: translateX(12px);" *ngIf="permisoEditar() && item.Estado=='Cerrado' " fill="outline" slot="end" (click)="estadoForo($event,item)">Abrir foro</ion-button>
                 <ion-button *ngIf="permisoEditar()" fill="outline" slot="end" (click)="edit($event,item)">Editar</ion-button>
             </ion-item>
-
         </ion-card>
     </ion-virtual-scroll>
 </ion-list>
