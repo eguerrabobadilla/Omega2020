@@ -8,6 +8,8 @@ import { FormsModule } from '@angular/forms';
 import { BooksComponent } from '../components/books/books.component';
 import { FilterPipe } from '../pipes/filter.pipe';
 import { CircleProgressReportComponent } from '../components/circle-progress-report/circle-progress-report.component';
+import { ChatsComponent } from '../components/chats/chats.component';
+import { NewsComponent } from '../components/news/news.component';
 
 @NgModule({
     imports: [
@@ -15,8 +17,8 @@ import { CircleProgressReportComponent } from '../components/circle-progress-rep
         CommonModule,
         FormsModule
     ],
-    declarations:[PillMenuComponent,CircleProgressComponent,CodesComponent,BooksComponent,FilterPipe,CircleProgressReportComponent],
-    exports:[PillMenuComponent,CircleProgressComponent,CodesComponent,BooksComponent,FilterPipe,CircleProgressReportComponent]
+    declarations:[PillMenuComponent,CircleProgressComponent,CodesComponent,BooksComponent,FilterPipe,CircleProgressReportComponent,ChatsComponent,NewsComponent],
+    exports:[PillMenuComponent,CircleProgressComponent,CodesComponent,BooksComponent,FilterPipe,CircleProgressReportComponent,ChatsComponent,NewsComponent]
 })
 export class GlobalModule
 {

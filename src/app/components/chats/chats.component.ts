@@ -3,6 +3,7 @@ import { ModalController } from '@ionic/angular';
 import { DetallesChatPage } from 'src/app/pages/detalles-chat/detalles-chat.page';
 import { ChatService } from '../../api/chat.service';
 import { DetalleChatGroupPage } from 'src/app/pages/detalle-chat-group/detalle-chat-group.page';
+import { GlobalService } from 'src/app/services/global.service';
 
 @Component({
   selector: 'app-chats',
@@ -16,7 +17,7 @@ export class ChatsComponent implements OnInit {
   cargandoGrupos:boolean = false;
   cargandoAlumnos:boolean = false;
 
-  constructor( private modalCrl: ModalController,private apichat: ChatService) { 
+  constructor( private modalCrl: ModalController,private apichat: ChatService,private globalServicies: GlobalService) { 
     this.cargar();
   }
 
@@ -102,6 +103,13 @@ export class ChatsComponent implements OnInit {
     else
       return false;
   }
+
+  getTipoUsuario() {
+    const tipo=this.globalServicies.getKeyToken("tipo");
+    
+    return tipo;
+  }
+
   
   getKeyToken(key: string): string {
 

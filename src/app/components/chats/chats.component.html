@@ -20,7 +20,7 @@
                 <img src="assets/img/groups.png">
         </ion-avatar>
         <ion-label>
-            <h2>Grupo {{item.Grado}}{{item.Grupo}} {{ item.Escolaridad }}</h2>
+            <h2>Grupo {{item.Grado}}{{item.Grupo}} {{ item.Escolaridad }} <span *ngIf="item.GrupoIngles=='SI'">Ingles</span></h2>
             <p>{{ item.UltimoMensaje }}</p>
             <p>{{ item.FechaUltimoMensaje | date:'mediumDate' }} {{ item.HoraUlimoMensaje }}</p>
             <p><b>Docente:</b> {{ item.Usuario.NombreCompleto | titlecase}}</p>
@@ -32,15 +32,22 @@
     <!--<ion-list-header>
         Recent Conversations
     </ion-list-header>-->
-    <ion-list-header *ngIf="permisoEditar()">
+    <ion-list-header *ngIf="getTipoUsuario()=='Profesor'">
         Alumnos
         <ion-button style="right: 0;position: absolute;" (click)="refrescarAlumnos()">
             <ion-icon slot="icon-only" color="dark" name="refresh-circle-outline"></ion-icon>
         </ion-button>
     </ion-list-header>
 
-    <ion-list-header *ngIf="!permisoEditar()">
+    <ion-list-header *ngIf="getTipoUsuario()=='Alumno'">
         Profesores
+        <ion-button style="right: 0;position: absolute;" (click)="refrescarAlumnos()">
+            <ion-icon slot="icon-only" color="dark" name="refresh-circle-outline"></ion-icon>
+        </ion-button>
+    </ion-list-header>
+
+    <ion-list-header *ngIf="getTipoUsuario()=='Director'">
+        Conversaciones
         <ion-button style="right: 0;position: absolute;" (click)="refrescarAlumnos()">
             <ion-icon slot="icon-only" color="dark" name="refresh-circle-outline"></ion-icon>
         </ion-button>
@@ -54,6 +61,7 @@
         </ion-avatar>
         <ion-label>
             <h2>{{item.UsuarioId2Navigation.Nombre | titlecase }} {{item.UsuarioId2Navigation.ApellidoMaterno | titlecase}} {{item.UsuarioId2Navigation.ApellidoPaterno | titlecase}}</h2>
+            <p><b>{{item.UsuarioId2Navigation.Tipo}}</b> {{item.UsuarioId2Navigation.Escolaridad}} {{item.UsuarioId2Navigation.Grado}}{{item.UsuarioId2Navigation.Grupo}}</p>
             <p>{{item.UltimoMensaje}}</p>
             <p>{{ item.FechaUltimoMensaje | date:'mediumDate' }} {{ item.HoraUlimoMensaje }}</p>
         </ion-label>

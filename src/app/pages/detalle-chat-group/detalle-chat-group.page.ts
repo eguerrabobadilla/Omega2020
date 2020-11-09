@@ -44,7 +44,8 @@ export class DetalleChatGroupPage implements OnInit {
         this.usuarioId = data['usuarioId'];
         console.log(data);
       });*/
-    this.title = `Grupo ${this.item.Grado}${this.item.Grupo} ${this.item.Escolaridad}`;
+    const grupoIngles = this.item.GrupoIngles=='SI' ? 'Ingles' : '';
+    this.title = `Grupo ${this.item.Grado}${this.item.Grupo} ${this.item.Escolaridad} ${grupoIngles}`;
 
     this.apichat.crearGrupo(this.item).subscribe(data => {
       /*this.groups.id = data['grupoId'];
