@@ -123,7 +123,7 @@ export class CrearChatPage implements OnInit {
           
           this.renderer.setStyle(this.spinnerProfesores.nativeElement, 'display','none');
         });
-      } else {
+      } else if(this.showStudents==true) {
         this.LstDocentesAlumnos = [];
 
         this.textoBuscar = event.detail.value;
@@ -437,6 +437,11 @@ export class CrearChatPage implements OnInit {
       this.loadDataDocentes(event);
     else if(this.showStudents==true)
       this.loadDataAlumnos(event);
+    else {
+        console.log("entro infinite scroll grupos");
+        //Los grupos no tiene infite scroll
+        this.infiniteScroll.disabled=true;
+    }
   }
 
   loadDataAlumnos(event){
