@@ -18,6 +18,7 @@ export class ForumComponent implements OnInit {
   materiaId: any;
   estadoFoto:any;
   loading: any;
+  spiner = true;
   cargarConFiltro = false;
   contadorInfinieScroll: number = 0;
   @ViewChild(IonInfiniteScroll,{static: false}) infiniteScroll: IonInfiniteScroll;
@@ -36,6 +37,7 @@ export class ForumComponent implements OnInit {
     this.LstForo = data;
     this.contadorInfinieScroll +=10;
     this.updateAutoHeightSlider.emit();
+    this.spiner =false;
   });
   }
 

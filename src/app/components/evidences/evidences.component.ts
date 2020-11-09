@@ -18,6 +18,7 @@ export class EvidencesComponent implements OnInit {
   LstEvidencias: any[] = [];
   meses: string[];
   loading: any;
+  spiner = true;
   contadorInfinieScroll: number = 0;
   @Output() updateAutoHeightSlider = new EventEmitter();
   @ViewChild(IonInfiniteScroll,{static: false}) infiniteScroll: IonInfiniteScroll;
@@ -35,6 +36,7 @@ export class EvidencesComponent implements OnInit {
       this.LstEvidencias = data;
       this.contadorInfinieScroll +=10;
       this.updateAutoHeightSlider.emit();
+      this.spiner =false;
     });
   }
 

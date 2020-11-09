@@ -7,6 +7,7 @@
         <ion-card-content>{{ item.descripcion }}</ion-card-content>
     </ion-card>
 </ion-virtual-scroll>-->
+<ion-progress-bar *ngIf="spiner" type="indeterminate"></ion-progress-bar>
 <ion-list>
     <ion-virtual-scroll [items]="LstTareas" approxItemHeight="300px" style="margin-bottom: 100px;z-index: 999999;">
         <ion-card style="text-align: initial;" class="ion-activatable ripple-parent" mode="ios" *virtualItem="let item" (click)="openDetail($event,item)">

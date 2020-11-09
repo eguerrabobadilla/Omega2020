@@ -16,6 +16,7 @@ export class ListTareasComponent implements OnInit {
   materiaId: any;
   loading: any;
   cargarConFiltro = false;
+  spiner = true;
   contadorInfinieScroll = 0;
   @Output() updateAutoHeightSlider = new EventEmitter();
   @ViewChild(IonInfiniteScroll, {static: false}) infiniteScroll: IonInfiniteScroll;
@@ -31,6 +32,7 @@ export class ListTareasComponent implements OnInit {
       this.LstTareas = data;
       this.contadorInfinieScroll += 10;
       this.updateAutoHeightSlider.emit();
+      this.spiner =false;
     });
 
   }
@@ -58,6 +60,7 @@ export class ListTareasComponent implements OnInit {
           this.contadorInfinieScroll += 10;
 
           this.virtualScroll.checkEnd();
+         
           this.loadingController.dismiss();
         }
       });

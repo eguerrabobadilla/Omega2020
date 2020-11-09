@@ -1,3 +1,4 @@
+<ion-progress-bar *ngIf="spiner" type="indeterminate"></ion-progress-bar>
 <ion-list>
     <ion-virtual-scroll [items]="LstEvidencias" approxItemHeight="320px">
         <ion-card style="text-align: initial;" class="ion-activatable ripple-parent" mode="ios" *virtualItem="let item; let itemBounds = bounds;" (click)="openDetail()">
