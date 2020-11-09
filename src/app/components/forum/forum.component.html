@@ -17,14 +17,14 @@
             </ion-card-header>
 
 
-            <ion-card-content>
+            <ion-card-content style="white-space: pre-line;">
                 {{item.Descrpcion}}
                 <br><br>
                 <b>Grupo:</b> <span *ngIf="item.GrupoIngles=='SI'"> Level</span> {{ item.Grado }}{{ item.Grupo }} {{ item.Escolaridad }}
                 <br>
                 <b>Materia:</b> {{ item.Materia.Nombre }}
             </ion-card-content>
-
+            
             <ion-item lines="none">
                 <ion-icon style="font-size: 15px;color: #F4315D;" name="chatbubbles-outline"></ion-icon>
                 <ion-label>
@@ -34,16 +34,6 @@
                 <ion-button style="transform: translateX(12px);" *ngIf="permisoEditar() && item.Estado=='Cerrado' " fill="outline" slot="end" (click)="estadoForo($event,item)">Abrir foro</ion-button>
                 <ion-button *ngIf="permisoEditar()" fill="outline" slot="end" (click)="edit($event,item)">Editar</ion-button>
             </ion-item>
-        </ion-card-header>
-
-
-        <ion-card-content style="white-space: pre-line;">
-            {{item.Descrpcion}}
-            <br><br>
-            <b>Grupo:</b> <span *ngIf="item.GrupoIngles=='SI'"> Level</span> {{ item.Grado }}{{ item.Grupo }} {{ item.Escolaridad }}
-            <br>
-            <b>Materia:</b> {{ item.Materia.Nombre }}
-        </ion-card-content>
 
         </ion-card>
     </ion-virtual-scroll>

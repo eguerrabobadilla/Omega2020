@@ -293,7 +293,7 @@ export class CrearChatPage implements OnInit {
         this.panelGrupos.nativeElement.setAttribute('status','open');
         this.renderer.removeStyle(this.panelGrupos.nativeElement, 'display');
 
-        this.renderer.setStyle(this.search.nativeElement, 'display','block');
+        this.renderer.setStyle(this.search.nativeElement, 'display','none');
 
         this.Busqueda="Buscar Grupo";
 
@@ -345,9 +345,9 @@ export class CrearChatPage implements OnInit {
         this.panelProfesores.nativeElement.setAttribute('status','open');
         this.renderer.removeStyle(this.panelProfesores.nativeElement, 'display');
 
-        this.renderer.setStyle(this.search.nativeElement, 'display','block');
-
         this.Busqueda="Buscar Docente";
+
+        this.renderer.setStyle(this.search.nativeElement, 'display','block');
 
         //Cierra los otros paneles
         if(this.showGroups==true)
@@ -355,13 +355,15 @@ export class CrearChatPage implements OnInit {
         
         if(this.showStudents==true)
           this.abrirAlumnos();
+
       }
       else {
         this.renderer.setStyle(this.panelProfesores.nativeElement, 'max-height','0');
         this.renderer.removeClass(this.botonProfesores.nativeElement, 'active');
         this.panelProfesores.nativeElement.setAttribute('status','close');
         this.renderer.setStyle(this.panelProfesores.nativeElement, 'display','none');
-        this.renderer.setStyle(this.search.nativeElement, 'display','none');
+        if(this.showStudents==false)
+          this.renderer.setStyle(this.search.nativeElement, 'display','none');
         this.showTeachers = false;
         this.Busqueda="Seleccione";
 
@@ -418,7 +420,8 @@ export class CrearChatPage implements OnInit {
         this.renderer.removeClass(this.botonAlumnos.nativeElement, 'active');
         this.panelAlumnos.nativeElement.setAttribute('status','close');
         this.renderer.setStyle(this.panelAlumnos.nativeElement, 'display','none');
-        this.renderer.setStyle(this.search.nativeElement, 'display','none');
+        if(this.showTeachers==false)
+          this.renderer.setStyle(this.search.nativeElement, 'display','none');
         this.showStudents = false;
         this.Busqueda="Seleccione";
 
