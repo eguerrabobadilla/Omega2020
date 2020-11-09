@@ -989,9 +989,10 @@ this.pillMenu.animacion();
             {
               text: 'Aceptar',
               handler:  (value: any) => {
-                  console.log()
+                  this.IonContentScroll.scrollToPoint(0, 0, 0);
                   const itemOption =this.pillMenu.itemsMenu[this.pillMenu.indexAnterior];
                   if(itemOption==="Tareas") {
+                    
                     if (value.Meses.value === 0) {
                       this.tareasComponent.cargar(0);
                     } else {

@@ -44,8 +44,24 @@ export class EvidencesComponent implements OnInit {
   }
 
   public cargar() {
-    this.apiEvidencias.get().subscribe(data => {
-      this.LstEvidencias = data;
+    this.contadorInfinieScroll = 0;
+    this.LstEvidencias = [];
+    this.infiniteScroll.disabled= false;
+
+    this.apiEvidencias.getInfinite(this.contadorInfinieScroll, 10).subscribe(data => {
+      if (data.length != 0) {
+        for (let i = 0; i < data.length; i++) {
+          console.log('dentro');
+          this.LstEvidencias.push(data[i]);
+        }
+        setTimeout(() => {
+          this.updateAutoHeightSlider.emit();
+        }, 300);
+        this.contadorInfinieScroll += 10;
+
+        this.virtualScroll.checkEnd();
+        this.loadingController.dismiss();
+      }
     });
   }
 
@@ -93,48 +109,32 @@ export class EvidencesComponent implements OnInit {
   }
 
   loadData(event) {
-    /* this.apiTareas.getUsuarios(this.textoBuscar, this.contadorInfinieScroll, 5).subscribe(data => {
-  
-       if (data.length != 0) {
-         for (let i = 0; i < data.length; i++) {
-           this.LstUsuario.push(data[i]);
-         }
+
  
-         event.target.complete();
-         this.virtualScroll.checkEnd();
- 
-         this.contadorInfinieScroll += 5;
-       }
-       else {
-         console.log("fin scroll");
-         event.target.disabled = true;
-       }
-     });*/
- 
- 
-     this.apiEvidencias.getInfinite(this.contadorInfinieScroll, 10).subscribe(data => {
-         console.log("getInfinite")
-         console.log(data);
-         if (data.length != 0) {
-           for (let i = 0; i < data.length; i++) {
-             console.log("dentro")
-             this.LstEvidencias.push(data[i]);
-           }
- 
-           event.target.complete();
-           this.contadorInfinieScroll +=10;
-           setTimeout(() => {
-             this.updateAutoHeightSlider.emit();
-           }, 300);
-           this.virtualScroll.checkEnd();
-         }
-         else {
-           console.log("fin scroll");
-           event.target.disabled = true;
-           this.updateAutoHeightSlider.emit();
-         }
- 
-       });
+    console.log('cargarSinfiltro');
+    this.apiEvidencias.getInfinite(this.contadorInfinieScroll, 10).subscribe(data => {
+      console.log('getInfinite');
+      console.log(data);
+      if (data.length != 0) {
+        for (let i = 0; i < data.length; i++) {
+          console.log('dentro');
+          this.LstEvidencias.push(data[i]);
+        }
+
+        event.target.complete();
+        this.contadorInfinieScroll += 10;
+        setTimeout(() => {
+          this.updateAutoHeightSlider.emit();
+        }, 300);
+        this.virtualScroll.checkEnd();
+      } else {
+        console.log('fin scroll');
+        event.target.disabled = true;
+        setTimeout(() => {
+          this.updateAutoHeightSlider.emit();
+          }, 300);
+      }
+    });
        
      }
 

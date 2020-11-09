@@ -17,6 +17,8 @@ export class ForumComponent implements OnInit {
   public LstForo: any[] = [];
   materiaId: any;
   estadoFoto:any;
+  loading: any;
+  cargarConFiltro = false;
   contadorInfinieScroll: number = 0;
   @ViewChild(IonInfiniteScroll,{static: false}) infiniteScroll: IonInfiniteScroll;
   @ViewChild(IonVirtualScroll,{static: false}) virtualScroll: IonVirtualScroll;
@@ -37,18 +39,53 @@ export class ForumComponent implements OnInit {
   });
   }
 
-  public cargar(materiaId) {
-    //0=todas 1=Filtrado por materia
+  public async cargar(materiaId) {
+    // 0=todas 1=Filtrado por materia
     this.materiaId = materiaId;
-    if(materiaId==0){
-      this.apiForum.get(false, 0).subscribe(data =>{
-        this.LstForo = data;
+
+    await this.cargandoAnimation('Cargando...');
+    this.infiniteScroll.disabled= false;
+    if (materiaId == 0) {
+      this.contadorInfinieScroll = 0;
+      this.LstForo = [];
+      this.infiniteScroll.disabled= false;
+
+      this.apiForum.getInfinite(this.contadorInfinieScroll, 10).subscribe(data => {
+        if (data.length != 0) {
+          for (let i = 0; i < data.length; i++) {
+            console.log('dentro');
+            this.LstForo.push(data[i]);
+          }
+          setTimeout(() => {
+            this.updateAutoHeightSlider.emit();
+          }, 300);
+          this.contadorInfinieScroll += 10;
+
+          this.virtualScroll.checkEnd();
+          this.loadingController.dismiss();
+        }
       });
-    }
-    else{
-      this.apiForum.getForosMaterias(materiaId).subscribe(data =>{
-        this.LstForo = data;
+      this.cargarConFiltro = false;
+
+    } else {
+      this.contadorInfinieScroll = 0;
+      this.LstForo = [];
+      this.infiniteScroll.disabled= false;
+
+      this.apiForum.getForosMateriasInfinite(materiaId, this.contadorInfinieScroll, 10).subscribe(data => {
+        for (let i = 0; i < data.length; i++) {
+          console.log('dentro');
+          this.LstForo.push(data[i]);
+        }
+        setTimeout(() => {
+          this.updateAutoHeightSlider.emit();
+        }, 300);
+        this.contadorInfinieScroll += 10;
+
+        this.virtualScroll.checkEnd();
+        this.loadingController.dismiss();
       });
+      this.cargarConFiltro = true;
     }
   }
 
@@ -160,48 +197,81 @@ export class ForumComponent implements OnInit {
   }
 
   loadData(event) {
-    /* this.apiTareas.getUsuarios(this.textoBuscar, this.contadorInfinieScroll, 5).subscribe(data => {
-  
-       if (data.length != 0) {
-         for (let i = 0; i < data.length; i++) {
-           this.LstUsuario.push(data[i]);
-         }
- 
-         event.target.complete();
-         this.virtualScroll.checkEnd();
- 
-         this.contadorInfinieScroll += 5;
-       }
-       else {
-         console.log("fin scroll");
-         event.target.disabled = true;
-       }
-     });*/
- 
- 
-     this.apiForum.getInfinite(this.contadorInfinieScroll, 10).subscribe(data => {
-         console.log("getInfinite")
-         console.log(data);
-         if (data.length != 0) {
-           for (let i = 0; i < data.length; i++) {
-             console.log("dentro")
-             this.LstForo.push(data[i]);
-           }
- 
-           event.target.complete();
-           this.contadorInfinieScroll +=10;
-           setTimeout(() => {
-             this.updateAutoHeightSlider.emit();
-           }, 300);
-           this.virtualScroll.checkEnd();
-         }
-         else {
-           console.log("fin scroll");
-           event.target.disabled = true;
-           this.updateAutoHeightSlider.emit();
-         }
- 
-       });
-       
+    console.log('loaddata');
+    if (this.cargarConFiltro) {
+
+     this.getApiForosConFiltro(event);
+
+   } else {
+
+     this.getApiForosSinFiltro(event);
+
+   }
+
      }
+
+  async cargandoAnimation(text) {
+    this.loading = await this.loadingController.create({
+      message: text,
+      duration: 60000
+    });
+
+    await this.loading.present();
+  }
+
+  getApiForosSinFiltro(event) {
+    console.log('cargarSinfiltro');
+    this.apiForum.getInfinite(this.contadorInfinieScroll, 10).subscribe(data => {
+      console.log('getInfinite');
+      console.log(data);
+      if (data.length != 0) {
+        for (let i = 0; i < data.length; i++) {
+          console.log('dentro');
+          this.LstForo.push(data[i]);
+        }
+
+        event.target.complete();
+        this.contadorInfinieScroll += 10;
+        setTimeout(() => {
+          this.updateAutoHeightSlider.emit();
+        }, 300);
+        this.virtualScroll.checkEnd();
+      } else {
+        console.log('fin scroll');
+        event.target.disabled = true;
+        setTimeout(() => {
+          this.updateAutoHeightSlider.emit();
+          }, 300);
+      }
+    });
+
+  }
+  getApiForosConFiltro(event) {
+    console.log('cargarConfiltro');
+    console.log(event);
+
+    this.apiForum.getForosMateriasInfinite(this.materiaId, this.contadorInfinieScroll, 10).subscribe(data => {
+      console.log('getInfinite');
+      console.log(data);
+      if (data.length != 0) {
+        for (let i = 0; i < data.length; i++) {
+          console.log('dentro');
+          this.LstForo.push(data[i]);
+        }
+
+        event.target.complete();
+        this.contadorInfinieScroll += 10;
+        setTimeout(() => {
+          this.updateAutoHeightSlider.emit();
+        }, 300);
+        this.virtualScroll.checkEnd();
+      } else {
+        console.log('fin scroll');
+        event.target.disabled = true;
+        setTimeout(() => {
+      this.updateAutoHeightSlider.emit();
+      }, 300);
+      }
+    });
+  }
 }

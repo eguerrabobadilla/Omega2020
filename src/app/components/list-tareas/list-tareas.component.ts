@@ -15,41 +15,73 @@ export class ListTareasComponent implements OnInit {
   LstTareas: any[] = [];
   materiaId: any;
   loading: any;
-  contadorInfinieScroll: number = 0;
+  cargarConFiltro = false;
+  contadorInfinieScroll = 0;
   @Output() updateAutoHeightSlider = new EventEmitter();
-  @ViewChild(IonInfiniteScroll,{static: false}) infiniteScroll: IonInfiniteScroll;
-  @ViewChild(IonVirtualScroll,{static: false}) virtualScroll: IonVirtualScroll;
+  @ViewChild(IonInfiniteScroll, {static: false}) infiniteScroll: IonInfiniteScroll;
+  @ViewChild(IonVirtualScroll, {static: false}) virtualScroll: IonVirtualScroll;
 
 
-  constructor(private apiTareas: TareasService, private modalCrl: ModalController, private loadingController: LoadingController, private alertController: AlertController) { 
+  constructor(private apiTareas: TareasService, private modalCrl: ModalController, private loadingController: LoadingController, private alertController: AlertController) {
   }
 
   ngOnInit() {
-    //this.cargar(0);
-     this.apiTareas.getInfinite(this.contadorInfinieScroll,10).subscribe(data => {
+    // this.cargar(0);
+     this.apiTareas.getInfinite(this.contadorInfinieScroll, 10).subscribe(data => {
       this.LstTareas = data;
-      this.contadorInfinieScroll +=10;
+      this.contadorInfinieScroll += 10;
       this.updateAutoHeightSlider.emit();
     });
-    
+
   }
 
    public async cargar(materiaId) {
-    //0=todas 1=Filtrado por materia
+    // 0=todas 1=Filtrado por materia
     this.materiaId = materiaId;
-  
+
     await this.cargandoAnimation('Cargando...');
-    if (materiaId == 0){
-      this.apiTareas.get().subscribe(data => {
-        this.LstTareas = data;
+    this.infiniteScroll.disabled= false;
+    if (materiaId == 0) {
+      this.contadorInfinieScroll = 0;
+      this.LstTareas = [];
+      this.infiniteScroll.disabled= false;
+
+      this.apiTareas.getInfinite(this.contadorInfinieScroll, 10).subscribe(data => {
+        if (data.length != 0) {
+          for (let i = 0; i < data.length; i++) {
+            console.log('dentro');
+            this.LstTareas.push(data[i]);
+          }
+          setTimeout(() => {
+            this.updateAutoHeightSlider.emit();
+          }, 300);
+          this.contadorInfinieScroll += 10;
+
+          this.virtualScroll.checkEnd();
+          this.loadingController.dismiss();
+        }
+      });
+      this.cargarConFiltro = false;
+
+    } else {
+      this.contadorInfinieScroll = 0;
+      this.LstTareas = [];
+      this.infiniteScroll.disabled= false;
+
+      this.apiTareas.getTareasMateriasInfinite(materiaId, this.contadorInfinieScroll, 10).subscribe(data => {
+        for (let i = 0; i < data.length; i++) {
+          console.log('dentro');
+          this.LstTareas.push(data[i]);
+        }
+        setTimeout(() => {
+          this.updateAutoHeightSlider.emit();
+        }, 300);
+        this.contadorInfinieScroll += 10;
+
+        this.virtualScroll.checkEnd();
         this.loadingController.dismiss();
       });
-    }
-    else{
-      this.apiTareas.getTareasMaterias(materiaId).subscribe(data => {
-        this.LstTareas = data;
-        this.loadingController.dismiss();
-      });
+      this.cargarConFiltro = true;
     }
   }
 
@@ -64,9 +96,9 @@ export class ListTareasComponent implements OnInit {
     return await modal.present();
   }
 
-  public async editaTarea(event, item){
+  public async editaTarea(event, item) {
     event.stopPropagation();
-    
+
     const modal = await this.modalCrl.create({
       component: NuevoRecursoPage,
       // cssClass: 'my-custom-modal-css',
@@ -81,8 +113,7 @@ export class ListTareasComponent implements OnInit {
 
     modal.onDidDismiss().then( async (data) => {
 
-        if (data.data.banderaEdito == true)
-        {
+        if (data.data.banderaEdito == true) {
             await this.cargandoAnimation('Cargando...');
             this.LstTareas = await this.apiTareas.get().toPromise();
             this.loadingController.dismiss();
@@ -90,21 +121,22 @@ export class ListTareasComponent implements OnInit {
     });
   }
 
-  
+
   public permisoEditar() {
     const jwt_temp = localStorage.getItem('USER_INFO_TEMP');
-    if (jwt_temp != null)
-    {
+    if (jwt_temp != null) {
         return false;
     }
-    
-    if (this.getKeyToken('tipo') == 'Profesor')
+
+    if (this.getKeyToken('tipo') == 'Profesor') {
       return true;
-    else
+    }
+    else {
       return false;
+    }
   }
 
-  //Eliminar tarea
+  // Eliminar tarea
   public async eliminar(event, item) {
     event.stopPropagation();
     console.log(item);
@@ -123,9 +155,9 @@ export class ListTareasComponent implements OnInit {
             const loading = await this.loadingController.create({
               message: 'Eliminando...'
             });
-        
+
             await loading.present();
-        
+
             await this.apiTareas.delete(item.Id).toPromise();
 
             this.LstTareas = this.LstTareas.filter(obj => obj !== item);
@@ -140,7 +172,7 @@ export class ListTareasComponent implements OnInit {
 
     alertTerminado.present();
   }
-  
+
   async cargandoAnimation(text) {
     this.loading = await this.loadingController.create({
       message: text,
@@ -164,51 +196,74 @@ export class ListTareasComponent implements OnInit {
     return value;
   }
 
-  
+
   loadData(event) {
-   /* this.apiTareas.getUsuarios(this.textoBuscar, this.contadorInfinieScroll, 5).subscribe(data => {
- 
-      if (data.length != 0) {
-        for (let i = 0; i < data.length; i++) {
-          this.LstUsuario.push(data[i]);
-        }
+     console.log('loaddata');
+     if (this.cargarConFiltro) {
 
-        event.target.complete();
-        this.virtualScroll.checkEnd();
+      this.getApiTareasConFiltro(event);
 
-        this.contadorInfinieScroll += 5;
-      }
-      else {
-        console.log("fin scroll");
-        event.target.disabled = true;
-      }
-    });*/
+    } else {
 
+      this.getApiTareasSinFiltro(event);
 
-    this.apiTareas.getInfinite(this.contadorInfinieScroll, 10).subscribe(data => {
-        console.log("getInfinite")
+    }
+
+  }
+    getApiTareasSinFiltro(event) {
+      console.log('cargarSinfiltro');
+      this.apiTareas.getInfinite(this.contadorInfinieScroll, 10).subscribe(data => {
+        console.log('getInfinite');
         console.log(data);
         if (data.length != 0) {
           for (let i = 0; i < data.length; i++) {
-            console.log("dentro")
+            console.log('dentro');
             this.LstTareas.push(data[i]);
           }
 
           event.target.complete();
-          this.contadorInfinieScroll +=10;
+          this.contadorInfinieScroll += 10;
           setTimeout(() => {
             this.updateAutoHeightSlider.emit();
           }, 300);
           this.virtualScroll.checkEnd();
-        }
-        else {
-          console.log("fin scroll");
+        } else {
+          console.log('fin scroll');
           event.target.disabled = true;
-          this.updateAutoHeightSlider.emit();
+          setTimeout(() => {
+            this.updateAutoHeightSlider.emit();
+            }, 300);
         }
-
       });
-      
+
+    }
+    getApiTareasConFiltro(event) {
+      console.log('cargarConfiltro');
+      console.log(event);
+
+      this.apiTareas.getTareasMateriasInfinite(this.materiaId, this.contadorInfinieScroll, 10).subscribe(data => {
+        console.log('getInfinite');
+        console.log(data);
+        if (data.length != 0) {
+          for (let i = 0; i < data.length; i++) {
+            console.log('dentro');
+            this.LstTareas.push(data[i]);
+          }
+
+          event.target.complete();
+          this.contadorInfinieScroll += 10;
+          setTimeout(() => {
+            this.updateAutoHeightSlider.emit();
+          }, 300);
+          this.virtualScroll.checkEnd();
+        } else {
+          console.log('fin scroll');
+          event.target.disabled = true;
+          setTimeout(() => {
+        this.updateAutoHeightSlider.emit();
+        }, 300);
+        }
+      });
     }
 
   }
