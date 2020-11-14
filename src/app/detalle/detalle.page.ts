@@ -185,6 +185,7 @@ export class DetallePage implements OnInit {
         console.log(item);
         const { Browser } = Plugins;
         if (this.platform.is('cordova')) {
+          console.log(this.item.ImageUser);
           this.download(`${this.api.url}/images/${item.Image}`,this.item.ImageUser);
           //this.download(`http://192.168.0.16:5000/resources/${item.PathRecurso}`);
         } else {
@@ -228,6 +229,8 @@ export class DetallePage implements OnInit {
   }
 
   download(url,NameFile) {
+    console.log(url);
+    console.log(NameFile);
     const fileTransfer: FileTransferObject = this.transfer.create();
     const extension = url.split('/').pop(); 
     const pathDownload = this.platform.is("android") ? this.file.dataDirectory  :  this.file.dataDirectory;

@@ -15,7 +15,7 @@ import { CrearForumPage } from 'src/app/pages/crear-forum/crear-forum.page';
 })
 export class ForumComponent implements OnInit {
   public LstForo: any[] = [];
-  materiaId: any;
+  materiaId: any = 0;
   estadoFoto:any;
   loading: any;
   spiner = true;
@@ -42,6 +42,8 @@ export class ForumComponent implements OnInit {
   }
 
   public async cargar(materiaId) {
+    console.log("cargar");
+    console.log(materiaId);
     // 0=todas 1=Filtrado por materia
     this.materiaId = materiaId;
 
