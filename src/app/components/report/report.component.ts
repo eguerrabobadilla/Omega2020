@@ -17,6 +17,7 @@ export class ReportComponent implements OnInit {
   panel = "panelCerrado";
   LstEstadisticas: any[] = [];
   mesActual : string;
+  mesActualNumero : number;
   meses: string[];
   loading: any;
   bars: any;
@@ -73,6 +74,7 @@ export class ReportComponent implements OnInit {
                   'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
     const d = new Date();
     this.mesActual = mesesReal[d.getMonth()];
+    this.mesActualNumero= d.getMonth() + 1;
 
 
     const UsuarioId =this.getKeyToken('id');
@@ -89,12 +91,9 @@ export class ReportComponent implements OnInit {
 
   }
   cargarEstadisticas(){
+    console.log(this.mesActual);
     this.cargandoAnimation('Cargando...');
-
-    const actualDate = new Date();
-    let month = actualDate.getMonth() + 1;
-
-    this.apiEstadisticas.getEstadisticasAlumno(month).subscribe(data => {
+    this.apiEstadisticas.getEstadisticasAlumno(this.mesActualNumero).subscribe(data => {
       this.loadingController.dismiss();
       this.LstEstadisticas = data;
       this.calcularGrafica();  
@@ -157,6 +156,7 @@ export class ReportComponent implements OnInit {
             text: 'Aceptar',
             handler:  (value: any) => {
               this.mesActual = value.Meses.text;
+
               this.cargandoAnimation('Cargando...');
 
               //Se limpia la grafica
