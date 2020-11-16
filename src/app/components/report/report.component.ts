@@ -4,6 +4,7 @@ import { EstadisticasService } from '../../api/estadisticas.service';
 import { UsuariosService } from 'src/app/api/usuarios.service';
 import { Chart } from 'chart.js';
 import { CircleProgressReportComponent  } from '../circle-progress-report/circle-progress-report.component';
+import { CombineLatestOperator } from 'rxjs/internal/observable/combineLatest';
 
 
 
@@ -16,6 +17,7 @@ export class ReportComponent implements OnInit {
   panel = "panelCerrado";
   LstEstadisticas: any[] = [];
   mesActual : string;
+  mesActualNumero : number;
   meses: string[];
   loading: any;
   bars: any;
@@ -72,6 +74,7 @@ export class ReportComponent implements OnInit {
                   'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
     const d = new Date();
     this.mesActual = mesesReal[d.getMonth()];
+    this.mesActualNumero= d.getMonth() + 1;
 
 
     const UsuarioId =this.getKeyToken('id');
@@ -88,8 +91,9 @@ export class ReportComponent implements OnInit {
 
   }
   cargarEstadisticas(){
+    console.log(this.mesActual);
     this.cargandoAnimation('Cargando...');
-    this.apiEstadisticas.getEstadisticasAlumno('10').subscribe(data => {
+    this.apiEstadisticas.getEstadisticasAlumno(this.mesActualNumero).subscribe(data => {
       this.loadingController.dismiss();
       this.LstEstadisticas = data;
       this.calcularGrafica();  
@@ -100,27 +104,29 @@ export class ReportComponent implements OnInit {
     this.totalesAsigados=[];
     this.totalesEntregados=[];
 
-    if(this.inicioVentana==true) {
-      this.totalesAsigados.push(this.LstEstadisticas.reduce((a, {TareasAsignada}) => a + TareasAsignada, 0));
-      this.totalesAsigados.push(this.LstEstadisticas.reduce((a, {ZoomAsignada}) => a + ZoomAsignada, 0));
-      this.totalesAsigados.push(this.LstEstadisticas.reduce((a, {ForossAsignada}) => a + ForossAsignada, 0));
+    this.totalesAsigados.push(this.LstEstadisticas.reduce((a, {TareasAsignada}) => a + TareasAsignada, 0));
+    this.totalesAsigados.push(this.LstEstadisticas.reduce((a, {ZoomAsignada}) => a + ZoomAsignada, 0));
+    this.totalesAsigados.push(this.LstEstadisticas.reduce((a, {ForossAsignada}) => a + ForossAsignada, 0));
 
-      this.totalesEntregados.push(this.LstEstadisticas.reduce((a, {TareasEntragadas}) => a + TareasEntragadas, 0));
-      this.totalesEntregados.push(this.LstEstadisticas.reduce((a, {ZoomFaltas}) => a + ZoomFaltas, 0));
-      this.totalesEntregados.push(this.LstEstadisticas.reduce((a, {ForosEntragadas}) => a + ForosEntragadas, 0));
+    this.totalesEntregados.push(this.LstEstadisticas.reduce((a, {TareasEntragadas}) => a + TareasEntragadas, 0));
+    this.totalesEntregados.push(this.LstEstadisticas.reduce((a, {ZoomFaltas}) => a + ZoomFaltas, 0));
+    this.totalesEntregados.push(this.LstEstadisticas.reduce((a, {ForosEntragadas}) => a + ForosEntragadas, 0));
+
+    if(this.inicioVentana==true) {
 
       this.inicioVentana=false;
 
       this.createBarChart(this.barChartGlobales, '#6228cf');
     }
     else {
-      this.bars.data.datasets[0].data.push(this.LstEstadisticas.reduce((a, {TareasAsignada}) => a + TareasAsignada, 0),
-                                          this.LstEstadisticas.reduce((a, {ZoomAsignada}) => a + ZoomAsignada, 0),
-                                          this.LstEstadisticas.reduce((a, {ForossAsignada}) => a + ForossAsignada, 0));
 
-      this.bars.data.datasets[1].data.push(this.LstEstadisticas.reduce((a, {TareasEntragadas}) => a + TareasEntragadas, 0),
-                                          this.LstEstadisticas.reduce((a, {ZoomFaltas}) => a + ZoomFaltas, 0),
-                                          this.LstEstadisticas.reduce((a, {ForosEntragadas}) => a + ForosEntragadas, 0));
+      this.generateColorArray();
+
+      this.bars.data.datasets[0].data = this.totalesAsigados;
+
+      this.bars.data.datasets[1].data = this.totalesEntregados;
+
+      this.bars.data.datasets[1].backgroundColor = this.colorArray;
 
       this.bars.update();
     }
@@ -150,6 +156,7 @@ export class ReportComponent implements OnInit {
             text: 'Aceptar',
             handler:  (value: any) => {
               this.mesActual = value.Meses.text;
+
               this.cargandoAnimation('Cargando...');
 
               //Se limpia la grafica
@@ -231,7 +238,6 @@ export class ReportComponent implements OnInit {
    const actualDate = new Date();
    let month = actualDate.getMonth() + 1;
 
-   console.log(month);
 
    if (month == 1) month = 5;
     else if (month == 2) month = 6;
@@ -273,7 +279,7 @@ export class ReportComponent implements OnInit {
     return value;
   }
 
-  generateColorArray(num) {
+  generateColorArray() {
     this.colorArray = [];
 
    const porcentajeTareas= this.totalesEntregados[0]==0 && this.totalesAsigados[0]==0 ? 0 : (100 * this.totalesEntregados[0]) / this.totalesAsigados[0];
@@ -311,7 +317,7 @@ export class ReportComponent implements OnInit {
     
     let ctx = elemento.nativeElement;
     ctx.height = 300;
-    this.generateColorArray(12);
+    this.generateColorArray();
 
     this.bars = new Chart(ctx, {
       type: 'bar',

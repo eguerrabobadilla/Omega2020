@@ -272,8 +272,8 @@ top: 0;" mode="ios">
                 <app-subjects style="width: 100%;"></app-subjects>
             </ion-slide>
             <ion-slide>
-                <app-graphics *ngIf="permisoEditar()" style="width: 100%;"></app-graphics>
-                <app-report *ngIf="!permisoEditar()" #appReport (updateAutoHeightSlider)="updateAutoHeightSlider()" style="width: 100%;"></app-report>
+                <!-- <app-graphics *ngIf="permisoEditar()" style="width: 100%;"></app-graphics>-->
+                <app-report #appReport (updateAutoHeightSlider)="updateAutoHeightSlider()" style="width: 100%;"></app-report>
             </ion-slide>
         </ion-slides>
 

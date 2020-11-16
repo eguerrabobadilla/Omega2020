@@ -407,6 +407,7 @@ export class HomePage {
    
 
     this.estadoArriba = false;
+    this.slideUp.lockSwipes(false);
 
 
 
@@ -927,7 +928,7 @@ this.pillMenu.animacion();
       console.log(itemOption);
       this.pildora = itemOption;
       console.log(this.selectSeccion);
-      if(itemOption == 'Estadísticas' && this.permisoEditar() === false){
+      if(itemOption == 'Estadísticas'){
 
           this.appReport.cargarEstadisticas();
       }
@@ -1376,6 +1377,7 @@ this.pillMenu.animacion();
 
   if(this.estadoArriba===false){	
     console.log("divArriba")
+    this.slideUp.lockSwipes(true);
     this.swipeUp2 = true;
     this.animacion(false, true);
     this.div2.nativeElement.click();
@@ -1403,6 +1405,7 @@ this.pillMenu.animacion();
   this.animacionButonSlide(false);
 //    this.scrollenable = false;
   this.estadoArriba = false;
+  this.slideUp.lockSwipes(false);
 // }
  }
 
