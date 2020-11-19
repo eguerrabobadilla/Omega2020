@@ -740,7 +740,10 @@ this.pillMenu.animacion();
       this.user.nombre = this.capitalizeFirstLetter(this.getKeyToken('nombre').split(' ')[0]);
       //let nombre = this.capitalizeFirstLetter(this.user.nombre.split(' ')[0]);
       //console.log(nombre);
-      this.user.grado = this.getKeyToken('grado');
+      if(this.getKeyToken('tipo')=='Profesor')
+        this.user.grado = `Prof.`;
+      else
+        this.user.grado = `0${this.getKeyToken('grado')}°`;
     }
 
     capitalizeFirstLetter(string) {

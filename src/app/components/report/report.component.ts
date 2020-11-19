@@ -353,7 +353,8 @@ export class ReportComponent implements OnInit {
             barPercentage: 0.6,
             categoryPercentage: 0.6,
             ticks: {
-              beginAtZero: true
+              beginAtZero: true,
+              precision: 0
             },
             gridLines: {
               drawOnChartArea: false
