@@ -95,7 +95,7 @@
                 <ion-button fill="outline" slot="end" (click)="edit($event,item)">Editar</ion-button>
             </ion-item>
         </ion-card>
-        <ion-card style="text-align: initial; " class="ion-activatable ripple-parent " mode="ios" *ngIf="!esConferencia &&  (LstRecursos | filter : 'Semana 2' : 'Semana').length == 0 || !esConferencia ">
+        <ion-card style="text-align: initial; " class="ion-activatable ripple-parent " mode="ios" *ngIf="!esConferencia &&  (LstRecursos | filter : 'Semana 2' : 'Semana').length == 0">
             <ion-ripple-effect></ion-ripple-effect>
             <ion-card-header>
                 <ion-card-title>Ningun recurso</ion-card-title>
@@ -127,7 +127,7 @@
             </ion-item>
         </ion-card>
 
-        <ion-card style="text-align: initial; " class="ion-activatable ripple-parent " mode="ios" *ngIf="!esConferencia &&  (LstRecursos | filter : 'Semana 3' : 'Semana').length == 0 || !esConferencia ">
+        <ion-card style="text-align: initial; " class="ion-activatable ripple-parent " mode="ios" *ngIf="!esConferencia &&  (LstRecursos | filter : 'Semana 3' : 'Semana').length == 0">
             <ion-ripple-effect></ion-ripple-effect>
             <ion-card-header>
                 <ion-card-title>Ningun recurso</ion-card-title>

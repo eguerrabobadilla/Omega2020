@@ -41,7 +41,6 @@ import { SubjectsComponent } from '../components/subjects/subjects.component';
 import { QuestionsComponent } from '../components/questions/questions.component';
 import { ContactComponent } from '../components/contact/contact.component';
 import { PerfilComponent } from '../components/perfil/perfil.component';
-import { LinkifyPipe } from '../pipes/linkifypipe ';
 import { CircleProgressComponent } from '../components/circle-progress/circle-progress.component';
 import { CircleProgressReportComponent } from '../components/circle-progress-report/circle-progress-report.component';
 import { GlobalModule } from '../modules/GoblaModule';
@@ -91,7 +90,7 @@ import { ReportComponent } from '../components/report/report.component';
   ],
   declarations: [ HomePage, ListComponent, 
     ListResourceComponent, ForumComponent,GraphicsComponent,CalendarComponent
-    , EvidencesComponent,SubjectsComponent, QuestionsComponent, ContactComponent, PerfilComponent,LinkifyPipe,ListTareasComponent,
+    , EvidencesComponent,SubjectsComponent, QuestionsComponent, ContactComponent, PerfilComponent,ListTareasComponent,
     ReportComponent]
 })
 export class HomePageModule {}

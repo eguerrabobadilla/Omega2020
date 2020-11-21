@@ -26,9 +26,8 @@
             <ion-card-subtitle style="padding-top: 10px;">{{ item.FechaPublicacion | date:'fullDate' }}</ion-card-subtitle>
 
         </ion-card-header>
-        <ion-card-content [innerHTML]="item.Descripcion" style="white-space: pre-line;">
+        <ion-card-content [innerHTML]="item.Descripcion | linkify : item.Id" style="white-space: pre-line;">
             
         </ion-card-content>
-
     </ion-card>
 </ion-content>

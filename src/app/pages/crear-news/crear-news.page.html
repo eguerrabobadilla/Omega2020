@@ -1,6 +1,6 @@
 <ion-header class="ion-no-border" mode="ios">
     <ion-toolbar>
-        <ion-title style="margin-top: 6px;">Nueva Noticia</ion-title>
+        <ion-title style="margin-top: 6px;">{{titulo}}</ion-title>
         <ion-buttons slot="end">
             <ion-button style="margin-top: 8px;margin-right: 8px;" (click)="closeModal()">
                 <ion-icon slot="icon-only" color="light" name="close"></ion-icon>
@@ -15,6 +15,7 @@
             <form [formGroup]="FrmItem" (ngSubmit)="crearNoticia()">
                 <ion-grid>
                     <ion-row>
+                        <ion-input hidden type="text" formControlName="Id" name="Id"></ion-input>
                         <ion-col size="12">
                             <ion-item>
                                 <ion-label color="light" position="floating">Titulo</ion-label>
@@ -32,6 +33,33 @@
                             </ion-item>
                             <div *ngIf="!FrmItem.controls.Descripcion.valid && (FrmItem.controls.Descripcion.dirty || submitAttempt)">
                                 <p class="text-error">Por favor ingresa una descripción.</p>
+                            </div>
+                        </ion-col>
+                        <ion-col size="12">
+                            <ion-item>
+                                <ion-label color="light" position="floating">Visibilidad</ion-label>
+                                <ion-select #SelectVisibilidad mode="ios" multiple="true"   formControlName="Visibilidad" name="Visibilidad">
+                                    <ion-select-option value="Alumno">Alumnos</ion-select-option>
+                                    <ion-select-option value="Profesor">Profesores</ion-select-option>
+                                    <ion-select-option value="Director">Administradores</ion-select-option>
+                                </ion-select>
+                            </ion-item>
+                            <div *ngIf="!FrmItem.controls.Visibilidad.valid && (FrmItem.controls.Visibilidad.dirty || submitAttempt)">
+                                <p class="text-error">Por favor seleccione al menos una Visibilidad.</p>
+                            </div>
+                        </ion-col>
+                        <ion-col size="12">
+                            <ion-item>
+                                <ion-label color="light" position="floating">Escolaridad</ion-label>
+                                <ion-select mode="ios" multiple="true" formControlName="Escolaridad" name="Escolaridad">
+                                    <ion-select-option value="Kinder">Kinder</ion-select-option>
+                                    <ion-select-option value="Elementary School">Primaria</ion-select-option>
+                                    <ion-select-option value="Junior High School">Secundaria</ion-select-option>
+                                    <ion-select-option value="High School">Preparatoria</ion-select-option>
+                                </ion-select>
+                            </ion-item>
+                            <div *ngIf="!FrmItem.controls.Escolaridad.valid && (FrmItem.controls.Escolaridad.dirty || submitAttempt)">
+                                <p class="text-error">Por favor seleccione al menos una Escolaridad.</p>
                             </div>
                         </ion-col>
                         <ion-col size="6">
@@ -66,7 +94,7 @@
                     </ion-row>
                     <ion-row>
                         <ion-col size="12">
-                            <ion-button expand="full" type="submit" block style="margin: 5% 0">Crear Noticia</ion-button>
+                            <ion-button expand="full" type="submit" block style="margin: 5% 0">{{tituloBoton}}</ion-button>
                         </ion-col>
                     </ion-row>
                 </ion-grid>

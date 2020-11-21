@@ -671,7 +671,7 @@ this.pillMenu.animacion();
 
 
       this.selectSeccion = index;
-
+      
       if (index === 1) {
          this.fabVisible = false; /*this.pillMenu.visibleFab(false);*/ 
          this.renderer.setStyle(this.fabend.nativeElement,'display','none');
@@ -686,10 +686,9 @@ this.pillMenu.animacion();
       } 
       else if (index === 3) { 
         this.fabVisibleFilters = true; /*this.pillMenu.visibleFabFilters(true)*/ 
-        if(this.getKeyToken('tipo')=='Profesor')
-         this.renderer.setStyle(this.fabend.nativeElement,'display','block');
-         
-         this.renderer.setStyle(this.fabstart.nativeElement,'display','none');
+          
+        this.renderer.setStyle(this.fabend.nativeElement,'display','none');
+        this.renderer.setStyle(this.fabstart.nativeElement,'display','none');
      } 
       else { 
           this.fabVisibleFilters = false; /*this.pillMenu.visibleFabFilters(false)*/ 
@@ -700,7 +699,7 @@ this.pillMenu.animacion();
       //Si el usuario es un director disfrazado de otro usuario bloquea los add
       if(this.getKeyToken("estatus")!=undefined) {
           this.renderer.setStyle(this.fabend.nativeElement,'display','none');
-          this.renderer.setStyle(this.fabstart.nativeElement,'display','none');
+          //this.renderer.setStyle(this.fabstart.nativeElement,'display','none');
       }
 
     }
@@ -932,7 +931,6 @@ this.pillMenu.animacion();
       this.pildora = itemOption;
       console.log(this.selectSeccion);
       if(itemOption == 'Estadísticas'){
-
           this.appReport.cargarEstadisticas();
       }
      // console.log(itemOption);
@@ -945,6 +943,7 @@ this.pillMenu.animacion();
         /*if(this.getKeyToken('tipo')=='Profesor' && itemOption=="Evidencias") {
           this.renderer.setStyle(this.fabend.nativeElement,'display','none');
         } else*/
+
          if(this.getKeyToken('tipo')=='Profesor') {
           this.renderer.setStyle(this.fabend.nativeElement,'display','block');
         } else if(this.getKeyToken('tipo')=='Alumno') {
@@ -953,8 +952,9 @@ this.pillMenu.animacion();
 
         //Si el usuario es un director disfrazado de otro usuario bloquea los add
         if(this.getKeyToken("estatus")!=undefined) {
+          console.log("entro this.getKeyToken");
           this.renderer.setStyle(this.fabend.nativeElement,'display','none');
-          this.renderer.setStyle(this.fabstart.nativeElement,'display','none');
+          //this.renderer.setStyle(this.fabstart.nativeElement,'display','none');
         }
       }
 
