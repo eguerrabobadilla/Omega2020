@@ -34,6 +34,7 @@ import { GlobalService } from '../services/global.service';
 import { async } from '@angular/core/testing';
 import { ListTareasComponent } from '../components/list-tareas/list-tareas.component';
 import { ReportComponent } from '../components/report/report.component';
+import { GraphicsComponent } from '../components/graphics/graphics.component';
 
 
 
@@ -111,6 +112,8 @@ export class HomePage {
 
   @ViewChild('pillMenu', {static: false}) pillMenu: PillMenuComponent;
   @ViewChild('appReport', {static: false}) appReport: ReportComponent;
+  @ViewChild('appGraphics', {static: false}) appGraphics: GraphicsComponent;
+
   @ViewChild('content2', {read: ElementRef, static: true}) contentref2: ElementRef;
   @ViewChild('div2', {read: ElementRef, static: true}) div2: ElementRef;
   @ViewChild('footer', {read: ElementRef, static: true}) footer: ElementRef;
@@ -931,9 +934,12 @@ this.pillMenu.animacion();
       console.log(itemOption);
       this.pildora = itemOption;
       console.log(this.selectSeccion);
-      if(itemOption == 'Estadísticas'){
+      if(itemOption == 'Estadísticas' && this.getKeyToken('tipo')=='Alumno'){
 
           this.appReport.cargarEstadisticas();
+      }
+      else if(itemOption == 'Estadísticas' && this.getKeyToken('tipo')=='Profesor'){
+        this.appGraphics.cargarEstadisticas();
       }
      // console.log(itemOption);
       //Logica boton + evidencias

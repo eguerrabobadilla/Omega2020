@@ -9,7 +9,7 @@ import { apiBase } from './apiBase';
 })
 export class EstadisticasService extends apiBase {
 
-  constructor(public http: HttpClient) { 
+  constructor(public http: HttpClient) {
     super();
     this.Ws = 'api/estadisticas';
   }

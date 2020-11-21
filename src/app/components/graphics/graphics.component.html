@@ -1,54 +1,104 @@
-<ion-card>
-    <ion-card-header>
-        <ion-card-title style="text-align: initial;">Generales</ion-card-title>
-    </ion-card-header>
+<ion-item detail="false" slot="fixed" lines="none">
+    <ion-chip (click)="openPicker()" color="danger">
+        <ion-icon name="calendar-outline"></ion-icon>
+        <ion-label>{{mesActual}}</ion-label>
+    </ion-chip>
 
-    <ion-card-content>
+</ion-item>
+<ion-list style="width: 100%;">
+    <ion-card style="text-align: initial;box-shadow: none;" mode="ios">
+        <ion-card-header>
+            <ion-card-title>Progress Report</ion-card-title>
+            <br>
+            <b>Month:</b> {{mesActual}}
+            <br><br>
 
-        <ion-grid>
-            <ion-row>
-                <ion-col>
-                    <div class="numeros">{{Estadisticas.Tareas}}</div>
-                </ion-col>
-                <ion-col>
-                    <div class="numeros">{{Estadisticas.Foros}}</div>
-                </ion-col>
-                <ion-col>
-                    <div class="numeros">{{Estadisticas.Recursos}}</div>
-                </ion-col>
-                <ion-col>
-                    <div class="numeros">{{Estadisticas.Temas}}</div>
-                </ion-col>
-            </ion-row>
-            <ion-row>
-                <ion-col>
-                    <div>Tareas</div>
-                </ion-col>
-                <ion-col>
-                    <div>Foros</div>
-                </ion-col>
-                <ion-col>
-                    <div>Recursos</div>
-                </ion-col>
-                <ion-col>
-                    <div>Temas</div>
-                </ion-col>
-            </ion-row>
-        </ion-grid>
-    </ion-card-content>
+        </ion-card-header>
+        <ion-card-content>
+            <div #contenedor *ngFor="let item of LstEstadisticas; index as i">
+                <ion-item lines="none" style="--padding-start: 0;position: relative;" detail="false">
+                    <h1 #itemsrefBoton class="accordion " style="font-weight: 600;font-size: 18px;white-space: nowrap;text-overflow: ellipsis;max-width: 254px;overflow: hidden;display: inline-block; ">
+                        {{item.Materia}}
+                    </h1>
+                    <!--<div style="background-color: blue;display: inline-block;position: absolute;right: 0; ">-->
 
-    <ion-card-header>
-        <ion-card-title style="text-align: initial;">Específicos</ion-card-title>
-    </ion-card-header>
+                    <!--</div>-->
+                </ion-item>
+                <!--  <ion-item lines="none" style="--padding-start: 0;position: relative;" detail="false">
+                    <h1 #itemsrefBoton class="accordion " style="font-weight: 600;font-size: 18px;white-space: nowrap;text-overflow: ellipsis;max-width: 254px;overflow: hidden;display: inline-block; ">
+                        {{item.Grado}}{{item.Grupo}} {{item.Escolaridad}}
+                    </h1>
 
-    <ion-card-content>
-        <ion-card-subtitle style="text-align: center;font-size: 17px; --color: #000;">Tareas</ion-card-subtitle>
-        <canvas #barCharttareas></canvas>
-        <ion-card-subtitle style="text-align: center;font-size: 17px; --color: #000;padding-top: 40px;">Foros</ion-card-subtitle>
-        <canvas #barChartforos></canvas>
-        <ion-card-subtitle style="text-align: center;font-size: 17px; --color: #000;padding-top: 40px;">Recursos</ion-card-subtitle>
-        <canvas #barChartrecursos></canvas>
-        <ion-card-subtitle style="text-align: center;font-size: 17px; --color: #000;padding-top: 40px;">Temas</ion-card-subtitle>
-        <canvas #barCharttemas></canvas>
-    </ion-card-content>
-</ion-card>
+                </ion-item>-->
+                <ion-grid style="background-color: white;border-radius: 4px;margin-left: 0; ">
+
+                    <ion-row>
+                        <ion-col size="12">
+                            <div>{{item.Grado}}{{item.Grupo}} {{item.Escolaridad}}
+                            </div>
+                        </ion-col>
+
+                    </ion-row>
+
+
+                </ion-grid>
+                <div class="panel " #itemsref [id]="i" status="close">
+                    <ion-grid style="background-color: white;border-radius: 4px;margin-left: 0; ">
+
+                        <ion-row style="text-align: center;">
+                            <ion-col size="3">
+                                <div>Tarea</div>
+                            </ion-col>
+                            <ion-col size="3">
+                                <div>Zoom</div>
+                            </ion-col>
+                            <ion-col size="3">
+                                <div>Foro</div>
+                            </ion-col>
+                            <ion-col size="3">
+                                <div>Recurso</div>
+                            </ion-col>
+                        </ion-row>
+
+                        <ion-row style='text-align: center;transform: translateY(-9px);--ion-default-font: -apple-system, BlinkMacSystemFont, "Helvetica Neue ", "Roboto ", sans-serif;    font-size: 20px; color: #666666;'>
+                            <ion-col size="3">
+                                <div>{{item.TareasEntragadas}}</div>
+                            </ion-col>
+                            <ion-col size="3">
+                                <div>{{item.ZoomFaltas}}</div>
+                            </ion-col>
+                            <ion-col size="3">
+                                <div>{{item.ForosEntragadas}}</div>
+                            </ion-col>
+                            <ion-col size="3">
+                                <div>{{item.RecursosAsignada}}</div>
+                            </ion-col>
+                            <!--    <ion-col size="2 ">
+                                <div>{{item.TareasEntragadas}}</div>
+                            </ion-col>
+                            <ion-col size="2 ">
+                                <div>{{item.ZoomFaltas}}</div>
+                            </ion-col>
+                            <ion-col size="2 ">
+                                <div>{{item.ForosEntragadas}}</div>
+                            </ion-col>-->
+                        </ion-row>
+                    </ion-grid>
+                </div>
+            </div>
+
+            <ion-card-subtitle style="text-align: center;font-size: 17px; --color: #000;margin-top: 8px;margin-bottom: 23px;">
+                Totales {{mesActual}}
+            </ion-card-subtitle>
+            <canvas #barChartGlobales>
+
+            </canvas>
+
+
+            <ion-item lines="none">
+
+            </ion-item>
+        </ion-card-content>
+
+    </ion-card>
+</ion-list>
