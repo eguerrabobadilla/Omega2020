@@ -69,3 +69,14 @@ p.text-error {
     padding-left: 16px;
     margin: 2% 0 0;
 }
+
+ion-select {
+    /* Applies to the value and placeholder color */
+    color: #ffffff;
+  
+    /* Set a different placeholder color */
+    --placeholder-color: #971e49;
+  
+    /* Set full opacity on the placeholder */
+    --placeholder-opacity: 1;
+  }

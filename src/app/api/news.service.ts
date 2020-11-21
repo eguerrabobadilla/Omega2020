@@ -14,11 +14,21 @@ export class NewsService extends apiBase {
   }
 
   save(item: any) {
+    console.log(item);
     return this.http.post(`${this.url}/${this.Ws}`,item);
+  }
+
+  update(item: any) {
+    console.log(item);
+    return this.http.put(`${this.url}/${this.Ws}/${item.Id}`, item);
   }
   
   get(): Observable<any[]> {
     return this.http.get<any[]>(`${this.url}/${this.Ws}`);
+  }
+
+  delete(Id: any) {
+    return this.http.delete(`${this.url}/${this.Ws}/${Id}`);
   }
 
 }

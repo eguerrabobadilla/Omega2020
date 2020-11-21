@@ -10,6 +10,7 @@ import { FilterPipe } from '../pipes/filter.pipe';
 import { CircleProgressReportComponent } from '../components/circle-progress-report/circle-progress-report.component';
 import { ChatsComponent } from '../components/chats/chats.component';
 import { NewsComponent } from '../components/news/news.component';
+import { LinkifyPipe } from '../pipes/linkifypipe ';
 
 @NgModule({
     imports: [
@@ -17,8 +18,8 @@ import { NewsComponent } from '../components/news/news.component';
         CommonModule,
         FormsModule
     ],
-    declarations:[PillMenuComponent,CircleProgressComponent,CodesComponent,BooksComponent,FilterPipe,CircleProgressReportComponent,ChatsComponent,NewsComponent],
-    exports:[PillMenuComponent,CircleProgressComponent,CodesComponent,BooksComponent,FilterPipe,CircleProgressReportComponent,ChatsComponent,NewsComponent]
+    declarations:[PillMenuComponent,CircleProgressComponent,CodesComponent,BooksComponent,FilterPipe,CircleProgressReportComponent,ChatsComponent,NewsComponent,LinkifyPipe],
+    exports:[PillMenuComponent,CircleProgressComponent,CodesComponent,BooksComponent,FilterPipe,CircleProgressReportComponent,ChatsComponent,NewsComponent,LinkifyPipe]
 })
 export class GlobalModule
 {

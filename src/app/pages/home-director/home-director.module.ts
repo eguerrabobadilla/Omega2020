@@ -41,7 +41,6 @@ import { SubjectsComponent } from '../../components/subjects/subjects.component'
 import { QuestionsComponent } from '../../components/questions/questions.component';
 import { ContactComponent } from '../../components/contact/contact.component';
 import { PerfilComponent } from '../../components/perfil/perfil.component';
-import { LinkifyPipe } from '../../pipes/linkifypipe ';
 import { CircleProgressComponent } from '../../components/circle-progress/circle-progress.component';
 import { EscolaridadComponent } from 'src/app/components/escolaridad/escolaridad.component';
 import { GruposComponent } from 'src/app/components/grupos/grupos.component';
