@@ -934,10 +934,10 @@ this.pillMenu.animacion();
       this.pildora = itemOption;
       console.log(this.selectSeccion);
       if(itemOption == 'Estadísticas' && this.getKeyToken('tipo')=='Alumno'){
-
           this.appReport.cargarEstadisticas();
       }
       else if(itemOption == 'Estadísticas' && this.getKeyToken('tipo')=='Profesor'){
+        console.log(this.getKeyToken('tipo'));
         this.appGraphics.cargarEstadisticas();
       }
      // console.log(itemOption);
@@ -1498,11 +1498,11 @@ this.pillMenu.animacion();
     }
 
     public permisoEditar() {
-      const jwt_temp = localStorage.getItem('USER_INFO_TEMP');
+      /*const jwt_temp = localStorage.getItem('USER_INFO_TEMP');
       if(jwt_temp != null)
       {
           return false;
-      }
+      }*/
       
       if(this.getKeyToken('tipo')=='Profesor')
         return true;
