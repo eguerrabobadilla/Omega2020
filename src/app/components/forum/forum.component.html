@@ -1,11 +1,11 @@
 <ion-progress-bar *ngIf="spiner" type="indeterminate"></ion-progress-bar>
 <ion-list>
     <ion-virtual-scroll [items]="LstForo" approxItemHeight="320px" style="margin-bottom: 100px;z-index: 999999;">
-        <ion-card style="text-align: initial;" class="ion-activatable ripple-parent" mode="ios" *virtualItem="let item; let itemBounds = bounds;" (click)="openDetail($event,item,item.Id)">
+        <ion-card style="text-align: initial;border-bottom: 0.6px solid #d0d0d0;border-left: none;border-radius: 0px;box-shadow: none !important;" class="ion-activatable ripple-parent" mode="ios" *virtualItem="let item; let itemBounds = bounds;" (click)="openDetail($event,item,item.Id)">
             <ion-ripple-effect></ion-ripple-effect>
             <ion-card-header>
                 <ion-item lines="none">
-                    <ion-avatar slot="start" style="margin-left: -14px;height: 40px; width: 40px;">
+                    <ion-avatar slot="start" style="margin-left: -21px;height: 40px; width: 40px;">
                         <img src="assets/img/groups.png">
                     </ion-avatar>
                     <ion-label>
@@ -24,7 +24,7 @@
                 <br>
                 <b>Materia:</b> {{ item.Materia.Nombre }}
             </ion-card-content>
-            
+
             <ion-item lines="none">
                 <ion-icon style="font-size: 15px;color: #F4315D;" name="chatbubbles-outline"></ion-icon>
                 <ion-label>

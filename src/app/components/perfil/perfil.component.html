@@ -1,4 +1,4 @@
-<ion-card style="text-align: initial;" class="ion-activatable ripple-parent" mode="ios">
+<ion-card style="text-align: initial;border-left: none;border-radius: 0px;box-shadow: none !important;" class="ion-activatable ripple-parent" mode="ios">
     <!--<ion-ripple-effect></ion-ripple-effect>-->
     <ion-card-header>
         <ion-card-title style="padding-bottom: 8px;">Nombre
@@ -13,7 +13,7 @@
         <ion-card-title *ngIf="user.Tipo=='Alumno' && user.Escolaridad != 'Elementary School' && user.Escolaridad != 'Kinder'" style="padding-bottom: 8px;">Nivel Ingles
             <ion-card-subtitle style="font-size: 20px;">{{user.GradoIngles}}{{user.GrupoIngles}}</ion-card-subtitle>
         </ion-card-title>
-        <ion-card-title  style="padding-bottom: 8px;">Usuario
+        <ion-card-title style="padding-bottom: 8px;">Usuario
             <ion-card-subtitle style="font-size: 20px;">{{user.Usuario}}</ion-card-subtitle>
         </ion-card-title>
     </ion-card-header>
