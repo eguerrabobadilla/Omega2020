@@ -92,9 +92,19 @@ export class ReportComponent implements OnInit {
   }
   cargarEstadisticas(){
     console.log(this.mesActual);
+
+    const mesesReal = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo',
+    'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+
+    const d = new Date();
+    this.mesActual = mesesReal[d.getMonth()];
+    this.mesActualNumero= d.getMonth() + 1;
+
     this.cargandoAnimation('Cargando...');
     this.apiEstadisticas.getEstadisticasAlumno(this.mesActualNumero).subscribe(data => {
-      this.loadingController.dismiss();
+      setTimeout(() => {
+        this.loadingController.dismiss();
+      }, 500);
       this.LstEstadisticas = data;
       this.calcularGrafica();  
     });
