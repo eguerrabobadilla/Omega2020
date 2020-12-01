@@ -15,6 +15,8 @@ export class ListTareasComponent implements OnInit {
   LstTareas: any[] = [];
   materiaId: any;
   loading: any;
+  visto = false;
+  visto2 = false;
   cargarConFiltro = false;
   spiner = true;
   contadorInfinieScroll = 0;
@@ -96,7 +98,18 @@ export class ListTareasComponent implements OnInit {
         backdropDismiss: true,
         componentProps: {item}
       });
+      setTimeout(() => {
+        console.log(item.Id);
+        if(item.Id== 14170){
+          this.visto2 = true;
+        }
+        else{
+          this.visto= true;
+        }
+      }, 1000);
+
     return await modal.present();
+   
   }
 
   public async editaTarea(event, item) {

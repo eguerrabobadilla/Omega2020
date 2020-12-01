@@ -38,6 +38,9 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 
+
+import { OneSignal } from '@ionic-native/onesignal/ngx';
+
 @NgModule({
   declarations: [AppComponent, AnimateItemsDirective],
   entryComponents: [DetallesNewsPage],
@@ -70,6 +73,7 @@ import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
     Camera,
     CodePush,
     InAppBrowser,
+    OneSignal,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: HTTP_INTERCEPTORS,useClass: AuthInterceptorService,multi: true}
   ],

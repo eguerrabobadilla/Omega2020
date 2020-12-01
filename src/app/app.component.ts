@@ -7,6 +7,7 @@ import { AuthInterceptorService } from './services/auth-interceptor.service';
 import { AuthenticationService } from './services/authentication.service';
 import { Router } from '@angular/router';
 import { WebsocketService } from './services/websocket.service';
+import { PushService } from './services/push.service';
 
 @Component({
   selector: 'app-root',
@@ -18,6 +19,7 @@ export class AppComponent {
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
+    private PushService : PushService,
     private router: Router,
     private authenticationService: AuthenticationService,
     public  webSocket: WebsocketService
@@ -29,7 +31,10 @@ export class AppComponent {
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
+      this.PushService.configuracionInicial();
+
     });
+    
 
     //Login
     this.authenticationService.authState.subscribe(state => {
@@ -54,6 +59,7 @@ export class AppComponent {
         this.router.navigate(['login']);
       }
     });
+  
   }
 
   
