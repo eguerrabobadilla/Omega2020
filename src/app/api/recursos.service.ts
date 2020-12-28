@@ -31,8 +31,15 @@ export class RecursosService  extends apiBase {
   }
   getByMonthTipo(mes: string,tipo: string): Observable<any[]> {
     https://localhost:5001/api/recursos/filtros/?mes=Octubre&tipo=Zoom&tipo=Documento
-    return this.http.get<any[]>(`${this.url}/${this.Ws}/filtros/?mes=${mes}&${tipo}`);
+    return this.http.get<any[]>(`${this.url}/${this.Ws}/filtros/?mes=${mes}&tipo=${tipo}`);
   }
+
+  getByMonthTipoMateria(mes: string,tipo: string,id): Observable<any[]> {
+    https://localhost:5001/api/recursos/filtros/?mes=Octubre&tipo=Zoom&tipo=Documento
+    return this.http.get<any[]>(`${this.url}/${this.Ws}/filtros/materia/?mes=${mes}&tipo=${tipo}&id=${id}`);
+  }
+
+
 
   getRecursosMaterias(id,mes): Observable<any[]> {
     return this.http.get<any[]>(`${this.url}/${this.Ws}/materia/${id}/${mes}`);
@@ -41,6 +48,15 @@ export class RecursosService  extends apiBase {
   getByLink(mes): Observable<any[]> {
     return this.http.get<any[]>(`${this.url}/${this.Ws}/${mes}`);
   }
+
+  getByMonthTipoInfinite(mes: string,tipo: string,skip,take): Observable<any[]> {
+ //   return this.http.get<any[]>(`${this.url}/${this.Ws}/${mes}/materiaInfinite/${id}/${skip}/${take}`);
+    return this.http.get<any[]>(`${this.url}/${this.Ws}/filtros/infinite/?mes=${mes}&tipo=${tipo}&skip=${skip}&take=${take}`);
+  }
+  getByMonthTipoInfiniteMateria(mes: string,tipo: string,skip,take,id): Observable<any[]> {
+    //   return this.http.get<any[]>(`${this.url}/${this.Ws}/${mes}/materiaInfinite/${id}/${skip}/${take}`);
+       return this.http.get<any[]>(`${this.url}/${this.Ws}/filtros/infinite/materia/?mes=${mes}&tipo=${tipo}&skip=${skip}&take=${take}&id=${id}`);
+     }
 
   delete(Id: any) {
     return this.http.delete(`${this.url}/${this.Ws}/${Id}`);
