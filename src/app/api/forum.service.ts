@@ -57,4 +57,8 @@ export class ForumService  extends apiBase {
   getForosMateriasInfinite(id,skip,take): Observable<any[]> {
     return this.http.get<any[]>(`${this.url}/${this.WsForo}/materiaForosInfinite/${id}/${skip}/${take}`);
   }
+
+  updateAcceso(Id) {
+    return this.http.put(`${this.url}/${this.WsForo}/updateAcceso/${Id}`,null);
+  }
 }

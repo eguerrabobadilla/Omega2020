@@ -1,5 +1,5 @@
 import { Component, ElementRef, ViewChild, Renderer2, ɵCodegenComponentFactoryResolver } from '@angular/core';
-import { AnimationController, Animation, IonContent, Platform, IonSlides, ModalController, LoadingController, AlertController, PickerController } from '@ionic/angular';
+import { AnimationController, Animation, IonContent, Platform, IonSlides, ModalController, LoadingController, AlertController, PickerController, IonSelect } from '@ionic/angular';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { Gesture, GestureController } from '@ionic/angular';
 import { PillMenuComponent } from '../components/pill-menu/pill-menu.component';
@@ -35,6 +35,10 @@ import { async } from '@angular/core/testing';
 import { ListTareasComponent } from '../components/list-tareas/list-tareas.component';
 import { ReportComponent } from '../components/report/report.component';
 import { GraphicsComponent } from '../components/graphics/graphics.component';
+import { PushService } from '../services/push.service';
+import { DevicesService } from '../api/devices.service';
+import { CrearExamenPage } from '../pages/crear-examen/crear-examen.page';
+import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 
 
@@ -43,8 +47,6 @@ mobiscroll.settings = {
   themeVariant: 'light',
   layout: 'liquid'
 };
-
-
 
 
 @Component({
@@ -73,12 +75,15 @@ export class HomePage {
   loading: any;
   /****Tipo seleccionado Rercuso****/
   TipoSeleccionado: any = 'Archivos';
+  public Editor = ClassicEditor;
+
 
   settings: MbscCalendarOptions = {
     theme: 'mobiscroll',
     display: 'inline',
     themeVariant: 'light',
     calendarScroll: 'vertical',
+    //controls: ['calendar','time'],
     months: 1,
   onShow: (event, inst) => {
     setTimeout(() => { //temporal
@@ -133,6 +138,7 @@ export class HomePage {
   @ViewChild('newsComponent', {static: false}) newsComponent: NewsComponent;
   @ViewChild('avatarUser', {read: ElementRef, static: false}) avatarUser: ElementRef;
   @ViewChild('mobi', {static: false}) mobi: MbscCalendar; 
+  @ViewChild('filtrosControl', {static: false}) filtrosControl: IonSelect;
 
   public fabVisible: boolean = true;
   public fabVisibleFilters: boolean = false;
@@ -172,7 +178,8 @@ export class HomePage {
               public authenticationService: AuthenticationService ,
               private apiTareas: TareasService, public  webSocket: WebsocketService, private apiCalendario: CalendarioService,
               private pickerController: PickerController, private apiMaterias: MateriasService,
-              private codePush : CodePush,private storage: Storage,private router: Router,private globalServicies: GlobalService) {
+              private codePush : CodePush,private storage: Storage,private router: Router,private globalServicies: GlobalService,
+              private pushService: PushService,private apiDevice: DevicesService) {
     //  this.scrollenable = true;
 
 
@@ -638,10 +645,10 @@ this.pillMenu.animacion();
       let index = await this.slideUp.getActiveIndex();
 
       // Por mientras
-      /*index = index === 7 ? 1 : index;
-      index = index === 0 ? 6 : index;*/
-      index = index === 6 ? 1 : index;
-      index = index === 0 ? 5 : index;
+      index = index === 7 ? 1 : index;
+      index = index === 0 ? 6 : index;
+      /*index = index === 6 ? 1 : index;
+      index = index === 0 ? 5 : index;*/
       this.header = this.headersText[index - 1];
       this.nombreIcono = this.iconos[index - 1];
 
@@ -658,15 +665,14 @@ this.pillMenu.animacion();
 
         this.pildora = 'Tareas';
      } else if (index === 3) {
-      this.tabs = ['Noticias', 'Mensajes', 'Calendario'];
-
+        this.tabs = ['Noticias', 'Mensajes', 'Calendario'];
      } else if (index === 4) {
-            this.tabs = ['Perfil', 'Materias', 'Estadísticas'];
+        this.tabs = ['Perfil', 'Materias', 'Estadísticas'];
      } else if (index === 5) {
-      this.tabs = ['Preguntas', 'Contacto'];
-      }/* } else if (index === 6) {
-        this.tabs = ['Alumnos', 'Docentes', 'Cordinadores'];
-      }*/
+        this.tabs = ['Preguntas', 'Contacto'];
+      } else if (index === 6) {
+        this.tabs = ['Examenes', 'Estadísticas'];
+      }
 
       this.selectOption = '0';
       // console.log(await this.slideDown.getActiveIndex().toString());
@@ -693,7 +699,14 @@ this.pillMenu.animacion();
         this.renderer.setStyle(this.fabend.nativeElement,'display','none');
         this.renderer.setStyle(this.fabstart.nativeElement,'display','none');
      } 
-      else { 
+     else if (index === 6) { 
+        this.fabVisibleFilters = true; /*this.pillMenu.visibleFabFilters(true)*/ 
+        if(this.getKeyToken('tipo')=='Profesor')
+        this.renderer.setStyle(this.fabend.nativeElement,'display','block');
+
+        this.renderer.setStyle(this.fabstart.nativeElement,'display','block');
+     }
+     else { 
           this.fabVisibleFilters = false; /*this.pillMenu.visibleFabFilters(false)*/ 
           this.renderer.setStyle(this.fabend.nativeElement,'display','none');
           this.renderer.setStyle(this.fabstart.nativeElement,'display','none');
@@ -773,10 +786,12 @@ this.pillMenu.animacion();
       console.log("home principal");
       this.subscribeToEvents();
 
+      
+
       //this.LstTareas = await this.apiTareas.get().toPromise();
 
-      this.iconos = ['book-outline', 'pencil', 'people-outline', 'person-outline', 'hammer-outline'];
-      this.headersText = ['Books', 'Tasks', 'Community', 'Account', 'Support'];
+      this.iconos = ['book-outline', 'pencil', 'people-outline', 'person-outline', 'hammer-outline','reader-outline'];
+      this.headersText = ['Books', 'Tasks', 'Community', 'Account', 'Support','Exams'];
       this.tabs = ['Todos', 'Inglés'  , 'Español'];
 
 
@@ -929,6 +944,9 @@ this.pillMenu.animacion();
 
 
     segmentChanged(event) {
+      //Limpia los filtros en cada cambio
+      this.filtrosControl.value="";
+
       const itemOption = this.pillMenu.itemsMenu[event.detail.value];
       console.log(itemOption);
       this.pildora = itemOption;
@@ -989,7 +1007,73 @@ this.pillMenu.animacion();
       // this.slideUp.slideTo(event.detail.value);
     } 
 
+    ionChangeFiltros(event){
+      let filtro='';
+
+      //console.log(event.detail.value.length);
+      if(event.detail.value=="")
+        return;
+      
+
+      event.detail.value.forEach((element,idx,array) => {
+        if (idx === array.length - 1){ 
+          filtro += element.Id;
+        }
+        else {
+          filtro += element.Id + ",";
+        }
+      });
+
+      console.log(filtro);
+
+      this.IonContentScroll.scrollToPoint(0, 0, 0);
+      const itemOption =this.pillMenu.itemsMenu[this.pillMenu.indexAnterior];
+      if(itemOption==="Tareas") {
+        if (event.detail.value.length === 0) {
+          this.tareasComponent.cargar(0);
+        } else {
+          //this.tareasComponent.cargar(event.detail.value[0].Id);
+          this.tareasComponent.cargar(filtro);
+        }
+      }
+      else if(itemOption==="Foro") {
+        if (event.detail.value.length === 0) {
+            this.forumComponent.cargar(0);
+        } else {
+           this.forumComponent.cargar(event.detail.value[0].Id);
+        } 
+      }
+      else if(itemOption==="Recursos") {
+        if (event.detail.value.length === 0) {
+            this.resourceComponent.cargar(0);
+        } else {
+           this.resourceComponent.cargar(event.detail.value[0].Id);
+        } 
+      }
+    }
+
+    compareWith(o1: any, o2: any | any[]) {
+
+      if (!o1 || !o2) {
+        return o1 === o2;
+      }
+  
+      if (Array.isArray(o2)) {
+        return o2.some((u: any) => u.Id === o1.Id);
+      }
+  
+      return o1.Id === o2.Id;
+    }
+
     async openPicker() {
+      console.log("filtros");
+
+      this.materias = await this.apiMaterias.get().toPromise();
+      console.log(this.materias);
+
+      this.filtrosControl.open();
+      return;
+
       const picker = await this.pickerController.create({
           mode : 'ios',
           buttons: [
@@ -1056,7 +1140,7 @@ this.pillMenu.animacion();
     async nuevoRecurso(itemOption) {
       
       itemOption = this.pillMenu.itemsMenu[this.pillMenu.indexAnterior];
-
+      
       if (itemOption === 'Tareas') {
           const modal = await this.modalCrl.create({
             component: NuevoRecursoPage,
@@ -1170,6 +1254,28 @@ this.pillMenu.animacion();
       else if (itemOption === 'Calendario') {
         const modal = await this.modalCrl.create({
           component: CrearTopicPage,
+          // cssClass: 'my-custom-modal-css',
+          cssClass: 'my-custom-modal-css-capturas',
+          showBackdrop: false,
+          mode: 'ios',
+          backdropDismiss: true
+        });
+
+        await modal.present();
+
+        modal.onDidDismiss().then( async (data) => {
+          await this.cargandoAnimation('Cargando...');
+
+          this.apiCalendario.getCalendario().subscribe(data => {
+            
+            this.events = data;
+            this.loadingController.dismiss();
+          });
+        });
+      }
+      else if(itemOption == 'Examenes') {
+        const modal = await this.modalCrl.create({
+          component: CrearExamenPage,
           // cssClass: 'my-custom-modal-css',
           cssClass: 'my-custom-modal-css-capturas',
           showBackdrop: false,
@@ -1332,7 +1438,17 @@ this.pillMenu.animacion();
 
     public async inforConnectionScoket(status) {
       if (status == true) {
-          console.log("this.hayConexion = true;");
+            
+            try {
+              if(this.pushService.userId != undefined)
+                await this.apiDevice.update(this.pushService.userId).toPromise();
+            } catch (error) {
+              console.error(error);
+              // expected output: ReferenceError: nonExistentFunction is not defined
+              // Note - error messages will vary depending on browser
+            }
+
+            console.log("this.hayConexion = true;");
             this.hayConexion = true;
             this.renderer.setStyle(this.avatarUser.nativeElement, 'color', `#FF426D`);
             this.slideUp.lockSwipes(false);

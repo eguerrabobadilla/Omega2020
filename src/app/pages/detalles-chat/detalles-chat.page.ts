@@ -3,6 +3,8 @@ import { ChatService } from '../../api/chat.service';
 import { ModalController, IonContent } from '@ionic/angular';
 import { FormBuilder, FormGroup, Validators  } from '@angular/forms';
 import { WebsocketService } from '../../services/websocket.service';
+import { Subscription } from 'rxjs';
+
 
 @Component({
   selector: 'app-detalles-chat',
@@ -22,6 +24,7 @@ export class DetallesChatPage implements OnInit {
   title: string = '';
   groupId: string;
   usuarioId: number;
+  subscribeChat: Subscription;
 
   @ViewChild('Content', {static: true}) contentArea: IonContent;
 
@@ -29,7 +32,7 @@ export class DetallesChatPage implements OnInit {
 
   constructor(private apichat: ChatService, private modalCtrl: ModalController, private  formBuilder : FormBuilder,
               private applicationRef: ApplicationRef, private webSocket: WebsocketService, private _ngZone: NgZone) {
-
+      console.log("constructor");
       this.FrmItem = formBuilder.group({
         Mensaje: ['', Validators.compose([Validators.required])]
       });
@@ -62,6 +65,11 @@ export class DetallesChatPage implements OnInit {
     });
 
   }
+  async ionViewDidEnter() {
+      await this.apichat.updateAcceso(this.item.UsuarioId2).toPromise();
+    //if(this.item.Tareasusuarios.length > 0)
+      this.item.Visto='SI';
+  }
 
   ionViewDidLoad() {
     
@@ -87,18 +95,29 @@ export class DetallesChatPage implements OnInit {
     this.modalCtrl.dismiss();
   }
 
-  private subscribeToEvents(): void {
+  async ngOnDestroy() {
+    console.log("page cerrado");
+    await this.subscribeChat.unsubscribe();
+  }
 
-    this.webSocket.messageReceived.subscribe((message: any) => {
-        message.HoraMensaje.Minutes = message.HoraMensaje.Minutes.length == 1 ? `0${message.HoraMensaje.Minutes}` : message.HoraMensaje.Minutes;
-        message.HoraMensaje.Seconds = message.HoraMensaje.Seconds.length == 1 ? `0${message.HoraMensaje.Seconds}` : message.HoraMensaje.Seconds;
-        message.HoraMensaje = `${message.HoraMensaje.Hours}:${message.HoraMensaje.Minutes}:${message.HoraMensaje.Seconds}`;
+  private subscribeToEvents() : void{
 
-        //this.LstChats.unshift(message);
-        this.LstChats.push(message);
-        this.applicationRef.tick();
-        console.log(message);
-    });
+     this.subscribeChat= this.webSocket.messageReceived.subscribe(async (message: any) => {
+          message.HoraMensaje.Minutes = message.HoraMensaje.Minutes.length == 1 ? `0${message.HoraMensaje.Minutes}` : message.HoraMensaje.Minutes;
+          message.HoraMensaje.Seconds = message.HoraMensaje.Seconds.length == 1 ? `0${message.HoraMensaje.Seconds}` : message.HoraMensaje.Seconds;
+          message.HoraMensaje = `${message.HoraMensaje.Hours}:${message.HoraMensaje.Minutes}:${message.HoraMensaje.Seconds}`;
+
+          //this.LstChats.unshift(message);
+          this.LstChats.push(message);
+          this.applicationRef.tick();
+
+          await this.apichat.updateAcceso(this.item.UsuarioId2).toPromise();
+          //if(this.item.Tareasusuarios.length > 0)
+          this.item.Visto='SI';
+
+          console.log("recivido");
+          console.log(message);
+      });
   }
 
 }

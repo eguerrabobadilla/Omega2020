@@ -14,7 +14,7 @@
     </ion-toolbar>
 </ion-header>
 
-<ion-content >
+<ion-content>
     <ion-slides #slider [options]="slideOpts" (ionSlideNextStart)="ionSlideDidChange()" (ionSlidePrevStart)="ionSlideDidChange()" >
         <ion-slide>
             <div scrollY="true" style="height: 72.6vh;overflow-y: scroll;width: 100%;">
@@ -176,4 +176,4 @@
           <span *ngIf="mensaje=='Editar'">Editar</span>
       </ion-button>
     </ion-toolbar>
-  </ion-footer>
+</ion-footer>

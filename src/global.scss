@@ -59,6 +59,11 @@
     display: none !important;
 }
 
+.left-align-buttons .action-sheet-button-inner.sc-ion-action-sheet-ios {
+    justify-content: flex-start;
+    font-size: 18px;
+}
+
 $mbsc-ios-accent: #e61d2a;
 $mbsc-material-accent: #e61d2a;
 $mbsc-mobiscroll-accent: #e61d2a;

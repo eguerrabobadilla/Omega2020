@@ -13,8 +13,9 @@
         <ion-card style="text-align: initial;border-bottom: 0.6px solid #d0d0d0;border-left: none;border-radius: 0px;box-shadow: none !important;" class="ion-activatable ripple-parent" mode="ios" *virtualItem="let item" (click)="openDetail($event,item)">
             <ion-ripple-effect></ion-ripple-effect>
             <ion-card-header>
-                <ion-icon name="ellipse" style="float: right;color: red;" *ngIf="item.Id>15176 && visto== false && !permisoEditar()"></ion-icon>
-                <ion-icon name="ellipse" style="float: right;color: red;" *ngIf="item.Id== 14170 && visto2== false && !permisoEditar()"></ion-icon>
+                <!--ion-icon name="ellipse" style="float: right;color: red;" *ngIf="item.Id>13550 && visto== false && !permisoEditar()"></ion-icon>-->
+                <!--<ion-icon name="ellipse" style="float: right;color: red;" *ngIf="item.Id== 14170 && visto2== false && !permisoEditar()"></ion-icon>-->
+                <ion-icon name="ellipse" style="float: right;color: red;" *ngIf="!permisoEditar() && item.Tareasusuarios[0]?.Visto=='NO'"></ion-icon>
 
                 <ion-card-title style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{ item.Titulo }}</ion-card-title>
             </ion-card-header>

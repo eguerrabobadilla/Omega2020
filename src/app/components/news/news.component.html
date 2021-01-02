@@ -17,8 +17,9 @@
                             <ion-img src="assets/img/unnamed.png"></ion-img>
                         </ion-avatar>
                         <ion-label style="font-size: 13px;padding-left: 8px;">Colegio Inglés</ion-label>
+                        
                     </ion-item>
-
+                    <ion-icon name="ellipse" style="float: right;color: red;" *ngIf="item.Noticiasusuarios[0]?.Visto=='NO'"></ion-icon>
                     <ion-card-title style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
                         {{ item.Titulo }}
                     </ion-card-title>

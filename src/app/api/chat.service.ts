@@ -58,4 +58,8 @@ export class ChatService extends apiBase {
   addMensajeGrupo(item) {
     return this.http.post(`${this.url}/${this.Ws}/grupos`, item);
   }
+
+  updateAcceso(Id) {
+    return this.http.put(`${this.url}/${this.WsConversaciones}/updateAcceso/${Id}`,null);
+  }
 }

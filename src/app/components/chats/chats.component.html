@@ -60,11 +60,15 @@
             <img src="assets/img/unnamed.png">
         </ion-avatar>
         <ion-label>
-            <h2>{{item.UsuarioId2Navigation.Nombre | titlecase }} {{item.UsuarioId2Navigation.ApellidoMaterno | titlecase}} {{item.UsuarioId2Navigation.ApellidoPaterno | titlecase}}</h2>
+            <div>
+                <h2>
+                    {{item.UsuarioId2Navigation.Nombre | titlecase }} {{item.UsuarioId2Navigation.ApellidoMaterno | titlecase}} {{item.UsuarioId2Navigation.ApellidoPaterno | titlecase}}
+                </h2>
+                <ion-icon name="ellipse" style="float: right;color: red;" *ngIf="item.Visto=='NO'"></ion-icon>
+            </div>
             <p><b>{{item.UsuarioId2Navigation.Tipo}}</b> {{item.UsuarioId2Navigation.Escolaridad}} {{item.UsuarioId2Navigation.Grado}}{{item.UsuarioId2Navigation.Grupo}}</p>
             <p>{{item.UltimoMensaje}}</p>
             <p>{{ item.FechaUltimoMensaje | date:'mediumDate' }} {{ item.HoraUlimoMensaje }}</p>
         </ion-label>
     </ion-item>
-
 </ion-list>

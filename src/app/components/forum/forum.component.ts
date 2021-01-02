@@ -109,7 +109,7 @@ export class ForumComponent implements OnInit {
     await modal.present();
 
     modal.onDidDismiss().then( async (data) => {
-      this.LstForo = await this.apiForum.get(false, 0).toPromise();
+      //this.LstForo = await this.apiForum.get(false, 0).toPromise();
     });
   }
 

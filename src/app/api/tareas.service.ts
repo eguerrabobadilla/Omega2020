@@ -41,4 +41,8 @@ export class TareasService  extends apiBase {
     return this.http.delete(`${this.url}/${this.Ws}/${Id}`);
   }
 
+  updateAcceso(Id) {
+    return this.http.put(`${this.url}/${this.Ws}/updateAcceso/${Id}`,null);
+  }
+
 }

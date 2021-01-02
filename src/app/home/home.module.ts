@@ -29,7 +29,6 @@ import { CrearNewsPage } from '../pages/crear-news/crear-news.page';
 import { DetalleChatGroupPage } from '../pages/detalle-chat-group/detalle-chat-group.page';
 import { DetalleChatGroupPageModule } from '../pages/detalle-chat-group/detalle-chat-group.module';
 import { GraphicsComponent } from '../components/graphics/graphics.component';
-import { CalendarComponent } from '../components/calendar/calendar.component';
 import { CalendarEventsPage } from '../pages/calendar-events/calendar-events.page';
 import { CalendarEventsPageModule } from '../pages/calendar-events/calendar-events.module';
 import { EvidencesComponent } from '../components/evidences/evidences.component';
@@ -46,6 +45,10 @@ import { CircleProgressReportComponent } from '../components/circle-progress-rep
 import { GlobalModule } from '../modules/GoblaModule';
 import { ListTareasComponent } from '../components/list-tareas/list-tareas.component';
 import { ReportComponent } from '../components/report/report.component';
+import { CrearExamenPage } from '../pages/crear-examen/crear-examen.page';
+import { CrearExamenPageModule } from '../pages/crear-examen/crear-examen.module';
+
+
 
 
 
@@ -61,14 +64,14 @@ import { ReportComponent } from '../components/report/report.component';
     NewResourcePage,
     CalendarEventsPage,
     CrearEvidencePage,
-    CrearTopicPage
+    CrearTopicPage,
+    CrearExamenPage
   ],
   imports: [ 
     MbscModule,  
     CommonModule,
     FormsModule,
     IonicModule,
-   
     RouterModule.forChild([
       {
         path: '',
@@ -86,11 +89,12 @@ import { ReportComponent } from '../components/report/report.component';
     CalendarEventsPageModule,
     CrearEvidencePageModule,
     CrearTopicPageModule,
+    CrearExamenPageModule,
     GlobalModule
   ],
   declarations: [ HomePage, ListComponent, 
-    ListResourceComponent, ForumComponent,GraphicsComponent,CalendarComponent
-    , EvidencesComponent,SubjectsComponent, QuestionsComponent, ContactComponent, PerfilComponent,ListTareasComponent,
+    ListResourceComponent, ForumComponent,GraphicsComponent,
+    EvidencesComponent,SubjectsComponent, QuestionsComponent, ContactComponent, PerfilComponent,ListTareasComponent,
     ReportComponent]
 })
 export class HomePageModule {}

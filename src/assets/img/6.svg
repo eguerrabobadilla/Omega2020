@@ -19,6 +19,7 @@
 	.st13{fill:#51DCE4;}
 </style>
 <rect x="0.1" y="0.1" class="st0" width="749.9" height="1623.7"/>
+<g style="transform: translateY(-120px)translateX(70px)">
 <g>
 	<g>
 		<g>
@@ -561,5 +562,6 @@
 			</g>
 		</g>
 	</g>
+</g>
 </g>
 </svg>

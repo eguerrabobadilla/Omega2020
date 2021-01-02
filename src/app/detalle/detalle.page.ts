@@ -12,6 +12,7 @@ import { DownloadFileService } from '../services/download-file.service';
 import { EvidenciasService } from '../api/evidencias.service';
 import { GlobalService } from '../services/global.service';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
+import { TareasService } from '../api/tareas.service';
 
 @Component({
   selector: 'app-detalle',
@@ -49,7 +50,7 @@ export class DetallePage implements OnInit {
               private apiAlumnos: AlumnosService,public toastController: ToastController,private cd:ChangeDetectorRef,
               private fileClound: DownloadFileService,private formBuilder: FormBuilder, private applicationRef: ApplicationRef,
               private alertCtrl: AlertController,private apiEvidencias: EvidenciasService,private globalServicies: GlobalService,
-              private camera: Camera) { 
+              private camera: Camera,private apiTareas: TareasService) { 
 
                 this.FrmItem = formBuilder.group({
                   Image: [null, Validators.compose([])]
@@ -118,6 +119,11 @@ export class DetallePage implements OnInit {
       
       this.slider.lockSwipeToNext(true);
       this.slider.lockSwipeToPrev(true);
+
+      this.apiTareas.updateAcceso(this.item.Id).toPromise();
+      if(this.item.Tareasusuarios.length > 0)
+        this.item.Tareasusuarios[0].Visto='SI';
+
       this.cargarEvidencia();
     }
   }

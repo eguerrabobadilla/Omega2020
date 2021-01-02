@@ -1,0 +1,145 @@
+<ion-header class="ion-no-border" mode="ios">
+  <ion-toolbar>
+      <ion-title style="margin-top: 6px;">{{ titulo }}</ion-title>
+      <ion-buttons slot="end">
+          <ion-button style="margin-top: 8px;margin-right: 8px;" (click)="closeModal()">
+              <ion-icon slot="icon-only" color="light" name="close"></ion-icon>
+          </ion-button>
+      </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+    <ion-slides #slider [options]="slideOpts" (ionSlideNextStart)="ionSlideDidChange()" (ionSlidePrevStart)="ionSlideDidChange()" >
+        <ion-slide>
+            <ion-card class="ion-no-border" no style="text-align: initial;" mode="ios">
+                <ion-card-content>
+                    <form [formGroup]="FrmItem" (ngSubmit)="crearExamen()">
+                        <ion-grid>
+                            <ion-row>
+                                <ion-input hidden type="text" formControlName="Id" name="Id"></ion-input>
+                                <ion-col size="12">
+                                    <ion-item button (click)="openPickerGrupos()" detail="false">
+                                        <ion-label color="light" position="floating">Grupo</ion-label>
+                                        <ion-label color="light" position="floating">{{ FrmItem.controls.Grupo.value }}</ion-label>
+                                        <ion-input #txtGradoGrupo type="text" readonly formControlName="Grupo" name="Grupo" style="display: none;"></ion-input>
+                                        <ion-input #txtGradoGrupo type="text" readonly formControlName="Grupo" name="Grupo" style="display: none;"></ion-input>
+                                    </ion-item>
+                                    <div *ngIf="!FrmItem.controls.Grupo.valid && (FrmItem.controls.Grupo.dirty || submitAttempt)">
+                                        <p class="text-error">Por favor ingresa un Grupo.</p>
+                                    </div>
+                                </ion-col>
+                                <ion-col size="12">
+                                    <ion-item button (click)="openPickerMaterias()" detail="false">
+                                        <ion-label color="light" position="floating">Materia</ion-label>
+                                        <ion-label color="light" position="floating">{{ FrmItem.controls.MateriaId.value }}</ion-label>
+                                        <ion-input #txtMateria type="text" readonly formControlName="MateriaId" name="MateriaId" style="display: none;"></ion-input>
+                                    </ion-item>
+                                    <div *ngIf="!FrmItem.controls.MateriaId.valid && (FrmItem.controls.MateriaId.dirty || submitAttempt)">
+                                        <p class="text-error">Por favor ingresa una Materia.</p>
+                                    </div>
+                                </ion-col>
+                                <ion-col size="12">
+                                    <ion-item>
+                                        <ion-label color="light" position="floating">Título</ion-label>
+                                        <ion-input type="text" formControlName="Titulo" name="Titulo"></ion-input>
+                                    </ion-item>
+                                    <div *ngIf="!FrmItem.controls.Titulo.valid && (FrmItem.controls.Titulo.dirty || submitAttempt)">
+                                        <p class="text-error">Por favor ingresa un título.</p>
+                                    </div>
+                                </ion-col>
+                                <!--<ion-col size="12">
+                                    <ion-item>
+                                        <ion-label color="light" position="floating">Descripción</ion-label>
+                                        <ion-textarea rows="5" formControlName="Descripcion" name="Descripcion"></ion-textarea>
+                                    </ion-item>
+                                    <div *ngIf="!FrmItem.controls.Descripcion.valid && (FrmItem.controls.Descripcion.dirty || submitAttempt)">
+                                        <p class="text-error">Por favor ingresa una descripción.</p>
+                                    </div>
+                                </ion-col>-->
+                                <ion-col size="12">
+                                    <ion-item>
+                                        <ion-label color="light" position="floating">Duración en minutos</ion-label>
+                                        <ion-input formControlName="DuracionExamen" name="DuracionExamen" type="number"></ion-input>
+                                    </ion-item>
+                                    <div *ngIf="!FrmItem.controls.DuracionExamen.valid && (FrmItem.controls.DuracionExamen.dirty || submitAttempt)">
+                                        <p class="text-error">Por favor ingresa una duración.</p>
+                                    </div>
+                                    <!--<ion-label color="light" style="position: absolute;top: 47px;right: 16vw;z-index: 12;">min</ion-label>-->
+                                </ion-col>
+                                <ion-col size="12">
+                                    <ion-item>
+                                        <!--<ion-label color="light" position="stacked">Aleatorias</ion-label>-->
+                                        <ion-label color="light" position="floating">Preguntas Aleatorias</ion-label>
+                                        <!--<ion-checkbox color="primary" unchecked slot="start"></ion-checkbox>-->
+                                        <ion-select mode="ios" formControlName="PreguntasAleatorias" name="PreguntasAleatorias">
+                                            <ion-select-option value="SI">Si</ion-select-option>
+                                            <ion-select-option value="NO">No</ion-select-option>
+                                        </ion-select>
+                                    </ion-item>
+                                    <div *ngIf="!FrmItem.controls.PreguntasAleatorias.valid && (FrmItem.controls.PreguntasAleatorias.dirty || submitAttempt)">
+                                        <p class="text-error">Por favor seleccione una opción.</p>
+                                    </div>
+                                </ion-col>
+                                <ion-col size="12">
+                                    <ion-item>
+                                        <ion-label color="light" position="floating">Fecha Inicio</ion-label>
+                                        <!--<ion-datetime formControlName="FechaInicio" name="FechaInicio" displayFormat="DDDD DD MMM, YYYY" pickerFormat="DD MMMM YYYY"></ion-datetime>-->
+                                        <ion-input type="text" (ionFocus)="ionFocusFechaInicio()" readonly formControlName="FechaInicio" name="FechaInicio"></ion-input>
+                                        <mbsc-calendar #mobi [options]="settings" style="display: none;"></mbsc-calendar>
+                                    </ion-item>
+                                    <div *ngIf="!FrmItem.controls.FechaInicio.valid && (FrmItem.controls.FechaInicio.dirty || submitAttempt)">
+                                        <p class="text-error">Por favor ingresa una fecha.</p>
+                                    </div>
+                                </ion-col>
+                                <ion-col size="12">
+                                    <ion-item>
+                                        <ion-label color="light" position="floating">Fecha Termino</ion-label>
+                                        <!--<ion-datetime formControlName="FechaTermino" name="FechaTermino" displayFormat="DDDD DD MMM, YYYY" pickerFormat="DD MMMM YYYY"></ion-datetime>-->
+                                        <ion-input type="text" (ionFocus)="ionFocusFechaTermino()" readonly formControlName="FechaTermino" name="FechaTermino"></ion-input>
+                                        <mbsc-calendar #mobi2 [options]="settings2" style="display: none;"></mbsc-calendar>
+                                    </ion-item>
+                                    <div *ngIf="!FrmItem.controls.FechaTermino.valid && (FrmItem.controls.FechaTermino.dirty || submitAttempt)">
+                                        <p class="text-error">Por favor ingresa una fecha.</p>
+                                    </div>
+                                </ion-col>
+                                <ion-col size="12">
+                                    <ion-item>
+                                        <ion-label color="light" position="stacked">Descripción</ion-label>
+                                        <!-- Se agrego es eleemento para el que el ckeditor se ajustara-->
+                                        <ion-textarea style="display: none;"></ion-textarea>
+                                        <ckeditor formControlName="Descripcion" name="Descripcion" [editor]="Editor" data="<p>Hello, world!</p>"></ckeditor>
+                                    </ion-item>
+                                    <div *ngIf="!FrmItem.controls.Descripcion.valid && (FrmItem.controls.Descripcion.dirty || submitAttempt)">
+                                        <p class="text-error">Por favor ingresa una descripción.</p>
+                                    </div>
+                                </ion-col>
+                            </ion-row>
+                            <ion-row>
+                                <ion-col size="12">
+                                    <ion-button expand="full" type="submit" block style="margin: 5% 0">{{tituloBoton}}</ion-button>
+                                </ion-col>
+                            </ion-row>
+                        </ion-grid>
+                    </form>
+                </ion-card-content>
+            </ion-card>
+        </ion-slide>
+        <ion-slide>
+            <div scrollY="true" style="height: 72.6vh;overflow-y: scroll;width: 100%;">
+                <ion-card class="ion-no-border" no style="text-align: initial;" mode="ios">
+                    <ion-card-content>
+                        <app-seleccion-una-respuesta *ngIf="viewComponentSelect=='multipleUnaRespuesta'"></app-seleccion-una-respuesta>
+                    </ion-card-content>
+                </ion-card>
+            </div>
+        </ion-slide>
+    </ion-slides>
+</ion-content>
+<ion-footer style="transform: translateY(-1px);">
+    <ion-toolbar>
+      <ion-button style="width: 160.06px;" slot="end" size="small" fill="outline" type="button" icon-start outline block (click)="nuevaPregunta()">
+          <ion-icon name="add-outline" style="margin-right: 3px;"></ion-icon>
+          Añadir pregunta
+      </ion-button>
+    </ion-toolbar>
+</ion-footer>

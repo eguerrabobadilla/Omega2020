@@ -3,6 +3,7 @@ import { ModalController, IonVirtualScroll, ActionSheetController, IonItemSlidin
 import { ForumService } from '../../api/forum.service';
 import { FormGroup, FormBuilder,Validators  } from '@angular/forms';
 import { WebsocketService } from '../../services/websocket.service';
+import { GlobalService } from 'src/app/services/global.service';
 
 @Component({
   selector: 'app-detalles-forum',
@@ -21,6 +22,7 @@ export class DetallesForumPage implements OnInit {
   public FrmItem: FormGroup;
   LstForo: any[];
   detalleId: number;
+  tipoUsuario: any;
   @ViewChild('virtualScroll', {static: false}) virtualScroll: IonVirtualScroll;
   @ViewChild('slidingItem', {static: false}) slidingItem: IonItemSliding;
   @ViewChild('toolbar1', {read: ElementRef, static: true}) toolbar1: ElementRef;
@@ -31,7 +33,7 @@ export class DetallesForumPage implements OnInit {
 
   constructor(private apiForum: ForumService, private modalCtrl: ModalController, private  formBuilder : FormBuilder,
               private applicationRef: ApplicationRef,private webSocket: WebsocketService, private _ngZone: NgZone,
-              private actionSheetController: ActionSheetController,private animationCtrl: AnimationController) {
+              private actionSheetController: ActionSheetController,private animationCtrl: AnimationController,private globalServicies: GlobalService) {
     this.FrmItem = formBuilder.group({
       mensaje: ['', Validators.compose([Validators.required])]
     });
@@ -40,11 +42,11 @@ export class DetallesForumPage implements OnInit {
   }
 
   ngOnInit() {
-    
+    this.tipoUsuario=this.globalServicies.getKeyToken("tipo");
     
     this.mutationObserver = new MutationObserver((mutations) => {
-      this.contentArea.scrollToBottom();
-  });
+        this.contentArea.scrollToBottom();
+    });
 
 
     this.detalleId = this.item.foroId;
@@ -61,15 +63,23 @@ export class DetallesForumPage implements OnInit {
     this.apiForum.get(true,this.detalleId).subscribe(data => {
       this.LstForo = data;
     });
-    
-  
   }
 
-  ngAfterViewInit() {
+  async ngAfterViewInit() {
     const estado = this.item.Estado === 'Abierto' ? false : true;
     this.input.disabled = estado;
     if(estado===true)
       this.input.value = 'Foro Cerrado';
+  }
+    
+  async ionViewDidEnter() { 
+
+    if(this.tipoUsuario=="Alumno")
+    {
+      this.apiForum.updateAcceso(this.item.Id).toPromise();
+      if(this.item.Forosusuarios.length > 0)
+        this.item.Forosusuarios[0].Visto='SI';
+    }
   }
 
   async votar(item) {

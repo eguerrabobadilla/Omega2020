@@ -4,6 +4,7 @@
         <ion-card style="text-align: initial;border-bottom: 0.6px solid #d0d0d0;border-left: none;border-radius: 0px;box-shadow: none !important;" class="ion-activatable ripple-parent" mode="ios" *virtualItem="let item; let itemBounds = bounds;" (click)="openDetail($event,item,item.Id)">
             <ion-ripple-effect></ion-ripple-effect>
             <ion-card-header>
+                <ion-icon name="ellipse" style="float: right;color: red;" *ngIf="!permisoEditar() && item.Forosusuarios[0]?.Visto=='NO'"></ion-icon>
                 <ion-item lines="none">
                     <ion-avatar slot="start" style="margin-left: -21px;height: 40px; width: 40px;">
                         <img src="assets/img/groups.png">

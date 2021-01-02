@@ -35,6 +35,11 @@
             <application android:usesCleartextTraffic="true" />
         </edit-config>
         <resource-file src="resources/android/xml/network_security_config.xml" target="app/src/main/res/xml/network_security_config.xml" />
+        <resource-file src="resources/android/icon/icons_one_signal/drawable-mdpi/ic_stat_onesignal_default.png" target="app/src/main/res/drawable-mdpi/ic_stat_onesignal_default.png" />
+        <resource-file src="resources/android/icon/icons_one_signal/drawable-hdpi/ic_stat_onesignal_default.png" target="app/src/main/res/drawable-hdpi/ic_stat_onesignal_default.png" />
+        <resource-file src="resources/android/icon/icons_one_signal/drawable-xhdpi/ic_stat_onesignal_default.png" target="app/src/main/res/drawable-xhdpi/ic_stat_onesignal_default.png" />
+        <resource-file src="resources/android/icon/icons_one_signal/drawable-xxhdpi/ic_stat_onesignal_default.png" target="app/src/main/res/drawable-xxhdpi/ic_stat_onesignal_default.png" />
+        <resource-file src="resources/android/icon/icons_one_signal/drawable-xxxhdpi/ic_stat_onesignal_default.png" target="app/src/main/res/drawable-xxxhdpi/ic_stat_onesignal_default.png" />
         <allow-intent href="market:*" />
         <icon density="ldpi" src="resources/android/icon/drawable-ldpi-icon.png" />
         <icon density="mdpi" src="resources/android/icon/drawable-mdpi-icon.png" />
