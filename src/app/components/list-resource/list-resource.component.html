@@ -1,41 +1,13 @@
-<!--<ion-slides #slideDown [options]="slideOptsdos">
-
-    <div #scrollh (click)="stop()" ondrag="stop()" scrollY="false" scrollX="true">
-
-        <ion-chip (click)="openPicker()" color="danger">
-            <ion-icon name="calendar-outline"></ion-icon>
-            <ion-label>{{mesActual}}</ion-label>
-        </ion-chip>
-        <ion-chip (click)="selected('Foto')" [outline]="outline[0].selected">
-            <ion-icon name="image-outline"></ion-icon>
-            <ion-label style="z-index: -1;">Foto</ion-label>
-        </ion-chip>
-        <ion-chip (click)="selected('Video')" [outline]="outline[1].selected">
-            <ion-icon name="videocam-outline"></ion-icon>
-            <ion-label>Video</ion-label>
-        </ion-chip>
-        <ion-chip (click)="selected('Video')" [outline]="outline[1].selected">
-            <ion-icon name="videocam-outline"></ion-icon>
-            <ion-label>Video</ion-label>
-        </ion-chip>
-        <ion-chip (click)="selected('Video')" [outline]="outline[1].selected">
-            <ion-icon name="videocam-outline"></ion-icon>
-            <ion-label>Video</ion-label>
-        </ion-chip>
-
-    </div>
-
-</ion-slides>-->
 <ion-item detail="false" slot="fixed">
     <ion-chip (click)="openPicker()" color="danger">
         <ion-icon name="calendar-outline"></ion-icon>
         <ion-label>{{mesActual}}</ion-label>
     </ion-chip>
-    <ion-chip (click)="selected('Zoom')" [outline]="outline[4].selected">
+    <ion-chip (click)="selected('Zoom',0)" [outline]="outline[4].selected">
         <ion-icon name="videocam-outline"></ion-icon>
         <ion-label>Clases Virtuales</ion-label>
     </ion-chip>
-    <ion-chip (click)="selected('Todos')" [outline]="outline[3].selected">
+    <ion-chip (click)="selectedSinInfinite(0)" [outline]="outline[3].selected">
         <ion-icon name="attach-outline"></ion-icon>
         <ion-label>Archivos</ion-label>
     </ion-chip>
@@ -45,6 +17,7 @@
         <ion-list-header>
             Semana 1
         </ion-list-header>
+
         <ion-card style="text-align: initial;border-bottom: 0.6px solid #d0d0d0;border-left: none;border-radius: 0px;box-shadow: none !important;" mode="ios" *ngFor="let item of LstRecursos | filter : 'Semana 1' : 'Semana'">
 
             <ion-card-header>
@@ -71,13 +44,14 @@
             </ion-card-header>
             <ion-card-content>No hay nada que mostrar</ion-card-content>
         </ion-card>
-    </ion-list>
 
-    <ion-list mode="ios">
+
+
         <ion-list-header>
             Semana 2
         </ion-list-header>
-        <ion-card style="text-align: initial;border-bottom: 0.6px solid #d0d0d0;border-left: none;border-radius: 0px;box-shadow: none !important;" mode="ios" *ngFor="let item of LstRecursos  | filter : 'Semana 2' : 'Semana'; let i=i ndex ">
+
+        <ion-card style="text-align: initial;border-bottom: 0.6px solid #d0d0d0;border-left: none;border-radius: 0px;box-shadow: none !important;" mode="ios" *ngFor="let item of LstRecursos | filter : 'Semana 2' : 'Semana'">
             <ion-card-header>
                 <ion-card-title>{{ item.Titulo }}</ion-card-title>
             </ion-card-header>
@@ -102,13 +76,15 @@
             </ion-card-header>
             <ion-card-content>No hay nada que mostrar</ion-card-content>
         </ion-card>
-    </ion-list>
 
-    <ion-list mode="ios">
+
+
+
         <ion-list-header>
             Semana 3
         </ion-list-header>
-        <ion-card style="text-align: initial;border-bottom: 0.6px solid #d0d0d0;border-left: none;border-radius: 0px;box-shadow: none !important;" mode="ios" *ngFor="let item of LstRecursos  | filter : 'Semana 3' : 'Semana'; let i=i ndex ">
+
+        <ion-card style="text-align: initial;border-bottom: 0.6px solid #d0d0d0;border-left: none;border-radius: 0px;box-shadow: none !important;" mode="ios" *ngFor="let item of LstRecursos | filter : 'Semana 3' : 'Semana'">
             <ion-card-header>
                 <ion-card-title>{{ item.Titulo }}</ion-card-title>
             </ion-card-header>
@@ -134,13 +110,15 @@
             </ion-card-header>
             <ion-card-content>No hay nada que mostrar</ion-card-content>
         </ion-card>
-    </ion-list>
 
-    <ion-list mode="ios">
+
+
+
         <ion-list-header>
             Semana 4
         </ion-list-header>
-        <ion-card style="text-align: initial;border-bottom: 0.6px solid #d0d0d0;border-left: none;border-radius: 0px;box-shadow: none !important;" mode="ios" *ngFor="let item of LstRecursos  | filter : 'Semana 4' : 'Semana'; let i=i ndex ">
+
+        <ion-card style="text-align: initial;border-bottom: 0.6px solid #d0d0d0;border-left: none;border-radius: 0px;box-shadow: none !important;" mode="ios" *ngFor="let item of LstRecursos | filter : 'Semana 4' : 'Semana'">
             <ion-card-header>
                 <ion-card-title>{{ item.Titulo }}</ion-card-title>
             </ion-card-header>
@@ -165,37 +143,44 @@
             </ion-card-header>
             <ion-card-content>No hay nada que mostrar</ion-card-content>
         </ion-card>
+
     </ion-list>
+
 </div>
 <div *ngIf="(esConferencia)">
     <ion-list mode="ios">
+        <ion-virtual-scroll [items]="LstRecursos" approxItemHeight="300px" style="margin-bottom: 100px;z-index: 999999;">
+            <ion-card style="text-align: initial;border-bottom: 0.6px solid #d0d0d0;border-left: none;border-radius: 0px;box-shadow: none !important;" mode="ios" *virtualItem="let item">
 
-        <ion-card style="text-align: initial;border-bottom: 0.6px solid #d0d0d0;border-left: none;border-radius: 0px;box-shadow: none !important;" mode="ios" *ngFor="let item of LstRecursos">
+                <ion-card-header>
+                    <ion-card-title>{{ item.Titulo }}</ion-card-title>
+                </ion-card-header>
+                <ion-card-content style="white-space: pre-line;" [innerHtml]="item.Descripcion + datosClase(item) | linkify : item.Id">
 
-            <ion-card-header>
-                <ion-card-title>{{ item.Titulo }}</ion-card-title>
-            </ion-card-header>
-            <ion-card-content style="white-space: pre-line;" [innerHtml]="item.Descripcion + datosClase(item) | linkify : item.Id">
-
-            </ion-card-content>
-            <ion-item>
-                <ion-chip outline color="dark" (click)="openFile(item)" *ngIf=" item.PathRecurso != undefined">
-                    <ion-icon name="attach-outline"></ion-icon>
-                    <ion-label style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{item.PathRecursoUser}}</ion-label>
-                </ion-chip>
-            </ion-item>
-            <ion-item style="margin-top: -6px;">
-                <ion-label>{{item.Fecha | date:'mediumDate'}}</ion-label>
-                <ion-button *ngIf="permisoEditar()" style="transform: translateX(12px);" fill="outline" slot="end" (click)="eliminar($event,item)">Borrar</ion-button>
-                <ion-button *ngIf="permisoEditar()" fill="outline" slot="end" (click)="edit($event,item)">Editar</ion-button>
-            </ion-item>
-        </ion-card>
-        <ion-card style="text-align: initial;border-bottom: 0.6px solid #d0d0d0;border-left: none;border-radius: 0px;box-shadow: none !important;" class="ion-activatable ripple-parent " mode="ios " *ngIf="!esConferencia && (LstRecursos | filter : 'Semana 1' : 'Semana').length == 0">
-            <ion-ripple-effect></ion-ripple-effect>
-            <ion-card-header>
-                <ion-card-title>Ningun recurso</ion-card-title>
-            </ion-card-header>
-            <ion-card-content>No hay nada que mostrar</ion-card-content>
-        </ion-card>
+                </ion-card-content>
+                <ion-item>
+                    <ion-chip outline color="dark" (click)="openFile(item)" *ngIf=" item.PathRecurso != undefined">
+                        <ion-icon name="attach-outline"></ion-icon>
+                        <ion-label style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{item.PathRecursoUser}}</ion-label>
+                    </ion-chip>
+                </ion-item>
+                <ion-item style="margin-top: -6px;">
+                    <ion-label>{{item.Fecha | date:'mediumDate'}}</ion-label>
+                    <ion-button *ngIf="permisoEditar()" style="transform: translateX(12px);" fill="outline" slot="end" (click)="eliminar($event,item)">Borrar</ion-button>
+                    <ion-button *ngIf="permisoEditar()" fill="outline" slot="end" (click)="edit($event,item)">Editar</ion-button>
+                </ion-item>
+            </ion-card>
+            <ion-card style="text-align: initial;border-bottom: 0.6px solid #d0d0d0;border-left: none;border-radius: 0px;box-shadow: none !important;" class="ion-activatable ripple-parent " mode="ios " *ngIf="!esConferencia && (LstRecursos | filter : 'Semana 1' : 'Semana').length == 0">
+                <ion-ripple-effect></ion-ripple-effect>
+                <ion-card-header>
+                    <ion-card-title>Ningun recurso</ion-card-title>
+                </ion-card-header>
+                <ion-card-content>No hay nada que mostrar</ion-card-content>
+            </ion-card>
+        </ion-virtual-scroll>
     </ion-list>
+    <ion-infinite-scroll threshold="400px" (ionInfinite)="loadData($event)" style="transform: translateY(-51%);">
+        <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Cargando mas usuarios...">
+        </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
 </div>

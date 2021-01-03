@@ -1,5 +1,5 @@
 import { Component, OnInit, HostListener, ElementRef, ViewChild, Output,EventEmitter } from '@angular/core';
-import { PickerController, Platform, ModalController, LoadingController, AlertController, GestureController, IonSlide, IonSlides } from '@ionic/angular';
+import { PickerController, Platform, ModalController, LoadingController, AlertController, GestureController, IonSlide, IonSlides, IonInfiniteScroll, IonVirtualScroll } from '@ionic/angular';
 import { RecursosService } from '../../api/recursos.service';
 import { Plugins } from '@capacitor/core';
 import { File,FileEntry } from '@ionic-native/file/ngx';
@@ -27,8 +27,14 @@ export class ListResourceComponent implements OnInit {
   mesActual: string = 'Mayo';
   LstRecursos: any[] = [];
   materiaId =0;
+  contadorInfinieScroll = 0;
   esConferencia=true;
   loading: any;
+  evento:any;
+  cargarConFiltro = false;
+  @Output() updateAutoHeightSlider = new EventEmitter();
+  @ViewChild(IonInfiniteScroll, {static: false}) infiniteScroll: IonInfiniteScroll;
+  @ViewChild(IonVirtualScroll, {static: false}) virtualScroll: IonVirtualScroll;
   outline = [{id:'Foto', selected: true},
              {id:'Video', selected: true},
              {id:'Enlace', selected: true},
@@ -56,9 +62,16 @@ ngOnInit() {
     const d = new Date();
     this.mesActual= mesesReal[d.getMonth()];
 
-    this.apiRecursos.getByMonthTipo(this.mesActual,'tipo=Zoom').subscribe(data => {
+  /*  this.apiRecursos.getByMonthTipo(this.mesActual,'tipo=Zoom').subscribe(data => {
       //console.log(data);
       this.LstRecursos = data;
+    });*/
+    this.apiRecursos.getByMonthTipoInfinite(this.mesActual, 'Zoom', this.contadorInfinieScroll, 10).subscribe(data => {
+      console.log('getInfinite');
+      console.log(data);
+      this.LstRecursos = data;
+      this.contadorInfinieScroll += 10;
+      
     });
   //  this.activarEventoTouch();
     this.slideDown.lockSwipes(true);
@@ -97,31 +110,136 @@ ngOnInit() {
   }
 
   public async cargar(materiaId) {
+
+    
     this.materiaId = materiaId;
     console.log(this.materiaId);
+    this.contadorInfinieScroll = 0;
+    setTimeout(() => {
+      this.updateAutoHeightSlider.emit();
+     }, 300);
     //0=todas 1=Filtrado por materia
 
-
-
-    if(materiaId==0){
-        
+    if(this.esConferencia){
+        this.infiniteScroll.disabled=false;
         const tipoValidate = this.esConferencia==true ? 'Zoom' : 'Todos';
-        this.selected(tipoValidate);
-     /* this.apiRecursos.getByMonth(this.mesActual).subscribe(data => {
-        //console.log(data);
-        this.LstRecursos = data;
-        this.loadingController.dismiss();
-      });*/
+        
+        this.selected(tipoValidate, materiaId);
+
     }
     else{
-      await this.cargandoAnimation();
-      this.apiRecursos.getRecursosMaterias(materiaId,this.mesActual).subscribe(data => {
-        //console.log(data);
-        this.LstRecursos = data;
-        this.loadingController.dismiss();
-      });
+        console.log("cargar sin infinite")
+      
+      this.selectedSinInfinite(materiaId);
     }
   }
+
+  getApiRecursosZoomSinFiltro(event) {
+    console.log('cargarSinfiltro');
+    const tipoRecurso = this.esConferencia == true ? 'Zoom' : 'tipo=Foto&tipo=Video&tipo=Enlace&tipo=Documento&tipo=Texto';
+    this.apiRecursos.getByMonthTipoInfinite(this.mesActual, tipoRecurso, this.contadorInfinieScroll, 10).subscribe(data => {
+      console.log('getInfinite');
+      console.log(data);
+      if (data.length != 0) {
+        for (let i = 0; i < data.length; i++) {
+          console.log('dentro');
+          this.LstRecursos.push(data[i]);
+        }
+         this.infiniteScroll.complete();
+         event.target.complete();
+        this.contadorInfinieScroll += 10;
+        setTimeout(() => {
+            this.updateAutoHeightSlider.emit();
+        }, 300);
+           if(this.esConferencia) this.virtualScroll.checkEnd();
+      } else {
+        console.log('fin scroll');
+        console.log( event.target)
+       event.target.disabled = true;
+        this.infiniteScroll.disabled= true;
+        this.evento=event.target;
+        setTimeout(() => {
+           this.updateAutoHeightSlider.emit();
+          }, 300);
+      }
+      this.cargarConFiltro=false;
+    });
+
+      
+    
+  }
+
+  
+  getApiRecursosZoomConFiltro(event) {
+    console.log('cargarSinfiltro');
+    const tipoRecurso = this.esConferencia == true ? 'Zoom' : 'tipo=Foto&tipo=Video&tipo=Enlace&tipo=Documento&tipo=Texto';
+    this.apiRecursos.getByMonthTipoInfiniteMateria(this.mesActual, tipoRecurso, this.contadorInfinieScroll, 10, this.materiaId).subscribe(data => {
+      console.log('getInfinite');
+      console.log(data);
+      if (data.length != 0) {
+        for (let i = 0; i < data.length; i++) {
+          console.log('dentro');
+          this.LstRecursos.push(data[i]);
+        }
+
+        event.target.complete();
+        this.contadorInfinieScroll += 10;
+        setTimeout(() => {
+            this.updateAutoHeightSlider.emit();
+        }, 300);
+        if(this.esConferencia) this.virtualScroll.checkEnd();
+      } else {
+        console.log('fin scroll');
+        event.target.disabled = true;
+        setTimeout(() => {
+           this.updateAutoHeightSlider.emit();
+          }, 300);
+      }
+      
+    });
+
+      
+    
+  }
+  selectedSinInfinite(materiaId){
+    this.cargandoAnimation();
+    console.log("materia", materiaId)
+    if(materiaId==0){
+    this.apiRecursos.getByMonthTipo(this.mesActual,'tipo=Foto&tipo=Video&tipo=Enlace&tipo=Documento&tipo=Texto').subscribe(data => {
+      this.LstRecursos = data;
+      this.outline.find(x => x.id === 'Zoom').selected = true;
+      this.outline.find(x => x.id === 'Todos').selected = false;
+      this.esConferencia = false;
+      this.loadingController.dismiss();
+      this.changeIonChip.emit('Archivo');
+
+  });
+}
+else{
+  this.apiRecursos.getByMonthTipoMateria(this.mesActual,'tipo=Foto&tipo=Video&tipo=Enlace&tipo=Documento&tipo=Texto',materiaId).subscribe(data => {
+    this.LstRecursos = data;
+    this.outline.find(x => x.id === 'Zoom').selected = true;
+    this.outline.find(x => x.id === 'Todos').selected = false;
+    this.esConferencia = false;
+    this.loadingController.dismiss();
+    this.changeIonChip.emit('Archivo');
+  });
+}
+
+  }
+
+
+  loadData(event) {
+    console.log("loadData");
+    console.log(this.cargarConFiltro);
+    if (this.cargarConFiltro) {
+      this.getApiRecursosZoomConFiltro(event);
+     
+    } 
+     else {
+      this.getApiRecursosZoomSinFiltro(event);
+     } 
+ }
 
   async openPicker() {
     const picker = await this.pickerController.create({
@@ -135,13 +253,13 @@ ngOnInit() {
             text: 'Aceptar',
             handler: (value: any) => {
               this.mesActual = value.Meses.value;
-              /*this.apiRecursos.getByMonthTipo(this.mesActual,'tipo=Foto&tipo=Video&tipo=Enlace&tipo=Documento&tipo=Texto').subscribe(data => {
-                  this.LstRecursos = data;
-              });*/
+              this.contadorInfinieScroll = 0;
+              
               if(this.esConferencia) {
-                this.selected('Zoom')
+                this.infiniteScroll.disabled=false;
+                this.selected('Zoom',0);
               } else {
-                this.selected('Todos')
+                this.selectedSinInfinite(0)
               }
 
             }
@@ -159,31 +277,61 @@ ngOnInit() {
 
   }
 
-  async selected(tipo){
-  //  this.outline.find(x => x.id === tipo).selected = !this.outline.find(x => x.id === tipo).selected ;
+  async selected(tipo, materiaId){
+    this.contadorInfinieScroll = 0;
+ //   this.outline.find(x => x.id === tipo).selected = !this.outline.find(x => x.id === tipo).selected ;
     await this.cargandoAnimation();
+    const tipoRecurso = tipo == 'Zoom' ? 'Zoom' : 'tipo=Foto&tipo=Video&tipo=Enlace&tipo=Documento&tipo=Texto';
+    if(materiaId != 0){
 
-    if(tipo=='Zoom'){
-
-      console.log("zoom");
-      this.apiRecursos.getByMonthTipo(this.mesActual,'tipo=Zoom').subscribe(data => {
+      this.apiRecursos.getByMonthTipoInfiniteMateria(this.mesActual, tipoRecurso, this.contadorInfinieScroll, 10, materiaId ).subscribe(data => {
+        console.log('getInfinite');
+        console.log(data);
         this.LstRecursos = data;
-        this.outline.find(x => x.id === tipo).selected = false;
-        this.outline.find(x => x.id === 'Todos').selected = true;
-        this.esConferencia = true;
+        this.contadorInfinieScroll += 10;
+
+         if(tipo=='Zoom'){
+          this.outline.find(x => x.id === 'Zoom').selected = false;
+          this.outline.find(x => x.id === 'Todos').selected = true;
+          this.esConferencia = true;
+          this.changeIonChip.emit('Clase Virtual');
+         }
+         else{
+          this.outline.find(x => x.id === 'Zoom').selected = true;
+          this.outline.find(x => x.id === 'Todos').selected = false;
+          this.esConferencia = false;
+          this.changeIonChip.emit('Archivo');
+         }
+
+        
+        
         this.loadingController.dismiss();
-        this.changeIonChip.emit('Clase Virtual');
-    });
+        this.cargarConFiltro=true;
+      });
     }
     else{
-      this.apiRecursos.getByMonthTipo(this.mesActual,'tipo=Foto&tipo=Video&tipo=Enlace&tipo=Documento&tipo=Texto').subscribe(data => {
+      this.apiRecursos.getByMonthTipoInfinite(this.mesActual, tipoRecurso, this.contadorInfinieScroll, 10 ).subscribe(data => {
+        console.log('getInfinite', tipoRecurso);
+        console.log(data);
         this.LstRecursos = data;
-        this.outline.find(x => x.id === 'Zoom').selected = true;
-        this.outline.find(x => x.id === 'Todos').selected = false;
-        this.esConferencia = false;
+        this.contadorInfinieScroll += 10;
+        if(tipo=='Zoom'){
+          this.outline.find(x => x.id === 'Zoom').selected = false;
+          this.outline.find(x => x.id === 'Todos').selected = true;
+          this.esConferencia = true;
+          this.changeIonChip.emit('Clase Virtual');
+         }
+         else{
+          this.outline.find(x => x.id === 'Zoom').selected = true;
+          this.outline.find(x => x.id === 'Todos').selected = false;
+          this.esConferencia = false;
+          this.changeIonChip.emit('Archivo');
+         }
+
         this.loadingController.dismiss();
-        this.changeIonChip.emit('Archivo');
-    });
+ 
+        this.cargarConFiltro=false;
+      });
 
     }
   }
