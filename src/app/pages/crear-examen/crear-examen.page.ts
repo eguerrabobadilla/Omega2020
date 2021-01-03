@@ -8,6 +8,7 @@ import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { mobiscroll, MbscCalendarOptions, MbscCalendar, MbscCalendarComponent } from '@mobiscroll/angular';
 import { CalendarComponent } from 'src/app/components/calendar/calendar.component';
 import { ExamenesService } from 'src/app/api/examenes.service';
+import { SeleccionUnaRespuestaComponent } from 'src/app/components/examenes/seleccion-una-respuesta/seleccion-una-respuesta.component';
 
 mobiscroll.settings = {
   theme: 'mobiscroll',
@@ -28,6 +29,9 @@ export class CrearExamenPage implements OnInit {
   @ViewChild('txtMateria', {read: ElementRef, static: true}) txtMateriaHTML: ElementRef;
   @ViewChild('mobi', {static: false}) mobi: MbscCalendar; 
   @ViewChild('mobi2', {static: false}) mobi2: MbscCalendar; 
+
+  @ViewChild('opcionMultipleUnaRespuesta', {static: false}) opcionMultipleUnaRespuesta: SeleccionUnaRespuestaComponent; 
+
   public FrmItem: FormGroup;
   public submitAttempt: boolean = false;
   //private item: any;
@@ -44,7 +48,7 @@ export class CrearExamenPage implements OnInit {
   slideOpts = {
     autoHeight: true
   };
-  viewComponentSelect = '';
+  viewComponentSelect = 'listRespuestas';
 
   settings: MbscCalendarOptions = {
     theme: 'mobiscroll',
@@ -151,7 +155,7 @@ export class CrearExamenPage implements OnInit {
   ionViewWillEnter() {
     console.log(this.item);
     if(this.item != undefined) {
-      /*this.FrmItem.patchValue(this.item);
+      this.FrmItem.patchValue(this.item);
       
       this.gradoSeleccionado = this.item.Grado;
       this.grupoSeleccionado = this.item.Grupo;
@@ -165,11 +169,11 @@ export class CrearExamenPage implements OnInit {
       this.MateriaSeleccionada = this.item.MateriaId;
       this.GrupoIngles = this.item.GrupoIngles;
 
-      if(this.item.Image != undefined)
-        this.texto_adjuntar_portada = 'Foto de Portada Seleccionada';
+      /*if(this.item.Image != undefined)
+        this.texto_adjuntar_portada = 'Foto de Portada Seleccionada';*/
 
-      this.titulo = 'Modificar Tarea';
-      this.tituloBoton= 'Modificar Tarea';*/
+      this.titulo = 'Modificar Examen';
+      this.tituloBoton= 'Modificar Examen';
     } else {
       this.titulo = 'Nuevo Examen';
       this.tituloBoton = 'Crear Examen';
@@ -244,6 +248,7 @@ export class CrearExamenPage implements OnInit {
     this.submitAttempt = true;
     console.log(this.FrmItem.value);
     console.log(this.MateriaSeleccionada);
+    
     const loading = await this.loadingController.create({
       message: 'Guardando...'
     });
@@ -378,7 +383,14 @@ export class CrearExamenPage implements OnInit {
       }]
     });
     await actionSheet.present();
+  }
 
+  guardarPregunta() {
+    this.opcionMultipleUnaRespuesta.save();
+  }
+
+  cancelar() {
+    this.viewComponentSelect="listRespuestas";
   }
   /***************** */
 }

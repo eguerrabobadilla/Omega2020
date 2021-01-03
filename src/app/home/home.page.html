@@ -301,7 +301,7 @@ top: 0;" mode="ios">
         <!-- Examenes-->
         <ion-slides #slideDown [options]="slideOptsdos" (ionSlideTouchEnd)="ionSlideTouchEnd(slideUp,slideDown)" *ngIf="selectSeccion == 6 " style="min-height: 72.6vh;">
             <ion-slide>
-
+                <app-list-examenes *ngIf="pildoraExamenes === 'Examenes'" style="width: 100%;"></app-list-examenes>
             </ion-slide>
 
             <ion-slide>

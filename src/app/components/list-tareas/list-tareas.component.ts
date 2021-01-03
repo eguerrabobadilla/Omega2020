@@ -36,7 +36,6 @@ export class ListTareasComponent implements OnInit {
       this.updateAutoHeightSlider.emit();
       this.spiner =false;
     });
-
   }
 
    public async cargar(materiaId) {

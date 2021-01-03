@@ -3,14 +3,15 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { apiBase } from './apiBase';
 
+
 @Injectable({
   providedIn: 'root'
 })
-export class ExamenesService extends apiBase {
+export class PreguntasService extends apiBase {
 
   constructor(public http: HttpClient) {
     super();
-    this.Ws = 'api/examenes';
+    this.Ws = 'api/preguntas';
   }
 
   save(item: any) {

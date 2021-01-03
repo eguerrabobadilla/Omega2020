@@ -47,6 +47,7 @@ import { ListTareasComponent } from '../components/list-tareas/list-tareas.compo
 import { ReportComponent } from '../components/report/report.component';
 import { CrearExamenPage } from '../pages/crear-examen/crear-examen.page';
 import { CrearExamenPageModule } from '../pages/crear-examen/crear-examen.module';
+import { ListExamenesComponent } from '../components/list-examenes/list-examenes.component';
 
 
 
@@ -95,6 +96,6 @@ import { CrearExamenPageModule } from '../pages/crear-examen/crear-examen.module
   declarations: [ HomePage, ListComponent, 
     ListResourceComponent, ForumComponent,GraphicsComponent,
     EvidencesComponent,SubjectsComponent, QuestionsComponent, ContactComponent, PerfilComponent,ListTareasComponent,
-    ReportComponent]
+    ReportComponent,ListExamenesComponent]
 })
 export class HomePageModule {}

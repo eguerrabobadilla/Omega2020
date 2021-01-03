@@ -64,6 +64,7 @@ export class HomePage {
   selectOption = '0';
   selectSeccion = 1;
   pildora = 'Tareas';
+  pildoraExamenes = 'Examenes';
   index = 1 ;
   libros: any[] = [];
   materias: any[] = [];
@@ -672,6 +673,8 @@ this.pillMenu.animacion();
         this.tabs = ['Preguntas', 'Contacto'];
       } else if (index === 6) {
         this.tabs = ['Examenes', 'Estadísticas'];
+
+        this.pildoraExamenes="Examenes";
       }
 
       this.selectOption = '0';
@@ -1002,6 +1005,8 @@ this.pillMenu.animacion();
             this.renderer.setStyle(this.fabstart.nativeElement,'display','none');
           }
       }
+
+      console.log(this.selectSeccion);
 
        this.slideDown.slideTo(event.detail.value);
       // this.slideUp.slideTo(event.detail.value);
