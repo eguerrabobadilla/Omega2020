@@ -1,5 +1,5 @@
-{
-  "libros": [
+
+ [
     {
 	"Nombre": "Matemáticas",
 	"Grados": "1",
@@ -21,4 +21,4 @@
 	"RutaThumbnails": "q2.jpg",
 	"Version": "16"
     }]
-}
+
