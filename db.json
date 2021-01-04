@@ -1,24 +1,27 @@
 {
-  "libros": [
+  "examenes": [
     {
-	"Nombre": "Matemáticas",
-	"Grados": "1",
+	"Titulo": "Examen 1",
+	"Grado" : "1",
+        "Grupo" : "A",
 	"Escolaridad": "Elementary School",
-	"RutaThumbnails": "q2.jpg",
-	"Version": "16"
+	"Materia": "Matematicas",
+	"FechaPublicacion": "04/01/2021"
     },
     {
-	"Nombre": "Matemáticas",
-	"Grados": "1",
+	"Titulo": "Examen 1",
+	"Grado" : "1",
+        "Grupo" : "A",
 	"Escolaridad": "Elementary School",
-	"RutaThumbnails": "q2.jpg",
-	"Version": "16"
+	"Materia": "Matematicas",
+	"FechaPublicacion": "04/01/2021"
     },
     {
-	"Nombre": "Matemáticas",
-	"Grados": "1",
+	"Titulo": "Examen 1",
+	"Grado" : "1",
+        "Grupo" : "A",
 	"Escolaridad": "Elementary School",
-	"RutaThumbnails": "q2.jpg",
-	"Version": "16"
+	"Materia": "Matematicas",
+	"FechaPublicacion": "04/01/2021"
     }]
 }
