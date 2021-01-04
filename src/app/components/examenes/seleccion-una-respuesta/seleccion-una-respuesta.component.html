@@ -6,13 +6,21 @@
       </ion-label>
     </ion-list-header>
     <ion-item>
+      <!--<ion-input hidden type="text" formControlName="_id" name="_id"></ion-input>-->
+      <ion-input hidden type="text" formControlName="ExamenId" name="ExamenId"></ion-input>
       <ckeditor formControlName="Pregunta" name="Pregunta" style="width: 100%;" [editor]="Editor" data="<p>Hello, world!</p>"></ckeditor>
     </ion-item>
+    <div *ngIf="!FrmItem.controls.Pregunta.valid && (FrmItem.controls.Pregunta.dirty || submitAttempt)">
+      <p class="text-error">Por favor escriba una pregunta.</p>
+    </div>
     <ion-item>
       <ion-label position="stacked">Puntos</ion-label>
       <ion-input formControlName="Puntos" name="Puntos" placeholder="Puntos de la pregunta" type="number"></ion-input>
     </ion-item>
-    <ion-radio-group formControlName="TipoCarga" name="TipoCarga" allow-empty-selection value="azar">
+    <div *ngIf="!FrmItem.controls.Puntos.valid && (FrmItem.controls.Puntos.dirty || submitAttempt)">
+      <p class="text-error">Por favor asigne una puntuación a la pregunta.</p>
+    </div>
+    <ion-radio-group formControlName="TipoCarga" name="TipoCarga" value="azar">
       <ion-list-header>
         <ion-label>Tipo de carga</ion-label>
       </ion-list-header>
@@ -26,7 +34,7 @@
       </ion-item>
     </ion-radio-group>
     <!--Respuestas-->
-    <ion-radio-group value="rp1">
+    <ion-radio-group  formControlName="Correcta" name="Correcta" value="rp1">
       <ion-list-header>
         <ion-label>Opciones</ion-label>
       </ion-list-header>
@@ -38,6 +46,7 @@
             <ion-radio slot="end" color="primary" value="rp{{i+1}}"></ion-radio>
           </ion-item>
           <ion-item>
+            <ion-input hidden type="text" formControlName="Id" name="Id"></ion-input>
             <ckeditor formControlName="Respuesta" style="width: 100%;" [editor]="Editor" data=""></ckeditor>
           </ion-item>
         </div>

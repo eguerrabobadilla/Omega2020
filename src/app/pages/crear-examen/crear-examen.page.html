@@ -107,7 +107,7 @@
                                         <ion-label color="dark" position="stacked">Descripción</ion-label>
                                         <!-- Se agrego es eleemento para el que el ckeditor se ajustara-->
                                         <ion-textarea style="display: none;"></ion-textarea>
-                                        <ckeditor formControlName="Descripcion" name="Descripcion" [editor]="Editor" data="<p>Hello, world!</p>"></ckeditor>
+                                        <ckeditor #CKEDITOR formControlName="Descripcion" name="Descripcion" [editor]="Editor" data="<p>Hello, world!</p>"></ckeditor>
                                     </ion-item>
                                     <div *ngIf="!FrmItem.controls.Descripcion.valid && (FrmItem.controls.Descripcion.dirty || submitAttempt)">
                                         <p class="text-error">Por favor ingresa una descripción.</p>
@@ -128,8 +128,8 @@
             <div scrollY="true" style="height: 72.6vh;overflow-y: scroll;width: 100%;">
                 <ion-card class="ion-no-border" no style="text-align: initial;" mode="ios">
                     <ion-card-content>
-                        <app-seleccion-una-respuesta  [examen]="item" #opcionMultipleUnaRespuesta *ngIf="viewComponentSelect=='multipleUnaRespuesta'"></app-seleccion-una-respuesta>
-                        <app-list-preguntas *ngIf="viewComponentSelect=='listRespuestas'"></app-list-preguntas>
+                        <app-seleccion-una-respuesta (backPage)="cancelar()" [itemPreguntaSeleccionada]="itemPreguntaSeleccionada" [examen]="item" #opcionMultipleUnaRespuesta *ngIf="viewComponentSelect=='multipleUnaRespuesta'"></app-seleccion-una-respuesta>
+                        <app-list-preguntas (onClickPregunta)="onClickPregunta($event)" *ngIf="viewComponentSelect=='listRespuestas'"></app-list-preguntas>
                     </ion-card-content>
                 </ion-card>
             </div>

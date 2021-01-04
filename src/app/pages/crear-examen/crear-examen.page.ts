@@ -9,6 +9,7 @@ import { mobiscroll, MbscCalendarOptions, MbscCalendar, MbscCalendarComponent } 
 import { CalendarComponent } from 'src/app/components/calendar/calendar.component';
 import { ExamenesService } from 'src/app/api/examenes.service';
 import { SeleccionUnaRespuestaComponent } from 'src/app/components/examenes/seleccion-una-respuesta/seleccion-una-respuesta.component';
+import { CKEditorComponent } from '@ckeditor/ckeditor5-angular';
 
 mobiscroll.settings = {
   theme: 'mobiscroll',
@@ -29,6 +30,7 @@ export class CrearExamenPage implements OnInit {
   @ViewChild('txtMateria', {read: ElementRef, static: true}) txtMateriaHTML: ElementRef;
   @ViewChild('mobi', {static: false}) mobi: MbscCalendar; 
   @ViewChild('mobi2', {static: false}) mobi2: MbscCalendar; 
+  @ViewChild('CKEDITOR', {static: false}) CKEDITOR: CKEditorComponent; 
 
   @ViewChild('opcionMultipleUnaRespuesta', {static: false}) opcionMultipleUnaRespuesta: SeleccionUnaRespuestaComponent; 
 
@@ -95,7 +97,7 @@ export class CrearExamenPage implements OnInit {
     months: 1
   };
   
-
+  itemPreguntaSeleccionada:any;
   @Input() item;
 
   constructor(private modalCtrl: ModalController, private formBuilder: FormBuilder, private pickerController: PickerController,
@@ -363,6 +365,7 @@ export class CrearExamenPage implements OnInit {
         icon: 'list',
         handler: () => {
           console.log('Delete clicked');
+          this.itemPreguntaSeleccionada=undefined;
           this.viewComponentSelect="multipleUnaRespuesta";
         }
       }, {
@@ -391,6 +394,12 @@ export class CrearExamenPage implements OnInit {
 
   cancelar() {
     this.viewComponentSelect="listRespuestas";
+  }
+
+  onClickPregunta(itemPregunta) {
+    //console.log(itemPregunta);
+    this.itemPreguntaSeleccionada=itemPregunta;
+    this.viewComponentSelect="multipleUnaRespuesta";
   }
   /***************** */
 }
