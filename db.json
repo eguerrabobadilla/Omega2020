@@ -2,7 +2,7 @@
   "preguntas": [
     {
         "id": 1,
-        "Pregunta" : "<p>Cual es la capital de mexico</p>",
+        "Pregunta" : "<p>Pregunta 1</p>",
         "Respuestas" : [ 
             {
                 "Id" : "rp1",
@@ -18,17 +18,17 @@
             }, 
             {
                 "Id" : "rp4",
-                "Respuesta" : ""
+                "Respuesta" : "hola 1"
             }, 
             {
                 "Id" : "rp5",
-                "Respuesta" : ""
+                "Respuesta" : "hola 2"
             }
         ]
     },
         {
         "id": 2,
-        "Pregunta" : "<p>hola</p>",
+        "Pregunta" : "<p>Pregunta 2</p>",
         "Respuestas" : [ 
             {
                 "Id" : "rp1",
@@ -44,17 +44,17 @@
             }, 
             {
                 "Id" : "rp4",
-                "Respuesta" : ""
+                "Respuesta" : "otro"
             }, 
             {
                 "Id" : "rp5",
-                "Respuesta" : ""
+                "Respuesta" : "otro 1"
             }
         ]
     },
         {
         "id": 3,
-        "Pregunta" : "<p>Cualadf es la dfa de mexico</p>",
+        "Pregunta" : "<p>Pregunta 3</p>",
         "Respuestas" : [ 
             {
                 "Id" : "rp1",
@@ -67,20 +67,12 @@
             {
                 "Id" : "rp3",
                 "Respuesta" : "<p>avvvvvsd</p>"
-            }, 
-            {
-                "Id" : "rp4",
-                "Respuesta" : ""
-            }, 
-            {
-                "Id" : "rp5",
-                "Respuesta" : ""
             }
         ]
     },
         {
         "id": 4,
-        "Pregunta" : "<p>Cual es lasdasdfe mexico</p>",
+        "Pregunta" : "<p>Pregunta 4</p>",
         "Respuestas" : [ 
             {
                 "Id" : "rp1",
