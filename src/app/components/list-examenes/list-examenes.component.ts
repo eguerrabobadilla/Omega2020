@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, Output, EventEmitter } from '@angular/cor
 import { AlertController, LoadingController, ModalController, IonInfiniteScroll, IonVirtualScroll } from '@ionic/angular';
 import { ExamenesService } from 'src/app/api/examenes.service';
 import { CrearExamenPage } from 'src/app/pages/crear-examen/crear-examen.page';
+import { DetalleExamenAlumnoPage } from '../../pages/detalle-examen-alumno/detalle-examen-alumno.page';
 
 @Component({
   selector: 'app-list-examenes',
@@ -27,6 +28,16 @@ export class ListExamenesComponent implements OnInit {
   }
 
   ngOnInit() {
+    
+
+   /* this.apiExamenes.getListaExamanes().subscribe(data => {
+      console.log(data);
+      this.LstExamenes = JSON.parse(JSON.stringify(data['examenes']));
+      console.log(this.LstExamenes);
+      this.updateAutoHeightSlider.emit();
+      this.spiner =false;
+    });*/
+    //comentado eduardo guerra
     this.apiExamenes.getInfinite(this.contadorInfinieScroll, 10).subscribe(data => {
       this.LstExamenes = data;
       this.contadorInfinieScroll += 10;
@@ -91,6 +102,31 @@ export class ListExamenesComponent implements OnInit {
 
     const modal = await this.modalCrl.create({
       component: CrearExamenPage,
+      // cssClass: 'my-custom-modal-css',
+      cssClass: 'my-custom-modal-css-capturas',
+      showBackdrop: false,
+      componentProps: {item},
+      mode: 'ios',
+      backdropDismiss: true
+    });
+
+    await modal.present();
+
+    modal.onDidDismiss().then( async (data) => {
+
+        if (data.data.banderaEdito == true) {
+            await this.cargandoAnimation('Cargando...');
+            //this.LstExamenes = await this.apiTareas.get().toPromise();
+            this.loadingController.dismiss();
+        }
+    });
+  }
+
+  public async iniciarExamen(event, item) {
+    event.stopPropagation();
+
+    const modal = await this.modalCrl.create({
+      component: DetalleExamenAlumnoPage,
       // cssClass: 'my-custom-modal-css',
       cssClass: 'my-custom-modal-css-capturas',
       showBackdrop: false,

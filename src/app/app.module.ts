@@ -20,6 +20,8 @@ import { DetallesChatPage } from './pages/detalles-chat/detalles-chat.page';
 import { DetallesChatPageModule } from './pages/detalles-chat/detalles-chat.module';
 import { DetallesNewsPageModule } from './pages/detalles-news/detalles-news.module';
 import { DetallesNewsPage } from './pages/detalles-news/detalles-news.page';
+import { DetalleExamenAlumnoPageModule } from './pages/detalle-examen-alumno/detalle-examen-alumno.module';
+
 
 import { File } from '@ionic-native/file/ngx';
 import { FileTransfer } from '@ionic-native/file-transfer/ngx';
@@ -41,6 +43,7 @@ import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 
 import { OneSignal } from '@ionic-native/onesignal/ngx';
 
+
 @NgModule({
   declarations: [AppComponent, AnimateItemsDirective],
   entryComponents: [DetallesNewsPage],
@@ -60,6 +63,7 @@ import { OneSignal } from '@ionic-native/onesignal/ngx';
     DetalleChatGroupPageModule,
     DetallesNewsPageModule,
     FormsModule,
+    DetalleExamenAlumnoPageModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [

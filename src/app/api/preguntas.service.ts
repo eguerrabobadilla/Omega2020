@@ -22,6 +22,10 @@ export class PreguntasService extends apiBase {
     return this.http.put(`${this.url}/${this.Ws}/${id}`, item);
   }
 
+  getExamen(examenId): Observable<any[]> {
+    return this.http.get<any[]>(`${this.url}/${this.Ws}/getExamen/${examenId}`);
+  }
+
   getInfinite(skip,take,examenId): Observable<any[]> {
     return this.http.get<any[]>(`${this.url}/${this.Ws}/infinite/${skip}/${take}/${examenId}`);
   }

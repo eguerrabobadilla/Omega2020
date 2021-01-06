@@ -48,6 +48,10 @@ import { ReportComponent } from '../components/report/report.component';
 import { CrearExamenPage } from '../pages/crear-examen/crear-examen.page';
 import { CrearExamenPageModule } from '../pages/crear-examen/crear-examen.module';
 import { ListExamenesComponent } from '../components/list-examenes/list-examenes.component';
+import { DetalleExamenAlumnoPage } from '../pages/detalle-examen-alumno/detalle-examen-alumno.page';
+import { DetalleExamenAlumnoPageModule } from '../pages/detalle-examen-alumno/detalle-examen-alumno.module';
+
+
 
 
 
@@ -66,7 +70,8 @@ import { ListExamenesComponent } from '../components/list-examenes/list-examenes
     CalendarEventsPage,
     CrearEvidencePage,
     CrearTopicPage,
-    CrearExamenPage
+    CrearExamenPage,
+    DetalleExamenAlumnoPage
   ],
   imports: [ 
     MbscModule,  
@@ -91,7 +96,8 @@ import { ListExamenesComponent } from '../components/list-examenes/list-examenes
     CrearEvidencePageModule,
     CrearTopicPageModule,
     CrearExamenPageModule,
-    GlobalModule
+    GlobalModule,
+    DetalleExamenAlumnoPageModule
   ],
   declarations: [ HomePage, ListComponent, 
     ListResourceComponent, ForumComponent,GraphicsComponent,

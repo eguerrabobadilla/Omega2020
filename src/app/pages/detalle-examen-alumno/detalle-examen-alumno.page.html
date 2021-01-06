@@ -1,0 +1,33 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>detalle-examen-alumno</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+
+    <ion-list>
+        <ion-radio-group value="grape">
+            <ion-list-header>
+                <ion-label>Fruit</ion-label>
+            </ion-list-header>
+            <ion-item>
+
+                <div [innerHtml]='innerHtml1'></div>
+                <ion-radio slot="start" color="success" value="apple" mode="md"></ion-radio>
+            </ion-item>
+
+            <ion-item>
+                <ion-label>Grape</ion-label>
+                <ion-radio slot="start" color="tertiary" value="grape" mode="md"></ion-radio>
+            </ion-item>
+
+            <ion-item>
+                <ion-label>Cherry</ion-label>
+                <ion-radio slot="start" color="danger" value="cherry" mode="md"></ion-radio>
+            </ion-item>
+        </ion-radio-group>
+
+    </ion-list>
+</ion-content>
