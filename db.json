@@ -1,27 +1,29 @@
 {
-  "examenes": [
+  "preguntas": [
     {
-	"Titulo": "Examen 1",
-	"Grado" : "1",
-        "Grupo" : "A",
-	"Escolaridad": "Elementary School",
-	"Materia": "Matematicas",
-	"FechaPublicacion": "04/01/2021"
-    },
-    {
-	"Titulo": "Examen 1",
-	"Grado" : "1",
-        "Grupo" : "A",
-	"Escolaridad": "Elementary School",
-	"Materia": "Matematicas",
-	"FechaPublicacion": "04/01/2021"
-    },
-    {
-	"Titulo": "Examen 1",
-	"Grado" : "1",
-        "Grupo" : "A",
-	"Escolaridad": "Elementary School",
-	"Materia": "Matematicas",
-	"FechaPublicacion": "04/01/2021"
-    }]
+        "Pregunta" : "<p>Cual es la capital de mexico</p>",
+        "Respuestas" : [ 
+            {
+                "Id" : "rp1",
+                "Respuesta" : "<p>dasdas</p>"
+            }, 
+            {
+                "Id" : "rp2",
+                "Respuesta" : "<p>asdas</p>"
+            }, 
+            {
+                "Id" : "rp3",
+                "Respuesta" : "<p>asd</p>"
+            }, 
+            {
+                "Id" : "rp4",
+                "Respuesta" : ""
+            }, 
+            {
+                "Id" : "rp5",
+                "Respuesta" : ""
+            }
+        ]
+    }
+    ]
 }
