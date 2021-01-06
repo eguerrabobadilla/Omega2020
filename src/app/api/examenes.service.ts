@@ -17,6 +17,10 @@ export class ExamenesService extends apiBase {
     return this.http.post(`${this.url}/${this.Ws}`, item);
   }
 
+  update(item: any) {
+    return this.http.put(`${this.url}/${this.Ws}/${item.Id}`, item);
+  }
+
   getInfinite(skip,take): Observable<any[]> {
     return this.http.get<any[]>(`${this.url}/${this.Ws}/infinite/${skip}/${take}`);
   }

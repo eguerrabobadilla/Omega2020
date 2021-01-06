@@ -1,5 +1,5 @@
 import { Component, OnInit,ViewChild,ElementRef,Input } from '@angular/core';
-import { ModalController, AlertController,IonInput,PickerController, PopoverController, LoadingController, ActionSheetController } from '@ionic/angular';
+import { ModalController, AlertController,IonInput,PickerController, PopoverController, LoadingController, ActionSheetController, IonSlides } from '@ionic/angular';
 import { FormGroup, FormBuilder, Validators  } from '@angular/forms';
 import { ForumService } from '../../api/forum.service';
 import { MateriasService } from 'src/app/api/materias.service';
@@ -31,6 +31,7 @@ export class CrearExamenPage implements OnInit {
   @ViewChild('mobi', {static: false}) mobi: MbscCalendar; 
   @ViewChild('mobi2', {static: false}) mobi2: MbscCalendar; 
   @ViewChild('CKEDITOR', {static: false}) CKEDITOR: CKEditorComponent; 
+  @ViewChild('slider', {static: false}) slider: IonSlides;
 
   @ViewChild('opcionMultipleUnaRespuesta', {static: false}) opcionMultipleUnaRespuesta: SeleccionUnaRespuestaComponent; 
 
@@ -46,6 +47,8 @@ export class CrearExamenPage implements OnInit {
   titulo: any;
   tituloBoton: any;
   GrupoIngles: any;
+  showBackButton:boolean = false;
+  banderaEdito: boolean=false;
   public Editor = ClassicEditor;
   slideOpts = {
     autoHeight: true
@@ -117,6 +120,7 @@ export class CrearExamenPage implements OnInit {
   }
 
   ngOnInit() {
+    //console.log(this.item); 
   }
 
   async openPickerGrupos() {
@@ -174,11 +178,11 @@ export class CrearExamenPage implements OnInit {
       /*if(this.item.Image != undefined)
         this.texto_adjuntar_portada = 'Foto de Portada Seleccionada';*/
 
-      this.titulo = 'Modificar Examen';
-      this.tituloBoton= 'Modificar Examen';
+      this.titulo = 'Modificar Exámen';
+      this.tituloBoton= 'Modificar Exámen';
     } else {
-      this.titulo = 'Nuevo Examen';
-      this.tituloBoton = 'Crear Examen';
+      this.titulo = 'Nuevo Exámen';
+      this.tituloBoton = 'Crear Exámen';
     }
   }
 
@@ -284,32 +288,36 @@ export class CrearExamenPage implements OnInit {
     payload.append('Grado', this.gradoSeleccionado);
     payload.append('Grupo', this.grupoSeleccionado);
     payload.append('GrupoIngles', this.GrupoIngles);
+    payload.append('PreguntasAleatorias', this.item.PreguntasAleatorias);
 
+    let itemTemp;
     if(this.item.Id == 0) {
-      const tareaUpload = await this.apiExamenes.save(payload).toPromise();
+      itemTemp = await this.apiExamenes.save(payload).toPromise();
     }
     else {
-      //const tareaUpload =await this.apiTareas.update(payload).toPromise();
+      const tareaUpload = await this.apiExamenes.update(payload).toPromise();
     }
 
-    //this.banderaEdito=true;
+    this.banderaEdito=true;
     this.submitAttempt = false;
 
     this.loadingController.dismiss();
 
     if(this.item.Id == 0) {
       const alertTerminado = await this.alertCtrl.create({
-        header: 'Examen creado con éxito',
+        header: 'Exámen creado con éxito',
         backdropDismiss: false,
-        message: 'Se creó el examen ' + this.FrmItem.get('Titulo').value + ', ¿desea crear otro examen?',
+        message: 'Se creó el exámen ' + this.FrmItem.get('Titulo').value + ', ¿Desea añadir preguntas al exámen?',
         buttons: [
           {
             text: 'No', handler: () =>  this.closeModal()
           },
           {
-            text: 'Crear otro', handler: () =>{ 
-              this.FrmItem.reset(); 
-              this.FrmItem.controls['Id'].setValue(0);
+            text: 'Añadir', handler: () =>{ 
+              //this.FrmItem.reset(); 
+              //this.FrmItem.controls['Id'].setValue(0);
+              this.item = itemTemp;
+              this.slider.slideNext();
             }
           }
         ]
@@ -317,9 +325,9 @@ export class CrearExamenPage implements OnInit {
       await alertTerminado.present();
     } else {
       const alertTerminado = await this.alertCtrl.create({
-        header: 'Examen modificado con éxito',
+        header: 'Exámen modificado con éxito',
         backdropDismiss: false,
-        message: 'Se modificó el examen ' + this.FrmItem.get('Titulo').value,
+        message: 'Se modificó el exámen ' + this.FrmItem.get('Titulo').value,
         buttons: [
           {
             text: 'Continuar', handler: () =>  this.closeModal()
@@ -340,18 +348,28 @@ export class CrearExamenPage implements OnInit {
   }
   
   closeModal() {
-    this.modalCtrl.dismiss();
+    this.modalCtrl.dismiss({
+      banderaEdito : this.banderaEdito
+    });
+  }
+
+  backMain() {
+    this.slider.slidePrev();
+  }
+
+  verPreguntas(){
+    this.slider.slideNext();
   }
 
   ionSlideDidChange() {
     console.log("ionSlideDidChange");
-    /*this.slider.getActiveIndex().then(index => {
+    this.slider.getActiveIndex().then(index => {
        //console.log(index);
        if(index > 0)
          this.showBackButton=true;
         else
           this.showBackButton=false;
-    })*/
+    })
   }
   /*****Preguntas**** */
   async nuevaPregunta() {

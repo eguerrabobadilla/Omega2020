@@ -35,22 +35,24 @@ export class SeleccionUnaRespuestaComponent implements OnInit {
    }
 
   ngAfterViewInit() {
+    setTimeout(() => {
+      for (let index = 1; index <= this.numeroRespuestas; index++) {
+        this.addItem(index);
+      }
+      //console.log(this.examen);
   
+      this.FrmItem.controls["ExamenId"].setValue(this.examen.Id);
+  
+      //Modo edicion de pregunta
+      if(this.itemPreguntaSeleccionada != undefined) { 
+        console.log(this.itemPreguntaSeleccionada);
+        this.FrmItem.patchValue(this.itemPreguntaSeleccionada);
+      }
+    });
   }
 
   ngOnInit() {
-    for (let index = 1; index <= this.numeroRespuestas; index++) {
-      this.addItem(index);
-    }
-    //console.log(this.examen);
 
-    this.FrmItem.controls["ExamenId"].setValue(this.examen.Id);
-
-    //Modo edicion de pregunta
-    if(this.itemPreguntaSeleccionada != undefined) { 
-      console.log(this.itemPreguntaSeleccionada);
-      this.FrmItem.patchValue(this.itemPreguntaSeleccionada);
-    }
   }
 
   counter(i: number) {
@@ -86,33 +88,53 @@ export class SeleccionUnaRespuestaComponent implements OnInit {
     console.log(this.item);
     this.item.TipoPregunta="multipleUnaRespuesta";
 
-    const tareaUpload = await this.apiPreguntas.save(this.item).toPromise();
+    
+    if(this.itemPreguntaSeleccionada === undefined) {
+      const tareaUpload = await this.apiPreguntas.save(this.item).toPromise();
+    }
+    else {
+      const tareaUpload = await this.apiPreguntas.update(this.itemPreguntaSeleccionada._id,this.item).toPromise();
+    } 
 
     this.submitAttempt = false;
 
     this.loadingController.dismiss();
 
-    const alertTerminado = await this.alertCtrl.create({
-      header: 'Pregunta creada con éxito',
-      backdropDismiss: false,
-      message: '¿Dese crear otra pregunta del mismo tipo?',
-      buttons: [
-        {
-          text: 'No', handler: () =>  this.backPage.emit()
-        },
-        {
-          text: 'Crear otra', handler: () =>{ 
-            this.FrmItem.reset(); 
-            //this.FrmItem.controls['Id'].setValue(0);
-            this.FrmItem.controls['TipoCarga'].setValue("azar");
-            this.FrmItem.controls['Correcta'].setValue("rp1");
-            this.FrmItem.controls['ExamenId'].setValue(this.examen.Id);
+    if(this.itemPreguntaSeleccionada === undefined)  {
+      const alertTerminado = await this.alertCtrl.create({
+        header: 'Pregunta creada con éxito',
+        backdropDismiss: false,
+        message: '¿Dese crear otra pregunta del mismo tipo?',
+        buttons: [
+          {
+            text: 'No', handler: () =>  this.backPage.emit()
+          },
+          {
+            text: 'Crear otra', handler: () =>{ 
+              this.FrmItem.reset(); 
+              //this.FrmItem.controls['Id'].setValue(0);
+              this.FrmItem.controls['TipoCarga'].setValue("azar");
+              this.FrmItem.controls['Correcta'].setValue("rp1");
+              this.FrmItem.controls['ExamenId'].setValue(this.examen.Id);
+            }
           }
-        }
-      ]
-    });
+        ]
+      });
 
-    await alertTerminado.present();
+      await alertTerminado.present();
+    } else {
+      const alertTerminado = await this.alertCtrl.create({
+        header: 'Pregunta modificada con éxito',
+        backdropDismiss: false,
+        message: 'Se modificó la pregunta',
+        buttons: [
+          {
+            text: 'Continuar', handler: () =>  this.backPage.emit()
+          }
+        ]
+      });
+      await alertTerminado.present();
+    }
   }
 
   createItem(index): FormGroup {
