@@ -39,6 +39,7 @@ import { PushService } from '../services/push.service';
 import { DevicesService } from '../api/devices.service';
 import { CrearExamenPage } from '../pages/crear-examen/crear-examen.page';
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { ListExamenesComponent } from '../components/list-examenes/list-examenes.component';
 
 
 
@@ -137,6 +138,7 @@ export class HomePage {
   @ViewChild('tareasComponent', {static: false}) tareasComponent: ListTareasComponent;
   @ViewChild('evidenceComponent', {static: false}) evidenceComponent: EvidencesComponent;
   @ViewChild('newsComponent', {static: false}) newsComponent: NewsComponent;
+  @ViewChild('examenesComponent', {static: false}) examenesComponent: ListExamenesComponent;
   @ViewChild('avatarUser', {read: ElementRef, static: false}) avatarUser: ElementRef;
   @ViewChild('mobi', {static: false}) mobi: MbscCalendar; 
   @ViewChild('filtrosControl', {static: false}) filtrosControl: IonSelect;
@@ -1291,13 +1293,14 @@ this.pillMenu.animacion();
         await modal.present();
 
         modal.onDidDismiss().then( async (data) => {
-          await this.cargandoAnimation('Cargando...');
 
-          this.apiCalendario.getCalendario().subscribe(data => {
-            
-            this.events = data;
-            this.loadingController.dismiss();
-          });
+          console.log(data);
+          if(data.data.banderaEdito==true)
+          {
+              /*await this.cargandoAnimation('Cargando...');
+              this.loadingController.dismiss();*/
+              this.examenesComponent.cargar(0);
+          }
         });
       }
     }

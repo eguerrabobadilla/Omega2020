@@ -18,8 +18,12 @@ export class PreguntasService extends apiBase {
     return this.http.post(`${this.url}/${this.Ws}`, item);
   }
 
-  getInfinite(skip,take): Observable<any[]> {
-    return this.http.get<any[]>(`${this.url}/${this.Ws}/infinite/${skip}/${take}`);
+  update(id: string,item: any) {
+    return this.http.put(`${this.url}/${this.Ws}/${id}`, item);
+  }
+
+  getInfinite(skip,take,examenId): Observable<any[]> {
+    return this.http.get<any[]>(`${this.url}/${this.Ws}/infinite/${skip}/${take}/${examenId}`);
   }
 
   getTareasMateriasInfinite(id,skip,take): Observable<any[]> {

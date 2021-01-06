@@ -1,4 +1,4 @@
-<ion-list style="padding-bottom: 55px;" mode="ios">
+<!--<ion-list style="padding-bottom: 55px;" mode="ios">
   <ion-list-header>
     Preguntas
   </ion-list-header>
@@ -13,9 +13,22 @@
     </ion-item>
   </ion-virtual-scroll>
 </ion-list>
-  <ion-infinite-scroll threshold="200px" (ionInfinite)="loadData($event)" style="transform: translateY(-51%);">
-    <ion-infinite-scroll-content
-      loadingSpinner="bubbles"
-      loadingText="Cargando mas preguntas...">
-    </ion-infinite-scroll-content>
-  </ion-infinite-scroll>
+<ion-infinite-scroll threshold="200px" (ionInfinite)="loadData($event)" style="transform: translateY(-51%);">
+  <ion-infinite-scroll-content
+    loadingSpinner="bubbles"
+    loadingText="Cargando mas preguntas...">
+  </ion-infinite-scroll-content>
+</ion-infinite-scroll>-->
+<ion-list mode="ios">
+  <ion-list-header>
+    Preguntas
+  </ion-list-header>
+    <ion-item button detail="false" mode="ios" *ngFor="let item of LstPreguntas; let i= index" (click)="verPregunta(item)">
+      <ion-icon name="list-outline" slot="start" style="transform: translateY(-11px);"></ion-icon>
+      <ion-label>
+        <h2>Pregunta {{i+1}}</h2>
+        <h3>Puntos: {{item.Puntos}}</h3>
+        <p>{{item.Pregunta}}</p>
+      </ion-label>
+    </ion-item>
+</ion-list>

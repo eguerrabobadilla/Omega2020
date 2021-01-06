@@ -5,7 +5,7 @@
         Pregunta
       </ion-label>
     </ion-list-header>
-    <ion-item>
+    <ion-item lines="none">
       <!--<ion-input hidden type="text" formControlName="_id" name="_id"></ion-input>-->
       <ion-input hidden type="text" formControlName="ExamenId" name="ExamenId"></ion-input>
       <ckeditor formControlName="Pregunta" name="Pregunta" style="width: 100%;" [editor]="Editor" data="<p>Hello, world!</p>"></ckeditor>
@@ -20,7 +20,7 @@
     <div *ngIf="!FrmItem.controls.Puntos.valid && (FrmItem.controls.Puntos.dirty || submitAttempt)">
       <p class="text-error">Por favor asigne una puntuación a la pregunta.</p>
     </div>
-    <ion-radio-group formControlName="TipoCarga" name="TipoCarga" value="azar">
+    <ion-radio-group formControlName="TipoCarga" name="TipoCarga" value="azar" mode="md">
       <ion-list-header>
         <ion-label>Tipo de carga</ion-label>
       </ion-list-header>
@@ -34,18 +34,18 @@
       </ion-item>
     </ion-radio-group>
     <!--Respuestas-->
-    <ion-radio-group  formControlName="Correcta" name="Correcta" value="rp1">
+    <ion-radio-group  formControlName="Correcta" name="Correcta" value="rp1" mode="md">
       <ion-list-header>
         <ion-label>Opciones</ion-label>
       </ion-list-header>
       <!--<div *ngFor='let in of counter(numeroRespuestas) ;let i = index'>-->
       <div formArrayName="Respuestas" *ngFor="let item of FrmItem.get('Respuestas').controls; let i = index;">
         <div [formGroupName]="i">
-          <ion-item>
+          <ion-item lines="none">
             <ion-label>{{i+1}}.- ¿Correcta?</ion-label>
             <ion-radio slot="end" color="primary" value="rp{{i+1}}"></ion-radio>
           </ion-item>
-          <ion-item>
+          <ion-item lines="none">
             <ion-input hidden type="text" formControlName="Id" name="Id"></ion-input>
             <ckeditor formControlName="Respuesta" style="width: 100%;" [editor]="Editor" data=""></ckeditor>
           </ion-item>

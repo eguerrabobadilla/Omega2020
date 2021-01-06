@@ -18,13 +18,14 @@ export class ListPreguntasComponent implements OnInit {
   @ViewChild(IonInfiniteScroll,{static: false}) infiniteScroll: IonInfiniteScroll;
   @ViewChild(IonVirtualScroll,{static: false}) virtualScroll: IonVirtualScroll;
   @Output() onClickPregunta = new EventEmitter();
+  @Input() examen;
 
   constructor(private apiPreguntas: PreguntasService) { 
 
   }
 
   ngOnInit() {
-    //this.loadData();
+    this.loadData2();
   }
 
   verPregunta(itemPregunta) {
@@ -34,8 +35,15 @@ export class ListPreguntasComponent implements OnInit {
     }, 50);
   }
 
+  loadData2() {
+    this.apiPreguntas.getInfinite(this.contadorInfinieScroll,10,this.examen.Id) .subscribe(data => {
+      this.LstPreguntas=data;
+    });
+  }
+
+  //Load data con infinite scroll
   loadData(event) {
-    this.apiPreguntas.getInfinite(this.contadorInfinieScroll,10) .subscribe(data => {
+    this.apiPreguntas.getInfinite(this.contadorInfinieScroll,10,this.examen.Id) .subscribe(data => {
       console.log(data);
       if(data.length!=0) {
         for (let i = 0; i < data.length; i++) {
