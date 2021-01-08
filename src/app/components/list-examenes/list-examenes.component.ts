@@ -124,7 +124,7 @@ export class ListExamenesComponent implements OnInit {
 
   public async iniciarExamen(event, item) {
     event.stopPropagation();
-
+  //  console.log(item);
     const modal = await this.modalCrl.create({
       component: DetalleExamenAlumnoPage,
       // cssClass: 'my-custom-modal-css',

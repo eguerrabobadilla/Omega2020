@@ -1,12 +1,5 @@
-<ion-virtual-scroll [items]="items" approxItemHeight="320px">
-
-
-    <ion-card style="text-align: initial;" class="ion-activatable ripple-parent" mode="ios" *virtualItem="let item; let itemBounds = bounds;">
-        <ion-ripple-effect></ion-ripple-effect>
-        <ion-card-header>
-            <ion-card-title>{{ item.name }}</ion-card-title>
-        </ion-card-header>
-        <ion-card-content>{{ item.content }}</ion-card-content>
-    </ion-card>
-
-</ion-virtual-scroll>
+<ion-list>
+    <ion-item *ngFor="let item of vueltas" (click)="afterClick(item)">
+        <ion-label style="text-align: center;">{{item+1}}</ion-label>
+    </ion-item>
+</ion-list>

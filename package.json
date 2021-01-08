@@ -70,6 +70,7 @@
         "cordova-sqlite-storage": "^5.0.1",
         "core-js": "^2.5.4",
         "modusecho": "file:../../plugin/modusechoplugin/ModusEcho",
+        "ngx-countdown": "^11.0.1",
         "onesignal-cordova-plugin": "^2.11.1",
         "rxjs": "~6.5.1",
         "swiper": "^6.4.5",

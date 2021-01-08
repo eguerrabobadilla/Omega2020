@@ -7,8 +7,14 @@ import { IonicModule } from '@ionic/angular';
 import { DetalleExamenAlumnoPageRoutingModule } from './detalle-examen-alumno-routing.module';
 
 import { DetalleExamenAlumnoPage } from './detalle-examen-alumno.page';
+import { CountdownGlobalConfig, CountdownModule } from 'ngx-countdown';
 
-import { SwiperModule } from 'swiper/angular';
+function countdownConfigFactory(): CountdownGlobalConfig {
+  return null;
+}
+
+
+
 
 @NgModule({
   imports: [
@@ -16,8 +22,12 @@ import { SwiperModule } from 'swiper/angular';
     FormsModule,
     IonicModule,
     DetalleExamenAlumnoPageRoutingModule,
-    SwiperModule
+    CountdownModule
+  
   ],
-  declarations: [DetalleExamenAlumnoPage]
+  declarations: [DetalleExamenAlumnoPage],
+  providers: [
+    { provide: CountdownGlobalConfig, useFactory: countdownConfigFactory }
+  ]
 })
 export class DetalleExamenAlumnoPageModule {}
