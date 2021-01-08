@@ -50,6 +50,8 @@ import { CrearExamenPageModule } from '../pages/crear-examen/crear-examen.module
 import { ListExamenesComponent } from '../components/list-examenes/list-examenes.component';
 import { DetalleExamenAlumnoPage } from '../pages/detalle-examen-alumno/detalle-examen-alumno.page';
 import { DetalleExamenAlumnoPageModule } from '../pages/detalle-examen-alumno/detalle-examen-alumno.module';
+import { from } from 'rxjs';
+
 
 
 
@@ -71,7 +73,9 @@ import { DetalleExamenAlumnoPageModule } from '../pages/detalle-examen-alumno/de
     CrearEvidencePage,
     CrearTopicPage,
     CrearExamenPage,
-    DetalleExamenAlumnoPage
+    DetalleExamenAlumnoPage,
+    ListComponent
+
   ],
   imports: [ 
     MbscModule,  

@@ -75,4 +75,9 @@ export class PreguntasService extends apiBase {
     document.body.appendChild(downloadLink);
     downloadLink.click();
   } 
+  getPreguntaExamen(examenId,indexPregunta,indexPreguntaAnterior,respuestaAlumno): Observable<any[]>{
+
+    return this.http.get<any[]>(`${this.url}/${this.Ws}/getPregunta/${examenId}/${indexPregunta}/${indexPreguntaAnterior}/${respuestaAlumno}`);
+   // return this.http.get<any[]>(`https://my-json-server.typicode.com/eguerrabobadilla/Omega2020/preguntas/${indexPregunta}`);
+  }
 }
