@@ -180,16 +180,17 @@ export class ListExamenesComponent implements OnInit {
               const loading = await this.loadingController.create({
                 message: 'Eliminando...'
               });
+              
   
               await loading.present();
   
-              /*await this.apiTareas.delete(item.Id).toPromise();
+              await this.apiExamenes.delete(item.Id).toPromise();
   
-              this.LstTareas = this.LstTareas.filter(obj => obj !== item);
+              this.LstExamenes = this.LstExamenes.filter(obj => obj !== item);
   
               this.loadingController.dismiss();
   
-              this.alertController.dismiss();*/
+              this.alertController.dismiss();
             }
           }
         ]

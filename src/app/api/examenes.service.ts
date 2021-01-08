@@ -21,6 +21,10 @@ export class ExamenesService extends apiBase {
     return this.http.put(`${this.url}/${this.Ws}/${item.Id}`, item);
   }
 
+  delete(Id: any) {
+    return this.http.delete(`${this.url}/${this.Ws}/${Id}`);
+  }
+
   getInfinite(skip,take): Observable<any[]> {
     return this.http.get<any[]>(`${this.url}/${this.Ws}/infinite/${skip}/${take}`);
   }

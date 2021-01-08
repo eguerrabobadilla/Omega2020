@@ -153,7 +153,7 @@ top: 0;" mode="ios">
 
 </div>
 
-<ion-item>
+<ion-item style="display: none;">
     <ion-label style="display: none;">Materias</ion-label>
     <ion-select  style="display: none;" #filtrosControl [compareWith]="compareWith" multiple="true" (ionChange)="ionChangeFiltros($event)">
         <ion-select-option *ngFor="let materia of materias" [value]="materia">{{materia.Nombre}}</ion-select-option>

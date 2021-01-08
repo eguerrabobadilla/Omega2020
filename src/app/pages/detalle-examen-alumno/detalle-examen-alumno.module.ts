@@ -8,7 +8,7 @@ import { DetalleExamenAlumnoPageRoutingModule } from './detalle-examen-alumno-ro
 
 import { DetalleExamenAlumnoPage } from './detalle-examen-alumno.page';
 
-import { SwiperModule } from 'swiper/angular';
+//import { SwiperModule } from 'swiper/angular';
 
 @NgModule({
   imports: [
@@ -16,7 +16,7 @@ import { SwiperModule } from 'swiper/angular';
     FormsModule,
     IonicModule,
     DetalleExamenAlumnoPageRoutingModule,
-    SwiperModule
+    //SwiperModule
   ],
   declarations: [DetalleExamenAlumnoPage]
 })

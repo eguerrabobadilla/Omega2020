@@ -262,7 +262,7 @@ export class BooksComponent implements OnInit {
     var promise = new Promise((resolve, reject) => {
       this.file.checkDir(directory,path).then(_ =>{
           console.log("Existe el directorio");
-          resolve();
+          resolve("ok");
       }).catch(err => {
           reject();
       });
@@ -278,7 +278,7 @@ export class BooksComponent implements OnInit {
               throw new Error("El libro no esta descargado");
               
           console.log("Existe el directorio");
-          resolve();
+          resolve("ok");
       }).catch(err => {
           console.log("No existe el directorio");
           console.log(err);

@@ -3,6 +3,9 @@ import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { FormGroup, FormBuilder, Validators,FormArray } from '@angular/forms';
 import { AlertController, LoadingController } from '@ionic/angular';
 import { PreguntasService } from 'src/app/api/preguntas.service';
+import { UploadAdapter } from 'src/app/class/UploadAdapter';
+import { HttpClient } from '@angular/common/http';
+import { apiBase } from 'src/app/api/apiBase';
 
 @Component({
   selector: 'app-seleccion-una-respuesta',
@@ -21,7 +24,7 @@ export class SeleccionUnaRespuestaComponent implements OnInit {
   private item: any;
 
   constructor(private formBuilder: FormBuilder,public loadingController: LoadingController,private alertCtrl: AlertController,
-              private apiPreguntas: PreguntasService) {
+              private apiPreguntas: PreguntasService, public http: HttpClient,private api: apiBase) {
     this.FrmItem = formBuilder.group({
       //_id:   [''],
       ExamenId:   [0, Validators.compose([Validators.required])],
@@ -36,9 +39,7 @@ export class SeleccionUnaRespuestaComponent implements OnInit {
 
   ngAfterViewInit() {
     setTimeout(() => {
-      for (let index = 1; index <= this.numeroRespuestas; index++) {
-        this.addItem(index);
-      }
+      this.loadRespuestas();
       //console.log(this.examen);
   
       this.FrmItem.controls["ExamenId"].setValue(this.examen.Id);
@@ -49,6 +50,12 @@ export class SeleccionUnaRespuestaComponent implements OnInit {
         this.FrmItem.patchValue(this.itemPreguntaSeleccionada);
       }
     });
+  }
+
+  loadRespuestas() {
+    for (let index = 1; index <= this.numeroRespuestas; index++) {
+      this.addItem(index);
+    }
   }
 
   ngOnInit() {
@@ -88,6 +95,15 @@ export class SeleccionUnaRespuestaComponent implements OnInit {
     console.log(this.item);
     this.item.TipoPregunta="multipleUnaRespuesta";
 
+ 
+    for( var i = 0; i < this.item.Respuestas.length; i++){ 
+                                   
+      if ( this.item.Respuestas[i].Respuesta === "") { 
+        this.item.Respuestas.splice(i, 1); 
+          i--; 
+      }
+    }
+
     
     if(this.itemPreguntaSeleccionada === undefined) {
       const tareaUpload = await this.apiPreguntas.save(this.item).toPromise();
@@ -116,6 +132,9 @@ export class SeleccionUnaRespuestaComponent implements OnInit {
               this.FrmItem.controls['TipoCarga'].setValue("azar");
               this.FrmItem.controls['Correcta'].setValue("rp1");
               this.FrmItem.controls['ExamenId'].setValue(this.examen.Id);
+              let frmArray = this.FrmItem.get('Respuestas') as FormArray;
+              frmArray.clear();
+              this.loadRespuestas();
             }
           }
         ]
@@ -147,6 +166,14 @@ export class SeleccionUnaRespuestaComponent implements OnInit {
   addItem(index): void {
     this.Respuestas = this.FrmItem.get('Respuestas') as FormArray;
     this.Respuestas.push(this.createItem(index));
+  }
+
+  onReadyRichText($event){
+    $event.plugins.get('FileRepository').createUploadAdapter = (loader)=> {
+      //console.log('loader : ', loader)
+      //console.log(btoa(loader.file));
+      return new UploadAdapter(loader,this.http,this.api);
+    };
   }
 
 }

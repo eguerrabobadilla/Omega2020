@@ -2,10 +2,10 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { IonSlides } from '@ionic/angular';
 import { PreguntasService } from 'src/app/api/preguntas.service';
 // import Swiper core and required components
-import SwiperCore , { Virtual } from "swiper/core";
+//import SwiperCore , { Virtual } from "swiper/core";
 
 // install Swiper components
-SwiperCore.use([Virtual]);
+//SwiperCore.use([Virtual]);
 
 
 @Component({
@@ -28,7 +28,7 @@ export class DetalleExamenAlumnoPage implements OnInit {
       
     });
 
-    let mySwiper = new SwiperCore('.ion-slides', {
+    /*let mySwiper = new SwiperCore('.ion-slides', {
       initialSlide: 1,
       direction: "vertical",
       speed: 150,
@@ -38,9 +38,7 @@ export class DetalleExamenAlumnoPage implements OnInit {
       virtual: {
         slides: ['Slide 1', 'Slide 2', 'Slide 3', 'Slide 4', 'Slide 5'],
       }
-
-      
-  });
+    });*/
     
     
   }

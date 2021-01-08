@@ -1,5 +1,5 @@
 import { Component, OnInit,Input,Output,EventEmitter,ViewChild } from '@angular/core';
-import { IonInfiniteScroll, IonVirtualScroll, ModalController } from '@ionic/angular';
+import { AlertController, IonInfiniteScroll, IonVirtualScroll, LoadingController, ModalController } from '@ionic/angular';
 import { PreguntasService } from 'src/app/api/preguntas.service';
 import { UsuariosService } from 'src/app/api/usuarios.service';
 import { DetalleAlumnoPage } from 'src/app/pages/detalle-alumno/detalle-alumno.page';
@@ -20,7 +20,8 @@ export class ListPreguntasComponent implements OnInit {
   @Output() onClickPregunta = new EventEmitter();
   @Input() examen;
 
-  constructor(private apiPreguntas: PreguntasService) { 
+  constructor(private apiPreguntas: PreguntasService,private alertController: AlertController,
+              private loadingController: LoadingController) { 
 
   }
 
@@ -35,9 +36,59 @@ export class ListPreguntasComponent implements OnInit {
     }, 50);
   }
 
-  loadData2() {
+  async deletePregunta(event,item,numPregunta){
+    event.stopPropagation();
+
+    const alertTerminado = await this.alertController.create({
+      header: 'ELIMINAR',
+      message: '¿Está seguro de ELIMINAR la Pregunta ' + numPregunta +'?',
+      buttons: [
+        {
+          text: 'No', handler: () =>  {
+            return;
+          }
+        },
+        {
+          text: 'Si', handler: async () => {
+            
+            const loading = await this.loadingController.create({
+              message: 'Eliminando...'
+            });
+
+            await loading.present();
+
+            await this.apiPreguntas.delete(item.ExamenId,item._id).toPromise();
+
+            this.LstPreguntas = this.LstPreguntas.filter(obj => obj !== item);
+
+            this.loadingController.dismiss();
+
+            /*await this.apiTareas.delete(item.Id).toPromise();
+
+            this.LstTareas = this.LstTareas.filter(obj => obj !== item);
+
+            this.loadingController.dismiss();
+
+            this.alertController.dismiss();*/
+          }
+        }
+      ]
+    });
+
+    alertTerminado.present();
+  }
+
+  async loadData2() {
+    const loading = await this.loadingController.create({
+      message: 'Cargando...'
+    });
+
+    await loading.present();
+
     this.apiPreguntas.getInfinite(this.contadorInfinieScroll,10,this.examen.Id) .subscribe(data => {
       this.LstPreguntas=data;
+
+      this.loadingController.dismiss();
     });
   }
 

@@ -23,12 +23,15 @@
   <ion-list-header>
     Preguntas
   </ion-list-header>
-    <ion-item button detail="false" mode="ios" *ngFor="let item of LstPreguntas; let i= index" (click)="verPregunta(item)">
+    <ion-item button detail="false" mode="ios" *ngFor="let item of LstPreguntas; let i= index" (click)="verPregunta(item)">   
       <ion-icon name="list-outline" slot="start" style="transform: translateY(-11px);"></ion-icon>
       <ion-label>
         <h2>Pregunta {{i+1}}</h2>
         <h3>Puntos: {{item.Puntos}}</h3>
         <p>{{item.Pregunta}}</p>
       </ion-label>
+      <ion-button style="--color:#F4315D;--background-activated:#f4315d3d" fill="clear" slot="end" (click)="deletePregunta($event,item,i+1)">
+        <ion-icon slot="end" name="trash-outline"></ion-icon>
+      </ion-button>   
     </ion-item>
 </ion-list>

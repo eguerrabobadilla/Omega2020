@@ -1,5 +1,5 @@
-import { Component, OnInit,ViewChild,ElementRef,Input } from '@angular/core';
-import { ModalController, AlertController,IonInput,PickerController, PopoverController, LoadingController, ActionSheetController, IonSlides } from '@ionic/angular';
+import { Component, OnInit,ViewChild,ElementRef,Input, ChangeDetectorRef } from '@angular/core';
+import { ModalController, AlertController,IonInput,PickerController, PopoverController, LoadingController, ActionSheetController, IonSlides, Platform, ToastController } from '@ionic/angular';
 import { FormGroup, FormBuilder, Validators  } from '@angular/forms';
 import { ForumService } from '../../api/forum.service';
 import { MateriasService } from 'src/app/api/materias.service';
@@ -10,13 +10,20 @@ import { CalendarComponent } from 'src/app/components/calendar/calendar.componen
 import { ExamenesService } from 'src/app/api/examenes.service';
 import { SeleccionUnaRespuestaComponent } from 'src/app/components/examenes/seleccion-una-respuesta/seleccion-una-respuesta.component';
 import { CKEditorComponent } from '@ckeditor/ckeditor5-angular';
+import { UploadAdapter } from 'src/app/class/UploadAdapter';
+import { HttpParams, HttpClient } from "@angular/common/http";
+import { apiBase } from 'src/app/api/apiBase';
+import { Plugins } from '@capacitor/core';
+import { FileTransfer, FileTransferObject } from '@ionic-native/file-transfer/ngx';
+import { PreguntasService } from 'src/app/api/preguntas.service';
+import { ListPreguntasComponent } from 'src/app/components/examenes/list-preguntas/list-preguntas.component';
+import { File,FileEntry } from '@ionic-native/file/ngx';
 
 mobiscroll.settings = {
   theme: 'mobiscroll',
   themeVariant: 'light',
   layout: 'liquid'
 };
-
 
 @Component({
   selector: 'app-crear-examen',
@@ -32,11 +39,14 @@ export class CrearExamenPage implements OnInit {
   @ViewChild('mobi2', {static: false}) mobi2: MbscCalendar; 
   @ViewChild('CKEDITOR', {static: false}) CKEDITOR: CKEditorComponent; 
   @ViewChild('slider', {static: false}) slider: IonSlides;
+  @ViewChild('componentListaPreguntas', {static: false}) componentListaPreguntas: ListPreguntasComponent;
+  @ViewChild('inputFileBanco', {read: ElementRef, static: false}) inputFileBancoHTML: ElementRef;
 
   @ViewChild('opcionMultipleUnaRespuesta', {static: false}) opcionMultipleUnaRespuesta: SeleccionUnaRespuestaComponent; 
 
   public FrmItem: FormGroup;
   public submitAttempt: boolean = false;
+  loading: any;
   //private item: any;
   grupos: any[] = [];
   materias: any[] = [];
@@ -51,7 +61,8 @@ export class CrearExamenPage implements OnInit {
   banderaEdito: boolean=false;
   public Editor = ClassicEditor;
   slideOpts = {
-    autoHeight: true
+    autoHeight: true,
+    allowTouchMove: false
   };
   viewComponentSelect = 'listRespuestas';
 
@@ -105,7 +116,9 @@ export class CrearExamenPage implements OnInit {
 
   constructor(private modalCtrl: ModalController, private formBuilder: FormBuilder, private pickerController: PickerController,
               private apiChat: ChatService,private apiMaterias: MateriasService, private alertCtrl: AlertController,
-              public loadingController: LoadingController,private apiExamenes: ExamenesService,private actionSheetController: ActionSheetController) {
+              public loadingController: LoadingController,private apiExamenes: ExamenesService,private actionSheetController: ActionSheetController,
+              public http: HttpClient,private api: apiBase,private platform: Platform,private apiPreguntas: PreguntasService,
+              public toastController: ToastController,private cd: ChangeDetectorRef,private transfer: FileTransfer,private file: File) {
     this.FrmItem = formBuilder.group({
       Id:   [0, Validators.compose([Validators.required])],
       Grupo:   ['', Validators.compose([Validators.required])],
@@ -371,6 +384,15 @@ export class CrearExamenPage implements OnInit {
           this.showBackButton=false;
     })
   }
+
+  onReadyRichText($event){
+    $event.plugins.get('FileRepository').createUploadAdapter = (loader)=> {
+      console.log('loader : ', loader)
+      console.log(btoa(loader.file));
+      return new UploadAdapter(loader,this.http,this.api);
+    };
+  }
+
   /*****Preguntas**** */
   async nuevaPregunta() {
     const actionSheet = await this.actionSheetController.create({
@@ -406,6 +428,87 @@ export class CrearExamenPage implements OnInit {
     await actionSheet.present();
   }
 
+  async bancoPreguntas() {
+    const actionSheet = await this.actionSheetController.create({
+      header: 'Añadir Preguntas',
+      cssClass: 'left-align-buttons',
+      mode: 'ios',
+      buttons: [{
+        text: ' Exportar',
+        role: 'destructive',
+        icon: 'download',
+        handler: async () => {
+          console.log('Delete clicked');
+          const { Browser } = Plugins;
+          if (this.platform.is('cordova')) {
+            //this.download(`${this.api.url}/resources/${item.PathRecurso}`);
+            this.loading =await this.loadingController.create({
+              //cssClass: 'my-custom-class',
+              message: 'Exportando...',
+              duration: 120000
+            });
+            
+            this.loading.present();
+
+            const url=`${this.api.url}/api/preguntas/dowload/${this.item.Id}`;
+            console.log(url);
+            let fileName=`LBS-Examen-${this.item.Grado}${this.item.Grupo}-${this.item.Escolaridad}`.replace(' ','-');
+            this.download(url,fileName);
+            
+          } else {
+            this.loading =await this.loadingController.create({
+              //cssClass: 'my-custom-class',
+              message: 'Exportando...',
+              duration: 120000
+            });
+            
+            this.loading.present();
+
+            let fileName=`LBS-Examen-${this.item.Grado}${this.item.Grupo}-${this.item.Escolaridad}`.replace(' ','-');
+            await this.apiPreguntas.getBancoPreguntas(this.item.Id,fileName);
+            this.loadingController.dismiss();
+          }
+        }
+      }, {
+        text: ' Importar',
+        role: 'destructive',
+        icon: 'share',
+        handler: () => {
+          console.log('Share clicked');
+          this.inputFileBancoHTML.nativeElement.click();
+        }
+      },
+      {
+        text: 'Cancelar',
+        icon: 'close',
+        role: 'cancel',
+        handler: () => {
+          console.log('Cancel clicked');
+        }
+      }]
+    });
+    await actionSheet.present();
+  }
+
+  download(url,NameFile) {
+    const fileTransfer: FileTransferObject = this.transfer.create();
+    const extension = url.split('.').pop();
+    //const pathDownload = this.platform.is("android") ? this.file.dataDirectory  :  this.file.dataDirectory;
+    //const pathDownload = this.platform.is("android") ? this.file.externalDataDirectory :  this.file.documentsDirectory;
+    const pathDownload = this.platform.is("android") ? this.file.externalRootDirectory + "download/" :  this.file.documentsDirectory;
+
+    fileTransfer.download(url, pathDownload + NameFile + '.zip').then((entry) => {
+        console.log('download complete: ' + entry.toURL());
+        this.loadingController.dismiss();
+    }, (error) => {
+      // handle error
+      console.log(error);
+      this.loadingController.dismiss();
+      alert(error.exception);
+    });
+
+  }
+
   guardarPregunta() {
     this.opcionMultipleUnaRespuesta.save();
   }
@@ -418,6 +521,58 @@ export class CrearExamenPage implements OnInit {
     //console.log(itemPregunta);
     this.itemPreguntaSeleccionada=itemPregunta;
     this.viewComponentSelect="multipleUnaRespuesta";
+  }
+
+  async onFileChange($event: any) {
+    if( $event.target.files &&  $event.target.files.length) {
+      const re = new RegExp('\.zip', 'g');      
+      
+      //Solo se permiten formatos de imagen;
+      if(re.test($event.target.files[0].type)==false) {
+        this.presentToast("Archivo no valido, solo se permite archivos zip.");
+        return;
+      }
+
+      /*this.FrmItem.patchValue({
+        Image: $event.target.files[0]
+      });
+
+      this.files = $event.target.files[0];*/
+
+      const file=$event.target.files[0];
+
+      const payload = new FormData();
+      payload.append('ExamenId', this.item.Id);  
+      payload.append('File', file, file.name);
+
+      this.loading =await this.loadingController.create({
+        //cssClass: 'my-custom-class',
+        message: 'Importando...',
+        duration: 120000
+      });
+
+      const tareaUpload = await this.apiPreguntas.setBancosPreguntas(payload).toPromise();
+
+      this.loadingController.dismiss();
+
+      this.componentListaPreguntas.loadData2();
+
+      // need to run CD since file load runs outside of zone
+      this.cd.markForCheck();
+    }
+
+  }
+
+  async presentToast(text) {
+    const toast = await this.toastController.create({
+      message: text,
+      color: "dark",
+      mode: "ios",
+      cssClass : "toastCenter",
+      duration: 3000
+    });
+
+    toast.present();
   }
   /***************** */
 }

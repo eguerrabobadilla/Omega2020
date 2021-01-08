@@ -8,7 +8,7 @@
     <ion-item lines="none">
       <!--<ion-input hidden type="text" formControlName="_id" name="_id"></ion-input>-->
       <ion-input hidden type="text" formControlName="ExamenId" name="ExamenId"></ion-input>
-      <ckeditor formControlName="Pregunta" name="Pregunta" style="width: 100%;" [editor]="Editor" data="<p>Hello, world!</p>"></ckeditor>
+      <ckeditor formControlName="Pregunta" name="Pregunta" (ready)="onReadyRichText($event)" style="width: 100%;" [editor]="Editor" data=""></ckeditor>
     </ion-item>
     <div *ngIf="!FrmItem.controls.Pregunta.valid && (FrmItem.controls.Pregunta.dirty || submitAttempt)">
       <p class="text-error">Por favor escriba una pregunta.</p>
@@ -47,7 +47,7 @@
           </ion-item>
           <ion-item lines="none">
             <ion-input hidden type="text" formControlName="Id" name="Id"></ion-input>
-            <ckeditor formControlName="Respuesta" style="width: 100%;" [editor]="Editor" data=""></ckeditor>
+            <ckeditor formControlName="Respuesta" style="width: 100%;" [editor]="Editor" data="" (ready)="onReadyRichText($event)"></ckeditor>
           </ion-item>
         </div>
       </div>

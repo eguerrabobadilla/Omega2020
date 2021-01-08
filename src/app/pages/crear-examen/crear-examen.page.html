@@ -118,7 +118,7 @@
                                             <ion-label color="dark" position="stacked">Descripción</ion-label>
                                             <!-- Se agrego es eleemento para el que el ckeditor se ajustara-->
                                             <ion-textarea style="display: none;"></ion-textarea>
-                                            <ckeditor #CKEDITOR formControlName="Descripcion" name="Descripcion" [editor]="Editor" data="<p>Hello, world!</p>"></ckeditor>
+                                            <ckeditor #CKEDITOR formControlName="Descripcion" name="Descripcion" [editor]="Editor" (ready)="onReadyRichText($event)" data="<p>Hello, world!</p>"></ckeditor>
                                         </ion-item>
                                         <div *ngIf="!FrmItem.controls.Descripcion.valid && (FrmItem.controls.Descripcion.dirty || submitAttempt)">
                                             <p class="text-error">Por favor ingresa una descripción.</p>
@@ -141,7 +141,7 @@
                 <ion-card class="ion-no-border" no style="text-align: initial;" mode="ios">
                     <ion-card-content>
                         <app-seleccion-una-respuesta (backPage)="cancelar()" [itemPreguntaSeleccionada]="itemPreguntaSeleccionada" [examen]="item" #opcionMultipleUnaRespuesta *ngIf="viewComponentSelect=='multipleUnaRespuesta' && this.item != undefined"></app-seleccion-una-respuesta>
-                        <app-list-preguntas [examen]="item" (onClickPregunta)="onClickPregunta($event)" *ngIf="viewComponentSelect=='listRespuestas' && this.item != undefined"></app-list-preguntas>
+                        <app-list-preguntas #componentListaPreguntas [examen]="item" (onClickPregunta)="onClickPregunta($event)" *ngIf="viewComponentSelect=='listRespuestas' && this.item != undefined"></app-list-preguntas>
                     </ion-card-content>
                 </ion-card>
             </div>
@@ -150,15 +150,21 @@
 </ion-content>
 <ion-footer style="transform: translateY(-1px);" *ngIf="this.item != undefined">
     <ion-toolbar>
-        <ion-button *ngIf="viewComponentSelect=='listRespuestas' && showBackButton==true" style="width: 160.06px;" slot="end" size="small" fill="outline" type="button" icon-start outline block (click)="nuevaPregunta()">
-          <ion-icon name="add-outline" style="margin-right: 3px;"></ion-icon>
-          Añadir pregunta
+    
+        <input #inputFileBanco style="display:none" name="File" (change)="onFileChange($event)" type="file"/>
+        <ion-button size="small" *ngIf="viewComponentSelect=='listRespuestas' && showBackButton==true" style="width: 160.06px;left: 0;position: absolute;" slot="end" size="small" fill="outline" type="button" icon-start outline block (click)="bancoPreguntas()">
+            <ion-icon name="grid-outline" style="margin-right: 3px;"></ion-icon>
+            Banco preguntas
         </ion-button>
-
+  
+        <ion-button size="small" slot="start" *ngIf="viewComponentSelect=='listRespuestas' && showBackButton==true" style="width: 160.06px;" slot="end" size="small" fill="outline" type="button" icon-start outline block (click)="nuevaPregunta()">
+            <ion-icon name="add-outline" style="margin-right: 3px;"></ion-icon>
+            Añadir pregunta
+            </ion-button>
         <ion-button *ngIf="viewComponentSelect=='listRespuestas' && showBackButton==false" style="width: 160.06px;" slot="end" size="small" fill="outline" type="button" icon-start outline block (click)="verPreguntas()">
             <ion-icon name="help-circle-outline" style="margin-right: 3px;"></ion-icon>
             Ver Preguntas
-          </ion-button>
+        </ion-button>
 
         <!--<ion-button *ngIf="viewComponentSelect=='multipleUnaRespuesta'" style="width: 97.06px;" slot="end" size="small" fill="outline" type="button" icon-start outline block (click)="cancelar()">
             <ion-icon name="close-circle-outline" style="margin-right: 3px;"></ion-icon>
