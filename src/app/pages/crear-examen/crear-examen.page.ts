@@ -191,11 +191,11 @@ export class CrearExamenPage implements OnInit {
       /*if(this.item.Image != undefined)
         this.texto_adjuntar_portada = 'Foto de Portada Seleccionada';*/
 
-      this.titulo = 'Modificar Exámen';
-      this.tituloBoton= 'Modificar Exámen';
+      this.titulo = 'Modificar Examen';
+      this.tituloBoton= 'Modificar Examen';
     } else {
-      this.titulo = 'Nuevo Exámen';
-      this.tituloBoton = 'Crear Exámen';
+      this.titulo = 'Nuevo Examen';
+      this.tituloBoton = 'Crear Examen';
     }
   }
 
@@ -318,9 +318,9 @@ export class CrearExamenPage implements OnInit {
 
     if(this.item.Id == 0) {
       const alertTerminado = await this.alertCtrl.create({
-        header: 'Exámen creado con éxito',
+        header: 'Examen creado con éxito',
         backdropDismiss: false,
-        message: 'Se creó el exámen ' + this.FrmItem.get('Titulo').value + ', ¿Desea añadir preguntas al exámen?',
+        message: 'Se creó el Examen ' + this.FrmItem.get('Titulo').value + ', ¿Desea añadir preguntas al Examen?',
         buttons: [
           {
             text: 'No', handler: () =>  this.closeModal()
@@ -338,9 +338,9 @@ export class CrearExamenPage implements OnInit {
       await alertTerminado.present();
     } else {
       const alertTerminado = await this.alertCtrl.create({
-        header: 'Exámen modificado con éxito',
+        header: 'Examen modificado con éxito',
         backdropDismiss: false,
-        message: 'Se modificó el exámen ' + this.FrmItem.get('Titulo').value,
+        message: 'Se modificó el Examen ' + this.FrmItem.get('Titulo').value,
         buttons: [
           {
             text: 'Continuar', handler: () =>  this.closeModal()

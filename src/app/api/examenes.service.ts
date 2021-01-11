@@ -21,6 +21,10 @@ export class ExamenesService extends apiBase {
     return this.http.put(`${this.url}/${this.Ws}/${item.Id}`, item);
   }
 
+  examenTerminado(examenId,item){
+    return this.http.put(`${this.url}/${this.Ws}/examenTerminado/${examenId}`,item);
+  }
+
   delete(Id: any) {
     return this.http.delete(`${this.url}/${this.Ws}/${Id}`);
   }
@@ -31,5 +35,9 @@ export class ExamenesService extends apiBase {
 
   getTareasMateriasInfinite(id,skip,take): Observable<any[]> {
     return this.http.get<any[]>(`${this.url}/${this.Ws}/materiaInfinite/${id}/${skip}/${take}`);
+  }
+
+  getExamenesAlumnos(examenId): Observable<any[]> {
+    return this.http.get<any[]>(`${this.url}/${this.Ws}/getExamenesAlumnos/${examenId}`);
   }
 }

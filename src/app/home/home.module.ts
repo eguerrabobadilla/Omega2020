@@ -50,7 +50,9 @@ import { CrearExamenPageModule } from '../pages/crear-examen/crear-examen.module
 import { ListExamenesComponent } from '../components/list-examenes/list-examenes.component';
 import { DetalleExamenAlumnoPage } from '../pages/detalle-examen-alumno/detalle-examen-alumno.page';
 import { DetalleExamenAlumnoPageModule } from '../pages/detalle-examen-alumno/detalle-examen-alumno.module';
+import { DetalleResultadosExamenesPage } from '../pages/detalle-resultados-examenes/detalle-resultados-examenes.page';
 import { from } from 'rxjs';
+import { DetalleResultadosExamenesPageModule } from '../pages/detalle-resultados-examenes/detalle-resultados-examenes.module';
 
 
 
@@ -74,8 +76,8 @@ import { from } from 'rxjs';
     CrearTopicPage,
     CrearExamenPage,
     DetalleExamenAlumnoPage,
-    ListComponent
-
+    ListComponent,
+    DetalleResultadosExamenesPage
   ],
   imports: [ 
     MbscModule,  
@@ -101,7 +103,8 @@ import { from } from 'rxjs';
     CrearTopicPageModule,
     CrearExamenPageModule,
     GlobalModule,
-    DetalleExamenAlumnoPageModule
+    DetalleExamenAlumnoPageModule,
+    DetalleResultadosExamenesPageModule
   ],
   declarations: [ HomePage, ListComponent, 
     ListResourceComponent, ForumComponent,GraphicsComponent,

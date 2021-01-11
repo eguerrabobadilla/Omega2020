@@ -1,9 +1,10 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { IonSlides, PopoverController, ModalController } from '@ionic/angular';
+import { IonSlides, PopoverController, ModalController, LoadingController } from '@ionic/angular';
 import { PreguntasService } from 'src/app/api/preguntas.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import {ListComponent} from 'src/app/components/list/list.component';
 import { CountdownComponent } from 'ngx-countdown';
+import { ExamenesService } from 'src/app/api/examenes.service';
 
 
 
@@ -19,6 +20,7 @@ export class DetalleExamenAlumnoPage implements OnInit {
   public FrmItem: FormGroup;
   respuestas: any[] = [];
   preguntaInfo: any[] = [];
+  resultadoExamen: any;
   contadorPregunta= 1;
   botonSiguienteDisable=false;
   botonAnteriorDisable=true;
@@ -32,6 +34,7 @@ export class DetalleExamenAlumnoPage implements OnInit {
   duracionExamen: number= 0;
   banderaslideFinExamen=false;
   headerResultadoVisible=false;
+  loading: any;
   status = 'start';
   @Input() item;
   @ViewChild('slider', {static: false}) slider: IonSlides;
@@ -45,7 +48,8 @@ export class DetalleExamenAlumnoPage implements OnInit {
 
 
  
-  constructor(private apiPreguntas: PreguntasService, public popoverController: PopoverController,private modalCtrl: ModalController) { }
+  constructor(private apiPreguntas: PreguntasService, public popoverController: PopoverController,private modalCtrl: ModalController,
+              private apiExamenes: ExamenesService,private loadingController: LoadingController) { }
 
   ngOnInit() {
   //  this.duration = 3600; // test
@@ -54,7 +58,6 @@ export class DetalleExamenAlumnoPage implements OnInit {
      console.log(this.item)
    }
 
-<<<<<<< HEAD
     /*let mySwiper = new SwiperCore('.ion-slides', {
       initialSlide: 1,
       direction: "vertical",
@@ -66,12 +69,17 @@ export class DetalleExamenAlumnoPage implements OnInit {
         slides: ['Slide 1', 'Slide 2', 'Slide 3', 'Slide 4', 'Slide 5'],
       }
     });*/
-=======
   
 
-  iniciarExamen(){
->>>>>>> 627e37c498bf472f783d6cbec59d66e888c4c511
-    
+  async iniciarExamen(){
+    this.loading =await this.loadingController.create({
+      //cssClass: 'my-custom-class',
+      message: 'Generando Examen...',
+      duration: 120000
+    });
+
+    this.loading.present();
+
     //this.slider.slideNext();
     this.headerInstruccionesVisible=false;
     this.examenId=this.item.Id;
@@ -83,7 +91,7 @@ export class DetalleExamenAlumnoPage implements OnInit {
    
     this.apiPreguntas.getExamen(this.examenId).subscribe(data =>{
       console.log("inicio")
-      this.duracionExamen=2400;
+      this.duracionExamen=this.item.DuracionExamen*60;
     //  this.config.leftTime=2400;
      // this.counter.left=2400;
       
@@ -92,18 +100,24 @@ export class DetalleExamenAlumnoPage implements OnInit {
       this.counter.begin();
       
       this.cambioPregunta("especifico",1);
+
+      this.loadingController.dismiss();
+   },(err) => {
+     console.log(err);
+     this.loadingController.dismiss();
    });
 
 
   }
 
-  cambioPregunta(direccion , numero){
+  async cambioPregunta(direccion , numero){
     console.log(direccion)
     console.log(numero)
 
   //  if(this.contadorPregunta==5-1)this.slider.slidePrev();
     this.preguntaAnterior=this.contadorPregunta;
     if (this.respuestaSeleccionada=="")this.respuestaSeleccionada="[sin-respuesta]";
+
     if (direccion==="siguiente"){
         if(this.contadorPregunta==this.item.TotalPreguntas){
           this.slider.slideNext();
@@ -124,6 +138,7 @@ export class DetalleExamenAlumnoPage implements OnInit {
       this.contadorPregunta--;
       
     }
+
     if (direccion==="especifico"){
       if(this.contadorPregunta==this.item.TotalPreguntas && this.banderaslideFinExamen==true){
         this.slider.slidePrev();
@@ -135,12 +150,28 @@ export class DetalleExamenAlumnoPage implements OnInit {
       
 
     }
+
     if(this.contadorPregunta==1)this.botonAnteriorDisable=true;else this.botonAnteriorDisable = false;
+    
+    this.loading =await this.loadingController.create({
+      //cssClass: 'my-custom-class',
+      message: 'Cargando Pregunta...',
+      duration: 120000
+    });
+
+    this.loading.present();
+
     this.apiPreguntas.getPreguntaExamen(this.examenId,this.contadorPregunta,this.preguntaAnterior,this.respuestaSeleccionada).subscribe(data =>{
       this.preguntaInfo = data;
       this.respuestaSeleccionada=data['RespuestaAlumno'];
       this.respuestas= data['Respuestas'];
+
+      this.loadingController.dismiss();
+    },error => {
+      console.log(error);
+      this.loadingController.dismiss();
     });
+
      console.log(this.contadorPregunta)
 /*if(this.contadorPregunta==this.item.TotalPreguntas){
       this.botonSiguienteDisable=true
@@ -150,12 +181,24 @@ export class DetalleExamenAlumnoPage implements OnInit {
       
   }
 
-  preguntaFinalizarExamen(){
+  async preguntaFinalizarExamen(){
     console.log("slideNext")
     this.headerResultadoVisible=true;
     this.slider.slideNext();
     this.botonHeaderVisible=false;
     this.slider.updateAutoHeight();
+    
+    this.loading =await this.loadingController.create({
+      //cssClass: 'my-custom-class',
+      message: 'Terminando Examen...',
+      duration: 120000
+    });
+
+    this.loading.present();
+
+    this.resultadoExamen= await this.apiExamenes.examenTerminado(this.item.Id,this.item).toPromise();
+    console.log(this.resultadoExamen);
+    this.loadingController.dismiss();
   }
 
   eventCountdown(event){

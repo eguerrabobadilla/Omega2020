@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, Output, EventEmitter } from '@angular/cor
 import { AlertController, LoadingController, ModalController, IonInfiniteScroll, IonVirtualScroll } from '@ionic/angular';
 import { ExamenesService } from 'src/app/api/examenes.service';
 import { CrearExamenPage } from 'src/app/pages/crear-examen/crear-examen.page';
+import { DetalleResultadosExamenesPage } from 'src/app/pages/detalle-resultados-examenes/detalle-resultados-examenes.page';
 import { DetalleExamenAlumnoPage } from '../../pages/detalle-examen-alumno/detalle-examen-alumno.page';
 
 @Component({
@@ -220,6 +221,27 @@ export class ListExamenesComponent implements OnInit {
       const value = decodedJwtData[key];
   
       return value;
+    }
+
+    async openDetail($event,item) {
+      const modal = await this.modalCrl.create({
+        component: DetalleResultadosExamenesPage,
+        cssClass: 'my-custom-modal-css',
+        mode: 'ios',
+        backdropDismiss: true,
+        componentProps: {item}
+      });
+      setTimeout(() => {
+        console.log(item.Id);
+        if(item.Id== 14170){
+          this.visto2 = true;
+        }
+        else{
+          this.visto= true;
+        }
+      }, 1000);
+
+    return await modal.present();
     }
 
     loadData(event) {

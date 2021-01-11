@@ -11,3 +11,8 @@ ion-button {
 .my-custom-class {
     height: 50%;
 }
+
+div.pregunta p:first-child {
+    display: inline;
+    background-color: red;
+}
