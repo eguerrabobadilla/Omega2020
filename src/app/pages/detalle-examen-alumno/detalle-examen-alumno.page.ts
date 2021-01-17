@@ -29,19 +29,20 @@ export class DetalleExamenAlumnoPage implements OnInit {
   preguntaAnterior:number;
   textoBoton = 'Siguiente';
   botonHeaderVisible=false;
-  botonIniciarVisible=true;
-  headerInstruccionesVisible=true;
-  duracionExamen: number= 0;
+  //botonIniciarVisible=true;
+  instruccionesVisible=false;
+  duracionExamen: number;
   banderaslideFinExamen=false;
   headerResultadoVisible=false;
   loading: any;
+  spiner=false;
+  inicioContador=false;
   status = 'start';
   @Input() item;
   @ViewChild('slider', {static: false}) slider: IonSlides;
   @ViewChild('countdown', {static: false}) counter: CountdownComponent;
   config ={
-    demand: true,
-    leftTime: 30
+    demand: false
   };
 
   slideOpts = {autoHeight: true,allowTouchMove: false };
@@ -52,69 +53,76 @@ export class DetalleExamenAlumnoPage implements OnInit {
               private apiExamenes: ExamenesService,private loadingController: LoadingController) { }
 
   ngOnInit() {
-  //  this.duration = 3600; // test
-
-     // test
-     console.log(this.item)
+ 
    }
 
-    /*let mySwiper = new SwiperCore('.ion-slides', {
-      initialSlide: 1,
-      direction: "vertical",
-      speed: 150,
-      preloadImages: false,
-      lazy: true,
-  
-      virtual: {
-        slides: ['Slide 1', 'Slide 2', 'Slide 3', 'Slide 4', 'Slide 5'],
-      }
-    });*/
-  
+   ngAfterViewInit(): void {
+     //Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
+     //Add 'implements AfterViewInit' to the class.
+      setTimeout(() => {
+        this.spiner=true;
+      });
+     
+     this.apiPreguntas.getStatusExamen(this.item.Id).subscribe(data  =>{
 
-  async iniciarExamen(){
-    this.loading =await this.loadingController.create({
-      //cssClass: 'my-custom-class',
-      message: 'Generando Examen...',
-      duration: 120000
+      if(data == null || data["status"]=="Iniciado"){
+        this.instruccionesVisible=true;
+      }
+       else if(data["status"]=="Finalizado"){// si el examen esta en estatus finalizado lo manda al resultado final del examen  al tercer slide
+            this.preguntaFinalizarExamen();
+          }
+
+          else if(data["status"]=="Proceso"){
+            console.log(data)
+              this.iniciarExamen(data["tiempoRestante"]);
+
+          }
+          setTimeout(() => {
+            this.spiner=false;
+          });
+         
     });
 
-    this.loading.present();
+     
+   }
+  
 
+  async iniciarExamen(duracionExamen){
+
+
+    setTimeout(() => {
+      this.spiner=true;
+    });
     //this.slider.slideNext();
-    this.headerInstruccionesVisible=false;
+    this.instruccionesVisible=false;
     this.examenId=this.item.Id;
-    this.botonIniciarVisible=false;
+  //  this.botonIniciarVisible=false;
     this.botonHeaderVisible=true;
     setTimeout(() => {
       this.slider.slideNext();
     }, 100);
-   
-    this.apiPreguntas.getExamen(this.examenId).subscribe(data =>{
-      console.log("inicio")
-      this.duracionExamen=this.item.DuracionExamen*60;
-    //  this.config.leftTime=2400;
-     // this.counter.left=2400;
       
-      //this.counter.config.leftTime=2400;
-    //  this.counter.restart();
-      this.counter.begin();
-      
-      this.cambioPregunta("especifico",1);
+  this.apiPreguntas.getExamen(this.examenId).subscribe(data =>{
+    console.log("DURACION EXAMEN")
+    console.log(duracionExamen)
+        if(duracionExamen==null)this.duracionExamen=this.item.DuracionExamen*60;
+        else this.duracionExamen=duracionExamen*60;
+        
+        this.cambioPregunta("especifico",1);
+       
 
-      this.loadingController.dismiss();
-   },(err) => {
-     console.log(err);
-     this.loadingController.dismiss();
-   });
-
+     },(err) => {
+       console.log(err);
+     });
 
   }
 
   async cambioPregunta(direccion , numero){
-    console.log(direccion)
-    console.log(numero)
+   // console.log(direccion)
+   // console.log(numero)
 
   //  if(this.contadorPregunta==5-1)this.slider.slidePrev();
+     this.getStatusExamenSiguientePregunta();
     this.preguntaAnterior=this.contadorPregunta;
     if (this.respuestaSeleccionada=="")this.respuestaSeleccionada="[sin-respuesta]";
 
@@ -153,23 +161,19 @@ export class DetalleExamenAlumnoPage implements OnInit {
 
     if(this.contadorPregunta==1)this.botonAnteriorDisable=true;else this.botonAnteriorDisable = false;
     
-    this.loading =await this.loadingController.create({
-      //cssClass: 'my-custom-class',
-      message: 'Cargando Pregunta...',
-      duration: 120000
+    setTimeout(() => {
+      this.spiner=true;
     });
-
-    this.loading.present();
 
     this.apiPreguntas.getPreguntaExamen(this.examenId,this.contadorPregunta,this.preguntaAnterior,this.respuestaSeleccionada).subscribe(data =>{
       this.preguntaInfo = data;
       this.respuestaSeleccionada=data['RespuestaAlumno'];
       this.respuestas= data['Respuestas'];
 
-      this.loadingController.dismiss();
+      this.spiner=false;
     },error => {
       console.log(error);
-      this.loadingController.dismiss();
+      
     });
 
      console.log(this.contadorPregunta)
@@ -181,30 +185,50 @@ export class DetalleExamenAlumnoPage implements OnInit {
       
   }
 
-  async preguntaFinalizarExamen(){
-    console.log("slideNext")
-    this.headerResultadoVisible=true;
-    this.slider.slideNext();
-    this.botonHeaderVisible=false;
-    this.slider.updateAutoHeight();
-    
-    this.loading =await this.loadingController.create({
-      //cssClass: 'my-custom-class',
-      message: 'Terminando Examen...',
-      duration: 120000
+  getStatusExamenSiguientePregunta(){
+    this.apiPreguntas.getStatusExamen(this.item.Id).subscribe(data  =>{
+     
+  
+         if(data["status"]=="Finalizado"){
+            this.preguntaFinalizarExamen();
+          }
+
     });
+   
+  }
 
-    this.loading.present();
+  async preguntaFinalizarExamen(){
+    try {
 
-    this.resultadoExamen= await this.apiExamenes.examenTerminado(this.item.Id,this.item).toPromise();
-    console.log(this.resultadoExamen);
-    this.loadingController.dismiss();
+      console.log("slideNext")
+      this.headerResultadoVisible=true;
+      this.slider.slideTo(3);
+      this.botonHeaderVisible=false;
+      setTimeout(() => {
+        this.spiner=true;
+      });
+      this.resultadoExamen= await this.apiExamenes.examenTerminado(this.item.Id,this.item).toPromise();
+      this.slider.updateAutoHeight();
+      this.spiner=false;
+      console.log(this.resultadoExamen);
+      
+    } catch (error) {
+      console.error(error);
+
+    }
+   
   }
 
   eventCountdown(event){
-     
-       if(event.status==3){
-        console.log("done")
+    console.log(event)
+        if(this.counter && this.inicioContador==false){
+          console.log("dentro del if")
+          this.inicioContador=true;
+        }
+       if(event.status==3 && this.inicioContador ){
+         console.log("finalizo el reloj")
+          this.preguntaFinalizarExamen();
+
        }
   }
 

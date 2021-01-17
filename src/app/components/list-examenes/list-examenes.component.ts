@@ -244,6 +244,11 @@ export class ListExamenesComponent implements OnInit {
     return await modal.present();
     }
 
+    abrirExamen($event,item){
+       if(this.permisoEditar()) this.openDetail($event,item);
+       else this.iniciarExamen($event,item);
+    }
+
     loadData(event) {
       console.log('loaddata');
       if (this.cargarConFiltro) {

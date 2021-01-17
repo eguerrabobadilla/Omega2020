@@ -1,8 +1,9 @@
+<ion-progress-bar *ngIf="spiner" type="indeterminate" style="background: white;"></ion-progress-bar>
 <ion-header>
     <ion-toolbar>
         <ion-title *ngIf="botonHeaderVisible" style="padding-left: 5px;">
             <span style="padding-left: 17px;padding-top: 5px;float: left;">
-            <countdown  #countdown [config]="{leftTime : [duracionExamen] }" (event)="eventCountdown($event)"></countdown>
+            <countdown  #countdown [config]="{leftTime : [duracionExamen],demand: false }" (event)="eventCountdown($event)"></countdown>
             </span>
             <span>Pregunta</span>
             <span>
@@ -22,7 +23,7 @@
             </ion-button> 
             </span>
         </ion-title>
-        <ion-title *ngIf="headerInstruccionesVisible">Instrucciones</ion-title>
+        <ion-title *ngIf="instruccionesVisible">Instrucciones</ion-title>
         <ion-title *ngIf="headerResultadoVisible">Resultado</ion-title>
 
         <ion-buttons slot="end">
@@ -37,7 +38,7 @@
     <ion-slides #slider style="height: initial;" [options]='slideOpts'>
         <ion-slide style="display: block;">
 
-            <ion-card style="text-align: initial;    border-bottom: 0px solid #d0d0d0;border-left: none;" class="ion-activatable ripple-parent" mode="ios">
+            <ion-card *ngIf="instruccionesVisible" style="text-align: initial;    border-bottom: 0px solid #d0d0d0;border-left: none;" class="ion-activatable ripple-parent" mode="ios">
                 <ion-card-header>
                     <ion-card-title style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{item.Titulo}}</ion-card-title>
                 </ion-card-header>
@@ -100,7 +101,8 @@
                     <!--<ion-ripple-effect></ion-ripple-effect> -->
                     <ion-card-header>
                         <ion-card-title style="font-size: 20px;">
-                            {{i+1}}.- <div class="pregunta" [innerHTML]="item.Pregunta"></div>
+                            {{i+1}}.-
+                            <div class="pregunta" [innerHTML]="item.Pregunta"></div>
                         </ion-card-title>
                     </ion-card-header>
                     <ion-card-content>
@@ -124,7 +126,7 @@
             <ion-icon name="caret-back-outline" style="margin-right: 3px;"></ion-icon>
             Anterior
         </ion-button>
-        <ion-button *ngIf="botonIniciarVisible" style="width: 160.06px;" slot="end" size="small" fill="outline" type="button" icon-start outline block (click)="iniciarExamen()">
+        <ion-button *ngIf="instruccionesVisible" style="width: 160.06px;" slot="end" size="small" fill="outline" type="button" icon-start outline block (click)="iniciarExamen()">
             <ion-icon name="play-circle-outline" style="margin-right: 3px;"></ion-icon>
             Iniciar Examen
         </ion-button>

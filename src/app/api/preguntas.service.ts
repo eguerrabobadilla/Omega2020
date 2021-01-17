@@ -80,4 +80,10 @@ export class PreguntasService extends apiBase {
     return this.http.get<any[]>(`${this.url}/${this.Ws}/getPregunta/${examenId}/${indexPregunta}/${indexPreguntaAnterior}/${respuestaAlumno}`);
    // return this.http.get<any[]>(`https://my-json-server.typicode.com/eguerrabobadilla/Omega2020/preguntas/${indexPregunta}`);
   }
+
+  getStatusExamen(examenId): Observable<any[]>{
+
+    return this.http.get<any[]>(`${this.url}/${this.Ws}/getStatusExamen/${examenId}`);
+   // return this.http.get<any[]>(`https://my-json-server.typicode.com/eguerrabobadilla/Omega2020/preguntas/${indexPregunta}`);
+  }
 }
