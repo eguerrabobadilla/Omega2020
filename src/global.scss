@@ -74,6 +74,15 @@ $mbsc-mobiscroll-frame-background: white;
     background: #ffffff !important;
 }
 
+.estiloParrafo {
+    color: black !important;
+    font-size: 15px !important;
+}
+
+.pregunta {
+    display: inline-block;
+}
+
 @import "~@mobiscroll/angular/dist/css/mobiscroll.angular.scss";
 //picker
 .sc-ion-picker-ios-h {

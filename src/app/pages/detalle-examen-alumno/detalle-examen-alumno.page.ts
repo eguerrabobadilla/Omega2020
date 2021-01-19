@@ -1,5 +1,5 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { IonSlides, PopoverController, ModalController, LoadingController } from '@ionic/angular';
+import { Component, Input, OnInit, ViewChild, ApplicationRef, ElementRef } from '@angular/core';
+import { IonSlides, PopoverController, ModalController, LoadingController, IonVirtualScroll } from '@ionic/angular';
 import { PreguntasService } from 'src/app/api/preguntas.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import {ListComponent} from 'src/app/components/list/list.component';
@@ -25,41 +25,98 @@ export class DetalleExamenAlumnoPage implements OnInit {
   botonSiguienteDisable=false;
   botonAnteriorDisable=true;
   examenId:number;
+  fechaAplicacionExamen:any;
   respuestaSeleccionada="[sin-respuesta]";
   preguntaAnterior:number;
   textoBoton = 'Siguiente';
   botonHeaderVisible=false;
   //botonIniciarVisible=true;
+ // botonInstruccionesVisible=false;
   instruccionesVisible=false;
   duracionExamen: number;
   banderaslideFinExamen=false;
   headerResultadoVisible=false;
   loading: any;
+  textoInformacionInicioFin:string;
   spiner=false;
   inicioContador=false;
   status = 'start';
   @Input() item;
   @ViewChild('slider', {static: false}) slider: IonSlides;
   @ViewChild('countdown', {static: false}) counter: CountdownComponent;
+  @ViewChild("child", {static: false}) child: ElementRef<HTMLElement>;
+  @ViewChild(IonVirtualScroll, {static: false}) virtualScroll: IonVirtualScroll;
   config ={
     demand: false
   };
 
-  slideOpts = {autoHeight: true,allowTouchMove: false };
+  slideOpts = {autoHeight: true,initialSlide:0,allowTouchMove: false };
 
 
  
   constructor(private apiPreguntas: PreguntasService, public popoverController: PopoverController,private modalCtrl: ModalController,
-              private apiExamenes: ExamenesService,private loadingController: LoadingController) { }
+              private apiExamenes: ExamenesService,private loadingController: LoadingController,private applicationRef: ApplicationRef) { }
 
   ngOnInit() {
  
    }
 
+   ionViewDidEnter() {
+     //Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
+     //Add 'implements AfterViewInit' to the class.
+     setTimeout(() => {
+      this.spiner=true;
+    });
+   
+   this.apiPreguntas.getStatusExamen(this.item.Id).subscribe(data  =>{
+
+    if(data == null || data["status"]=="Iniciado"){
+      this.instruccionesVisible=true;
+
+    }
+     else if(data["status"]=="Finalizado"){// si el examen esta en estatus finalizado lo manda al resultado final del examen  al tercer slide
+          this.preguntaFinalizarExamen();
+     }
+
+     else if(data["status"]=="Proceso"){
+          console.log(data)
+            this.iniciarExamen(data["tiempoRestante"]);
+     }
+     else if (data["status"]=="periodoFinalizado"){
+      setTimeout(() => {
+        this.slider.update;
+        this.slider.slideTo(4);
+        this.slideOpts={autoHeight: true,initialSlide:4,allowTouchMove: false};
+        this.textoInformacionInicioFin="La fecha en la que puedes aplicar este examen ha finalizado. "
+        this.fechaAplicacionExamen=data["fechaTerminoExamen"];
+        console.log(data["status"])
+
+       });
+
+     }
+     else if(data["status"]=="fueradeTiempo"){
+      setTimeout(() => {
+        this.slider.update;
+        this.slider.slideTo(4);
+        this.slideOpts={autoHeight: true,initialSlide:4,allowTouchMove: false};
+        this.textoInformacionInicioFin="Este examen se puede iniciar hasta: "
+        this.fechaAplicacionExamen=data["fechaAplicacionExamen"];
+
+       });
+     
+     }
+        setTimeout(() => {
+          this.spiner=false;
+        });
+       
+  });
+
+  }
+
    ngAfterViewInit(): void {
      //Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
      //Add 'implements AfterViewInit' to the class.
-      setTimeout(() => {
+  /*    setTimeout(() => {
         this.spiner=true;
       });
      
@@ -70,20 +127,27 @@ export class DetalleExamenAlumnoPage implements OnInit {
       }
        else if(data["status"]=="Finalizado"){// si el examen esta en estatus finalizado lo manda al resultado final del examen  al tercer slide
             this.preguntaFinalizarExamen();
-          }
+       }
 
-          else if(data["status"]=="Proceso"){
+       else if(data["status"]=="Proceso"){
             console.log(data)
               this.iniciarExamen(data["tiempoRestante"]);
+       }
+       else if (data["status"]=="preiodoFinalizado"){
+         console.log("preiodoFinalizado")
+         this.instruccionesVisible=true;
+         setTimeout(() => {
+          this.slider.slideTo(4);
+        }, 1000);
 
-          }
+       }
           setTimeout(() => {
             this.spiner=false;
           });
          
     });
 
-     
+     */
    }
   
 
@@ -122,6 +186,7 @@ export class DetalleExamenAlumnoPage implements OnInit {
    // console.log(numero)
 
   //  if(this.contadorPregunta==5-1)this.slider.slidePrev();
+  
      this.getStatusExamenSiguientePregunta();
     this.preguntaAnterior=this.contadorPregunta;
     if (this.respuestaSeleccionada=="")this.respuestaSeleccionada="[sin-respuesta]";
@@ -169,8 +234,11 @@ export class DetalleExamenAlumnoPage implements OnInit {
       this.preguntaInfo = data;
       this.respuestaSeleccionada=data['RespuestaAlumno'];
       this.respuestas= data['Respuestas'];
-
+      this.applicationRef.tick();
       this.spiner=false;
+     setTimeout(() => {
+      this.slider.updateAutoHeight();
+     }, 500); 
     },error => {
       console.log(error);
       
@@ -187,7 +255,7 @@ export class DetalleExamenAlumnoPage implements OnInit {
 
   getStatusExamenSiguientePregunta(){
     this.apiPreguntas.getStatusExamen(this.item.Id).subscribe(data  =>{
-     
+   
   
          if(data["status"]=="Finalizado"){
             this.preguntaFinalizarExamen();
@@ -207,10 +275,31 @@ export class DetalleExamenAlumnoPage implements OnInit {
       setTimeout(() => {
         this.spiner=true;
       });
-      this.resultadoExamen= await this.apiExamenes.examenTerminado(this.item.Id,this.item).toPromise();
-      this.slider.updateAutoHeight();
-      this.spiner=false;
-      console.log(this.resultadoExamen);
+//      this.resultadoExamen= await this.apiExamenes.examenTerminado(this.item.Id,this.item).toPromise();
+
+      this.apiExamenes.examenTerminado(this.item.Id,this.item).subscribe(data  =>{
+        console.log(data['Preguntas']);
+         this.resultadoExamen=data;
+         setTimeout(() => {
+          this.spiner=false;
+          this.slider.update;
+          this.slider.slideTo(3);
+          this.slideOpts={autoHeight: true,initialSlide:4,allowTouchMove: false};
+          
+          setTimeout(() => {
+            this.virtualScroll.checkEnd();
+            this.slider.updateAutoHeight();
+          }, 500);
+         
+          
+        });
+  
+
+   });
+      
+
+
+      
       
     } catch (error) {
       console.error(error);

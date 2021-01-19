@@ -36,14 +36,14 @@
 
 <ion-content>
     <ion-slides #slider style="height: initial;" [options]='slideOpts'>
-        <ion-slide style="display: block;">
+        <ion-slide style="display: block;" *ngIf="item.status!='Finalizado' ">
 
             <ion-card *ngIf="instruccionesVisible" style="text-align: initial;    border-bottom: 0px solid #d0d0d0;border-left: none;" class="ion-activatable ripple-parent" mode="ios">
                 <ion-card-header>
                     <ion-card-title style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{item.Titulo}}</ion-card-title>
                 </ion-card-header>
                 <ion-card-content>
-                    <div style="font-weight: 600;">Fecha aplicaion: <span style="font-weight: 400;">{{item.FechaInicio}}</span></div>
+                    <div style="font-weight: 600;">Fecha aplicaion: <span style="font-weight: 400;">{{item.FechaInicio }}</span></div>
                     <div style="font-weight: 600;">Descripcion: </div>
                     <div innerHtml={{item.Descripcion}}></div><br>
                     <div style="font-weight: 600;">Instrucciones generales: <span style="font-weight: 400;"><br> <p><b>1.</b> Tienes <b>{{item.DuracionExamen}}</b> minutos para responder a las siguientes <b>{{item.TotalPreguntas}}</b> preguntas.<br><br> <b>2.</b> Lee atentamente cada pregunta, tendrás un cronometro indicándote cuanto tiempo llevas.<br><br> <b>3.</b> Puedes omitir preguntas y volver a ellas más tarde.</p></span></div>
@@ -53,11 +53,11 @@
 
 
         </ion-slide>
-        <ion-slide style="display: block;">
+        <ion-slide style="display: block;" *ngIf="item.status!='Finalizado'">
             <ion-list>
                 <ion-radio-group [(ngModel)]="respuestaSeleccionada">
                     <ion-list-header>
-                        <ion-label style="text-align: initial;" [innerHtml]="preguntaInfo['Pregunta']"></ion-label>
+                        <ion-label #child style="text-align: initial;" [innerHtml]="preguntaInfo['Pregunta']"></ion-label>
                     </ion-list-header>
 
                     <ion-item *ngFor="let item of respuestas">
@@ -70,7 +70,7 @@
 
             </ion-list>
         </ion-slide>
-        <ion-slide style="height: 63vh;">
+        <ion-slide style="height: 63vh;" *ngIf="item.status!='Finalizado'">
             <div>
                 <div>
                     <ion-label style="font-size: 17px;font-weight: 600;text-align: center;text-overflow: ellipsis;white-space: nowrap;">
@@ -85,33 +85,47 @@
             </div>
         </ion-slide>
         <ion-slide style="display: block;">
+
+
+            <ion-card style="margin-bottom: 0px;margin-top: 0px;text-align: initial;border-bottom: 0.6px solid rgb(208, 208, 208);border-left: none;border-radius: 0px !important;box-shadow: none !important;" class="ion-activatable ripple-parent" mode="ios">
+                <!--<ion-ripple-effect></ion-ripple-effect>-->
+                <ion-card-header>
+                    <ion-card-title style="font-size: 20px;">Resultados</ion-card-title>
+                </ion-card-header>
+                <ion-card-content>
+                    <div style="font-weight: 600;">Iniciado: <span style="font-weight: 400;">{{resultadoExamen?.Iniciado}}</span></div>
+                    <div style="font-weight: 600;">Duración: <span style="font-weight: 400;">{{resultadoExamen?.Duracion}} minutos.</span></div>
+                    <div style="font-weight: 600;">Score: <span style="font-weight: 400;">{{resultadoExamen?.Puntaje}} {{resultadoExamen?.PuntajePorcentaje}}%</span></div>
+                </ion-card-content>
+            </ion-card>
             <ion-list>
-                <ion-card style="text-align: initial;    border-bottom: 0.6px solid #d0d0d0;border-left: none;" class="ion-activatable ripple-parent" mode="ios">
-                    <!--<ion-ripple-effect></ion-ripple-effect>-->
-                    <ion-card-header>
-                        <ion-card-title style="font-size: 20px;">Resultados</ion-card-title>
-                    </ion-card-header>
-                    <ion-card-content>
-                        <div style="font-weight: 600;">Iniciado: <span style="font-weight: 400;">{{resultadoExamen?.Iniciado}}</span></div>
-                        <div style="font-weight: 600;">Duración: <span style="font-weight: 400;">{{resultadoExamen?.Duracion}} minutos.</span></div>
-                        <div style="font-weight: 600;">Score: <span style="font-weight: 400;">{{resultadoExamen?.Puntaje}} (100%)</span></div>
-                    </ion-card-content>
-                </ion-card>
-                <ion-card *ngFor="let item of resultadoExamen?.Preguntas;let i=index" style="text-align: initial;    border-bottom: 0.6px solid #d0d0d0;border-left: none;" class="ion-activatable ripple-parent" mode="ios">
-                    <!--<ion-ripple-effect></ion-ripple-effect> -->
-                    <ion-card-header>
-                        <ion-card-title style="font-size: 20px;">
-                            {{i+1}}.-
-                            <div class="pregunta" [innerHTML]="item.Pregunta"></div>
-                        </ion-card-title>
-                    </ion-card-header>
-                    <ion-card-content>
-                        <div style="font-weight: 600;">Respuesta: <span style="font-weight: 400;" [innerHTML]="item.Respuesta"></span></div>
-                        <div style="font-weight: 600;">Respuesta correcta: <span style="font-weight: 400;" [innerHTML]="item.RespuestaCorrecta"></span></div>
-                        <div style="font-weight: 600;">Score: <span style="font-weight: 400;">{{item.Score}}</span></div>
-                    </ion-card-content>
-                </ion-card>
+                <ion-virtual-scroll [items]="resultadoExamen?.Preguntas" approxItemHeight="230px" style="z-index: 999999;">
+                    <ion-card style="margin-bottom: 0px;margin-top: 0px;text-align: initial;border-bottom: 0.6px solid rgb(208, 208, 208);border-left: none;border-radius: 0px !important;box-shadow: none !important;" *virtualItem="let item; let i=index" mode="ios">
+
+                        <ion-card-header>
+                            <ion-card-title style="font-size: 20px;">
+                                {{i+1}}.-
+                                <div class="pregunta" [innerHTML]="item.Pregunta"></div>
+                            </ion-card-title>
+                        </ion-card-header>
+                        <ion-card-content>
+                            <div style="font-weight: 600;">Respuesta: <span style="font-weight: 400;" [innerHTML]="item.Respuesta"></span></div>
+                            <div style="font-weight: 600;">Respuesta correcta: <span style="font-weight: 400;" [innerHTML]="item.RespuestaCorrecta"></span></div>
+                            <div style="font-weight: 600;">Score: <span style="font-weight: 400;">{{item.Score}}</span></div>
+                        </ion-card-content>
+                    </ion-card>
+                </ion-virtual-scroll>
             </ion-list>
+        </ion-slide>
+        <ion-slide style="height: 63vh;" *ngIf="item.status!='Finalizado'">
+            <div>
+                <div>
+                    <ion-label style="font-size: 17px;font-weight: 600;text-align: center;text-overflow: ellipsis;">
+                        {{ textoInformacionInicioFin }} <br> {{fechaAplicacionExamen}}
+                    </ion-label>
+                </div>
+
+            </div>
         </ion-slide>
     </ion-slides>
 

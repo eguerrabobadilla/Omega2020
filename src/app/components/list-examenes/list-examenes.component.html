@@ -20,7 +20,7 @@
                 <b>Materia:</b> {{ item.Materia.Nombre }}
             </div>
             <ion-item class="ion-no-border" lines="none">
-                <ion-label>{{item.FechaPublicacion | date:'mediumDate'}}</ion-label>
+                <ion-label>{{item.FechaInicio | date:'mediumDate'}}</ion-label>
                 <ion-button *ngIf="permisoEditar()" style="transform: translateX(12px);" fill="outline" slot="end" (click)="eliminar($event,item)">Borrar</ion-button>
                 <ion-button *ngIf="permisoEditar()" fill="outline" slot="end" (click)="editaExamen($event,item)">Editar</ion-button>
             </ion-item>
