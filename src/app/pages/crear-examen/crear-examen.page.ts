@@ -18,12 +18,17 @@ import { FileTransfer, FileTransferObject } from '@ionic-native/file-transfer/ng
 import { PreguntasService } from 'src/app/api/preguntas.service';
 import { ListPreguntasComponent } from 'src/app/components/examenes/list-preguntas/list-preguntas.component';
 import { File,FileEntry } from '@ionic-native/file/ngx';
+import Quill from 'quill';
+import  ImageResize  from 'src/assets/quill-image-resize-module-fix-for-mobile';
+Quill.register('modules/imageResize', ImageResize);
+
 
 mobiscroll.settings = {
   theme: 'mobiscroll',
   themeVariant: 'light',
   layout: 'liquid'
 };
+
 
 @Component({
   selector: 'app-crear-examen',
@@ -61,9 +66,34 @@ export class CrearExamenPage implements OnInit {
   banderaEdito: boolean=false;
   public Editor = ClassicEditor;
   slideOpts = {
+
     autoHeight: true,
-    allowTouchMove: false
+    allowTouchMove: false,
+    passiveListeners: false
+
   };
+   quillConfiguration = {
+    'toolbar': [
+      ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+      ['code-block'],
+
+      [{ 'size': ['small', false, 'large', 'huge'] }],// custom button values
+      [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                     // text direction
+
+        // custom dropdown
+
+      [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+      [{ 'align': [] }],
+                              // remove formatting button
+
+      ['link', 'image', 'video'],                         // link and image, video
+
+
+    ],
+    imageResize: true
+  };
+  editorStyle = { 'height': '900px' }
   viewComponentSelect = 'listRespuestas';
 
   settings: MbscCalendarOptions = {

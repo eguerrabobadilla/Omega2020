@@ -16,6 +16,7 @@ ion-toolbar {
 ion-card {
     box-shadow: none !important;
 }
+
 p.text-error {
     text-align: left;
     color: #e70a0a;
@@ -30,16 +31,25 @@ p.text-error {
     width: 100%;
 }
 
-
-  ion-button {
+ion-button {
     --border-color: #F4315D;
     --color: #F4315D;
     --background-activated: #f4315d3d;
- }
+}
 
- .card-content-ios {
+.card-content-ios {
     padding-top: 0px;
     padding-bottom: 0px;
     padding-inline-start: 0px;
     padding-inline-end: 0px;
+}
+
+img {
+    background-color: red !important;
+}
+
+.ql-container {
+    height: 232px;
+    max-height: 232px;
+    overflow: scroll;
 }

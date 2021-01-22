@@ -38,6 +38,7 @@ import { CodePush } from '@ionic-native/code-push/ngx';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
+import { QuillModule } from 'ngx-quill'
 
 
 
@@ -64,6 +65,7 @@ import { OneSignal } from '@ionic-native/onesignal/ngx';
     DetalleChatGroupPageModule,
     DetallesNewsPageModule,
     FormsModule,
+    QuillModule.forRoot(),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [

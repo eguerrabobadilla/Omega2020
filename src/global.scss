@@ -83,7 +83,15 @@ $mbsc-mobiscroll-frame-background: white;
     display: inline-block;
 }
 
+.ql-container {
+    height: 200px;
+    max-height: 200px;
+    overflow: scroll;
+}
+
 @import "~@mobiscroll/angular/dist/css/mobiscroll.angular.scss";
+@import '~quill/dist/quill.core.css';
+@import '~quill/dist/quill.snow.css';
 //picker
 .sc-ion-picker-ios-h {
     --background: #0c0c0c !important;
