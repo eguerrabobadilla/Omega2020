@@ -89,6 +89,11 @@ $mbsc-mobiscroll-frame-background: white;
     overflow: scroll;
 }
 
+.ql-editor {
+    -webkit-user-select: text;
+    user-select: text;
+}
+
 @import "~@mobiscroll/angular/dist/css/mobiscroll.angular.scss";
 @import '~quill/dist/quill.core.css';
 @import '~quill/dist/quill.snow.css';
