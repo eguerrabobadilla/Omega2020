@@ -12,6 +12,9 @@ import { MbscModule } from '@mobiscroll/angular';
 import { CalendarComponent } from 'src/app/components/calendar/calendar.component';
 import { SeleccionUnaRespuestaComponent } from 'src/app/components/examenes/seleccion-una-respuesta/seleccion-una-respuesta.component';
 import { ListPreguntasComponent } from 'src/app/components/examenes/list-preguntas/list-preguntas.component';
+import { QuillModule } from 'ngx-quill';
+
+
 
 
 @NgModule({
@@ -27,7 +30,8 @@ import { ListPreguntasComponent } from 'src/app/components/examenes/list-pregunt
     CrearExamenPageRoutingModule,
     ReactiveFormsModule,
     CKEditorModule,
-    MbscModule
+    MbscModule,
+    QuillModule
   ],
   declarations: [CrearExamenPage,CalendarComponent,SeleccionUnaRespuestaComponent,ListPreguntasComponent]
 })

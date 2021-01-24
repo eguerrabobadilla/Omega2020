@@ -8,6 +8,7 @@ import { DetalleExamenAlumnoPageRoutingModule } from './detalle-examen-alumno-ro
 
 import { DetalleExamenAlumnoPage } from './detalle-examen-alumno.page';
 import { CountdownGlobalConfig, CountdownModule } from 'ngx-countdown';
+import { SanitizePipe } from '../../pipes/sanitize.pipe';
 
 function countdownConfigFactory(): CountdownGlobalConfig {
   return null;
@@ -27,7 +28,7 @@ function countdownConfigFactory(): CountdownGlobalConfig {
     CountdownModule
   
   ],
-  declarations: [DetalleExamenAlumnoPage],
+  declarations: [DetalleExamenAlumnoPage,SanitizePipe],
   providers: [
     { provide: CountdownGlobalConfig, useFactory: countdownConfigFactory }
   ]
