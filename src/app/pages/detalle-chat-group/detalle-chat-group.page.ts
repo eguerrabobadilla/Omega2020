@@ -3,6 +3,8 @@ import { ModalController, IonContent } from '@ionic/angular';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ChatService } from 'src/app/api/chat.service';
 import { WebsocketService } from 'src/app/services/websocket.service';
+import { Subscription } from 'rxjs';
+
 
 @Component({
   selector: 'app-detalle-chat-group',
@@ -18,6 +20,7 @@ export class DetalleChatGroupPage implements OnInit {
   LstChats: any[] = [];
   usuarioId: number=0;
   mensajesGruposId: number=0;
+  subscribeChat: Subscription;
 
   @ViewChild('chatList', {read: ElementRef, static: true}) chatList: ElementRef;
   @ViewChild('Content', {static: true}) contentArea: IonContent;
@@ -72,6 +75,15 @@ export class DetalleChatGroupPage implements OnInit {
     });
   }
 
+  async ionViewDidEnter() {
+    await this.apichat.updateAccesoGrupos(this.item.Id).toPromise();
+    //this.item.Visto='SI';
+    try{
+      this.item.Mensajesgruposusuarios[0].Visto = 'SI';
+    } catch(err) { console.log(err); }
+  }
+
+
   closeModal() {
     this.modalCtrl.dismiss();
   }
@@ -100,7 +112,8 @@ export class DetalleChatGroupPage implements OnInit {
   }
 
   private subscribeToEvents(): void {
-      this.webSocket.messageGroupReceived.subscribe((comment: any) => {
+    this.subscribeChat= this.webSocket.messageGroupReceived.subscribe(async (comment: any) => {
+        console.log(comment);
         comment.HoraMensaje.Minutes = comment.HoraMensaje.Minutes.length == 1 ? `0${comment.HoraMensaje.Minutes}` : comment.HoraMensaje.Minutes;
         comment.HoraMensaje.Seconds = comment.HoraMensaje.Seconds.length == 1 ? `0${comment.HoraMensaje.Seconds}` : comment.HoraMensaje.Seconds;
         comment.HoraMensaje = `${comment.HoraMensaje.Hours}:${comment.HoraMensaje.Minutes}:${comment.HoraMensaje.Seconds}`
@@ -108,9 +121,18 @@ export class DetalleChatGroupPage implements OnInit {
         if(comment.UsuarioId != this.usuarioId) {
           this.LstChats.push(comment);
           this.applicationRef.tick();
-          console.log(comment);
+
+          await this.apichat.updateAccesoGrupos(comment.MensajesGruposId).toPromise();
+
+
+          
         }
     });
+  }
+
+  async ngOnDestroy() {
+    console.log("page cerrado");
+    await this.subscribeChat.unsubscribe();
   }
 
   getKeyToken(key: string) : string {

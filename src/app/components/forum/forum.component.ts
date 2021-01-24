@@ -42,8 +42,7 @@ export class ForumComponent implements OnInit {
   }
 
   public async cargar(materiaId) {
-    console.log("cargar");
-    console.log(materiaId);
+    console.log("materiaId",materiaId); 
     // 0=todas 1=Filtrado por materia
     this.materiaId = materiaId;
 

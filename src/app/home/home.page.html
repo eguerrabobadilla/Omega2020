@@ -155,7 +155,7 @@ top: 0;" mode="ios">
 
 <ion-item style="display: none;">
     <ion-label style="display: none;">Materias</ion-label>
-    <ion-select  style="display: none;" #filtrosControl [compareWith]="compareWith" multiple="true" (ionChange)="ionChangeFiltros($event)">
+    <ion-select style="display: none;" #filtrosControl [compareWith]="compareWith" multiple="true" (ionChange)="ionChangeFiltros($event)">
         <ion-select-option *ngFor="let materia of materias" [value]="materia">{{materia.Nombre}}</ion-select-option>
     </ion-select>
 </ion-item>
@@ -301,7 +301,7 @@ top: 0;" mode="ios">
         <!-- Examenes-->
         <ion-slides #slideDown [options]="slideOptsdos" (ionSlideTouchEnd)="ionSlideTouchEnd(slideUp,slideDown)" *ngIf="selectSeccion == 6 " style="min-height: 72.6vh;">
             <ion-slide>
-                <app-list-examenes #examenesComponent *ngIf="pildoraExamenes === 'Examenes'" style="width: 100%;"></app-list-examenes>
+                <app-list-examenes (updateAutoHeightSlider)="updateAutoHeightSlider()" #examenesComponent *ngIf="pildoraExamenes === 'Examenes'" style="width: 100%;"></app-list-examenes>
             </ion-slide>
 
             <ion-slide>

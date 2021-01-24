@@ -107,7 +107,7 @@ export class NuevoRecursoPage implements OnInit {
     
     this.item = this.FrmItem.value;
     console.log(this.item);
-
+    
     const payload = new FormData();
     payload.append('Id', this.item.Id);
     payload.append('Titulo', this.item.Titulo);

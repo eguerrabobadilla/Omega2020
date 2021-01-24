@@ -1,4 +1,4 @@
-<ion-header class="ion-no-border" mode="ios">
+<ion-header class="ion-no-border" mode="ios" style="margin-bottom: -3px;">
   <ion-toolbar>
       <ion-title style="margin-top: 6px;">{{ titulo }}</ion-title>
       <ion-buttons slot="end" *ngIf="viewComponentSelect=='listRespuestas'">
@@ -17,12 +17,13 @@
         </ion-button>
       </ion-buttons>
   </ion-toolbar>
+  <ion-progress-bar *ngIf="spiner==true && showBackButton==true" type="indeterminate"></ion-progress-bar>
 </ion-header>
-<ion-content>
+<ion-content scrollY="false">
     <ion-slides #slider [options]="slideOpts" (ionSlideNextStart)="ionSlideDidChange()" (ionSlidePrevStart)="ionSlideDidChange()" >
         <ion-slide>
             <div scrollY="true" style="height: 72.6vh;overflow-y: scroll;width: 100%;">
-                <ion-card class="ion-no-border" no style="text-align: initial;" mode="ios">
+                <ion-card class="ion-no-border" no style="text-align: initial;margin-bottom: 81px" mode="ios">
                     <ion-card-content>
                         <form [formGroup]="FrmItem" (ngSubmit)="crearExamen()">
                             <ion-grid>
@@ -138,17 +139,17 @@
         </ion-slide>
         <ion-slide>
             <div scrollY="true" style="height: 72.6vh;overflow-y: scroll;width: 100%;">
-                <ion-card class="ion-no-border" no style="text-align: initial;" mode="ios">
+                <ion-card class="ion-no-border" no style="text-align: initial;margin-bottom: 81px" mode="ios">
                     <ion-card-content>
                         <app-seleccion-una-respuesta (backPage)="cancelar()" [itemPreguntaSeleccionada]="itemPreguntaSeleccionada" [examen]="item" #opcionMultipleUnaRespuesta *ngIf="viewComponentSelect=='multipleUnaRespuesta' && this.item != undefined"></app-seleccion-una-respuesta>
-                        <app-list-preguntas #componentListaPreguntas [examen]="item" (onClickPregunta)="onClickPregunta($event)" *ngIf="viewComponentSelect=='listRespuestas' && this.item != undefined"></app-list-preguntas>
+                        <app-list-preguntas #componentListaPreguntas  [examen]="item" (loadSpinner)="loadSpinner($event)" (onClickPregunta)="onClickPregunta($event)" *ngIf="viewComponentSelect=='listRespuestas' && this.item != undefined"></app-list-preguntas>
                     </ion-card-content>
                 </ion-card>
             </div>
         </ion-slide>
     </ion-slides>
 </ion-content>
-<ion-footer style="transform: translateY(-1px);" *ngIf="this.item != undefined">
+<ion-footer style="transform: translateY(-5px);" *ngIf="this.item != undefined">
     <ion-toolbar>
     
         <input #inputFileBanco style="display:none" name="File" (change)="onFileChange($event)" type="file"/>

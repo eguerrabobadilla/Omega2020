@@ -22,6 +22,7 @@
 <ion-list mode="ios">
   <ion-list-header>
     Preguntas
+    <span style="right: 0;position: absolute;">{{puntosPreguntas}} puntos</span>
   </ion-list-header>
     <ion-item button detail="false" mode="ios" *ngFor="let item of LstPreguntas; let i= index" (click)="verPregunta(item)">   
       <ion-icon name="list-outline" slot="start" style="transform: translateY(-11px);"></ion-icon>

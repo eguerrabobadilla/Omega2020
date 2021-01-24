@@ -110,7 +110,7 @@ ngOnInit() {
   }
 
   public async cargar(materiaId) {
-
+    console.log("materiaId",materiaId);
     
     this.materiaId = materiaId;
     console.log(this.materiaId);

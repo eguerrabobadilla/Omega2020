@@ -115,7 +115,7 @@ export class DetallesChatPage implements OnInit {
           //if(this.item.Tareasusuarios.length > 0)
           this.item.Visto='SI';
 
-          console.log("recivido");
+          console.log("recibido");
           console.log(message);
       });
   }

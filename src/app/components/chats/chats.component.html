@@ -8,7 +8,7 @@
 
     <ion-spinner name="lines" style="width: 100%;" [ngStyle] ="{'display': cargandoGrupos === true ? 'block' : 'none' }"></ion-spinner>
 
-    <ion-item button lines="none" (click)="openDetailGroups($event,item)" *ngFor="let item of LstGrupos" detail="false" [ngStyle] ="{'visibility': cargandoGrupos === true ? 'hidden' : 'visible' }">
+    <ion-item button lines="none" (click)="openDetailGroups($event,item)" *ngFor="let item of LstGrupos | sortBy:'asc': 'Mensajesgruposusuarios[0].Visto'" detail="false" [ngStyle] ="{'visibility': cargandoGrupos === true ? 'hidden' : 'visible' }">
         <ion-avatar slot="start">
             <!--<span style="
                     position: absolute;
@@ -21,6 +21,7 @@
         </ion-avatar>
         <ion-label>
             <h2>Grupo {{item.Grado}}{{item.Grupo}} {{ item.Escolaridad }} <span *ngIf="item.GrupoIngles=='SI'">Ingles</span></h2>
+            <ion-icon name="ellipse" style="float: right;color: red;font-size: 0.8rem;" *ngIf="item.Mensajesgruposusuarios[0]?.Visto=='NO'"></ion-icon>
             <p>{{ item.UltimoMensaje }}</p>
             <p>{{ item.FechaUltimoMensaje | date:'mediumDate' }} {{ item.HoraUlimoMensaje }}</p>
             <p><b>Docente:</b> {{ item.Usuario.NombreCompleto | titlecase}}</p>
@@ -55,7 +56,7 @@
 
     <ion-spinner name="lines" style="width: 100%;" [ngStyle] ="{'display': cargandoAlumnos === true ? 'block' : 'none' }"></ion-spinner>
 
-    <ion-item button lines="none" (click)="openDetail($event,item)" *ngFor="let item of LstChat" detail="false" [ngStyle] ="{'visibility': cargandoAlumnos === true ? 'hidden' : 'visible' }">
+    <ion-item button lines="none" (click)="openDetail($event,item)" *ngFor="let item of LstChat | sortBy:'asc': 'Visto'" detail="false" [ngStyle] ="{'visibility': cargandoAlumnos === true ? 'hidden' : 'visible' }">
         <ion-avatar slot="start">
             <img src="assets/img/unnamed.png">
         </ion-avatar>
@@ -64,7 +65,7 @@
                 <h2>
                     {{item.UsuarioId2Navigation.Nombre | titlecase }} {{item.UsuarioId2Navigation.ApellidoMaterno | titlecase}} {{item.UsuarioId2Navigation.ApellidoPaterno | titlecase}}
                 </h2>
-                <ion-icon name="ellipse" style="float: right;color: red;" *ngIf="item.Visto=='NO'"></ion-icon>
+                <ion-icon name="ellipse" style="float: right;color: red;font-size: 0.8rem;" *ngIf="item.Visto=='NO'"></ion-icon>
             </div>
             <p><b>{{item.UsuarioId2Navigation.Tipo}}</b> {{item.UsuarioId2Navigation.Escolaridad}} {{item.UsuarioId2Navigation.Grado}}{{item.UsuarioId2Navigation.Grupo}}</p>
             <p>{{item.UltimoMensaje}}</p>

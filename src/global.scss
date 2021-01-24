@@ -43,8 +43,10 @@
 }
 
 .my-custom-modal-css-capturas .modal-wrapper {
-    height: 72%;
-    top: 28%;
+    /*height: 72%;
+    top: 28%;*/
+    height: 74%;
+    top: 27%;
     position: absolute;
     display: block;
     border-top-right-radius: 44px;
@@ -98,3 +100,24 @@ $mbsc-mobiscroll-frame-background: white;
         border: none;
     }
 }
+
+//***Estilos para ajustar texto de los ion-select Jose
+//For Radio Options
+/*.alert-radio-label.sc-ion-alert-md,
+.alert-radio-label.sc-ion-alert-ios {
+   white-space: normal;
+}
+.alert-tappable.alert-radio {
+   height: auto;
+   contain: content;
+}
+
+//For Checkbox
+.alert-checkbox-label.sc-ion-alert-md,
+.alert-checkbox-label.sc-ion-alert-ios {
+   white-space: normal;
+}
+.alert-tappable.alert-checkbox {
+   height: auto;
+   contain: content;
+}*/

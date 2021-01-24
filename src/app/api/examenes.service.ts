@@ -40,4 +40,8 @@ export class ExamenesService extends apiBase {
   getExamenesAlumnos(examenId): Observable<any[]> {
     return this.http.get<any[]>(`${this.url}/${this.Ws}/getExamenesAlumnos/${examenId}`);
   }
+
+  getTotalExamenesIniciados(examenId): Observable<any[]>{
+    return this.http.get<any[]>(`${this.url}/${this.Ws}/getTotalExamenesIniciados/${examenId}`);
+  }
 }

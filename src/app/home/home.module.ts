@@ -53,13 +53,7 @@ import { DetalleExamenAlumnoPageModule } from '../pages/detalle-examen-alumno/de
 import { DetalleResultadosExamenesPage } from '../pages/detalle-resultados-examenes/detalle-resultados-examenes.page';
 import { from } from 'rxjs';
 import { DetalleResultadosExamenesPageModule } from '../pages/detalle-resultados-examenes/detalle-resultados-examenes.module';
-
-
-
-
-
-
-
+import { SortByPipe } from '../pipes/sort-by.pipe';
 
 @NgModule({
   entryComponents : [

@@ -62,4 +62,8 @@ export class ChatService extends apiBase {
   updateAcceso(Id) {
     return this.http.put(`${this.url}/${this.WsConversaciones}/updateAcceso/${Id}`,null);
   }
+
+  updateAccesoGrupos(Id) {
+    return this.http.put(`${this.url}/${this.WsConversaciones}/updateAcceso/grupos/${Id}`,null);
+  }
 }

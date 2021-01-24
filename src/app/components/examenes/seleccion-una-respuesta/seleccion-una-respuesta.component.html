@@ -1,6 +1,6 @@
-<form [formGroup]="FrmItem" (ngSubmit)="crearExamen()">
+<form [formGroup]="FrmItem" (ngSubmit)="crearExamen()" style="margin-bottom: 81px">
   <ion-list>
-    <ion-list-header>
+    <ion-list-header #header>
       <ion-label>
         Pregunta
       </ion-label>

@@ -12,7 +12,7 @@ import { DetalleExamenAlumnoPage } from '../../pages/detalle-examen-alumno/detal
 })
 export class ListExamenesComponent implements OnInit {
   LstExamenes: any[] = [];
-  materiaId: any;
+  materiaId: any = 0;
   loading: any;
   visto = false;
   visto2 = false;
@@ -49,6 +49,7 @@ export class ListExamenesComponent implements OnInit {
 
   public async cargar(materiaId) {
     // 0=todas 1=Filtrado por materia
+    console.log("materiaId",materiaId);
     this.materiaId = materiaId;
 
     await this.cargandoAnimation('Cargando...');
@@ -116,9 +117,10 @@ export class ListExamenesComponent implements OnInit {
     modal.onDidDismiss().then( async (data) => {
 
         if (data.data.banderaEdito == true) {
-            await this.cargandoAnimation('Cargando...');
+            //await this.cargandoAnimation('Cargando...');
             //this.LstExamenes = await this.apiTareas.get().toPromise();
-            this.loadingController.dismiss();
+            this.cargar(this.materiaId);
+            //this.loadingController.dismiss();
         }
     });
   }
@@ -166,38 +168,55 @@ export class ListExamenesComponent implements OnInit {
     public async eliminar(event, item) {
       event.stopPropagation();
       console.log(item);
-  
-      const alertTerminado = await this.alertController.create({
-        header: 'ELIMINAR',
-        message: '¿Está seguro de ELIMINAR el examen?',
-        buttons: [
-          {
-            text: 'No', handler: () =>  {
-              return;
-            }
-          },
-          {
-            text: 'Si', handler: async () => {
-              const loading = await this.loadingController.create({
-                message: 'Eliminando...'
-              });
+      try {
+        const alertTerminado = await this.alertController.create({
+          header: 'ELIMINAR',
+          message: '¿Está seguro de ELIMINAR el examen?',
+          buttons: [
+            {
+              text: 'No', handler: () =>  {
+                return;
+              }
+            },
+            {
+              text: 'Si', handler: async () => {
+                try {
+                  const loading = await this.loadingController.create({
+                    message: 'Eliminando...'
+                  });
+                  
+      
+                  await loading.present();
+      
+                  await this.apiExamenes.delete(item.Id).toPromise();
+      
+                  this.LstExamenes = this.LstExamenes.filter(obj => obj !== item);
+      
+                  this.loadingController.dismiss();
+      
+                  //this.alertController.dismiss();
+                } catch(err) {
+                  console.log(err);
+                  await this.loadingController.dismiss();
+
+                  const alert = await this.alertController.create({
+                    header: 'LBS Plus',
+                    //subHeader: 'Subtitle',
+                    message: err.error,
+                    buttons: ['Aceptar']
+                  });
               
-  
-              await loading.present();
-  
-              await this.apiExamenes.delete(item.Id).toPromise();
-  
-              this.LstExamenes = this.LstExamenes.filter(obj => obj !== item);
-  
-              this.loadingController.dismiss();
-  
-              this.alertController.dismiss();
+                  await alert.present();
+                }
+              }
             }
-          }
-        ]
-      });
-  
-      alertTerminado.present();
+          ]
+        });
+    
+        alertTerminado.present();
+      } catch(err) {
+
+      }
     }
 
     async cargandoAnimation(text) {
@@ -261,7 +280,7 @@ export class ListExamenesComponent implements OnInit {
        console.log('cargarSinfiltro');
        this.apiExamenes.getInfinite(this.contadorInfinieScroll, 10).subscribe(data => {
          console.log('getInfinite');
-         console.log(data);
+         //console.log(data);
          if (data.length != 0) {
            for (let i = 0; i < data.length; i++) {
              console.log('dentro');
@@ -290,7 +309,7 @@ export class ListExamenesComponent implements OnInit {
  
        this.apiExamenes.getTareasMateriasInfinite(this.materiaId, this.contadorInfinieScroll, 10).subscribe(data => {
          console.log('getInfinite');
-         console.log(data);
+         //console.log(data);
          if (data.length != 0) {
            for (let i = 0; i < data.length; i++) {
              console.log('dentro');

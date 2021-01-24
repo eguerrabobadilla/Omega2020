@@ -46,6 +46,7 @@ export class CrearExamenPage implements OnInit {
 
   public FrmItem: FormGroup;
   public submitAttempt: boolean = false;
+  spiner=true;
   loading: any;
   //private item: any;
   grupos: any[] = [];
@@ -83,6 +84,7 @@ export class CrearExamenPage implements OnInit {
       }
     ],
     onSet: (event, inst) => {
+      //this.FrmItem.controls['FechaInicio'].setValue(inst.getVal());
       this.FrmItem.controls['FechaInicio'].setValue(event.valueText);
     },
     months: 1
@@ -106,6 +108,7 @@ export class CrearExamenPage implements OnInit {
       }
     ],
     onSet: (event, inst) => {
+      //this.FrmItem.controls['FechaTermino'].setValue(inst.getVal());
       this.FrmItem.controls['FechaTermino'].setValue(event.valueText);
     },
     months: 1
@@ -118,7 +121,8 @@ export class CrearExamenPage implements OnInit {
               private apiChat: ChatService,private apiMaterias: MateriasService, private alertCtrl: AlertController,
               public loadingController: LoadingController,private apiExamenes: ExamenesService,private actionSheetController: ActionSheetController,
               public http: HttpClient,private api: apiBase,private platform: Platform,private apiPreguntas: PreguntasService,
-              public toastController: ToastController,private cd: ChangeDetectorRef,private transfer: FileTransfer,private file: File) {
+              public toastController: ToastController,private cd: ChangeDetectorRef,private transfer: FileTransfer,private file: File,
+              ) {
     this.FrmItem = formBuilder.group({
       Id:   [0, Validators.compose([Validators.required])],
       Grupo:   ['', Validators.compose([Validators.required])],
@@ -174,6 +178,14 @@ export class CrearExamenPage implements OnInit {
   ionViewWillEnter() {
     console.log(this.item);
     if(this.item != undefined) {
+      //console.log(this.formatAMPM(new Date(this.item.FechaInicio)));      
+
+      this.mobi.instance.setDate(new Date(this.item.FechaInicio));
+      this.mobi2.instance.setDate(new Date(this.item.FechaTermino));
+
+      this.item.FechaInicio = this.formatAMPM(new Date(this.item.FechaInicio));
+      this.item.FechaTermino = this.formatAMPM(new Date(this.item.FechaTermino));
+
       this.FrmItem.patchValue(this.item);
       
       this.gradoSeleccionado = this.item.Grado;
@@ -198,6 +210,22 @@ export class CrearExamenPage implements OnInit {
       this.tituloBoton = 'Crear Examen';
     }
   }
+
+   formatAMPM(date) {
+    const year = date.getFullYear();
+    const month = ('0' + (date.getMonth() + 1)).slice(-2);;
+    const day = ('0' + date.getDate()).slice(-2);;
+    let hours = date.getHours();
+    let minutes = date.getMinutes();
+    let ampm = hours >= 12 ? 'pm' : 'am';
+    hours = hours % 12;
+    hours = hours ? hours : 12; // the hour '0' should be '12'
+    minutes = minutes < 10 ? '0'+minutes : minutes;
+    //const strTime = hours + ':' + minutes + ' ' + ampm;
+    const strTime = `${month}/${day}/${year} ${hours}:${minutes} ${ampm}`;
+    return strTime;
+  }
+  
 
   async getColumnGrupos() {
     const options = [];
@@ -264,92 +292,114 @@ export class CrearExamenPage implements OnInit {
   }
 
   async crearExamen() {
-    this.submitAttempt = true;
-    console.log(this.FrmItem.value);
-    console.log(this.MateriaSeleccionada);
-    
-    const loading = await this.loadingController.create({
-      message: 'Guardando...'
-    });
+    try 
+    {
+      this.submitAttempt = true;
+      //console.log(this.FrmItem.value);
+      //console.log(this.MateriaSeleccionada);
+      
+      this.loading = await this.loadingController.create({
+        message: 'Guardando...'
+      });
 
-    if (!this.FrmItem.valid) {
+      if (!this.FrmItem.valid) {
 
-      const alert = await  this.alertCtrl.create({
-        header: 'No concluiste con el formulario',
-        subHeader: 'El formulario se encuentra incompleto, favor de completar los datos faltantes.',
-        mode: 'ios',
+        const alert = await  this.alertCtrl.create({
+          header: 'No concluiste con el formulario',
+          subHeader: 'El formulario se encuentra incompleto, favor de completar los datos faltantes.',
+          mode: 'ios',
+          buttons: ['Aceptar']
+        });
+
+        await alert.present();
+        return;
+      }
+
+      await this.loading.present();
+
+      this.item = this.FrmItem.value;
+      console.log(this.item);
+      console.log(this.item.FechaInicio);
+      
+      const payload = new FormData();
+      payload.append('Id', this.item.Id);
+      payload.append('Titulo', this.item.Titulo);
+      payload.append('Descripcion', this.item.Descripcion);
+      payload.append('FechaInicio', new Date(this.item.FechaInicio.toString()).toISOString());
+      payload.append('FechaTermino', new Date(this.item.FechaTermino.toString()).toISOString());
+      payload.append('DuracionExamen', this.item.DuracionExamen);
+      payload.append('MateriaId', this.MateriaSeleccionada);
+      payload.append('Grado', this.gradoSeleccionado);
+      payload.append('Grupo', this.grupoSeleccionado);
+      payload.append('GrupoIngles', this.GrupoIngles);
+      payload.append('PreguntasAleatorias', this.item.PreguntasAleatorias);
+
+      let itemTemp;
+      console.log(this.item);
+      if(this.item.Id == 0) {
+        itemTemp = await this.apiExamenes.save(payload).toPromise();
+      }
+      else {
+        const tareaUpload = await this.apiExamenes.update(payload).toPromise();
+      }
+
+      this.banderaEdito=true;
+      this.submitAttempt = false;
+
+      await this.loadingController.dismiss();
+
+      if(this.item.Id == 0) {
+        const alertTerminado = await this.alertCtrl.create({
+          header: 'Examen creado con éxito',
+          backdropDismiss: false,
+          message: 'Se creó el Examen ' + this.FrmItem.get('Titulo').value + ', ¿Desea añadir preguntas al Examen?',
+          buttons: [
+            {
+              text: 'No', handler: () =>  this.closeModal()
+            },
+            {
+              text: 'Añadir', handler: () =>{ 
+                //this.FrmItem.reset(); 
+                //this.FrmItem.controls['Id'].setValue(0);
+                console.log(itemTemp);
+                this.item = itemTemp;
+                this.FrmItem.controls['Id'].setValue(this.item.Id);
+                
+                this.titulo = 'Modificar Examen';
+                this.tituloBoton= 'Modificar Examen';
+
+                this.slider.slideNext();
+              }
+            }
+          ]
+        });
+        await alertTerminado.present();
+      } else {
+        const alertTerminado = await this.alertCtrl.create({
+          header: 'Examen modificado con éxito',
+          backdropDismiss: false,
+          message: 'Se modificó el Examen ' + this.FrmItem.get('Titulo').value,
+          buttons: [
+            {
+              text: 'Continuar', handler: () =>  this.closeModal()
+            }
+          ]
+        });
+        await alertTerminado.present();
+      }
+    }
+    catch(err) {
+      await this.loadingController.dismiss();
+
+      const alert = await this.alertCtrl.create({
+        header: 'LBS Plus',
+        //subHeader: 'Subtitle',
+        message: err.error,
         buttons: ['Aceptar']
       });
-
+  
       await alert.present();
-      return;
     }
-
-    await loading.present();
-
-    this.item = this.FrmItem.value;
-    console.log(this.item);
-
-    const payload = new FormData();
-    payload.append('Id', this.item.Id);
-    payload.append('Titulo', this.item.Titulo);
-    payload.append('Descripcion', this.item.Descripcion);
-    payload.append('FechaInicio', this.item.FechaInicio.toString());
-    payload.append('FechaTermino', this.item.FechaTermino.toString());
-    payload.append('DuracionExamen', this.item.DuracionExamen);
-    payload.append('MateriaId', this.MateriaSeleccionada);
-    payload.append('Grado', this.gradoSeleccionado);
-    payload.append('Grupo', this.grupoSeleccionado);
-    payload.append('GrupoIngles', this.GrupoIngles);
-    payload.append('PreguntasAleatorias', this.item.PreguntasAleatorias);
-
-    let itemTemp;
-    if(this.item.Id == 0) {
-      itemTemp = await this.apiExamenes.save(payload).toPromise();
-    }
-    else {
-      const tareaUpload = await this.apiExamenes.update(payload).toPromise();
-    }
-
-    this.banderaEdito=true;
-    this.submitAttempt = false;
-
-    this.loadingController.dismiss();
-
-    if(this.item.Id == 0) {
-      const alertTerminado = await this.alertCtrl.create({
-        header: 'Examen creado con éxito',
-        backdropDismiss: false,
-        message: 'Se creó el Examen ' + this.FrmItem.get('Titulo').value + ', ¿Desea añadir preguntas al Examen?',
-        buttons: [
-          {
-            text: 'No', handler: () =>  this.closeModal()
-          },
-          {
-            text: 'Añadir', handler: () =>{ 
-              //this.FrmItem.reset(); 
-              //this.FrmItem.controls['Id'].setValue(0);
-              this.item = itemTemp;
-              this.slider.slideNext();
-            }
-          }
-        ]
-      });
-      await alertTerminado.present();
-    } else {
-      const alertTerminado = await this.alertCtrl.create({
-        header: 'Examen modificado con éxito',
-        backdropDismiss: false,
-        message: 'Se modificó el Examen ' + this.FrmItem.get('Titulo').value,
-        buttons: [
-          {
-            text: 'Continuar', handler: () =>  this.closeModal()
-          }
-        ]
-      });
-      await alertTerminado.present();
-    }
-   
   }
 
   ionFocusFechaInicio(){
@@ -395,37 +445,57 @@ export class CrearExamenPage implements OnInit {
 
   /*****Preguntas**** */
   async nuevaPregunta() {
-    const actionSheet = await this.actionSheetController.create({
-      header: 'Añadir Preguntas',
-      cssClass: 'left-align-buttons',
-      mode: 'ios',
-      buttons: [{
-        text: ' Selección (una respuesta)',
-        role: 'destructive',
-        icon: 'list',
-        handler: () => {
-          console.log('Delete clicked');
-          this.itemPreguntaSeleccionada=undefined;
-          this.viewComponentSelect="multipleUnaRespuesta";
-        }
-      }, {
-        text: ' Selección (muchas respuesta)',
-        role: 'destructive',
-        icon: 'share',
-        handler: () => {
-          console.log('Share clicked');
-        }
-      },
-      {
-        text: 'Cancelar',
-        icon: 'close',
-        role: 'cancel',
-        handler: () => {
-          console.log('Cancel clicked');
-        }
-      }]
-    });
-    await actionSheet.present();
+    try {
+
+        this.spiner = true;
+
+        const result = await this.apiExamenes.getTotalExamenesIniciados(this.item.Id).toPromise();
+
+        this.spiner = false;
+
+        const actionSheet = await this.actionSheetController.create({
+          header: 'Añadir Preguntas',
+          cssClass: 'left-align-buttons',
+          mode: 'ios',
+          buttons: [{
+            text: ' Selección (una respuesta)',
+            role: 'destructive',
+            icon: 'list',
+            handler: () => {
+              this.itemPreguntaSeleccionada=undefined;
+              this.viewComponentSelect="multipleUnaRespuesta";
+            }
+          }, {
+            text: ' Selección (muchas respuesta)',
+            role: 'destructive',
+            icon: 'share',
+            handler: () => {
+              console.log('Share clicked');
+            }
+          },
+          {
+            text: 'Cancelar',
+            icon: 'close',
+            role: 'cancel',
+            handler: () => {
+              console.log('Cancel clicked');
+            }
+          }]
+        });
+        await actionSheet.present();
+
+    } catch(err) {
+        this.spiner=false;
+
+        const alert = await this.alertCtrl.create({
+          header: 'LBS Plus',
+          //subHeader: 'Subtitle',
+          message: err.error,
+          buttons: ['Aceptar']
+        });
+    
+        await alert.present();
+    }
   }
 
   async bancoPreguntas() {
@@ -573,6 +643,11 @@ export class CrearExamenPage implements OnInit {
     });
 
     toast.present();
+  }
+
+  loadSpinner(statusSpinner) {
+    console.log(statusSpinner);
+    this.spiner = statusSpinner;
   }
   /***************** */
 }

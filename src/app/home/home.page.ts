@@ -513,7 +513,7 @@ this.renderer.addClass(this.div2.nativeElement, 'quitarBottom');
 let duracion;
 
 if(!this.platform.is("ipad") || !this.platform.is("iphone") || !this.platform.is("ios")){
-   console.log("android")
+   //console.log("android")
    duracion= 700;
 }
 else{
@@ -828,7 +828,7 @@ this.pillMenu.animacion();
         },
         onEnd: (detail) => {
          //   this.scrollenable = false;
-            console.log("Entro al on end swipe content");
+            //console.log("Entro al on end swipe content");
             //console.log("SwipeDown",this.swipeDown);
             if (this.swipeUp === true && !this.estadoArriba) {
               
@@ -1015,13 +1015,13 @@ this.pillMenu.animacion();
     } 
 
     ionChangeFiltros(event){
+      //console.log(event);
       let filtro='';
 
       //console.log(event.detail.value.length);
-      if(event.detail.value=="")
+      if(!Array.isArray(event.detail.value))
         return;
       
-
       event.detail.value.forEach((element,idx,array) => {
         if (idx === array.length - 1){ 
           filtro += element.Id;
@@ -1034,7 +1034,10 @@ this.pillMenu.animacion();
       console.log(filtro);
 
       this.IonContentScroll.scrollToPoint(0, 0, 0);
+
       const itemOption =this.pillMenu.itemsMenu[this.pillMenu.indexAnterior];
+
+      console.log(event.detail.value.length);
       if(itemOption==="Tareas") {
         if (event.detail.value.length === 0) {
           this.tareasComponent.cargar(0);
@@ -1076,7 +1079,7 @@ this.pillMenu.animacion();
       console.log("filtros");
 
       this.materias = await this.apiMaterias.get().toPromise();
-      console.log(this.materias);
+      //console.log(this.materias);
 
       this.filtrosControl.open();
       return;
@@ -1491,7 +1494,7 @@ this.pillMenu.animacion();
       if (this.platform.width() >= 1250 && this.platform.width() <= 1299 ) {numberMover = 21; }	
       if (this.platform.width() >= 1300 && this.platform.width() <= 1349 ) {numberMover = 22; }	
       if (this.platform.width() >= 1350  ) {numberMover = 23; }	
-      console.log(numberMover);	
+      //console.log(numberMover);	
       return numberMover;	
   }	
   public test(){	
@@ -1510,7 +1513,7 @@ this.pillMenu.animacion();
     	
 
   if(this.estadoArriba===false){	
-    console.log("divArriba")
+    //console.log("divArriba")
     this.slideUp.lockSwipes(true);
     this.swipeUp2 = true;
     this.animacion(false, true);

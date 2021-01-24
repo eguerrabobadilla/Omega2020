@@ -40,6 +40,7 @@ export class ListTareasComponent implements OnInit {
 
    public async cargar(materiaId) {
     // 0=todas 1=Filtrado por materia
+    console.log("materiaId",materiaId);
     this.materiaId = materiaId;
 
     await this.cargandoAnimation('Cargando...');

@@ -11,6 +11,7 @@ import { CircleProgressReportComponent } from '../components/circle-progress-rep
 import { ChatsComponent } from '../components/chats/chats.component';
 import { NewsComponent } from '../components/news/news.component';
 import { LinkifyPipe } from '../pipes/linkifypipe ';
+import { SortByPipe } from '../pipes/sort-by.pipe';
 
 @NgModule({
     imports: [
@@ -18,8 +19,8 @@ import { LinkifyPipe } from '../pipes/linkifypipe ';
         CommonModule,
         FormsModule
     ],
-    declarations:[PillMenuComponent,CircleProgressComponent,CodesComponent,BooksComponent,FilterPipe,CircleProgressReportComponent,ChatsComponent,NewsComponent,LinkifyPipe],
-    exports:[PillMenuComponent,CircleProgressComponent,CodesComponent,BooksComponent,FilterPipe,CircleProgressReportComponent,ChatsComponent,NewsComponent,LinkifyPipe]
+    declarations:[PillMenuComponent,CircleProgressComponent,CodesComponent,BooksComponent,FilterPipe,CircleProgressReportComponent,ChatsComponent,NewsComponent,LinkifyPipe,SortByPipe],
+    exports:[PillMenuComponent,CircleProgressComponent,CodesComponent,BooksComponent,FilterPipe,CircleProgressReportComponent,ChatsComponent,NewsComponent,LinkifyPipe,SortByPipe]
 })
 export class GlobalModule
 {

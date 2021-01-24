@@ -1,4 +1,4 @@
-import { Component, OnInit,Input,Output,EventEmitter } from '@angular/core';
+import { Component, OnInit,Input,Output,EventEmitter,ViewChild,ElementRef } from '@angular/core';
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { FormGroup, FormBuilder, Validators,FormArray } from '@angular/forms';
 import { AlertController, LoadingController } from '@ionic/angular';
@@ -21,6 +21,7 @@ export class SeleccionUnaRespuestaComponent implements OnInit {
   @Output() backPage = new EventEmitter();
   @Input() examen;
   @Input() itemPreguntaSeleccionada;
+  @ViewChild('header', {read: ElementRef, static: true}) headerHtml: ElementRef;
   private item: any;
 
   constructor(private formBuilder: FormBuilder,public loadingController: LoadingController,private alertCtrl: AlertController,
@@ -46,7 +47,7 @@ export class SeleccionUnaRespuestaComponent implements OnInit {
   
       //Modo edicion de pregunta
       if(this.itemPreguntaSeleccionada != undefined) { 
-        console.log(this.itemPreguntaSeleccionada);
+        //console.log(this.itemPreguntaSeleccionada);
         this.FrmItem.patchValue(this.itemPreguntaSeleccionada);
       }
     });
@@ -59,7 +60,9 @@ export class SeleccionUnaRespuestaComponent implements OnInit {
   }
 
   ngOnInit() {
-
+    setTimeout(() => {
+      this.headerHtml.nativeElement.scrollIntoView();
+    }, 10);
   }
 
   counter(i: number) {
@@ -68,91 +71,109 @@ export class SeleccionUnaRespuestaComponent implements OnInit {
 
   async save(){
     //console.log(this.FrmItem);
+    try  {
+        this.submitAttempt = true;
+        //console.log(this.FrmItem.value);
+        
+        const loading = await this.loadingController.create({
+          message: 'Guardando...'
+        });
 
-    this.submitAttempt = true;
-    //console.log(this.FrmItem.value);
+        if (!this.FrmItem.valid) {
+          console.log(this.FrmItem);
+          const alert = await  this.alertCtrl.create({
+            header: 'No concluiste con el formulario',
+            subHeader: 'El formulario se encuentra incompleto, favor de completar los datos faltantes.',
+            mode: 'ios',
+            buttons: ['Aceptar']
+          });
+
+          await alert.present();
+          return;
+        }
+
+        await loading.present();
+
+        this.item = this.FrmItem.value;
+        console.log(this.item);
+        this.item.TipoPregunta="multipleUnaRespuesta";
+
     
-    const loading = await this.loadingController.create({
-      message: 'Guardando...'
-    });
+        for( var i = 0; i < this.item.Respuestas.length; i++){ 
+                                      
+          if ( this.item.Respuestas[i].Respuesta === "") { 
+            this.item.Respuestas.splice(i, 1); 
+              i--; 
+          }
+        }
 
-    if (!this.FrmItem.valid) {
-      console.log(this.FrmItem);
-      const alert = await  this.alertCtrl.create({
-        header: 'No concluiste con el formulario',
-        subHeader: 'El formulario se encuentra incompleto, favor de completar los datos faltantes.',
-        mode: 'ios',
+        
+        if(this.itemPreguntaSeleccionada === undefined) {
+          const tareaUpload = await this.apiPreguntas.save(this.item).toPromise();
+        }
+        else {
+          const tareaUpload = await this.apiPreguntas.update(this.itemPreguntaSeleccionada._id,this.item).toPromise();
+        } 
+
+        this.submitAttempt = false;
+
+        this.loadingController.dismiss();
+
+        if(this.itemPreguntaSeleccionada === undefined)  {
+          const alertTerminado = await this.alertCtrl.create({
+            header: 'Pregunta creada con éxito',
+            backdropDismiss: false,
+            message: '¿Dese crear otra pregunta del mismo tipo?',
+            buttons: [
+              {
+                text: 'No', handler: () =>  this.backPage.emit()
+              },
+              {
+                text: 'Crear otra', handler: () =>{ 
+                  this.FrmItem.reset(); 
+                  //this.FrmItem.controls['Id'].setValue(0);
+                  this.FrmItem.controls['TipoCarga'].setValue("azar");
+                  this.FrmItem.controls['Correcta'].setValue("rp1");
+                  this.FrmItem.controls['ExamenId'].setValue(this.examen.Id);
+                  let frmArray = this.FrmItem.get('Respuestas') as FormArray;
+                  frmArray.clear();
+
+                  this.loadRespuestas();
+
+                  setTimeout(() => {
+                    this.headerHtml.nativeElement.scrollIntoView();
+                  }, 200);
+                }
+              }
+            ]
+          });
+
+          await alertTerminado.present();
+        } else {
+          const alertTerminado = await this.alertCtrl.create({
+            header: 'Pregunta modificada con éxito',
+            backdropDismiss: false,
+            message: 'Se modificó la pregunta',
+            buttons: [
+              {
+                text: 'Continuar', handler: () =>  this.backPage.emit()
+              }
+            ]
+          });
+          await alertTerminado.present();
+        }
+    }
+    catch(err) {
+      await this.loadingController.dismiss();
+
+      const alert = await this.alertCtrl.create({
+        header: 'LBS Plus',
+        //subHeader: 'Subtitle',
+        message: err.error,
         buttons: ['Aceptar']
       });
-
+  
       await alert.present();
-      return;
-    }
-
-    await loading.present();
-
-    this.item = this.FrmItem.value;
-    console.log(this.item);
-    this.item.TipoPregunta="multipleUnaRespuesta";
-
- 
-    for( var i = 0; i < this.item.Respuestas.length; i++){ 
-                                   
-      if ( this.item.Respuestas[i].Respuesta === "") { 
-        this.item.Respuestas.splice(i, 1); 
-          i--; 
-      }
-    }
-
-    
-    if(this.itemPreguntaSeleccionada === undefined) {
-      const tareaUpload = await this.apiPreguntas.save(this.item).toPromise();
-    }
-    else {
-      const tareaUpload = await this.apiPreguntas.update(this.itemPreguntaSeleccionada._id,this.item).toPromise();
-    } 
-
-    this.submitAttempt = false;
-
-    this.loadingController.dismiss();
-
-    if(this.itemPreguntaSeleccionada === undefined)  {
-      const alertTerminado = await this.alertCtrl.create({
-        header: 'Pregunta creada con éxito',
-        backdropDismiss: false,
-        message: '¿Dese crear otra pregunta del mismo tipo?',
-        buttons: [
-          {
-            text: 'No', handler: () =>  this.backPage.emit()
-          },
-          {
-            text: 'Crear otra', handler: () =>{ 
-              this.FrmItem.reset(); 
-              //this.FrmItem.controls['Id'].setValue(0);
-              this.FrmItem.controls['TipoCarga'].setValue("azar");
-              this.FrmItem.controls['Correcta'].setValue("rp1");
-              this.FrmItem.controls['ExamenId'].setValue(this.examen.Id);
-              let frmArray = this.FrmItem.get('Respuestas') as FormArray;
-              frmArray.clear();
-              this.loadRespuestas();
-            }
-          }
-        ]
-      });
-
-      await alertTerminado.present();
-    } else {
-      const alertTerminado = await this.alertCtrl.create({
-        header: 'Pregunta modificada con éxito',
-        backdropDismiss: false,
-        message: 'Se modificó la pregunta',
-        buttons: [
-          {
-            text: 'Continuar', handler: () =>  this.backPage.emit()
-          }
-        ]
-      });
-      await alertTerminado.present();
     }
   }
 
