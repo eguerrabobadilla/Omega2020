@@ -6,6 +6,9 @@ import { PreguntasService } from 'src/app/api/preguntas.service';
 import { UploadAdapter } from 'src/app/class/UploadAdapter';
 import { HttpClient } from '@angular/common/http';
 import { apiBase } from 'src/app/api/apiBase';
+import Quill from 'quill';
+import  ImageResize  from 'src/assets/quill-image-resize-module-fix-for-mobile';
+Quill.register('modules/imageResize', ImageResize);
 
 @Component({
   selector: 'app-seleccion-una-respuesta',
@@ -22,6 +25,28 @@ export class SeleccionUnaRespuestaComponent implements OnInit {
   @Input() examen;
   @Input() itemPreguntaSeleccionada;
   private item: any;
+  quillConfiguration = {
+    'toolbar': [
+      ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+      ['code-block'],
+
+      [{ 'size': ['small', false, 'large', 'huge'] }],// custom button values
+      [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                     // text direction
+
+        // custom dropdown
+
+      [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+      [{ 'align': [] }],
+                              // remove formatting button
+
+      ['link', 'image', 'video'],                         // link and image, video
+
+
+    ],
+    imageResize: true
+  };
+  editorStyle = { 'width':'100%;' }
 
   constructor(private formBuilder: FormBuilder,public loadingController: LoadingController,private alertCtrl: AlertController,
               private apiPreguntas: PreguntasService, public http: HttpClient,private api: apiBase) {

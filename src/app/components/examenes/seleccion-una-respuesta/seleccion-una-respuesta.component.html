@@ -1,57 +1,59 @@
 <form [formGroup]="FrmItem" (ngSubmit)="crearExamen()">
-  <ion-list>
-    <ion-list-header>
-      <ion-label>
-        Pregunta
-      </ion-label>
-    </ion-list-header>
-    <ion-item lines="none">
-      <!--<ion-input hidden type="text" formControlName="_id" name="_id"></ion-input>-->
-      <ion-input hidden type="text" formControlName="ExamenId" name="ExamenId"></ion-input>
-      <ckeditor formControlName="Pregunta" name="Pregunta" (ready)="onReadyRichText($event)" style="width: 100%;" [editor]="Editor" data=""></ckeditor>
-    </ion-item>
-    <div *ngIf="!FrmItem.controls.Pregunta.valid && (FrmItem.controls.Pregunta.dirty || submitAttempt)">
-      <p class="text-error">Por favor escriba una pregunta.</p>
-    </div>
-    <ion-item>
-      <ion-label position="stacked">Puntos</ion-label>
-      <ion-input formControlName="Puntos" name="Puntos" placeholder="Puntos de la pregunta" type="number"></ion-input>
-    </ion-item>
-    <div *ngIf="!FrmItem.controls.Puntos.valid && (FrmItem.controls.Puntos.dirty || submitAttempt)">
-      <p class="text-error">Por favor asigne una puntuación a la pregunta.</p>
-    </div>
-    <ion-radio-group formControlName="TipoCarga" name="TipoCarga" value="azar" mode="md">
-      <ion-list-header>
-        <ion-label>Tipo de carga</ion-label>
-      </ion-list-header>
-      <ion-item>
-        <ion-label>Al azar</ion-label>
-        <ion-radio slot="end" color="primary" value="azar"></ion-radio>
-      </ion-item>
-      <ion-item>
-        <ion-label>Original</ion-label>
-        <ion-radio slot="end" color="primary" value="original"></ion-radio>
-      </ion-item>
-    </ion-radio-group>
-    <!--Respuestas-->
-    <ion-radio-group  formControlName="Correcta" name="Correcta" value="rp1" mode="md">
-      <ion-list-header>
-        <ion-label>Opciones</ion-label>
-      </ion-list-header>
-      <!--<div *ngFor='let in of counter(numeroRespuestas) ;let i = index'>-->
-      <div formArrayName="Respuestas" *ngFor="let item of FrmItem.get('Respuestas').controls; let i = index;">
-        <div [formGroupName]="i">
-          <ion-item lines="none">
-            <ion-label>{{i+1}}.- ¿Correcta?</ion-label>
-            <ion-radio slot="end" color="primary" value="rp{{i+1}}"></ion-radio>
-          </ion-item>
-          <ion-item lines="none">
-            <ion-input hidden type="text" formControlName="Id" name="Id"></ion-input>
-            <ckeditor formControlName="Respuesta" style="width: 100%;" [editor]="Editor" data="" (ready)="onReadyRichText($event)"></ckeditor>
-          </ion-item>
+    <ion-list>
+        <ion-list-header>
+            <ion-label>
+                Pregunta
+            </ion-label>
+        </ion-list-header>
+        <ion-item lines="none">
+            <!--<ion-input hidden type="text" formControlName="_id" name="_id"></ion-input>-->
+            <ion-input hidden type="text" formControlName="ExamenId" name="ExamenId"></ion-input>
+            <!--<ckeditor formControlName="Pregunta" name="Pregunta" (ready)="onReadyRichText($event)" style="width: 100%;" [editor]="Editor" data=""></ckeditor>-->
+            <quill-editor style="width: 100%;" formControlName="Pregunta" name="Pregunta" [modules]="quillConfiguration" class="content-editor" [placeholder]="''"> </quill-editor>
+        </ion-item>
+        <div *ngIf="!FrmItem.controls.Pregunta.valid && (FrmItem.controls.Pregunta.dirty || submitAttempt)">
+            <p class="text-error">Por favor escriba una pregunta.</p>
         </div>
-      </div>
-    </ion-radio-group>
-    <!--Respuestas-->
-  </ion-list>
+        <ion-item>
+            <ion-label position="stacked">Puntos</ion-label>
+            <ion-input formControlName="Puntos" name="Puntos" placeholder="Puntos de la pregunta" type="number"></ion-input>
+        </ion-item>
+        <div *ngIf="!FrmItem.controls.Puntos.valid && (FrmItem.controls.Puntos.dirty || submitAttempt)">
+            <p class="text-error">Por favor asigne una puntuación a la pregunta.</p>
+        </div>
+        <ion-radio-group formControlName="TipoCarga" name="TipoCarga" value="azar" mode="md">
+            <ion-list-header>
+                <ion-label>Tipo de carga</ion-label>
+            </ion-list-header>
+            <ion-item>
+                <ion-label>Al azar</ion-label>
+                <ion-radio slot="end" color="primary" value="azar"></ion-radio>
+            </ion-item>
+            <ion-item>
+                <ion-label>Original</ion-label>
+                <ion-radio slot="end" color="primary" value="original"></ion-radio>
+            </ion-item>
+        </ion-radio-group>
+        <!--Respuestas-->
+        <ion-radio-group formControlName="Correcta" name="Correcta" value="rp1" mode="md">
+            <ion-list-header>
+                <ion-label>Opciones</ion-label>
+            </ion-list-header>
+            <!--<div *ngFor='let in of counter(numeroRespuestas) ;let i = index'>-->
+            <div formArrayName="Respuestas" *ngFor="let item of FrmItem.get('Respuestas').controls; let i = index;">
+                <div [formGroupName]="i">
+                    <ion-item lines="none">
+                        <ion-label>{{i+1}}.- ¿Correcta?</ion-label>
+                        <ion-radio slot="end" color="primary" value="rp{{i+1}}"></ion-radio>
+                    </ion-item>
+                    <ion-item lines="none">
+                        <ion-input hidden type="text" formControlName="Id" name="Id"></ion-input>
+                        <!--<ckeditor formControlName="Respuesta" style="width: 100%;" [editor]="Editor" data="" (ready)="onReadyRichText($event)"></ckeditor>-->
+                        <quill-editor style="width: 100%;" formControlName="Respuesta" name="Respuesta" [modules]="quillConfiguration" class="content-editor" [placeholder]="''"> </quill-editor>
+                    </ion-item>
+                </div>
+            </div>
+        </ion-radio-group>
+        <!--Respuestas-->
+    </ion-list>
 </form>

@@ -1,4 +1,4 @@
-import { Component, OnInit,ViewChild,ElementRef,Input, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Input, ChangeDetectorRef, Renderer2 } from '@angular/core';
 import { ModalController, AlertController,IonInput,PickerController, PopoverController, LoadingController, ActionSheetController, IonSlides, Platform, ToastController } from '@ionic/angular';
 import { FormGroup, FormBuilder, Validators  } from '@angular/forms';
 import { ForumService } from '../../api/forum.service';
@@ -20,8 +20,43 @@ import { ListPreguntasComponent } from 'src/app/components/examenes/list-pregunt
 import { File,FileEntry } from '@ionic-native/file/ngx';
 import Quill from 'quill';
 import  ImageResize  from 'src/assets/quill-image-resize-module-fix-for-mobile';
-Quill.register('modules/imageResize', ImageResize);
+import { SanitizePipe } from '../../pipes/sanitize.pipe';
 
+
+
+let BaseImageFormat = Quill.import('formats/image');
+const ImageFormatAttributesList = [
+  'alt',
+  'height',
+  'width',
+  'style'
+];
+
+class ImageFormat extends BaseImageFormat {
+  domNode;
+  static formats(domNode) {
+    return ImageFormatAttributesList.reduce(function (formats, attribute) {
+      if (domNode.hasAttribute(attribute)) {
+        formats[attribute] = domNode.getAttribute(attribute);
+      }
+      return formats;
+    }, {});
+  }
+  format(name, value) {
+    if (ImageFormatAttributesList.indexOf(name) > -1) {
+      if (value) {
+        this.domNode.setAttribute(name, value);
+      } else {
+        this.domNode.removeAttribute(name);
+      }
+    } else {
+      super.format(name, value);
+    }
+  }
+}
+Quill.register('modules/imageResize', ImageResize);
+Quill.register('attributors/style/size', true);
+Quill.register(ImageFormat, true);
 
 mobiscroll.settings = {
   theme: 'mobiscroll',
@@ -34,6 +69,9 @@ mobiscroll.settings = {
   selector: 'app-crear-examen',
   templateUrl: './crear-examen.page.html',
   styleUrls: ['./crear-examen.page.scss'],
+  providers: [SanitizePipe] 
+  
+  
 })
 export class CrearExamenPage implements OnInit {
   @ViewChild('txtGradoGrupo', {static: false}) txtGradoGrupo: IonInput;
@@ -46,6 +84,7 @@ export class CrearExamenPage implements OnInit {
   @ViewChild('slider', {static: false}) slider: IonSlides;
   @ViewChild('componentListaPreguntas', {static: false}) componentListaPreguntas: ListPreguntasComponent;
   @ViewChild('inputFileBanco', {read: ElementRef, static: false}) inputFileBancoHTML: ElementRef;
+  @ViewChild('quill', {read: ElementRef, static: false}) quill: ElementRef;
 
   @ViewChild('opcionMultipleUnaRespuesta', {static: false}) opcionMultipleUnaRespuesta: SeleccionUnaRespuestaComponent; 
 
@@ -54,7 +93,9 @@ export class CrearExamenPage implements OnInit {
   loading: any;
   //private item: any;
   grupos: any[] = [];
+   editor: any;
   materias: any[] = [];
+  descripcionQuill:string;
   gradoSeleccionado: any;
   grupoSeleccionado: any;
   MateriaSeleccionada: any;
@@ -69,7 +110,8 @@ export class CrearExamenPage implements OnInit {
 
     autoHeight: true,
     allowTouchMove: false,
-    passiveListeners: false
+    passiveListeners: false,
+    preloadImages :false
 
   };
    quillConfiguration = {
@@ -91,9 +133,11 @@ export class CrearExamenPage implements OnInit {
 
 
     ],
-    imageResize: true
+    imageResize: true,
+  
+   
   };
-  editorStyle = { 'height': '900px' }
+  editorStyle = { 'width':'100%;' }
   viewComponentSelect = 'listRespuestas';
 
   settings: MbscCalendarOptions = {
@@ -148,13 +192,13 @@ export class CrearExamenPage implements OnInit {
               private apiChat: ChatService,private apiMaterias: MateriasService, private alertCtrl: AlertController,
               public loadingController: LoadingController,private apiExamenes: ExamenesService,private actionSheetController: ActionSheetController,
               public http: HttpClient,private api: apiBase,private platform: Platform,private apiPreguntas: PreguntasService,
-              public toastController: ToastController,private cd: ChangeDetectorRef,private transfer: FileTransfer,private file: File) {
+              public toastController: ToastController,private cd: ChangeDetectorRef,private transfer: FileTransfer,private file: File,private renderer: Renderer2,private sanitizar:SanitizePipe) {
     this.FrmItem = formBuilder.group({
       Id:   [0, Validators.compose([Validators.required])],
       Grupo:   ['', Validators.compose([Validators.required])],
       MateriaId:   ['', Validators.compose([Validators.required])],
       Titulo: ['', Validators.compose([Validators.required])],
-      Descripcion: ['', Validators.compose([Validators.required])],
+      Descripcion: [''],
       FechaInicio: ['', Validators.compose([Validators.required])],
       FechaTermino: ['', Validators.compose([Validators.required])],
       DuracionExamen: ['', Validators.compose([Validators.required])],
@@ -165,6 +209,12 @@ export class CrearExamenPage implements OnInit {
   ngOnInit() {
     //console.log(this.item); 
   }
+
+  editorCreated(quill){
+    this.editor = quill;
+    this.descripcionQuill=this.item.Descripcion;
+  this.editor.setContents(this.editor.clipboard.convert(`<p style="color:black">Hello world</p>`));
+}
 
   async openPickerGrupos() {
     const picker = await this.pickerController.create({
@@ -202,10 +252,11 @@ export class CrearExamenPage implements OnInit {
   }
 
   ionViewWillEnter() {
-    console.log(this.item);
+
     if(this.item != undefined) {
+     
       this.FrmItem.patchValue(this.item);
-      
+ 
       this.gradoSeleccionado = this.item.Grado;
       this.grupoSeleccionado = this.item.Grupo;
       this.EscolaridadSeleccionada = this.item.Escolaridad

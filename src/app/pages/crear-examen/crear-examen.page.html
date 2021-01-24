@@ -20,7 +20,7 @@
 </ion-header>
 <ion-content>
     <ion-slides #slider [options]="slideOpts" (ionSlideNextStart)="ionSlideDidChange()" (ionSlidePrevStart)="ionSlideDidChange()">
-        <ion-slide>
+        <ion-slide class="test">
             <!-- <div scrollY="true" style="height: 72.6vh;overflow-y: scroll;width: 100%;">-->
             <ion-card class="ion-no-border" no style="text-align: initial;" mode="ios">
                 <ion-card-content>
@@ -118,8 +118,10 @@
                                     <ion-item>
                                         <ion-label color="dark" position="stacked">Descripción</ion-label>
                                         <!-- Se agrego es eleemento para el que el ckeditor se ajustara-->
-                                        <!-- <ion-textarea style="display: none;"></ion-textarea>-->
-                                        <quill-editor [style]="editorStyle" formControlName="Descripcion" name="Descripcion" [modules]="quillConfiguration" class="content-editor" [placeholder]="''"> </quill-editor>
+                                        <!-- <ion-textarea [innerHTML]="item.Descripcion |sanitizePipe :item.Descripcion"></ion-textarea>-->
+                                        <quill-editor #quill formControlName="Descripcion" name="Descripcion" style="width: 100%;" [modules]="quillConfiguration" class="content-editor" [placeholder]="''">
+
+                                        </quill-editor>
                                         <!-- <ckeditor #CKEDITOR formControlName="Descripcion" name="Descripcion" [editor]="Editor" (ready)="onReadyRichText($event)" data="<p>Hello, world!</p>"></ckeditor>-->
                                     </ion-item>
                                     <div *ngIf="!FrmItem.controls.Descripcion.valid && (FrmItem.controls.Descripcion.dirty || submitAttempt)">

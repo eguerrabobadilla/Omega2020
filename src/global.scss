@@ -94,6 +94,11 @@ $mbsc-mobiscroll-frame-background: white;
     user-select: text;
 }
 
+.ql-snow .ql-editor img {
+    max-width: 100%;
+    all: unset;
+}
+
 @import "~@mobiscroll/angular/dist/css/mobiscroll.angular.scss";
 @import '~quill/dist/quill.core.css';
 @import '~quill/dist/quill.snow.css';

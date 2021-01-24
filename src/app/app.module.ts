@@ -46,6 +46,7 @@ import { QuillModule } from 'ngx-quill'
 import { OneSignal } from '@ionic-native/onesignal/ngx';
 
 
+
 @NgModule({
   declarations: [AppComponent, AnimateItemsDirective],
   entryComponents: [DetallesNewsPage],
