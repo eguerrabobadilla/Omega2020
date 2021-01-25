@@ -545,14 +545,14 @@ export class CrearExamenPage implements OnInit {
               this.itemPreguntaSeleccionada=undefined;
               this.viewComponentSelect="multipleUnaRespuesta";
             }
-          }, {
+          }/*, {
             text: ' Selección (muchas respuesta)',
             role: 'destructive',
             icon: 'share',
             handler: () => {
               console.log('Share clicked');
             }
-          },
+          }*/,
           {
             text: 'Cancelar',
             icon: 'close',
