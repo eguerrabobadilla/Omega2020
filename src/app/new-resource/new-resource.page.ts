@@ -61,7 +61,7 @@ export class NewResourcePage implements OnInit {
   }
 
   ngOnInit() {
-    this.meses   = ['Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre', 'Enero', 'Febreo', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio'];
+    this.meses   = ['Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre', 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio'];
     this.semanas = ['Semana 1', 'Semana 2', 'Semana 3', 'Semana 4'];
     this.tipos = ['Archivo', 'Clase Virtual'];
   }

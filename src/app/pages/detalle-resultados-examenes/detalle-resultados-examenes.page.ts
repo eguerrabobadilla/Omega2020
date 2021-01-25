@@ -57,8 +57,12 @@ export class DetalleResultadosExamenesPage implements OnInit {
     this.LstAlumnos.forEach(element => {
       //console.log(element);
       const userD = this.LstExamenes.filter(l => l.UsuarioId == element.Id);
+      console.log(userD);
       if(userD.length > 0) {
-            element.status ="Entregado"
+            element.status ="Entregado";
+            element.Puntaje = userD[0].Puntaje;
+            element.Duracion = userD[0].Duracion;
+            element.PuntajePorcentaje = userD[0].PuntajePorcentaje;
             this.totalEntregadas +=1;
       } else {
             element.status ="Pendiente"
@@ -73,6 +77,6 @@ export class DetalleResultadosExamenesPage implements OnInit {
   closeModal (){
     console.log("cerar");
     this.modalCtrl.dismiss();
-}
+  }
 
 }

@@ -22,7 +22,7 @@
       <ion-label style="text-transform: capitalize;">
           <h2>{{ itemArray.ApellidoPaterno }} {{ itemArray.ApellidoMaterno }} {{ itemArray.Nombre }} </h2>
           <h3>{{ item.Escolaridad }} {{ itemArray.Grado }}{{ itemArray.Grupo }}</h3>
-          <p style="color: #008000;" *ngIf="itemArray.status=='Entregado'">{{ itemArray.status }} | Score: 100/100</p>
+          <p style="color: #008000;" *ngIf="itemArray.status=='Entregado'">Score: {{ itemArray.Puntaje }} ({{itemArray.PuntajePorcentaje}}%) | Tiempo: {{ itemArray.Duracion }} min. </p>
           <p style="color:#FF0000;" *ngIf="itemArray.status=='Pendiente'">{{ itemArray.status }}</p>
       </ion-label>
       </ion-item>

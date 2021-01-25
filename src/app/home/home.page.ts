@@ -674,7 +674,8 @@ this.pillMenu.animacion();
      } else if (index === 5) {
         this.tabs = ['Preguntas', 'Contacto'];
       } else if (index === 6) {
-        this.tabs = ['Examenes', 'Estadísticas'];
+        //this.tabs = ['Examenes', 'Estadísticas'];
+        this.tabs = ['Examenes'];
 
         this.pildoraExamenes="Examenes";
       }

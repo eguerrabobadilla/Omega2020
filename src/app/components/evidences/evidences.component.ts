@@ -29,7 +29,7 @@ export class EvidencesComponent implements OnInit {
 
   ngOnInit() {
     this.meses = ['Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre',
-    'Enero', 'Febreo', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio'];
+    'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio'];
     //this.cargar();
 
     this.apiEvidencias.getInfinite(this.contadorInfinieScroll,10).subscribe(data => {
