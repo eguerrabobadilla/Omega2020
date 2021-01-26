@@ -44,6 +44,7 @@ import { QuillModule } from 'ngx-quill'
 
 
 import { OneSignal } from '@ionic-native/onesignal/ngx';
+import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 
 
 
@@ -81,6 +82,7 @@ import { OneSignal } from '@ionic-native/onesignal/ngx';
     CodePush,
     InAppBrowser,
     OneSignal,
+    AndroidPermissions,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: HTTP_INTERCEPTORS,useClass: AuthInterceptorService,multi: true}
   ],

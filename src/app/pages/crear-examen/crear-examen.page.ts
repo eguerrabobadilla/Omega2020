@@ -21,7 +21,7 @@ import { File,FileEntry } from '@ionic-native/file/ngx';
 import Quill from 'quill';
 import  ImageResize  from 'src/assets/quill-image-resize-module-fix-for-mobile';
 import { SanitizePipe } from '../../pipes/sanitize.pipe';
-
+import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 
 
 let BaseImageFormat = Quill.import('formats/image');
@@ -106,6 +106,7 @@ export class CrearExamenPage implements OnInit {
   GrupoIngles: any;
   showBackButton:boolean = false;
   banderaEdito: boolean=false;
+  permissionStorageDowload=false;
   public Editor = ClassicEditor;
   slideOpts = {
 
@@ -195,7 +196,8 @@ export class CrearExamenPage implements OnInit {
               private apiChat: ChatService,private apiMaterias: MateriasService, private alertCtrl: AlertController,
               public loadingController: LoadingController,private apiExamenes: ExamenesService,private actionSheetController: ActionSheetController,
               public http: HttpClient,private api: apiBase,private platform: Platform,private apiPreguntas: PreguntasService,
-              public toastController: ToastController,private cd: ChangeDetectorRef,private transfer: FileTransfer,private file: File,private renderer: Renderer2,private sanitizar:SanitizePipe) {
+              public toastController: ToastController,private cd: ChangeDetectorRef,private transfer: FileTransfer,private file: File,private renderer: Renderer2,private sanitizar:SanitizePipe,
+              private androidPermissions: AndroidPermissions) {
     this.FrmItem = formBuilder.group({
       Id:   [0, Validators.compose([Validators.required])],
       Grupo:   ['', Validators.compose([Validators.required])],
@@ -211,6 +213,12 @@ export class CrearExamenPage implements OnInit {
 
   ngOnInit() {
     //console.log(this.item); 
+    if(this.platform.is("android") ) {
+      this.androidPermissions.checkPermission(this.androidPermissions.PERMISSION.WRITE_EXTERNAL_STORAGE).then(
+        result => { this.permissionStorageDowload=result.hasPermission; console.log('Has permission?', result.hasPermission) },
+        err => this.androidPermissions.requestPermission(this.androidPermissions.PERMISSION.WRITE_EXTERNAL_STORAGE)
+      );
+    }
   }
 
   editorCreated(quill){
@@ -602,7 +610,7 @@ export class CrearExamenPage implements OnInit {
 
             const url=`${this.api.url}/api/preguntas/dowload/${this.item.Id}`;
             console.log(url);
-            let fileName=`LBS-Examen-${this.item.Grado}${this.item.Grupo}-${this.item.Escolaridad}`.replace(' ','-');
+            let fileName=`LBS${this.item.Id}-${this.item.Grado}${this.item.Grupo}-${this.item.Escolaridad}`.replace(' ','-');
             this.download(url,fileName);
             
           } else {
@@ -614,7 +622,7 @@ export class CrearExamenPage implements OnInit {
             
             this.loading.present();
 
-            let fileName=`LBS-Examen-${this.item.Grado}${this.item.Grupo}-${this.item.Escolaridad}`.replace(' ','-');
+            let fileName=`LBS${this.item.Id}-${this.item.Grado}${this.item.Grupo}-${this.item.Escolaridad}`.replace(' ','-');
             await this.apiPreguntas.getBancoPreguntas(this.item.Id,fileName);
             this.loadingController.dismiss();
           }
@@ -640,22 +648,44 @@ export class CrearExamenPage implements OnInit {
     await actionSheet.present();
   }
 
-  download(url,NameFile) {
+  async download(url,NameFile) {
+    const token = localStorage.getItem('USER_INFO');
+
+    if(this.platform.is("android") && this.permissionStorageDowload==false) {
+      await this.androidPermissions.requestPermissions(
+          [
+              this.androidPermissions.PERMISSION.READ_EXTERNAL_STORAGE, 
+              this.androidPermissions.PERMISSION.WRITE_EXTERNAL_STORAGE
+          ]
+      );
+    }
+    
+    let options = {
+      headers: {
+        'authorization': 'Bearer ' + token
+      }
+    
+    }
+
     const fileTransfer: FileTransferObject = this.transfer.create();
     const extension = url.split('.').pop();
     //const pathDownload = this.platform.is("android") ? this.file.dataDirectory  :  this.file.dataDirectory;
     //const pathDownload = this.platform.is("android") ? this.file.externalDataDirectory :  this.file.documentsDirectory;
     const pathDownload = this.platform.is("android") ? this.file.externalRootDirectory + "download/" :  this.file.documentsDirectory;
 
-    fileTransfer.download(url, pathDownload + NameFile + '.zip').then((entry) => {
+    fileTransfer.download(url, pathDownload + NameFile + '.zip',true,options).then((entry) => {
         console.log('download complete: ' + entry.toURL());
         this.loadingController.dismiss();
+        this.presentToast("Examen exportado");
     }, (error) => {
       // handle error
       console.log(error);
       this.loadingController.dismiss();
       alert(error.exception);
     });
+
+  }
+  checkPermissions(){
 
   }
 
@@ -706,6 +736,8 @@ export class CrearExamenPage implements OnInit {
       this.loadingController.dismiss();
 
       this.componentListaPreguntas.loadData2();
+
+      this.presentToast("Examen importado");
 
       // need to run CD since file load runs outside of zone
       this.cd.markForCheck();
