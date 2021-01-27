@@ -1,7 +1,7 @@
 <ion-list mode="ios">
     <ion-list-header>
         Grupos 
-            <ion-button style="right: 0;position: absolute;" (click)="refrescarGrupos()">
+            <ion-button style="right: 0;" (click)="refrescarGrupos()">
                 <ion-icon slot="icon-only" color="dark" name="refresh-circle-outline"></ion-icon>
             </ion-button>
     </ion-list-header>
@@ -35,21 +35,21 @@
     </ion-list-header>-->
     <ion-list-header *ngIf="getTipoUsuario()=='Profesor'">
         Alumnos
-        <ion-button style="right: 0;position: absolute;" (click)="refrescarAlumnos()">
+        <ion-button style="right: 0;" (click)="refrescarAlumnos()">
             <ion-icon slot="icon-only" color="dark" name="refresh-circle-outline"></ion-icon>
         </ion-button>
     </ion-list-header>
 
     <ion-list-header *ngIf="getTipoUsuario()=='Alumno'">
         Profesores
-        <ion-button style="right: 0;position: absolute;" (click)="refrescarAlumnos()">
+        <ion-button style="right: 0;" (click)="refrescarAlumnos()">
             <ion-icon slot="icon-only" color="dark" name="refresh-circle-outline"></ion-icon>
         </ion-button>
     </ion-list-header>
 
     <ion-list-header *ngIf="getTipoUsuario()=='Director'">
         Conversaciones
-        <ion-button style="right: 0;position: absolute;" (click)="refrescarAlumnos()">
+        <ion-button style="right: 0;" (click)="refrescarAlumnos()">
             <ion-icon slot="icon-only" color="dark" name="refresh-circle-outline"></ion-icon>
         </ion-button>
     </ion-list-header>
