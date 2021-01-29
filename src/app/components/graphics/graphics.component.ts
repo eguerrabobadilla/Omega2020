@@ -179,6 +179,9 @@ export class GraphicsComponent implements OnInit {
                 this.calcularGrafica();
                 //this.bars.update();
                 this.loadingController.dismiss();
+                setTimeout(() => {
+                  this.updateAutoHeightSlider.emit();
+                }, 300);
               });
 
             }

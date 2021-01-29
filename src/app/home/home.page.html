@@ -39,7 +39,7 @@ right: 0px;" mode="ios">
     padding-top: 3vh;
     font-size: 22px;
     color: aliceblue;">
-        V57</div>
+        V59</div>
 
 </ion-header>
 
@@ -232,7 +232,7 @@ top: 0;" mode="ios">
                 <app-forum *ngIf="pildora === 'Foro'" #forumComponent (updateAutoHeightSlider)="updateAutoHeightSlider()" style="width: 100%;"></app-forum>
             </ion-slide>
             <ion-slide>
-                <app-list-resource #resourceComponent (changeIonChip)="changeIonChipRecursos($event)" style="width: 100%;"></app-list-resource>
+                <app-list-resource #resourceComponent (updateAutoHeightSlider)="updateAutoHeightSlider()" (changeIonChip)="changeIonChipRecursos($event)" style="width: 100%;"></app-list-resource>
             </ion-slide>
             <ion-slide *ngIf="!permisoEditar()">
                 <app-evidences *ngIf="pildora === 'Evidencias'" #evidenceComponent (updateAutoHeightSlider)="updateAutoHeightSlider()" style="width: 100%;"></app-evidences>
@@ -283,7 +283,7 @@ top: 0;" mode="ios">
                 <app-subjects style="width: 100%;"></app-subjects>
             </ion-slide>
             <ion-slide>
-                <app-graphics *ngIf="permisoEditar()" #appGraphics style="width: 100%;"></app-graphics>
+                <app-graphics *ngIf="permisoEditar()" #appGraphics (updateAutoHeightSlider)="updateAutoHeightSlider()" style="width: 100%;"></app-graphics>
                 <app-report *ngIf="!permisoEditar()" #appReport (updateAutoHeightSlider)="updateAutoHeightSlider()" style="width: 100%;"></app-report>
             </ion-slide>
         </ion-slides>

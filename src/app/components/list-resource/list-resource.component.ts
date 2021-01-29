@@ -128,8 +128,7 @@ ngOnInit() {
 
     }
     else{
-        console.log("cargar sin infinite")
-      
+      console.log("cargar sin infinite")
       this.selectedSinInfinite(materiaId);
     }
   }
@@ -201,31 +200,36 @@ ngOnInit() {
       
     
   }
-  selectedSinInfinite(materiaId){
-    this.cargandoAnimation();
+  async selectedSinInfinite(materiaId){
+    await this.cargandoAnimation();
     console.log("materia", materiaId)
     if(materiaId==0){
-    this.apiRecursos.getByMonthTipo(this.mesActual,'tipo=Foto&tipo=Video&tipo=Enlace&tipo=Documento&tipo=Texto').subscribe(data => {
-      this.LstRecursos = data;
-      this.outline.find(x => x.id === 'Zoom').selected = true;
-      this.outline.find(x => x.id === 'Todos').selected = false;
-      this.esConferencia = false;
-      this.loadingController.dismiss();
-      this.changeIonChip.emit('Archivo');
-
-  });
-}
-else{
-  this.apiRecursos.getByMonthTipoMateria(this.mesActual,'tipo=Foto&tipo=Video&tipo=Enlace&tipo=Documento&tipo=Texto',materiaId).subscribe(data => {
-    this.LstRecursos = data;
-    this.outline.find(x => x.id === 'Zoom').selected = true;
-    this.outline.find(x => x.id === 'Todos').selected = false;
-    this.esConferencia = false;
-    this.loadingController.dismiss();
-    this.changeIonChip.emit('Archivo');
-  });
-}
-
+      this.apiRecursos.getByMonthTipo(this.mesActual,'tipo=Foto&tipo=Video&tipo=Enlace&tipo=Documento&tipo=Texto').subscribe(data => {
+        this.LstRecursos = data;
+        this.outline.find(x => x.id === 'Zoom').selected = true;
+        this.outline.find(x => x.id === 'Todos').selected = false;
+        this.esConferencia = false;
+        this.loadingController.dismiss();  
+        
+        this.changeIonChip.emit('Archivo');
+        setTimeout(() => {
+          this.updateAutoHeightSlider.emit();
+        }, 300);
+      });
+    }
+    else{
+      this.apiRecursos.getByMonthTipoMateria(this.mesActual,'tipo=Foto&tipo=Video&tipo=Enlace&tipo=Documento&tipo=Texto',materiaId).subscribe(data => {
+        this.LstRecursos = data;
+        this.outline.find(x => x.id === 'Zoom').selected = true;
+        this.outline.find(x => x.id === 'Todos').selected = false;
+        this.esConferencia = false;
+        this.loadingController.dismiss();  
+        this.changeIonChip.emit('Archivo');
+        setTimeout(() => {
+          this.updateAutoHeightSlider.emit();
+        }, 300);
+      });
+    }
   }
 
 
