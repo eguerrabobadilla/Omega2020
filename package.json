@@ -73,7 +73,7 @@
         "core-js": "^2.5.4",
         "modusecho": "file:../../plugin/modusechoplugin/ModusEcho",
         "ngx-countdown": "^11.0.1",
-        "ngx-quill": "^13.0.1",
+        "ngx-quill": "^8.0.0",
         "onesignal-cordova-plugin": "^2.11.1",
         "quill": "^1.3.7",
         "quill-image-resize-module-fix-for-mobile": "^3.0.4",

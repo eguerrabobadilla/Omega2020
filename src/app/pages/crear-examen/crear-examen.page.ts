@@ -20,7 +20,6 @@ import { ListPreguntasComponent } from 'src/app/components/examenes/list-pregunt
 import { File,FileEntry } from '@ionic-native/file/ngx';
 import Quill from 'quill';
 import  ImageResize  from 'src/assets/quill-image-resize-module-fix-for-mobile';
-import { SanitizePipe } from '../../pipes/sanitize.pipe';
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 
 
@@ -68,8 +67,7 @@ mobiscroll.settings = {
 @Component({
   selector: 'app-crear-examen',
   templateUrl: './crear-examen.page.html',
-  styleUrls: ['./crear-examen.page.scss'],
-  providers: [SanitizePipe] 
+  styleUrls: ['./crear-examen.page.scss']
   
   
 })
@@ -196,7 +194,7 @@ export class CrearExamenPage implements OnInit {
               private apiChat: ChatService,private apiMaterias: MateriasService, private alertCtrl: AlertController,
               public loadingController: LoadingController,private apiExamenes: ExamenesService,private actionSheetController: ActionSheetController,
               public http: HttpClient,private api: apiBase,private platform: Platform,private apiPreguntas: PreguntasService,
-              public toastController: ToastController,private cd: ChangeDetectorRef,private transfer: FileTransfer,private file: File,private renderer: Renderer2,private sanitizar:SanitizePipe,
+              public toastController: ToastController,private cd: ChangeDetectorRef,private transfer: FileTransfer,private file: File,private renderer: Renderer2,
               private androidPermissions: AndroidPermissions) {
     this.FrmItem = formBuilder.group({
       Id:   [0, Validators.compose([Validators.required])],

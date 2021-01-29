@@ -9,6 +9,7 @@ import { ExamenesService } from 'src/app/api/examenes.service';
 
 
 
+
 @Component({
   selector: 'app-detalle-examen-alumno',
   templateUrl: './detalle-examen-alumno.page.html',

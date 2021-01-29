@@ -1,4 +1,4 @@
-<form [formGroup]="FrmItem" (ngSubmit)="crearExamen()" style="margin-bottom: 81px">
+<form [formGroup]="FrmItem" style="margin-bottom: 81px">
     <ion-list>
         <ion-list-header>
             <ion-label>
@@ -40,7 +40,7 @@
                 <ion-label>Opciones</ion-label>
             </ion-list-header>
             <!--<div *ngFor='let in of counter(numeroRespuestas) ;let i = index'>-->
-            <div formArrayName="Respuestas" *ngFor="let item of FrmItem.get('Respuestas').controls; let i = index;">
+            <div formArrayName="Respuestas" *ngFor="let item of FrmItem.get('Respuestas')['controls']; let i = index;">
                 <div [formGroupName]="i">
                     <ion-item lines="none">
                         <ion-label>{{i+1}}.- ¿Correcta?</ion-label>

@@ -1,47 +1,47 @@
 <ion-header class="ion-no-border" mode="ios">
-  <ion-toolbar>
-      <ion-title style="margin-top: 6px;">Examen - {{item.Titulo}}</ion-title>
-      <ion-buttons slot="end">
-          <ion-button style="margin-top: 8px;margin-right: 8px;" (click)="closeModal()">
-              <ion-icon slot="icon-only" color="danger" name="close"></ion-icon>
-          </ion-button>
-      </ion-buttons>
-  </ion-toolbar>
+    <ion-toolbar>
+        <ion-title style="margin-top: 6px;">Examen - {{item.Titulo}}</ion-title>
+        <ion-buttons slot="end">
+            <ion-button style="margin-top: 8px;margin-right: 8px;" (click)="closeModal()">
+                <ion-icon slot="icon-only" color="danger" name="close"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
 </ion-header>
 
 <ion-content>
     <ion-list mode="ios" *ngIf="tipoUsuario == 'Profesor'" style="padding-bottom: 16px;width: 100%;">
-      <ion-list-header>
-      Entregado ({{ totalEntregadas }} Alumno<span *ngIf="totalEntregadas==0 || totalEntregadas>1">s</span>)
-      </ion-list-header>
+        <ion-list-header>
+            Entregado ({{ totalEntregadas }} Alumno<span *ngIf="totalEntregadas==0 || totalEntregadas>1">s</span>)
+        </ion-list-header>
 
-      <ion-item button detail="true" mode="ios" *ngFor="let itemArray of LstAlumnos | filter : 'Entregado' : 'status'" (click)="verEvidenciaAlumno(itemArray)">
-      <ion-avatar slot="start">
-          <img src="assets/img/unnamed.png">
-      </ion-avatar>
-      <ion-label style="text-transform: capitalize;">
-          <h2>{{ itemArray.ApellidoPaterno }} {{ itemArray.ApellidoMaterno }} {{ itemArray.Nombre }} </h2>
-          <h3>{{ item.Escolaridad }} {{ itemArray.Grado }}{{ itemArray.Grupo }}</h3>
-          <p style="color: #008000;" *ngIf="itemArray.status=='Entregado'">Score: {{ itemArray.Puntaje }} ({{itemArray.PuntajePorcentaje}}%) | Tiempo: {{ itemArray.Duracion }} min. </p>
-          <p style="color:#FF0000;" *ngIf="itemArray.status=='Pendiente'">{{ itemArray.status }}</p>
-      </ion-label>
-      </ion-item>
-  </ion-list>
-  <ion-list mode="ios" *ngIf="tipoUsuario == 'Profesor'" style="padding-bottom: 16px;width: 100%;">
-      <ion-list-header>
-          Pendiente ({{ totalPendientes }}  Alumno<span *ngIf="totalPendientes==0 || totalPendientes>1">s</span>)
-      </ion-list-header>
+        <ion-item button detail="true" mode="ios" *ngFor="let itemArray of LstAlumnos | filter : 'Entregado' : 'status'">
+            <ion-avatar slot="start">
+                <img src="assets/img/unnamed.png">
+            </ion-avatar>
+            <ion-label style="text-transform: capitalize;">
+                <h2>{{ itemArray.ApellidoPaterno }} {{ itemArray.ApellidoMaterno }} {{ itemArray.Nombre }} </h2>
+                <h3>{{ item.Escolaridad }} {{ itemArray.Grado }}{{ itemArray.Grupo }}</h3>
+                <p style="color: #008000;" *ngIf="itemArray.status=='Entregado'">Score: {{ itemArray.Puntaje }} ({{itemArray.PuntajePorcentaje}}%) | Tiempo: {{ itemArray.Duracion }} min. </p>
+                <p style="color:#FF0000;" *ngIf="itemArray.status=='Pendiente'">{{ itemArray.status }}</p>
+            </ion-label>
+        </ion-item>
+    </ion-list>
+    <ion-list mode="ios" *ngIf="tipoUsuario == 'Profesor'" style="padding-bottom: 16px;width: 100%;">
+        <ion-list-header>
+            Pendiente ({{ totalPendientes }} Alumno<span *ngIf="totalPendientes==0 || totalPendientes>1">s</span>)
+        </ion-list-header>
 
-      <ion-item button detail="true" mode="ios" *ngFor="let itemArray of LstAlumnos | filter : 'Pendiente' : 'status'" (click)="verEvidenciaAlumno(itemArray)">
-      <ion-avatar slot="start">
-          <img src="assets/img/unnamed.png">
-      </ion-avatar>
-      <ion-label style="text-transform: capitalize;">
-          <h2>{{ itemArray.ApellidoPaterno }} {{ itemArray.ApellidoMaterno }} {{ itemArray.Nombre }} </h2>
-          <h3>{{ item.Escolaridad }} {{ itemArray.Grado }}{{ itemArray.Grupo }}</h3>
-          <p style="color: #008000;" *ngIf="itemArray.status=='Entregada'">{{ itemArray.status }}</p>
-          <p style="color:#FF0000;" *ngIf="itemArray.status=='Pendiente'">{{ itemArray.status }}</p>
-      </ion-label>
-      </ion-item>
-  </ion-list>
+        <ion-item button detail="true" mode="ios" *ngFor="let itemArray of LstAlumnos | filter : 'Pendiente' : 'status'">
+            <ion-avatar slot="start">
+                <img src="assets/img/unnamed.png">
+            </ion-avatar>
+            <ion-label style="text-transform: capitalize;">
+                <h2>{{ itemArray.ApellidoPaterno }} {{ itemArray.ApellidoMaterno }} {{ itemArray.Nombre }} </h2>
+                <h3>{{ item.Escolaridad }} {{ itemArray.Grado }}{{ itemArray.Grupo }}</h3>
+                <p style="color: #008000;" *ngIf="itemArray.status=='Entregada'">{{ itemArray.status }}</p>
+                <p style="color:#FF0000;" *ngIf="itemArray.status=='Pendiente'">{{ itemArray.status }}</p>
+            </ion-label>
+        </ion-item>
+    </ion-list>
 </ion-content>

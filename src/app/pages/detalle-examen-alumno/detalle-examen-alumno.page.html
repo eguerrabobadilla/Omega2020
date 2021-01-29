@@ -45,7 +45,7 @@
                 <ion-card-content>
                     <div style="font-weight: 600;">Fecha aplicaion: <span style="font-weight: 400;">{{item.FechaInicio }}</span></div>
                     <div style="font-weight: 600;">Descripcion: </div>
-                    <div [innerHTML]="item.Descripcion |  sanitizePipe:item.Descripcion"></div><br>
+                    <div [innerHTML]="item.Descripcion |  sanitizePipe"></div><br>
                     <div style="font-weight: 600;">Instrucciones generales: <span style="font-weight: 400;"><br> <p><b>1.</b> Tienes <b>{{item.DuracionExamen}}</b> minutos para responder a las siguientes <b>{{item.TotalPreguntas}}</b> preguntas.<br><br> <b>2.</b> Lee atentamente cada pregunta, tendrás un cronometro indicándote cuanto tiempo llevas.<br><br> <b>3.</b> Puedes omitir preguntas y volver a ellas más tarde.</p></span></div>
                 </ion-card-content>
             </ion-card>
@@ -57,12 +57,12 @@
             <ion-list>
                 <ion-radio-group [(ngModel)]="respuestaSeleccionada">
                     <ion-list-header>
-                        <ion-label #child style="text-align: initial;" [innerHtml]="preguntaInfo['Pregunta']  | sanitizePipe:preguntaInfo['Pregunta']"></ion-label>
+                        <ion-label #child style="text-align: initial;" [innerHtml]="preguntaInfo['Pregunta']  | sanitizePipe"></ion-label>
                     </ion-list-header>
 
                     <ion-item *ngFor="let item of respuestas">
 
-                        <div [innerHtml]="item.Respuesta | sanitizePipe:item.Respuesta "></div>
+                        <div [innerHtml]="item.Respuesta | sanitizePipe"></div>
                         <ion-radio slot="start" color="success" value={{item.Id}} mode="md"></ion-radio>
                     </ion-item>
 
@@ -105,12 +105,12 @@
                         <ion-card-header>
                             <ion-card-title style="font-size: 20px;">
                                 {{i+1}}.-
-                                <div class="pregunta" [innerHTML]="item.Pregunta | sanitizePipe:item.Pregunta"></div>
+                                <div class="pregunta" [innerHTML]="item.Pregunta | sanitizePipe"></div>
                             </ion-card-title>
                         </ion-card-header>
                         <ion-card-content>
-                            <div style="font-weight: 600;">Respuesta: <span style="font-weight: 400;" [innerHTML]="item.Respuesta | sanitizePipe:item.Respuesta"></span></div>
-                            <div style="font-weight: 600;">Respuesta correcta: <span style="font-weight: 400;" [innerHTML]="item.RespuestaCorrecta  | sanitizePipe:item.RespuestaCorrecta"></span></div>
+                            <div style="font-weight: 600;">Respuesta: <span style="font-weight: 400;" [innerHTML]="item.Respuesta | sanitizePipe"></span></div>
+                            <div style="font-weight: 600;">Respuesta correcta: <span style="font-weight: 400;" [innerHTML]="item.RespuestaCorrecta  | sanitizePipe"></span></div>
                             <div style="font-weight: 600;">Score: <span style="font-weight: 400;">{{item.Score}}</span></div>
                         </ion-card-content>
                     </ion-card>
@@ -132,15 +132,15 @@
 </ion-content>
 <ion-footer style="transform: translateY(-1px);">
     <ion-toolbar>
-        <ion-button *ngIf="botonHeaderVisible" [disabled]='botonSiguienteDisable' style="width: 160.06px;" slot="end" size="small" fill="outline" type="button" icon-start outline block (click)="cambioPregunta('siguiente')">
+        <ion-button *ngIf="botonHeaderVisible" [disabled]='botonSiguienteDisable' style="width: 160.06px;" slot="end" size="small" fill="outline" type="button" icon-start outline block (click)="cambioPregunta('siguiente',null)">
             {{textoBoton}}
             <ion-icon name="caret-forward-outline" style="margin-right: 3px;"></ion-icon>
         </ion-button>
-        <ion-button *ngIf="botonHeaderVisible" [disabled]='botonAnteriorDisable' style="width: 160.06px;" slot="start" size="small" fill="outline" type="button" icon-start outline block (click)="cambioPregunta('anterior')">
+        <ion-button *ngIf="botonHeaderVisible" [disabled]='botonAnteriorDisable' style="width: 160.06px;" slot="start" size="small" fill="outline" type="button" icon-start outline block (click)="cambioPregunta('anterior',null)">
             <ion-icon name="caret-back-outline" style="margin-right: 3px;"></ion-icon>
             Anterior
         </ion-button>
-        <ion-button *ngIf="instruccionesVisible" style="width: 160.06px;" slot="end" size="small" fill="outline" type="button" icon-start outline block (click)="iniciarExamen()">
+        <ion-button *ngIf="instruccionesVisible" style="width: 160.06px;" slot="end" size="small" fill="outline" type="button" icon-start outline block (click)="iniciarExamen(null)">
             <ion-icon name="play-circle-outline" style="margin-right: 3px;"></ion-icon>
             Iniciar Examen
         </ion-button>

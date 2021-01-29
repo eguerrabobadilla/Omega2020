@@ -8,15 +8,13 @@ import { DetalleExamenAlumnoPageRoutingModule } from './detalle-examen-alumno-ro
 
 import { DetalleExamenAlumnoPage } from './detalle-examen-alumno.page';
 import { CountdownGlobalConfig, CountdownModule } from 'ngx-countdown';
-import { SanitizePipe } from '../../pipes/sanitize.pipe';
 
-function countdownConfigFactory(): CountdownGlobalConfig {
-  return null;
-}
+
 
 
 
 //import { SwiperModule } from 'swiper/angular';
+import { SanitizePipe } from '../../pipes/sanitize.pipe';
 
 @NgModule({
   imports: [
@@ -30,7 +28,7 @@ function countdownConfigFactory(): CountdownGlobalConfig {
   ],
   declarations: [DetalleExamenAlumnoPage,SanitizePipe],
   providers: [
-    { provide: CountdownGlobalConfig, useFactory: countdownConfigFactory }
+    { provide: CountdownGlobalConfig}
   ]
 })
 export class DetalleExamenAlumnoPageModule {}
