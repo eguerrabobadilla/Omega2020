@@ -9,6 +9,7 @@ import { DetalleAlumnoPage } from 'src/app/pages/detalle-alumno/detalle-alumno.p
   styleUrls: ['./alumnos.component.scss'],
 })
 export class AlumnosComponent implements OnInit {
+  @Output() updateAutoHeightSlider = new EventEmitter();
   @Output() backPage = new EventEmitter();
   @Input() data;
   LstAlumnos: any[] = [];
@@ -29,10 +30,13 @@ export class AlumnosComponent implements OnInit {
     });
 
     await loading.present();
-
     this.apiAlumnos.getAlumnosEscolaridad(this.data.index,this.data.Grado,this.data.Grupo).subscribe(data =>{
       this.LstAlumnos= data;
       this.loadingController.dismiss();
+
+      setTimeout(() => {
+        this.updateAutoHeightSlider.emit();
+      }, 300);
     });
   }
 

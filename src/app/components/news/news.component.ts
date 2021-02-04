@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,Output,EventEmitter } from '@angular/core';
 import { NewsService } from '../../api/news.service';
 import { DetallesNewsPage } from 'src/app/pages/detalles-news/detalles-news.page';
 import { AlertController, LoadingController, ModalController } from '@ionic/angular';
@@ -12,6 +12,7 @@ import { CrearNewsPage } from 'src/app/pages/crear-news/crear-news.page';
 export class NewsComponent implements OnInit {
   LstNoticias: any[] = [];
   loading: any;
+  @Output() updateAutoHeightSlider = new EventEmitter();
 
   constructor(private apiNoticias: NewsService, private modalCrl: ModalController,private loadingController: LoadingController,
               private alertController: AlertController) { }
@@ -38,6 +39,10 @@ export class NewsComponent implements OnInit {
 
     this.apiNoticias.get().subscribe(data =>{
       this.LstNoticias = data;
+
+      setTimeout(() => {
+        this.updateAutoHeightSlider.emit();
+      }, 300);
       //console.log('this.LstNoticias yeah');
       //console.log(this.LstNoticias);
     });

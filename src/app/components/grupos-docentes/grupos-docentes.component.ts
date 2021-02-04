@@ -10,6 +10,7 @@ import { LoadingController } from '@ionic/angular';
 export class GruposDocentesComponent implements OnInit {
   @Output() detail = new EventEmitter();
   @Output() backPage = new EventEmitter();
+  @Output() updateAutoHeightSlider = new EventEmitter();
   @Input() data;
   LstGrupos: any[] = [];
   loading: any;
@@ -32,6 +33,11 @@ export class GruposDocentesComponent implements OnInit {
     this.apiGrupos.getGruposEscolaridadDocentes(this.data.index).subscribe(data =>{
       this.LstGrupos= data;
       this.loadingController.dismiss();
+
+      setTimeout(() => {
+        this.updateAutoHeightSlider.emit();
+      }, 300);
+      
     });
   }
 

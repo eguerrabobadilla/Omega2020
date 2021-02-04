@@ -119,6 +119,8 @@ export class ListPreguntasComponent implements OnInit {
 
     await loading.present();*/
 
+    this.puntosPreguntas=0;
+
     //this.spiner =true;
     this.loadSpinner.emit(true);
 

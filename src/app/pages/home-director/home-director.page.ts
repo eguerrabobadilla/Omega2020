@@ -1305,6 +1305,11 @@ export class HomeDirectorPage {
         let escolaridadComponent = this.createComponent(EscolaridadComponent);
         this.subscribeEscolaridad(escolaridadComponent);
       });
+
+      component.instance.updateAutoHeightSlider.subscribe(() => {
+        this.updateAutoHeightSlider();
+      });
+
     }
 
     public subscribeAlumnos(component: any,data: any) {
@@ -1315,9 +1320,13 @@ export class HomeDirectorPage {
         let gruposComponent = this.createComponent(GruposComponent);
         this.subscribeGrupos(gruposComponent,dataBack);
       });
+
+      component.instance.updateAutoHeightSlider.subscribe(() => {
+        this.updateAutoHeightSlider();
+      });
     }
     /************************ Termina logica alumnos***************************/
-    /************************ Inicia logica alumnos***************************/
+    /************************ Inicia logica profesores***************************/
     public verEscolaridadesDocente() {
       //console.log("verEscolaridadesDocentes");
       
@@ -1351,6 +1360,10 @@ export class HomeDirectorPage {
         let escolaridadComponent = this.createComponentDocente(EscolaridadDocentesComponent);
         this.subscribeEscolaridadDocente(escolaridadComponent);
       });
+
+      component.instance.updateAutoHeightSlider.subscribe(() => {
+        this.updateAutoHeightSlider();
+      });
     }
 
     public subscribeAlumnosDocentes(component: any,data: any) {
@@ -1361,7 +1374,11 @@ export class HomeDirectorPage {
         let gruposComponent = this.createComponentDocente(GruposDocentesComponent);
         this.subscribeGruposDocentes(gruposComponent,dataBack);
       });
+
+      component.instance.updateAutoHeightSlider.subscribe(() => {
+        this.updateAutoHeightSlider();
+      });
     }
 
-    /************************ Termina logica alumnos***************************/
+    /************************ Termina logica profesores***************************/
 }
