@@ -12,9 +12,9 @@ import { CountdownGlobalConfig, CountdownModule } from 'ngx-countdown';
 
 
 
-
 //import { SwiperModule } from 'swiper/angular';
-import { SanitizePipe } from '../../pipes/sanitize.pipe';
+import { GlobalModule } from '../../modules/GoblaModule';
+
 
 @NgModule({
   imports: [
@@ -23,10 +23,11 @@ import { SanitizePipe } from '../../pipes/sanitize.pipe';
     IonicModule,
     DetalleExamenAlumnoPageRoutingModule,
     //SwiperModule
-    CountdownModule
+    CountdownModule,
+    GlobalModule
   
   ],
-  declarations: [DetalleExamenAlumnoPage,SanitizePipe],
+  declarations: [DetalleExamenAlumnoPage],
   providers: [
     { provide: CountdownGlobalConfig}
   ]

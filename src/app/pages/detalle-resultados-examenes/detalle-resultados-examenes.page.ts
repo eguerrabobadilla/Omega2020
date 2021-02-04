@@ -3,6 +3,7 @@ import { LoadingController, ModalController } from '@ionic/angular';
 import { AlumnosService } from 'src/app/api/alumnos.service';
 import { ExamenesService } from 'src/app/api/examenes.service';
 import { GlobalService } from 'src/app/services/global.service';
+import { DetalleResultadoProfesorPage } from '../detalle-resultado-profesor/detalle-resultado-profesor.page';
 
 @Component({
   selector: 'app-detalle-resultados-examenes',
@@ -77,6 +78,20 @@ export class DetalleResultadosExamenesPage implements OnInit {
   closeModal (){
     console.log("cerar");
     this.modalCtrl.dismiss();
+  }
+
+ async abrirExamen(item){
+   item.ExamenId=this.item.Id;
+
+      const modal = await this.modalCtrl.create({
+        component: DetalleResultadoProfesorPage,
+        cssClass: 'my-custom-modal-css',
+        mode: 'ios',
+        backdropDismiss: true,
+        componentProps: {item}
+      });
+
+    return await modal.present();
   }
 
 }

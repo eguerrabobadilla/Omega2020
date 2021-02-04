@@ -25,6 +25,12 @@ export class ExamenesService extends apiBase {
     return this.http.put(`${this.url}/${this.Ws}/examenTerminado/${examenId}`,item);
   }
 
+  
+  examenTerminadoVistaProfesor(examenId,usuarioId){
+    return this.http.get(`${this.url}/${this.Ws}/examenTerminadoVistaProfesor/${examenId}/${usuarioId}`);
+  }
+
+
   delete(Id: any) {
     return this.http.delete(`${this.url}/${this.Ws}/${Id}`);
   }

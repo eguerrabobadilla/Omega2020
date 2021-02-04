@@ -15,7 +15,7 @@ export class PushService {
 
     this.oneSignal.startInit('8d1eda81-162e-4a4b-9f20-421712cf9780','739804224507');
 
-    this.oneSignal.inFocusDisplaying(this.oneSignal.OSInFocusDisplayOption.InAppAlert);
+    this.oneSignal.inFocusDisplaying(this.oneSignal.OSInFocusDisplayOption.Notification);
     
     this.oneSignal.handleNotificationReceived().subscribe(( noti ) => {
      // do something when notification is received

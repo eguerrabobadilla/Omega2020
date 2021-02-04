@@ -97,7 +97,7 @@ $mbsc-mobiscroll-frame-background: white;
 }
 
 .ql-snow .ql-editor img {
-    max-width: 100%;
+    max-width: 100% !important;
     all: unset;
 }
 
@@ -130,6 +130,7 @@ $mbsc-mobiscroll-frame-background: white;
 
 //***Estilos para ajustar texto de los ion-select Jose
 //For Radio Options
+
 /*.alert-radio-label.sc-ion-alert-md,
 .alert-radio-label.sc-ion-alert-ios {
    white-space: normal;

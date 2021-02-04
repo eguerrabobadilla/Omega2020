@@ -54,6 +54,9 @@ import { DetalleResultadosExamenesPage } from '../pages/detalle-resultados-exame
 import { from } from 'rxjs';
 import { DetalleResultadosExamenesPageModule } from '../pages/detalle-resultados-examenes/detalle-resultados-examenes.module';
 import { SortByPipe } from '../pipes/sort-by.pipe';
+import { DetalleResultadoProfesorPage } from '../pages/detalle-resultado-profesor/detalle-resultado-profesor.page';
+import { DetalleResultadoProfesorPageModule } from '../pages/detalle-resultado-profesor/detalle-resultado-profesor.module';
+
 
 @NgModule({
   entryComponents : [
@@ -71,7 +74,8 @@ import { SortByPipe } from '../pipes/sort-by.pipe';
     CrearExamenPage,
     DetalleExamenAlumnoPage,
     ListComponent,
-    DetalleResultadosExamenesPage
+    DetalleResultadosExamenesPage,
+    DetalleResultadoProfesorPage
   ],
   imports: [ 
     MbscModule,  
@@ -98,7 +102,8 @@ import { SortByPipe } from '../pipes/sort-by.pipe';
     CrearExamenPageModule,
     GlobalModule,
     DetalleExamenAlumnoPageModule,
-    DetalleResultadosExamenesPageModule
+    DetalleResultadosExamenesPageModule,
+    DetalleResultadoProfesorPageModule
   ],
   declarations: [ HomePage, ListComponent, 
     ListResourceComponent, ForumComponent,GraphicsComponent,

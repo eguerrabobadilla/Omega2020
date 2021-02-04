@@ -12,6 +12,7 @@ import { ChatsComponent } from '../components/chats/chats.component';
 import { NewsComponent } from '../components/news/news.component';
 import { LinkifyPipe } from '../pipes/linkifypipe ';
 import { SortByPipe } from '../pipes/sort-by.pipe';
+import { SanitizePipe } from '../pipes/sanitize.pipe';
 
 @NgModule({
     imports: [
@@ -19,8 +20,8 @@ import { SortByPipe } from '../pipes/sort-by.pipe';
         CommonModule,
         FormsModule
     ],
-    declarations:[PillMenuComponent,CircleProgressComponent,CodesComponent,BooksComponent,FilterPipe,CircleProgressReportComponent,ChatsComponent,NewsComponent,LinkifyPipe,SortByPipe],
-    exports:[PillMenuComponent,CircleProgressComponent,CodesComponent,BooksComponent,FilterPipe,CircleProgressReportComponent,ChatsComponent,NewsComponent,LinkifyPipe,SortByPipe]
+    declarations:[PillMenuComponent,CircleProgressComponent,CodesComponent,BooksComponent,FilterPipe,CircleProgressReportComponent,ChatsComponent,NewsComponent,LinkifyPipe,SortByPipe,SanitizePipe],
+    exports:[PillMenuComponent,CircleProgressComponent,CodesComponent,BooksComponent,FilterPipe,CircleProgressReportComponent,ChatsComponent,NewsComponent,LinkifyPipe,SortByPipe,SanitizePipe]
 })
 export class GlobalModule
 {
