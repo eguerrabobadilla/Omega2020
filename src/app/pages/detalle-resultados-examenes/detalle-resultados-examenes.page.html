@@ -15,7 +15,7 @@
             Entregado ({{ totalEntregadas }} Alumno<span *ngIf="totalEntregadas==0 || totalEntregadas>1">s</span>)
         </ion-list-header>
 
-        <ion-item button detail="true" mode="ios" *ngFor="let itemArray of LstAlumnos | filter : 'Entregado' : 'status'">
+        <ion-item button detail="true" mode="ios" (click)="abrirExamen(itemArray)" *ngFor="let itemArray of LstAlumnos | filter : 'Entregado' : 'status'">
             <ion-avatar slot="start">
                 <img src="assets/img/unnamed.png">
             </ion-avatar>

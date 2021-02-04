@@ -9,13 +9,16 @@ import { DetalleResultadosExamenesPageRoutingModule } from './detalle-resultados
 import { DetalleResultadosExamenesPage } from './detalle-resultados-examenes.page';
 import { GlobalModule } from 'src/app/modules/GoblaModule';
 
+
+
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
     GlobalModule,
-    DetalleResultadosExamenesPageRoutingModule
+    DetalleResultadosExamenesPageRoutingModule,
+
   ],
   declarations: [DetalleResultadosExamenesPage]
 })
