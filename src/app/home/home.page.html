@@ -39,7 +39,7 @@ right: 0px;" mode="ios">
     padding-top: 3vh;
     font-size: 22px;
     color: aliceblue;">
-        V59</div>
+        V60</div>
 
 </ion-header>
 
@@ -243,11 +243,11 @@ top: 0;" mode="ios">
 
             <ion-slide>
                 <!--  <app-list style="width: 100%;" ></app-list>-->
-                <app-news #newsComponent style="width: 100%;"></app-news>
+                <app-news #newsComponent *ngIf="pildora === 'Noticias'" style="width: 100%;" (updateAutoHeightSlider)="updateAutoHeightSlider()"></app-news>
             </ion-slide>
             <ion-slide>
 
-                <app-chats style="width: 100%;"></app-chats>
+                <app-chats *ngIf="pildora === 'Mensajes'" style="width: 100%;"></app-chats>
                 <!--  <app-news style="width: 100%;"></app-news>-->
 
 

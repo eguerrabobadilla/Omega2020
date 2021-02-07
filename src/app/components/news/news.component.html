@@ -4,35 +4,41 @@
 
 <ion-grid fixed>
     <ion-row class="ion-no-padding">
-        <ion-col *ngFor="let item of LstNoticias" size="12" size-lg="4" size-md="6" size-sm="6" size-xs="12" class="ion-no-padding">
-            <ion-card style="text-align: initial;border-bottom: 0.6px solid #d0d0d0;border-left: none;box-shadow: none !important;" class="ion-activatable ripple-parent" mode="ios" (click)="openDetail($event,item)">
-                <ion-ripple-effect></ion-ripple-effect>
-                <div style="width: 100%;height:150px;overflow: hidden;">
-                    <img src="https://www.alfalbs.app/ApiOmega/images/{{item.Image}}" style="object-fit: cover;width: 100%;" />
-                </div>
-                <!-- <ion-card-header>-->
-                <ion-card-header style="padding-top: 0;">
-                    <ion-item style="z-index: -1;--padding-start: 0;" lines="none">
-                        <ion-avatar slot="start" style="height: 23px;width: 23px;margin: 0;">
-                            <ion-img src="assets/img/unnamed.png"></ion-img>
-                        </ion-avatar>
-                        <ion-label style="font-size: 13px;padding-left: 8px;">Colegio Inglés</ion-label>
-                        
+        <ion-virtual-scroll [items]="LstNoticias" approxItemHeight="300px" style="margin-bottom: 100px;z-index: 999999;">
+            <ion-col *virtualItem="let item" size="12" size-lg="12" size-md="12" size-sm="12" size-xs="12" class="ion-no-padding">
+                <ion-card style="text-align: initial;border-bottom: 0.6px solid #d0d0d0;border-left: none;box-shadow: none !important;" class="ion-activatable ripple-parent" mode="ios" (click)="openDetail($event,item)">
+                    <ion-ripple-effect></ion-ripple-effect>
+                    <div style="width: 100%;height:150px;overflow: hidden;">
+                        <img src="https://www.alfalbs.app/ApiOmega/images/{{item.Image}}" style="object-fit: cover;width: 100%;" />
+                    </div>
+                    <!-- <ion-card-header>-->
+                    <ion-card-header style="padding-top: 0;">
+                        <ion-item style="z-index: -1;--padding-start: 0;" lines="none">
+                            <ion-avatar slot="start" style="height: 23px;width: 23px;margin: 0;">
+                                <ion-img src="assets/img/unnamed.png"></ion-img>
+                            </ion-avatar>
+                            <ion-label style="font-size: 13px;padding-left: 8px;">Colegio Inglés</ion-label>
+                            
+                        </ion-item>
+                        <ion-icon name="ellipse" style="float: right;color: red;" *ngIf="item.Noticiasusuarios[0]?.Visto=='NO'"></ion-icon>
+                        <ion-card-title style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
+                            {{ item.Titulo }}
+                        </ion-card-title>
+                    </ion-card-header>
+                    <ion-card-content style="white-space: pre-line;" style="min-height: 3.6em;">{{ item.DescripcionCorta }}</ion-card-content>
+                    <ion-item class="ion-no-border" lines="none">
+                        <ion-label>{{item.FechaPublicacion | date:'mediumDate'}}</ion-label>
+                        <ion-button *ngIf="permisoEditar()" style="transform: translateX(12px);" fill="outline" slot="end" (click)="eliminar($event,item)">Borrar</ion-button>
+                        <ion-button *ngIf="permisoEditar()" fill="outline" slot="end" (click)="edit($event,item)">Editar</ion-button>
                     </ion-item>
-                    <ion-icon name="ellipse" style="float: right;color: red;" *ngIf="item.Noticiasusuarios[0]?.Visto=='NO'"></ion-icon>
-                    <ion-card-title style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
-                        {{ item.Titulo }}
-                    </ion-card-title>
-                </ion-card-header>
-                <ion-card-content style="white-space: pre-line;" style="min-height: 3.6em;">{{ item.DescripcionCorta }}</ion-card-content>
-                <ion-item class="ion-no-border" lines="none">
-                    <ion-label>{{item.FechaPublicacion | date:'mediumDate'}}</ion-label>
-                    <ion-button *ngIf="permisoEditar()" style="transform: translateX(12px);" fill="outline" slot="end" (click)="eliminar($event,item)">Borrar</ion-button>
-                    <ion-button *ngIf="permisoEditar()" fill="outline" slot="end" (click)="edit($event,item)">Editar</ion-button>
-                </ion-item>
-            </ion-card>
-        </ion-col>
+                </ion-card>
+            </ion-col>
+        </ion-virtual-scroll>
     </ion-row>
 </ion-grid>
+<ion-infinite-scroll threshold="400px" (ionInfinite)="loadData($event)" style="transform: translateY(-51%);">
+    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Cargando mas noticias...">
+    </ion-infinite-scroll-content>
+</ion-infinite-scroll>
 <!--</ion-list>-->
 <!--</ion-virtual-scroll>-->

@@ -35,4 +35,8 @@ export class NewsService extends apiBase {
     return this.http.put(`${this.url}/${this.Ws}/updateAcceso/${Id}`,null);
   }
 
+  getInfinite(skip,take): Observable<any[]> {
+    return this.http.get<any[]>(`${this.url}/${this.Ws}/infinite/${skip}/${take}`);
+  }
+
 }

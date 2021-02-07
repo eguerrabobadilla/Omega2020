@@ -669,6 +669,8 @@ this.pillMenu.animacion();
         this.pildora = 'Tareas';
      } else if (index === 3) {
         this.tabs = ['Noticias', 'Mensajes', 'Calendario'];
+
+        this.pildora = 'Noticias';
      } else if (index === 4) {
         this.tabs = ['Perfil', 'Materias', 'Estadísticas'];
      } else if (index === 5) {

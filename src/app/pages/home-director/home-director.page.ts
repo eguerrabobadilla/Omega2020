@@ -69,6 +69,7 @@ export class HomeDirectorPage {
   librosIN: any[] = []; 
   codigoVisible = true;
   LstTareas: any[] = [];
+  pildora = 'Noticias';
   hayConexion= true;
   numeroclicks=0;
 
@@ -638,6 +639,8 @@ export class HomeDirectorPage {
         this.tabs = ['Alumnos', 'Docentes', 'Buscar'];
      } else if (index === 3) {
         this.tabs = ['Noticias', 'Mensajes'];
+
+        this.pildora = 'Noticias';
      }
 
       this.selectOption = '0';
@@ -887,6 +890,7 @@ export class HomeDirectorPage {
 
     segmentChanged(event) {
       const itemOption = this.pillMenu.itemsMenu[event.detail.value];
+      this.pildora = itemOption;
       //console.log(this.selectSeccion);
      // console.log(itemOption);
       //Logica boton + evidencias
