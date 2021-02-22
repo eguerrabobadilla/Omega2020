@@ -633,7 +633,8 @@ this.pillMenu.animacion();
        }
        else{
         this.statusBar.hide();
-      }
+        }
+
       }, 500);
       
 
@@ -780,6 +781,7 @@ this.pillMenu.animacion();
     }
 
     ionViewDidEnter() {
+      console.log("ionViewDidEnter");
       setTimeout(async () => {
         const status = this.webSocket.getStatusSocket() == 1 ? true : false;
         this.inforConnectionScoket(status);
@@ -792,7 +794,7 @@ this.pillMenu.animacion();
           this.slideUp.lockSwipes(true);
         }
 
-        this.buscarPortadas();
+        
 
       }, 100);
 

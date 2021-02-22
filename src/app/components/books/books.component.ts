@@ -24,6 +24,7 @@ import { apiBase } from 'src/app/api/apiBase';
 })
 export class BooksComponent implements OnInit {
   libros: any[] = [];
+  spiner = true;
   //private  BackgroundGeolocation: modusecho;
   @ViewChildren(CircleProgressComponent) ArrayCircleProgress: QueryList<CircleProgressComponent>;
   @ViewChild('panelKinder', {read: ElementRef, static: false}) panelKinder: ElementRef;
@@ -41,6 +42,7 @@ export class BooksComponent implements OnInit {
 
   @Input() librosIN: any[];
   @Output() updateAutoHeightSlider = new EventEmitter();
+  @Output() buscarPortadas = new EventEmitter();
   pathStorage:any;
   tipoUsuario:any;
 
@@ -142,15 +144,17 @@ export class BooksComponent implements OnInit {
 
     setTimeout(() => {
       //this.iniciarValidacion();
+      this.buscarPortadas.emit();
       //console.log(this.ArrayCircleProgress);
     }, 1000);
   }
 
   async ngAfterViewInit (){
     console.log("ngAfterViewInit");
-
+    
     setTimeout(() => {
       this.updateAutoHeightSlider.emit();
+      this.spiner = false;
     }, 2500);
     /*this.ArrayCircleProgress.changes.subscribe((items: Array<CircleProgressComponent>) => {
       //messages.forEach((item: SystemMessageComponent) => console.log(item.message));

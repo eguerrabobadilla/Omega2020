@@ -1,4 +1,4 @@
-
+<ion-progress-bar *ngIf="spiner" type="indeterminate"></ion-progress-bar>
 <div *ngIf="getTipoUsuario()=='Director'; then izquierdaTemplate else derechaTemplate"></div>
         <ng-template #izquierdaTemplate>
             <!-- Kinder -->
