@@ -14,6 +14,8 @@ import { BehaviorSubject} from 'rxjs';
 import { CircleProgressComponent } from '../circle-progress/circle-progress.component';
 import { Storage } from '@ionic/storage';
 import { GlobalService } from 'src/app/services/global.service';
+import { PortadasService } from 'src/app/api/portadas.service';
+import { apiBase } from 'src/app/api/apiBase';
 
 @Component({
   selector: 'app-books',
@@ -45,7 +47,7 @@ export class BooksComponent implements OnInit {
   constructor(public  webSocket: WebsocketService,private serviceDownload: DownloadFileService,private transfer: FileTransfer,
               private file: File,private platform: Platform,private booksService: BooksService,private zip: Zip,
               private webview: WebView,private storage: Storage,private applicationRef:ApplicationRef,private globalServicies: GlobalService,
-              private renderer: Renderer2) {
+              private renderer: Renderer2,private apiPortadas: PortadasService,private api: apiBase) {
   }
 
   abrirKinder(){
@@ -131,13 +133,15 @@ export class BooksComponent implements OnInit {
   }
 
   async ngOnInit() {
+
+    
     
     this.pathStorage = await this.globalServicies.getNameStorage();
     console.log("pathStorage");
     this.tipoUsuario = this.globalServicies.getKeyToken("tipo");
 
     setTimeout(() => {
-      this.iniciarValidacion();
+      //this.iniciarValidacion();
       //console.log(this.ArrayCircleProgress);
     }, 1000);
   }
@@ -161,10 +165,24 @@ export class BooksComponent implements OnInit {
     
     this.libros = this.librosIN;
     this.libros.forEach(item => {
+
+
       item.progreso=0;
       item.display="none";
       item.spinner="none";
       item.status="pendiente";
+      if(this.platform.is('cordova')) {
+        const date = new Date();
+        const timestamp = date.getTime();
+
+        const urlCover = `${this.file.dataDirectory}covers/${item.RutaThumbnails}`;
+        item.RutaThumbnails = item.RutaThumbnails.includes("?t=") ? item.RutaThumbnails : `${this.webview.convertFileSrc(urlCover)}?t=${timestamp}`;
+      } else {
+        const date = new Date();
+        const timestamp = date.getTime();
+        
+        item.RutaThumbnails = item.RutaThumbnails.includes("?t=") ? item.RutaThumbnails : `${this.api.url}/covers/${item.RutaThumbnails}?t=${timestamp}`;
+      }
       if (this.platform.is('cordova')) {
         this.existeLibro(directory,'Libro'+ item.Id).then(() =>{
           //item.opacity= 1;

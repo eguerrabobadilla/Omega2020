@@ -1,7 +1,7 @@
 <!--<ion-virtual-scroll  [items]="LstNoticias" approxItemHeight="320px">-->
 <!--<ion-list>-->
 <!--<ion-card style="text-align: initial;border-radius: 13px;" class="ion-activatable ripple-parent" mode="ios" *virtualItem="let item; let itemBounds = bounds;" (click)="openDetail($event,item)">-->
-
+<ion-progress-bar *ngIf="spiner" type="indeterminate"></ion-progress-bar>
 <ion-grid fixed>
     <ion-row class="ion-no-padding">
         <ion-virtual-scroll [items]="LstNoticias" approxItemHeight="300px" style="margin-bottom: 100px;z-index: 999999;">
