@@ -246,7 +246,7 @@ export class DetalleExamenAlumnoPage implements OnInit {
           this.applicationRef.tick();
           this.spiner=false;
           this.slider.update;
-          this.slider.slideTo(1);
+         // this.slider.slideTo(1);
           this.slideOpts={autoHeight: true,initialSlide:4,allowTouchMove: false};
           
           this.virtualScroll.checkEnd();
