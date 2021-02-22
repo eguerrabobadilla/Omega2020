@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="lbs.starter" version="0.1.60" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="lbs.starter" version="0.0.60" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>LBS Plus</name>
     <description>An awesome Ionic/Cordova app.</description>
     <author email="hi@ionicframework.com" href="http://ionicframework.com/">Ionic Framework Team</author>
@@ -130,6 +130,12 @@
     </edit-config>
     <config-file parent="NSPhotoLibraryUsageDescription" target="*-Info.plist">
         <string>Usado para guardar las fotos de tus evidencias de trabajo</string>
+    </config-file>
+    <config-file parent="NSLocationWhenInUseUsageDescription" target="*-Info.plist">
+        <string>La aplicación desea acceder a la ubicación; Para el manejo de las notificaciones</string>
+    </config-file>
+    <config-file parent="NSLocationAlwaysUsageDescription" target="*-Info.plist">
+        <string>La aplicación desea acceder a la ubicación; para el manejo de las notificaciones</string>
     </config-file>
     <plugin name="com-moduscreate-plugins-echo" spec="C:\ModusEcho" />
     <plugin name="cordova-plugin-code-push" spec="^1.13.0" />
