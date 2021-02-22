@@ -39,10 +39,8 @@
                             }
                         ],
                         "scripts": [
-                            "node_modules/quill/dist/quill.min.js",
+                            "src/assets/js/quill.min.js",
                             "src/assets/quill-image-resize-module-fix-for-mobile/image-resize.min.js"
-
-
                         ]
                     },
                     "configurations": {

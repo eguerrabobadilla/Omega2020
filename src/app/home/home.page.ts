@@ -40,8 +40,10 @@ import { DevicesService } from '../api/devices.service';
 import { CrearExamenPage } from '../pages/crear-examen/crear-examen.page';
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { ListExamenesComponent } from '../components/list-examenes/list-examenes.component';
-
-
+import { PortadasService } from '../api/portadas.service';
+import { Zip } from '@ionic-native/zip/ngx';
+import { File } from '@ionic-native/file/ngx';
+import { FileTransfer, FileTransferObject } from '@ionic-native/file-transfer/ngx';
 
 mobiscroll.settings = {
   theme: 'mobiscroll',
@@ -139,6 +141,9 @@ export class HomePage {
   @ViewChild('evidenceComponent', {static: false}) evidenceComponent: EvidencesComponent;
   @ViewChild('newsComponent', {static: false}) newsComponent: NewsComponent;
   @ViewChild('examenesComponent', {static: false}) examenesComponent: ListExamenesComponent;
+  @ViewChild('booksComponent', {static: false}) booksComponent: BooksComponent;
+  @ViewChild('booksComponentIngles', {static: false}) booksComponentIngles: BooksComponent;
+  @ViewChild('booksComponentEspanol', {static: false}) booksComponentEspanol: BooksComponent;
   @ViewChild('avatarUser', {read: ElementRef, static: false}) avatarUser: ElementRef;
   @ViewChild('mobi', {static: false}) mobi: MbscCalendar; 
   @ViewChild('filtrosControl', {static: false}) filtrosControl: IonSelect;
@@ -182,7 +187,8 @@ export class HomePage {
               private apiTareas: TareasService, public  webSocket: WebsocketService, private apiCalendario: CalendarioService,
               private pickerController: PickerController, private apiMaterias: MateriasService,
               private codePush : CodePush,private storage: Storage,private router: Router,private globalServicies: GlobalService,
-              private pushService: PushService,private apiDevice: DevicesService) {
+              private pushService: PushService,private apiDevice: DevicesService,private apiPortadas: PortadasService,
+              private transfer: FileTransfer,private file: File,private zip: Zip) {
     //  this.scrollenable = true;
 
 
@@ -669,6 +675,8 @@ this.pillMenu.animacion();
         this.pildora = 'Tareas';
      } else if (index === 3) {
         this.tabs = ['Noticias', 'Mensajes', 'Calendario'];
+
+        this.pildora = 'Noticias';
      } else if (index === 4) {
         this.tabs = ['Perfil', 'Materias', 'Estadísticas'];
      } else if (index === 5) {
@@ -783,6 +791,9 @@ this.pillMenu.animacion();
           //console.log("listo");
           this.slideUp.lockSwipes(true);
         }
+
+        this.buscarPortadas();
+
       }, 100);
 
     }
@@ -792,14 +803,11 @@ this.pillMenu.animacion();
       console.log("home principal");
       this.subscribeToEvents();
 
-      
-
       //this.LstTareas = await this.apiTareas.get().toPromise();
 
       this.iconos = ['book-outline', 'pencil', 'people-outline', 'person-outline', 'hammer-outline','reader-outline'];
       this.headersText = ['Books', 'Tasks', 'Community', 'Account', 'Support','Exams'];
       this.tabs = ['Todos', 'Inglés'  , 'Español'];
-
 
       this.gesture = this.gestureCtrl.create({
 
@@ -946,8 +954,102 @@ this.pillMenu.animacion();
       });
 
       this.gesture3.enable();
+
+      
     }
 
+    async buscarPortadas(){
+      console.log("buscarPortadas");
+      //Verifica conexion con el servidor
+      const status = this.webSocket.getStatusSocket() == 1 ? true : false;
+      
+      if(status=== false) {
+        setTimeout(() => {
+          this.booksComponent.iniciarValidacion();
+          this.booksComponentIngles.iniciarValidacion();
+          this.booksComponentEspanol.iniciarValidacion();          
+        }, 1500);
+
+        return;
+      }
+
+      if(!this.platform.is('cordova')){
+        setTimeout(() => {
+          this.booksComponent.iniciarValidacion();
+          this.booksComponentIngles.iniciarValidacion();
+          this.booksComponentEspanol.iniciarValidacion();          
+        }, 1500);
+        return;
+      }
+
+      const versionPortadas =await this.storage.get("versionPortadas");
+
+      const data =await this.apiPortadas.getPortadasVersion().toPromise();
+
+      if(versionPortadas==null){
+        console.log(data["version"]);
+        console.log(data["url"]);
+        this.download(data["url"],0,data["version"]);
+      }
+      else{
+        console.log("versionPortadas",versionPortadas);
+        if(parseInt(data["version"]) > parseInt(versionPortadas)) {
+          console.log("update portadas");
+          this.download(data["url"],versionPortadas,data["version"]);
+        }
+        else {
+          setTimeout(() => {
+            this.booksComponent.iniciarValidacion();
+            this.booksComponentIngles.iniciarValidacion();
+            this.booksComponentEspanol.iniciarValidacion();          
+          }, 1500);
+        }
+      }
+    }
+
+    download(url,versionDevice,versionServer) {
+      const fileTransfer: FileTransferObject = this.transfer.create();
+  
+      const nameFile ='covers.zip';
+      //const directory = this.file.dataDirectory + "covers/";
+      const directory = this.file.dataDirectory;
+  
+      //Descarga libro
+      fileTransfer.download(url + versionDevice, directory + nameFile).then(entry => {
+  
+        //Descomprime libro
+        console.log(entry.toURL());
+        console.log(directory + 'covers');
+        return this.zip.unzip(entry.toURL(), directory + 'covers');
+      })
+      .then(result =>{
+        console.log(result);
+        if(result === 0) { console.log('SUCCESS'); }
+        if(result === -1) { console.log('FAILED'); }
+  
+        //Elimina zip para ahorrar espacio
+        return this.file.removeFile(directory,nameFile);
+      })
+      .then( data =>{
+        console.log(data);
+        console.log("Terminado");
+  
+        this.storage.set("versionPortadas",versionServer).then( () => {
+          console.log("guardo portadas");
+          setTimeout(() => {
+            this.booksComponent.iniciarValidacion();
+            this.booksComponentIngles.iniciarValidacion();
+            this.booksComponentEspanol.iniciarValidacion();          
+          }, 1500);
+        });
+      })
+      .catch(err => {
+        console.error(err);
+        /*alert(err);*/
+        alert("Error con la conexión, por favor intente descargar de nuevo");
+      });
+
+    }
 
     segmentChanged(event) {
       //Limpia los filtros en cada cambio
@@ -1450,7 +1552,7 @@ this.pillMenu.animacion();
 
     public async inforConnectionScoket(status) {
       if (status == true) {
-            
+            console.log("status");
             try {
               if(this.pushService.userId != undefined)
                 await this.apiDevice.update(this.pushService.userId).toPromise();

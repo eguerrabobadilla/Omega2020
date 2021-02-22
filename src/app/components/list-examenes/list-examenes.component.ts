@@ -250,6 +250,7 @@ export class ListExamenesComponent implements OnInit {
         backdropDismiss: true,
         componentProps: {item}
       });
+
       setTimeout(() => {
         console.log(item.Id);
         if(item.Id== 14170){
@@ -260,12 +261,14 @@ export class ListExamenesComponent implements OnInit {
         }
       }, 1000);
 
-    return await modal.present();
+      return await modal.present();
     }
 
     abrirExamen($event,item){
-       if(this.permisoEditar()) this.openDetail($event,item);
-       else this.iniciarExamen($event,item);
+      if (this.getKeyToken('tipo') == 'Profesor')
+        this.openDetail($event,item);
+      else 
+        this.iniciarExamen($event,item);
     }
 
     loadData(event) {

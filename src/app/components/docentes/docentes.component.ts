@@ -10,6 +10,7 @@ import { DetalleAlumnoPage } from 'src/app/pages/detalle-alumno/detalle-alumno.p
 })
 export class DocentesComponent implements OnInit {
   @Output() backPage = new EventEmitter();
+  @Output() updateAutoHeightSlider = new EventEmitter();
   @Input() data;
   LstDocentes: any[] = [];
   loading: any;
@@ -36,6 +37,11 @@ export class DocentesComponent implements OnInit {
     this.apiDocentes.getDocentesGrupo(this.data.index,this.data.Grado,this.data.Grupo).subscribe(data =>{
       this.LstDocentes= data;
       this.loadingController.dismiss();
+
+      setTimeout(() => {
+        this.updateAutoHeightSlider.emit();
+      }, 300);
+
     });
   }
 

@@ -195,7 +195,7 @@ export class CrearExamenPage implements OnInit {
               public loadingController: LoadingController,private apiExamenes: ExamenesService,private actionSheetController: ActionSheetController,
               public http: HttpClient,private api: apiBase,private platform: Platform,private apiPreguntas: PreguntasService,
               public toastController: ToastController,private cd: ChangeDetectorRef,private transfer: FileTransfer,private file: File,private renderer: Renderer2,
-              private androidPermissions: AndroidPermissions) {
+              private androidPermissions: AndroidPermissions,public alertController: AlertController) {
     this.FrmItem = formBuilder.group({
       Id:   [0, Validators.compose([Validators.required])],
       Grupo:   ['', Validators.compose([Validators.required])],
@@ -702,45 +702,57 @@ export class CrearExamenPage implements OnInit {
   }
 
   async onFileChange($event: any) {
-    if( $event.target.files &&  $event.target.files.length) {
-      const re = new RegExp('\.zip', 'g');      
-      
-      //Solo se permiten formatos de imagen;
-      if(re.test($event.target.files[0].type)==false) {
-        this.presentToast("Archivo no valido, solo se permite archivos zip.");
-        return;
+    console.log("onFileChange");
+    try {
+      if( $event.target.files &&  $event.target.files.length) {
+        const re = new RegExp('\.zip', 'g');      
+        
+        //Solo se permiten formatos de imagen;
+        if(re.test($event.target.files[0].type)==false) {
+          this.presentToast("Archivo no valido, solo se permite archivos zip.");
+          return;
+        }
+
+        const file=$event.target.files[0];
+
+        const payload = new FormData();
+        payload.append('ExamenId', this.item.Id);  
+        payload.append('File', file, file.name);
+
+        this.loading =await this.loadingController.create({
+          //cssClass: 'my-custom-class',
+          message: 'Importando...',
+          duration: 120000
+        });
+        
+        const tareaUpload = await this.apiPreguntas.setBancosPreguntas(payload).toPromise();
+
+        this.loadingController.dismiss();
+
+        this.componentListaPreguntas.loadData2();
+
+        this.presentToast("Examen importado");
+
+        this.inputFileBancoHTML.nativeElement.value = "";
+
+        // need to run CD since file load runs outside of zone
+        this.cd.markForCheck();
       }
-
-      /*this.FrmItem.patchValue({
-        Image: $event.target.files[0]
-      });
-
-      this.files = $event.target.files[0];*/
-
-      const file=$event.target.files[0];
-
-      const payload = new FormData();
-      payload.append('ExamenId', this.item.Id);  
-      payload.append('File', file, file.name);
-
-      this.loading =await this.loadingController.create({
-        //cssClass: 'my-custom-class',
-        message: 'Importando...',
-        duration: 120000
-      });
-
-      const tareaUpload = await this.apiPreguntas.setBancosPreguntas(payload).toPromise();
-
-      this.loadingController.dismiss();
-
-      this.componentListaPreguntas.loadData2();
-
-      this.presentToast("Examen importado");
-
-      // need to run CD since file load runs outside of zone
-      this.cd.markForCheck();
     }
+    catch(err) {
+      this.inputFileBancoHTML.nativeElement.value = "";
+      await this.loadingController.dismiss();
 
+      const alert = await this.alertController.create({
+        header: 'LBS Plus',
+        //subHeader: 'Subtitle',
+        message: err.error,
+        buttons: ['Aceptar']
+      });
+  
+      this.cd.markForCheck();
+      await alert.present();
+    }
   }
 
   async presentToast(text) {

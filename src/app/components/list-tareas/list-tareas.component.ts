@@ -224,7 +224,6 @@ export class ListTareasComponent implements OnInit {
       this.getApiTareasSinFiltro(event);
 
     }
-
   }
     getApiTareasSinFiltro(event) {
       console.log('cargarSinfiltro');

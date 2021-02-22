@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,Output,EventEmitter,ViewChild } from '@angular/core';
 import { NewsService } from '../../api/news.service';
 import { DetallesNewsPage } from 'src/app/pages/detalles-news/detalles-news.page';
-import { AlertController, LoadingController, ModalController } from '@ionic/angular';
+import { AlertController, LoadingController, ModalController, IonInfiniteScroll, IonVirtualScroll } from '@ionic/angular';
 import { CrearNewsPage } from 'src/app/pages/crear-news/crear-news.page';
 
 @Component({
@@ -12,12 +12,27 @@ import { CrearNewsPage } from 'src/app/pages/crear-news/crear-news.page';
 export class NewsComponent implements OnInit {
   LstNoticias: any[] = [];
   loading: any;
+  contadorInfinieScroll = 0;
+  spiner = true;
+  @Output() updateAutoHeightSlider = new EventEmitter();
+  @ViewChild(IonInfiniteScroll, {static: false}) infiniteScroll: IonInfiniteScroll;
+  @ViewChild(IonVirtualScroll, {static: false}) virtualScroll: IonVirtualScroll;
 
   constructor(private apiNoticias: NewsService, private modalCrl: ModalController,private loadingController: LoadingController,
               private alertController: AlertController) { }
 
   ngOnInit() {
-    this.cargar();
+    //this.cargar();
+    this.apiNoticias.getInfinite(this.contadorInfinieScroll, 10).subscribe(data => {
+      this.LstNoticias = data;
+      this.contadorInfinieScroll += 10;
+      
+      setTimeout(() => {
+        this.updateAutoHeightSlider.emit();
+      }, 300);
+
+      this.spiner =false;
+    });
   }
 
   public permisoEditar() {
@@ -38,6 +53,10 @@ export class NewsComponent implements OnInit {
 
     this.apiNoticias.get().subscribe(data =>{
       this.LstNoticias = data;
+
+      setTimeout(() => {
+        this.updateAutoHeightSlider.emit();
+      }, 300);
       //console.log('this.LstNoticias yeah');
       //console.log(this.LstNoticias);
     });
@@ -114,6 +133,39 @@ export class NewsComponent implements OnInit {
     });
 
     alertTerminado.present();
+  }
+
+  loadData(event) {
+    console.log('loaddata');
+     this.getApiNoticiasSinFiltro(event);
+  }
+
+  getApiNoticiasSinFiltro(event) {
+    console.log('cargarSinfiltro');
+    this.apiNoticias.getInfinite(this.contadorInfinieScroll, 10).subscribe(data => {
+      console.log('getInfinite');
+      console.log(data);
+      if (data.length != 0) {
+        for (let i = 0; i < data.length; i++) {
+          console.log('dentro');
+          this.LstNoticias.push(data[i]);
+        }
+
+        event.target.complete();
+        this.contadorInfinieScroll += 10;
+        setTimeout(() => {
+          this.updateAutoHeightSlider.emit();
+        }, 300);
+        this.virtualScroll.checkEnd();
+      } else {
+        console.log('fin scroll');
+        event.target.disabled = true;
+        setTimeout(() => {
+          this.updateAutoHeightSlider.emit();
+          }, 300);
+      }
+    });
+
   }
 
   public async edit(event, item) {

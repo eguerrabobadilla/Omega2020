@@ -39,7 +39,12 @@ import { EscolaridadDocentesComponent } from 'src/app/components/escolaridad-doc
 import { GruposDocentesComponent } from 'src/app/components/grupos-docentes/grupos-docentes.component';
 import { DocentesComponent } from 'src/app/components/docentes/docentes.component';
 import { GlobalService } from 'src/app/services/global.service';
-
+import { DevicesService } from 'src/app/api/devices.service';
+import { PushService } from 'src/app/services/push.service';
+import { PortadasService } from 'src/app/api/portadas.service';
+import { Zip } from '@ionic-native/zip/ngx';
+import { File } from '@ionic-native/file/ngx';
+import { FileTransfer, FileTransferObject } from '@ionic-native/file-transfer/ngx';
 
 
 mobiscroll.settings = {
@@ -69,6 +74,7 @@ export class HomeDirectorPage {
   librosIN: any[] = []; 
   codigoVisible = true;
   LstTareas: any[] = [];
+  pildora = 'Noticias';
   hayConexion= true;
   numeroclicks=0;
 
@@ -101,6 +107,9 @@ export class HomeDirectorPage {
   @ViewChild('resourceComponent', {static: false}) resourceComponent: ListResourceComponent;
   @ViewChild('evidenceComponent', {static: false}) evidenceComponent: EvidencesComponent;
   @ViewChild('newsComponent', {static: false}) newsComponent: NewsComponent;
+  @ViewChild('booksComponent', {static: false}) booksComponent: BooksComponent;
+  @ViewChild('booksComponentIngles', {static: false}) booksComponentIngles: BooksComponent;
+  @ViewChild('booksComponentEspanol', {static: false}) booksComponentEspanol: BooksComponent;
   @ViewChild('avatarUser', {read: ElementRef, static: false}) avatarUser: ElementRef;
   @ViewChild('mobi', {static: false}) mobi: MbscCalendar; 
 
@@ -147,7 +156,8 @@ export class HomeDirectorPage {
               private apiTareas: TareasService, public  webSocket: WebsocketService, private apiCalendario: CalendarioService,
               private pickerController: PickerController, private apiMaterias: MateriasService,
               private codePush : CodePush,private storage: Storage,private router: Router,private resolver: ComponentFactoryResolver,
-              private globalServicies: GlobalService) {
+              private globalServicies: GlobalService,private apiDevice: DevicesService,private pushService:PushService,
+              private apiPortadas: PortadasService,private transfer: FileTransfer,private file: File,private zip: Zip) {
     //  this.scrollenable = true;
 
 
@@ -638,6 +648,8 @@ export class HomeDirectorPage {
         this.tabs = ['Alumnos', 'Docentes', 'Buscar'];
      } else if (index === 3) {
         this.tabs = ['Noticias', 'Mensajes'];
+
+        this.pildora = 'Noticias';
      }
 
       this.selectOption = '0';
@@ -742,6 +754,9 @@ export class HomeDirectorPage {
           //console.log("listo");
           this.slideUp.lockSwipes(true);
         }
+
+        this.buscarPortadas();
+
       }, 100);
 
     }
@@ -884,9 +899,101 @@ export class HomeDirectorPage {
       this.gesture3.enable();
     }
 
+    async buscarPortadas(){
+      //Verifica conexion con el servidor
+      const status = this.webSocket.getStatusSocket() == 1 ? true : false;
+      
+      if(status=== false) {
+        setTimeout(() => {
+          this.booksComponent.iniciarValidacion();
+          this.booksComponentIngles.iniciarValidacion();
+          this.booksComponentEspanol.iniciarValidacion();          
+        }, 1500);
+        return;
+      }
+
+      if(!this.platform.is('cordova')){
+        setTimeout(() => {
+          this.booksComponent.iniciarValidacion();
+          this.booksComponentIngles.iniciarValidacion();
+          this.booksComponentEspanol.iniciarValidacion();          
+        }, 1500);
+        return;
+      }
+
+      const versionPortadas =await this.storage.get("versionPortadas");
+
+      const data =await this.apiPortadas.getPortadasVersion().toPromise();
+
+      if(versionPortadas==null){
+        console.log(data["version"]);
+        console.log(data["url"]);
+        this.download(data["url"],0,data["version"]);
+      }
+      else{
+        console.log("versionPortadas",versionPortadas);
+        if(parseInt(data["version"]) > parseInt(versionPortadas)){
+          console.log("update portadas");
+          this.download(data["url"],versionPortadas,data["version"]);
+        }
+        else {
+          setTimeout(() => {
+            this.booksComponent.iniciarValidacion();
+            this.booksComponentIngles.iniciarValidacion();
+            this.booksComponentEspanol.iniciarValidacion();          
+          }, 1500);
+        }
+      }
+    }
+
+    download(url,versionDevice,versionServer) {
+      const fileTransfer: FileTransferObject = this.transfer.create();
+  
+      const nameFile ='covers.zip';
+      //const directory = this.file.dataDirectory + "covers/";
+      const directory = this.file.dataDirectory;
+  
+      //Descarga libro
+      fileTransfer.download(url + versionDevice, directory + nameFile).then(entry => {
+  
+        //Descomprime libro
+        console.log(entry.toURL());
+        console.log(directory + 'covers');
+        return this.zip.unzip(entry.toURL(), directory + 'covers');
+      })
+      .then(result =>{
+        console.log(result);
+        if(result === 0) { console.log('SUCCESS'); }
+        if(result === -1) { console.log('FAILED'); }
+  
+        //Elimina zip para ahorrar espacio
+        return this.file.removeFile(directory,nameFile);
+      })
+      .then( data =>{
+        console.log(data);
+        console.log("Terminado");
+  
+        this.storage.set("versionPortadas",versionServer).then( () => {
+          console.log("guardo portadas");
+
+          setTimeout(() => {
+            this.booksComponent.iniciarValidacion();
+            this.booksComponentIngles.iniciarValidacion();
+            this.booksComponentEspanol.iniciarValidacion();          
+          }, 1500);
+        });
+      })
+      .catch(err => {
+        console.error(err);
+        /*alert(err);*/
+        alert("Error con la conexión, por favor intente descargar de nuevo");
+      });
+
+    }
 
     segmentChanged(event) {
       const itemOption = this.pillMenu.itemsMenu[event.detail.value];
+      this.pildora = itemOption;
       //console.log(this.selectSeccion);
      // console.log(itemOption);
       //Logica boton + evidencias
@@ -1033,6 +1140,15 @@ export class HomeDirectorPage {
 
     public async inforConnectionScoket(status) {
       if (status == true) {
+            try {
+              if(this.pushService.userId != undefined)
+                await this.apiDevice.update(this.pushService.userId).toPromise();
+            } catch (error) {
+              console.error(error);
+              // expected output: ReferenceError: nonExistentFunction is not defined
+              // Note - error messages will vary depending on browser
+            }
+
             this.hayConexion = true;
             this.renderer.setStyle(this.avatarUser.nativeElement, 'color', `#FF426D`);
             this.slideUp.lockSwipes(false);
@@ -1305,6 +1421,11 @@ export class HomeDirectorPage {
         let escolaridadComponent = this.createComponent(EscolaridadComponent);
         this.subscribeEscolaridad(escolaridadComponent);
       });
+
+      component.instance.updateAutoHeightSlider.subscribe(() => {
+        this.updateAutoHeightSlider();
+      });
+
     }
 
     public subscribeAlumnos(component: any,data: any) {
@@ -1315,9 +1436,13 @@ export class HomeDirectorPage {
         let gruposComponent = this.createComponent(GruposComponent);
         this.subscribeGrupos(gruposComponent,dataBack);
       });
+
+      component.instance.updateAutoHeightSlider.subscribe(() => {
+        this.updateAutoHeightSlider();
+      });
     }
     /************************ Termina logica alumnos***************************/
-    /************************ Inicia logica alumnos***************************/
+    /************************ Inicia logica profesores***************************/
     public verEscolaridadesDocente() {
       //console.log("verEscolaridadesDocentes");
       
@@ -1351,6 +1476,10 @@ export class HomeDirectorPage {
         let escolaridadComponent = this.createComponentDocente(EscolaridadDocentesComponent);
         this.subscribeEscolaridadDocente(escolaridadComponent);
       });
+
+      component.instance.updateAutoHeightSlider.subscribe(() => {
+        this.updateAutoHeightSlider();
+      });
     }
 
     public subscribeAlumnosDocentes(component: any,data: any) {
@@ -1361,7 +1490,11 @@ export class HomeDirectorPage {
         let gruposComponent = this.createComponentDocente(GruposDocentesComponent);
         this.subscribeGruposDocentes(gruposComponent,dataBack);
       });
+
+      component.instance.updateAutoHeightSlider.subscribe(() => {
+        this.updateAutoHeightSlider();
+      });
     }
 
-    /************************ Termina logica alumnos***************************/
+    /************************ Termina logica profesores***************************/
 }
