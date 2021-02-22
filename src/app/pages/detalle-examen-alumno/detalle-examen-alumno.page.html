@@ -109,7 +109,7 @@
                             </ion-card-title>
                         </ion-card-header>
                         <ion-card-content>
-                            <div style="font-weight: 600;">Respuesta: <span style="font-weight: 400;" [innerHTML]="item.Respuesta | sanitizePipe"></span></div>
+                            <div style="font-weight: 600;">Respuesta: <span style="font-weight: 400;" [innerHTML]="item.Respuesta | sanitizePipe" *ngIf="item.Respuesta!=undefined"></span><span style="font-weight: 400;" *ngIf="item.Respuesta==undefined">No contestaste ninguna respuesta.</span></div>
                             <div style="font-weight: 600;">Respuesta correcta: <span style="font-weight: 400;" [innerHTML]="item.RespuestaCorrecta  | sanitizePipe"></span></div>
                             <div style="font-weight: 600;">Score: <span style="font-weight: 400;">{{item.Score}}</span></div>
                         </ion-card-content>

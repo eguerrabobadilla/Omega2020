@@ -61,4 +61,11 @@ export class ForumService  extends apiBase {
   updateAcceso(Id) {
     return this.http.put(`${this.url}/${this.WsForo}/updateAcceso/${Id}`,null);
   }
+
+  deleteComentario(Id){
+    return this.http.delete(`${this.url}/${this.Ws}/${Id}`)
+
+
+  }
+
 }

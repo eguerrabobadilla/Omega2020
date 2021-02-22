@@ -18,6 +18,11 @@
                     <ion-button style="--background: #F4315D;--background-activated: #F4315D;"> Responder</ion-button>
                 </ion-item-option>
             </ion-item-options>
+            <ion-item-options *ngIf="item.UsuarioId==usuarioId" side="end" lines="none" style="border-bottom-width: 0px;">
+                <ion-item-option (click)="eliminarMensajeForo(item)" color="danger" style="background: white;">
+                    <ion-button style="--background: #ff0000;--background-activated: #ff0000;">Eliminar</ion-button>
+                </ion-item-option>
+            </ion-item-options>
             <ion-item lines="none">
                 <ion-avatar style="top: 22px;position: absolute;" slot="start">
                     <img src="assets/img/unnamed.png">

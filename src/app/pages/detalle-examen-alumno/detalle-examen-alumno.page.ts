@@ -230,28 +230,46 @@ export class DetalleExamenAlumnoPage implements OnInit {
     setTimeout(() => {
       this.spiner=true;
     });
-
+    this.botonAnteriorDisable=true;
+    this.botonSiguienteDisable=true;
     this.apiPreguntas.getPreguntaExamen(this.examenId,this.contadorPregunta,this.preguntaAnterior,this.respuestaSeleccionada).subscribe(data =>{
       this.preguntaInfo = data;
+
+     if(this.banderaslideFinExamen==true)this.botonSiguienteDisable=true;else this.botonSiguienteDisable=false ;
+     if(this.contadorPregunta==1)this.botonAnteriorDisable=true;else this.botonAnteriorDisable = false;
       this.respuestaSeleccionada=data['RespuestaAlumno'];
       this.respuestas= data['Respuestas'];
-      this.applicationRef.tick();
-      this.spiner=false;
-     setTimeout(() => {
-      this.slider.updateAutoHeight();
-     }, 500); 
+      
+      setTimeout(() => {
+
+        setTimeout(() => {
+          this.applicationRef.tick();
+          this.spiner=false;
+          this.slider.update;
+          this.slider.slideTo(1);
+          this.slideOpts={autoHeight: true,initialSlide:4,allowTouchMove: false};
+          
+          this.virtualScroll.checkEnd();
+          this.slider.updateAutoHeight();
+        }, 1000);
+       
+        
+      });
     },error => {
       console.log(error);
       
     });
 
-     console.log(this.contadorPregunta)
+    
 /*if(this.contadorPregunta==this.item.TotalPreguntas){
       this.botonSiguienteDisable=true
       this.slider.slideNext();
     }else this.botonSiguienteDisable=false;*/
 
       
+  }
+  imagenLeida(){
+    console.log('leido')
   }
 
   getStatusExamenSiguientePregunta(){
