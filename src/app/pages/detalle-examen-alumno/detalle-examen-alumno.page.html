@@ -43,8 +43,8 @@
                     <ion-card-title style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{item.Titulo}}</ion-card-title>
                 </ion-card-header>
                 <ion-card-content>
-                    <div style="font-weight: 600;">Fecha aplicaion: <span style="font-weight: 400;">{{item.FechaInicio }}</span></div>
-                    <div style="font-weight: 600;">Descripcion: </div>
+                    <div style="font-weight: 600;">Fecha aplicación: <span style="font-weight: 400;">{{item.FechaInicio  | date:'medium' }}</span></div>
+                    <div style="font-weight: 600;">Descripción: </div>
                     <div [innerHTML]="item.Descripcion |  sanitizePipe"></div><br>
                     <div style="font-weight: 600;">Instrucciones generales: <span style="font-weight: 400;"><br> <p><b>1.</b> Tienes <b>{{item.DuracionExamen}}</b> minutos para responder a las siguientes <b>{{item.TotalPreguntas}}</b> preguntas.<br><br> <b>2.</b> Lee atentamente cada pregunta, tendrás un cronometro indicándote cuanto tiempo llevas.<br><br> <b>3.</b> Puedes omitir preguntas y volver a ellas más tarde.</p></span></div>
                 </ion-card-content>
@@ -109,7 +109,7 @@
                             </ion-card-title>
                         </ion-card-header>
                         <ion-card-content>
-                            <div style="font-weight: 600;">Respuesta: <span style="font-weight: 400;" [innerHTML]="item.Respuesta | sanitizePipe"></span></div>
+                            <div style="font-weight: 600;">Respuesta: <span style="font-weight: 400;" [innerHTML]="item.Respuesta | sanitizePipe" *ngIf="item.Respuesta!=undefined"></span><span style="font-weight: 400;" *ngIf="item.Respuesta==undefined">No contestaste ninguna respuesta.</span></div>
                             <div style="font-weight: 600;">Respuesta correcta: <span style="font-weight: 400;" [innerHTML]="item.RespuestaCorrecta  | sanitizePipe"></span></div>
                             <div style="font-weight: 600;">Score: <span style="font-weight: 400;">{{item.Score}}</span></div>
                         </ion-card-content>
@@ -121,7 +121,7 @@
             <div>
                 <div>
                     <ion-label style="font-size: 17px;font-weight: 600;text-align: center;text-overflow: ellipsis;">
-                        {{ textoInformacionInicioFin }} <br> {{fechaAplicacionExamen}}
+                        {{ textoInformacionInicioFin }} <br> {{fechaAplicacionExamen  | date:'medium'}}
                     </ion-label>
                 </div>
 

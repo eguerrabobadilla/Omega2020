@@ -23,6 +23,7 @@ export class DetallesForumPage implements OnInit {
   LstForo: any[];
   detalleId: number;
   tipoUsuario: any;
+  usuarioId:any;
   @ViewChild('virtualScroll', {static: false}) virtualScroll: IonVirtualScroll;
   @ViewChild('slidingItem', {static: false}) slidingItem: IonItemSliding;
   @ViewChild('toolbar1', {read: ElementRef, static: true}) toolbar1: ElementRef;
@@ -43,6 +44,7 @@ export class DetallesForumPage implements OnInit {
 
   ngOnInit() {
     this.tipoUsuario=this.globalServicies.getKeyToken("tipo");
+    this.usuarioId=this.globalServicies.getKeyToken("id");
     
     this.mutationObserver = new MutationObserver((mutations) => {
         this.contentArea.scrollToBottom();
@@ -50,9 +52,6 @@ export class DetallesForumPage implements OnInit {
 
 
     this.detalleId = this.item.foroId;
-    console.log('foroId');
-    console.log(this.item);
-    console.log(this.item.Id);
     this.detalleId = this.item.Id;
     this.responder= false;
     this.classresponder='display-none';
@@ -215,6 +214,20 @@ export class DetallesForumPage implements OnInit {
     .easing('cubic-bezier(0,.70,.45,1)') // muy lento al ultimo -> cubic-bezier(0,.70,.45,1)
     .fromTo('transform', 'translateY(100%)', 'translateY(0%)');
   }
+  eliminarMensajeForo(item){
+  
 
+
+
+
+    
+    this.apiForum.deleteComentario(item.Id).subscribe(data => {
+      console.log(item.Id)
+      this.LstForo = this.LstForo.filter(obj => obj !== item);
+    });
+
+    
+
+  }
 
 }
