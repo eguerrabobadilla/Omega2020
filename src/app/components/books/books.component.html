@@ -143,7 +143,7 @@
                         </div>
                         <div class="grid-item item3">{{item.Grados}}{{item.Suffix}} 
                             <span *ngIf="item.Escolaridad=='High School'">Semester</span>
-                            <span *ngIf="!item.Escolaridad=='High School'">Grade</span>
+                            <span *ngIf="item.Escolaridad!='High School'">Grade</span>
                         </div>
                         <div class="grid-item item4">{{item.Escolaridad}}</div>
                     </div>
