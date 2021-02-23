@@ -16,6 +16,8 @@ import { Storage } from '@ionic/storage';
 import { GlobalService } from 'src/app/services/global.service';
 import { PortadasService } from 'src/app/api/portadas.service';
 import { apiBase } from 'src/app/api/apiBase';
+import { DomSanitizer, SafeResourceUrl, SafeUrl} from '@angular/platform-browser';
+
 
 @Component({
   selector: 'app-books',
@@ -49,7 +51,7 @@ export class BooksComponent implements OnInit {
   constructor(public  webSocket: WebsocketService,private serviceDownload: DownloadFileService,private transfer: FileTransfer,
               private file: File,private platform: Platform,private booksService: BooksService,private zip: Zip,
               private webview: WebView,private storage: Storage,private applicationRef:ApplicationRef,private globalServicies: GlobalService,
-              private renderer: Renderer2,private apiPortadas: PortadasService,private api: apiBase) {
+              private renderer: Renderer2,private apiPortadas: PortadasService,private api: apiBase,private sanitizer: DomSanitizer) {
   }
 
   abrirKinder(){
@@ -181,6 +183,7 @@ export class BooksComponent implements OnInit {
 
         const urlCover = `${this.file.dataDirectory}covers/${item.RutaThumbnails}`;
         item.RutaThumbnails = item.RutaThumbnails.includes("?t=") ? item.RutaThumbnails : `${this.webview.convertFileSrc(urlCover)}?t=${timestamp}`;
+       
       } else {
         const date = new Date();
         const timestamp = date.getTime();
