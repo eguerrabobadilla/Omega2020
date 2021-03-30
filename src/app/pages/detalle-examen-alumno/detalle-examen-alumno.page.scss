@@ -16,3 +16,12 @@ div.pregunta p:first-child {
     display: inline;
     background-color: red;
 }
+
+////Variables ejercicio Relacionar
+ion-col>div {
+    background-color: #f7f7f7;
+    border: solid 1px #ddd;
+    padding: 10px;
+    min-height: 115px !important;
+    text-align: center;
+}

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild, ApplicationRef, ElementRef } from '@angular/core';
+import { Component, Input, OnInit, ViewChild, ApplicationRef, ElementRef, Renderer2 } from '@angular/core';
 import { IonSlides, PopoverController, ModalController, LoadingController, IonVirtualScroll } from '@ionic/angular';
 import { PreguntasService } from 'src/app/api/preguntas.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
@@ -31,8 +31,6 @@ export class DetalleExamenAlumnoPage implements OnInit {
   preguntaAnterior:number;
   textoBoton = 'Siguiente';
   botonHeaderVisible=false;
-  //botonIniciarVisible=true;
- // botonInstruccionesVisible=false;
   instruccionesVisible=false;
   duracionExamen: number;
   banderaslideFinExamen=false;
@@ -53,10 +51,14 @@ export class DetalleExamenAlumnoPage implements OnInit {
 
   slideOpts = {autoHeight: true,initialSlide:0,allowTouchMove: false };
 
+//Variables ejercicio Relacionar
+   esRelacionar=true;
+   preguntasRelacionar: any[] = [];
+   colorDivRelacionar='transparent';
 
  
   constructor(private apiPreguntas: PreguntasService, public popoverController: PopoverController,private modalCtrl: ModalController,
-              private apiExamenes: ExamenesService,private loadingController: LoadingController,private applicationRef: ApplicationRef) { }
+              private apiExamenes: ExamenesService,private loadingController: LoadingController,private applicationRef: ApplicationRef, private render: Renderer2) { }
 
   ngOnInit() {
  
@@ -115,40 +117,7 @@ export class DetalleExamenAlumnoPage implements OnInit {
   }
 
    ngAfterViewInit(): void {
-     //Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
-     //Add 'implements AfterViewInit' to the class.
-  /*    setTimeout(() => {
-        this.spiner=true;
-      });
-     
-     this.apiPreguntas.getStatusExamen(this.item.Id).subscribe(data  =>{
 
-      if(data == null || data["status"]=="Iniciado"){
-        this.instruccionesVisible=true;
-      }
-       else if(data["status"]=="Finalizado"){// si el examen esta en estatus finalizado lo manda al resultado final del examen  al tercer slide
-            this.preguntaFinalizarExamen();
-       }
-
-       else if(data["status"]=="Proceso"){
-            console.log(data)
-              this.iniciarExamen(data["tiempoRestante"]);
-       }
-       else if (data["status"]=="preiodoFinalizado"){
-         console.log("preiodoFinalizado")
-         this.instruccionesVisible=true;
-         setTimeout(() => {
-          this.slider.slideTo(4);
-        }, 1000);
-
-       }
-          setTimeout(() => {
-            this.spiner=false;
-          });
-         
-    });
-
-     */
    }
   
 
@@ -237,8 +206,10 @@ export class DetalleExamenAlumnoPage implements OnInit {
 
      if(this.banderaslideFinExamen==true)this.botonSiguienteDisable=true;else this.botonSiguienteDisable=false ;
      if(this.contadorPregunta==1)this.botonAnteriorDisable=true;else this.botonAnteriorDisable = false;
-      this.respuestaSeleccionada=data['RespuestaAlumno'];
-      this.respuestas= data['Respuestas'];
+     // si es ejercicio relacionar
+     if(data['TipoPregunta']=='relacionar')this.exercicioRelacionar(data);
+     else  this.exercicioUnaSolaRespuesta(data);
+ 
       
       setTimeout(() => {
 
@@ -361,6 +332,47 @@ export class DetalleExamenAlumnoPage implements OnInit {
 
   closeModal(){
       this.modalCtrl.dismiss();
+  }
+
+
+  exercicioRelacionar(data: any[]){
+    console.log("dentroex ercicioRelacionar")
+    console.log(data);
+    this.preguntasRelacionar=data['Preguntas'];
+    this.respuestas= data['Respuestas'];
+  }
+
+  exercicioUnaSolaRespuesta(data: any[]){
+    this.respuestaSeleccionada=data['RespuestaAlumno'];
+    this.respuestas= data['Respuestas'];
+  }
+
+  clickEjercicioRelacionar(element,item,index){
+    //1.- si da click en la imagen, le indico que el elemento va hacer el div padre de la imagen
+    if(element.target.tagName==='IMG')element=element.path[2];
+    else element=element.target;
+    //2.- si ya tiene dibujado el color lo quito
+    if(element.style.background!==''){
+      this.render.removeStyle(element,'background')
+    }
+    else{
+      this.colorDivRelacionar=this.coloresRelacionar(index);
+      this.render.setStyle(element,'background',this.colorDivRelacionar);
+      
+    }
+
+  }
+
+  coloresRelacionar(codigoColor):string{
+   const colores= {
+       1 : 'red',
+       2 : 'blue',
+       3 : 'green',
+       4 : 'blue'
+
+      }
+    return colores[codigoColor];
+
   }
 
 
