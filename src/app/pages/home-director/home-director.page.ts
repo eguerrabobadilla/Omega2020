@@ -755,7 +755,7 @@ export class HomeDirectorPage {
           this.slideUp.lockSwipes(true);
         }
 
-        this.buscarPortadas();
+        //this.buscarPortadas();
 
       }, 100);
 

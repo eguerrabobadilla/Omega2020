@@ -633,7 +633,8 @@ this.pillMenu.animacion();
        }
        else{
         this.statusBar.hide();
-      }
+        }
+
       }, 500);
       
 
@@ -780,6 +781,7 @@ this.pillMenu.animacion();
     }
 
     ionViewDidEnter() {
+      console.log("ionViewDidEnter");
       setTimeout(async () => {
         const status = this.webSocket.getStatusSocket() == 1 ? true : false;
         this.inforConnectionScoket(status);
@@ -792,7 +794,7 @@ this.pillMenu.animacion();
           this.slideUp.lockSwipes(true);
         }
 
-        this.buscarPortadas();
+        
 
       }, 100);
 
@@ -1008,6 +1010,8 @@ this.pillMenu.animacion();
     }
 
     download(url,versionDevice,versionServer) {
+      this.cargandoAnimation("Actualizando portadas");
+      
       const fileTransfer: FileTransferObject = this.transfer.create();
   
       const nameFile ='covers.zip';
@@ -1036,6 +1040,7 @@ this.pillMenu.animacion();
   
         this.storage.set("versionPortadas",versionServer).then( () => {
           console.log("guardo portadas");
+          this.loadingController.dismiss();
           setTimeout(() => {
             this.booksComponent.iniciarValidacion();
             this.booksComponentIngles.iniciarValidacion();
@@ -1047,6 +1052,8 @@ this.pillMenu.animacion();
         console.error(err);
         /*alert(err);*/
         alert("Error con la conexión, por favor intente descargar de nuevo");
+
+        this.loadingController.dismiss();
       });
 
     }

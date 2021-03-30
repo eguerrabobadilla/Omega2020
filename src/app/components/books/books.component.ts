@@ -16,6 +16,8 @@ import { Storage } from '@ionic/storage';
 import { GlobalService } from 'src/app/services/global.service';
 import { PortadasService } from 'src/app/api/portadas.service';
 import { apiBase } from 'src/app/api/apiBase';
+import { DomSanitizer, SafeResourceUrl, SafeUrl} from '@angular/platform-browser';
+
 
 @Component({
   selector: 'app-books',
@@ -24,6 +26,7 @@ import { apiBase } from 'src/app/api/apiBase';
 })
 export class BooksComponent implements OnInit {
   libros: any[] = [];
+  spiner = true;
   //private  BackgroundGeolocation: modusecho;
   @ViewChildren(CircleProgressComponent) ArrayCircleProgress: QueryList<CircleProgressComponent>;
   @ViewChild('panelKinder', {read: ElementRef, static: false}) panelKinder: ElementRef;
@@ -41,13 +44,14 @@ export class BooksComponent implements OnInit {
 
   @Input() librosIN: any[];
   @Output() updateAutoHeightSlider = new EventEmitter();
+  @Output() buscarPortadas = new EventEmitter();
   pathStorage:any;
   tipoUsuario:any;
 
   constructor(public  webSocket: WebsocketService,private serviceDownload: DownloadFileService,private transfer: FileTransfer,
               private file: File,private platform: Platform,private booksService: BooksService,private zip: Zip,
               private webview: WebView,private storage: Storage,private applicationRef:ApplicationRef,private globalServicies: GlobalService,
-              private renderer: Renderer2,private apiPortadas: PortadasService,private api: apiBase) {
+              private renderer: Renderer2,private apiPortadas: PortadasService,private api: apiBase,private sanitizer: DomSanitizer) {
   }
 
   abrirKinder(){
@@ -142,15 +146,17 @@ export class BooksComponent implements OnInit {
 
     setTimeout(() => {
       //this.iniciarValidacion();
+      this.buscarPortadas.emit();
       //console.log(this.ArrayCircleProgress);
     }, 1000);
   }
 
   async ngAfterViewInit (){
     console.log("ngAfterViewInit");
-
+    
     setTimeout(() => {
       this.updateAutoHeightSlider.emit();
+      this.spiner = false;
     }, 2500);
     /*this.ArrayCircleProgress.changes.subscribe((items: Array<CircleProgressComponent>) => {
       //messages.forEach((item: SystemMessageComponent) => console.log(item.message));
@@ -177,6 +183,7 @@ export class BooksComponent implements OnInit {
 
         const urlCover = `${this.file.dataDirectory}covers/${item.RutaThumbnails}`;
         item.RutaThumbnails = item.RutaThumbnails.includes("?t=") ? item.RutaThumbnails : `${this.webview.convertFileSrc(urlCover)}?t=${timestamp}`;
+       
       } else {
         const date = new Date();
         const timestamp = date.getTime();

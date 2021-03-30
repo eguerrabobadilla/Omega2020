@@ -1,4 +1,4 @@
-
+<ion-progress-bar *ngIf="spiner" type="indeterminate"></ion-progress-bar>
 <div *ngIf="getTipoUsuario()=='Director'; then izquierdaTemplate else derechaTemplate"></div>
         <ng-template #izquierdaTemplate>
             <!-- Kinder -->
@@ -13,7 +13,7 @@
                         <ion-icon name="cloud-download" [ngStyle] ="{'display' : item.flecha}" class="downLoadSytle" (click)="openBook(item)"></ion-icon>
                         <ion-spinner name="crescent"  [ngStyle] ="{'display' : item.spinner}" class="spinnerStyle"></ion-spinner>
                         <div style="position:relative" style="cursor: pointer;">
-                            <img src="{{item.RutaThumbnails}}" onerror="this.onerror=null;this.src='assets/img/temp.jpg';" class="image-rouder" width="100%" style="min-height: 200px;cursor: pointer;" (click)="openBook(item)">
+                            <img [src]="sanitizer.bypassSecurityTrustResourceUrl(item.RutaThumbnails)" onerror="this.onerror=null;this.src='assets/img/temp.jpg';" class="image-rouder" width="100%" style="min-height: 200px;cursor: pointer;" (click)="openBook(item)">
                             <div class="grid-container" style="position: relative;width: 100%">
                                 <div class="grid-item item1">
                                     <div class="version">
@@ -43,7 +43,7 @@
                         <ion-icon name="cloud-download" [ngStyle] ="{'display' : item.flecha}" class="downLoadSytle" (click)="openBook(item)"></ion-icon>
                         <ion-spinner name="crescent"  [ngStyle] ="{'display' : item.spinner}" class="spinnerStyle"></ion-spinner>
                         <div style="position:relative" style="cursor: pointer;">
-                            <img src="{{item.RutaThumbnails}}" onerror="this.onerror=null;this.src='assets/img/temp.jpg';" class="image-rouder" width="100%" style="min-height: 200px;cursor: pointer;" (click)="openBook(item)">
+                            <img [src]="sanitizer.bypassSecurityTrustResourceUrl(item.RutaThumbnails)" onerror="this.onerror=null;this.src='assets/img/temp.jpg';" class="image-rouder" width="100%" style="min-height: 200px;cursor: pointer;" (click)="openBook(item)">
                             <div class="grid-container" style="position: relative;width: 100%">
                                 <div class="grid-item item1">
                                     <div class="version">
@@ -73,7 +73,7 @@
                         <ion-icon name="cloud-download" [ngStyle] ="{'display' : item.flecha}" class="downLoadSytle" (click)="openBook(item)"></ion-icon>
                         <ion-spinner name="crescent"  [ngStyle] ="{'display' : item.spinner}" class="spinnerStyle"></ion-spinner>
                         <div style="position:relative" style="cursor: pointer;">
-                            <img src="{{item.RutaThumbnails}}" onerror="this.onerror=null;this.src='assets/img/temp.jpg';" class="image-rouder" width="100%" style="min-height: 200px;cursor: pointer;" (click)="openBook(item)">
+                            <img [src]="sanitizer.bypassSecurityTrustResourceUrl(item.RutaThumbnails)" onerror="this.onerror=null;this.src='assets/img/temp.jpg';" class="image-rouder" width="100%" style="min-height: 200px;cursor: pointer;" (click)="openBook(item)">
                             <div class="grid-container" style="position: relative;width: 100%">
                                 <div class="grid-item item1">
                                     <div class="version">
@@ -103,7 +103,7 @@
                         <ion-icon name="cloud-download" [ngStyle] ="{'display' : item.flecha}" class="downLoadSytle" (click)="openBook(item)"></ion-icon>
                         <ion-spinner name="crescent"  [ngStyle] ="{'display' : item.spinner}" class="spinnerStyle"></ion-spinner>
                         <div style="position:relative" style="cursor: pointer;">
-                            <img src="{{item.RutaThumbnails}}" onerror="this.onerror=null;this.src='assets/img/temp.jpg';" class="image-rouder" width="100%" style="min-height: 200px;cursor: pointer;" (click)="openBook(item)">
+                            <img [src]="sanitizer.bypassSecurityTrustResourceUrl(item.RutaThumbnails)" onerror="this.onerror=null;this.src='assets/img/temp.jpg';" class="image-rouder" width="100%" style="min-height: 200px;cursor: pointer;" (click)="openBook(item)">
                             <div class="grid-container" style="position: relative;width: 100%">
                                 <div class="grid-item item1">
                                     <div class="version">
@@ -131,7 +131,7 @@
                 <ion-spinner name="crescent"  [ngStyle] ="{'display' : item.spinner}" class="spinnerStyle"></ion-spinner>
                 <div style="position:relative" style="cursor: pointer;">
                     <!--<img src="assets/img/cover/{{item.RutaThumbnails}}" class="image-rouder" width="100%" style="min-height: 200px;cursor: pointer;" (click)="openBook(item)">-->
-                    <img [src]="item.RutaThumbnails" onerror="this.onerror=null;this.src='assets/img/temp.jpg';"  class="image-rouder" width="100%" style="min-height: 200px;cursor: pointer;" (click)="openBook(item)">
+                    <img [src]="sanitizer.bypassSecurityTrustResourceUrl(item.RutaThumbnails)" onerror="this.onerror=null;this.src='assets/img/temp.jpg';"  class="image-rouder" width="100%" style="min-height: 200px;cursor: pointer;" (click)="openBook(item)">
                     <div class="grid-container" style="position: relative;width: 100%">
                         <div class="grid-item item1">
                             <div class="version">
@@ -143,7 +143,7 @@
                         </div>
                         <div class="grid-item item3">{{item.Grados}}{{item.Suffix}} 
                             <span *ngIf="item.Escolaridad=='High School'">Semester</span>
-                            <span *ngIf="!item.Escolaridad=='High School'">Grade</span>
+                            <span *ngIf="item.Escolaridad!='High School'">Grade</span>
                         </div>
                         <div class="grid-item item4">{{item.Escolaridad}}</div>
                     </div>

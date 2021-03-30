@@ -34,7 +34,7 @@ right: 0px;" mode="ios">
     padding-top: 3vh;
     font-size: 3vh;
     color: aliceblue;">
-        V60</div>
+        V61</div>
 
 </ion-header>
 
@@ -106,7 +106,7 @@ right: 0px;" mode="ios">
         <ion-slides [options]="slideOptsdos" #slideDown (ionSlideTouchEnd)="ionSlideTouchEnd(slideUp,slideDown)" *ngIf="selectSeccion == 1" style="min-height: 72.6vh;">
             <ion-slide>
                 <app-codes style="width: 100%;" (librosDescargados)="librosDescargados($event)" *ngIf="codigoVisible"></app-codes>
-                <app-books style="width: 100%;" (updateAutoHeightSlider)="updateAutoHeightSlider()" #booksComponent [librosIN]="libros" *ngIf="!codigoVisible"> </app-books>
+                <app-books style="width: 100%;"  (buscarPortadas)="buscarPortadas()" (updateAutoHeightSlider)="updateAutoHeightSlider()" #booksComponent [librosIN]="libros" *ngIf="!codigoVisible"> </app-books>
             </ion-slide>
             <ion-slide>
                 <app-codes style="width: 100%;" (librosDescargados)="librosDescargados($event)" *ngIf="codigoVisible"></app-codes>
