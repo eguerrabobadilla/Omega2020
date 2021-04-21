@@ -131,6 +131,7 @@ export class HomePage {
   @ViewChild('fabend', {read: ElementRef, static: true}) fabend: ElementRef;
   @ViewChild('fabNext', {read: ElementRef, static: true}) fabNext: ElementRef;
   @ViewChild('fabPrev', {read: ElementRef, static: true}) fabPrev: ElementRef;
+  @ViewChild('fabflechaarriba', {read: ElementRef, static: true}) fabflechaarriba: ElementRef;
   @ViewChild('foot', {read: ElementRef, static: true}) foot: ElementRef;
   @ViewChild('animation7', {read: ElementRef, static: true}) animation7: ElementRef;
   @ViewChild('animation8', {read: ElementRef, static: true}) animation8: ElementRef;
@@ -155,7 +156,7 @@ export class HomePage {
   primeraVez = true;
   headersText: any = [];
   header = 'Books';
-  nombreIcono = 'book-outline';
+  nombreIcono = 'assets/img/books_icono.svg';
   iconos: any[];
   public swipeUp = false;
   public swipeUp2 = false;
@@ -208,6 +209,7 @@ export class HomePage {
     let animation8: Animation;
     let animation9: Animation;
     let animation10: Animation;
+    
 
     if (!isRegreso) {
    //   this.gesture.enable(false);
@@ -235,7 +237,7 @@ export class HomePage {
     .duration(300)
     .delay(50)
     .easing('cubic-bezier(0,.70,.45,1)') // muy lento al ultimo -> cubic-bezier(0,.70,.45,1)
-    .fromTo('transform', 'translateY(0)', 'translateY(-7vh)');
+    .fromTo('transform', 'translateY(0)', 'translateY(-9vh)');
 
       animation3 = this.animationCtrl.create('identifier3-a')
     .addElement(this.text.nativeElement)
@@ -305,13 +307,14 @@ export class HomePage {
 
       animation2.play();
       animation3.play();
-      animation4.play();
+    //  animation4.play();
     //  animation5.play();
       animation6.play();
       animation7.play();
       animation8.play();
       animation9.play();
       animation10.play();
+      
 
      // if (click) {
       this.moveScroll(true);
@@ -414,7 +417,7 @@ export class HomePage {
 
       animation2.play();
       animation3.play();
-      animation4.play();
+  //    animation4.play();
    //   animation5.play();
       animation6.play();
       animation7.play();
@@ -604,7 +607,7 @@ this.pillMenu.animacion();
     console.log("Es celular:",this.globalServicies.isMobileDevice())
     this.isMobile =this.globalServicies.isMobileDevice();
      // set status bar to white
-      this.statusBar.backgroundColorByHexString('#FFFFFF');
+      this.statusBar.backgroundColorByHexString('#6228cf');
       this.llenar_libros();
       this.selectSeccion = 1;
     //  this.statusBar.hide();
@@ -629,7 +632,7 @@ this.pillMenu.animacion();
         this.checkCodePush();
         if(!this.platform.is("ipad") || !this.platform.is("iphone") || !this.platform.is("ios")){
           this.statusBar.show();
-          this.statusBar.backgroundColorByHexString('#FFFFFF');
+          this.statusBar.backgroundColorByHexString('#6228cf');
        }
        else{
         this.statusBar.hide();
@@ -660,7 +663,7 @@ this.pillMenu.animacion();
       /*index = index === 6 ? 1 : index;
       index = index === 0 ? 5 : index;*/
       this.header = this.headersText[index - 1];
-      this.nombreIcono = this.iconos[index - 1];
+      this.nombreIcono ='assets/img/'+ this.iconos[index - 1];
 
 
       if (index === 1) {
@@ -804,10 +807,11 @@ this.pillMenu.animacion();
     async ngOnInit() {
       console.log("home principal");
       this.subscribeToEvents();
+      this.statusBar.backgroundColorByHexString('#6228cf');
 
       //this.LstTareas = await this.apiTareas.get().toPromise();
 
-      this.iconos = ['book-outline', 'pencil', 'people-outline', 'person-outline', 'hammer-outline','reader-outline'];
+      this.iconos = ['books_icono.svg', 'tasks_icono.svg', 'community_icono.svg', 'account_icono.svg', 'support_icono.svg','exams_icono.svg'];
       this.headersText = ['Books', 'Tasks', 'Community', 'Account', 'Support','Exams'];
       this.tabs = ['Todos', 'Inglés'  , 'Español'];
 
@@ -957,6 +961,8 @@ this.pillMenu.animacion();
 
       this.gesture3.enable();
 
+      this.animacionFlechaArriba();
+
       
     }
 
@@ -1010,6 +1016,8 @@ this.pillMenu.animacion();
     }
 
     download(url,versionDevice,versionServer) {
+      this.cargandoAnimation("Actualizando portadas");
+      
       const fileTransfer: FileTransferObject = this.transfer.create();
   
       const nameFile ='covers.zip';
@@ -1038,6 +1046,7 @@ this.pillMenu.animacion();
   
         this.storage.set("versionPortadas",versionServer).then( () => {
           console.log("guardo portadas");
+          this.loadingController.dismiss();
           setTimeout(() => {
             this.booksComponent.iniciarValidacion();
             this.booksComponentIngles.iniciarValidacion();
@@ -1049,6 +1058,8 @@ this.pillMenu.animacion();
         console.error(err);
         /*alert(err);*/
         alert("Error con la conexión, por favor intente descargar de nuevo");
+
+        this.loadingController.dismiss();
       });
 
     }
@@ -1781,6 +1792,21 @@ this.pillMenu.animacion();
 
     }
      animationButonSlide.play();
+
+    }
+
+    animacionFlechaArriba(){
+      let animationFlechaArriba : Animation;
+
+      animationFlechaArriba= this.animationCtrl.create('animationFlechaArriba')
+      .addElement(this.fabflechaarriba.nativeElement)
+      .duration(1500)
+      .iterations(Infinity)
+      .fromTo('transform', 'translateY(0px)', 'translateY(-70px)')
+      .fromTo('opacity', '1', '0.2');
+
+   //   animationFlechaArriba.play();
+
 
     }
 

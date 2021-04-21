@@ -1,32 +1,46 @@
-<ion-header #toolbar [translucent]="false" style="background-color: white;
+<ion-header #toolbar [translucent]="false" style="background-color: #ffffff00;
 border-radius: 0px 0px 0px 50px;" mode="ios">
-    <ion-toolbar  style="height: 13vh;
-   border-radius: 0px 0px 0px 50px;--background:ffffff00">
+    <ion-toolbar style="height: 16vh;
+    border-radius: 0px 0px 0px 50px;--background:ffffff00">
         <ion-title #text class="etitle">
-            <ion-icon name="add-circle" #avatarUser style="color: black; transform: translateY(0.8vh);
-            font-size: 27px;font-size: 4vh;"></ion-icon>
-            <span style="opacity:0;margin-right: -10px;">-</span> Hola, {{user.nombre}}!
+            <ion-icon name="add-circle" #avatarUser style="display: none;color: white; transform: translateY(0.8vh);
+             font-size: 27px;font-size: 4vh;"></ion-icon>
+            <!--  <span style="opacity:0;    margin-right: -10px;">-</span>-->
+            <div *ngIf="hayConexion">Hola, {{user.nombre}}!</div>
+            <div *ngIf="!hayConexion">Sin conexión</div>
+            <div *ngIf="hayConexion" style="display: flex;padding-top: 7px;"><span style="font-size: 1.5vh;font-weight: 600;color:white">LBS+</span></div>
+            <div *ngIf="!hayConexion" style="display: flex;padding-top: 7px;"><span style="font-size: 1.5vh;font-weight: 600;color:white">Tu dispositivo no cuenta con una</span></div>
+            <div *ngIf="hayConexion"><span style="display: flex;font-size: 1.5vh;font-weight: 600;color:white">Versión 61</span></div>
+            <div *ngIf="!hayConexion"><span style="display: flex;font-size: 1.5vh;font-weight: 600;color:white">conexión a internet</span></div>
         </ion-title>
+
     </ion-toolbar>
 </ion-header>
 <ion-header #toolbar1 slot="end" [translucent]="false" style=" top: 0;height: 20vh;
 border-radius: 0px 0px 0px 40px;
-background-color: #FF426D;
+background-color: #ffffff00;
 position: absolute;
 width: 19vw;
 max-width: 130px;
 right: 0px;" mode="ios">
 
     <div style="height: 50%;
-    padding-top: 3vh;
-    padding-left: 36%;
+    padding-top: 3.6vh;
+    padding-left: 5%;
     font-size: 4vh;
     color: white;" (click)="Salir()">
-        <ion-icon name="exit-outline"></ion-icon>
+        <ion-fab>
+            <ion-fab-button size="small" style="width: 35px;height: 35px;--background: white;--background: #F4315D;
+            --background-activated: #f76e8d;
+            --background-focused: #f76e8d;
+            --background-hover: #f76e8d;">
+                <ion-icon src="assets/img/cerrar_sesion_icono.svg" style="font-size: 12px;"></ion-icon>
+            </ion-fab-button>
+        </ion-fab>
 
     </div>
 
-    <div style="  height: 50%;
+    <!--  <div style="  height: 50%;
     background-color: #F4315D;
     top: 50%;
     border-radius: 0px 0px 0px 40px;
@@ -34,15 +48,16 @@ right: 0px;" mode="ios">
     padding-top: 3vh;
     font-size: 3vh;
     color: aliceblue;">
-        V61</div>
+        V61</div>-->
 
 </ion-header>
 
 <div #content id="container" style="background-color: #6228cf;" slot="fixed">
     <ion-title #animation7 mode="ios" style="left: 0px;bottom: 0px;padding-bottom: 49vh;padding-left: 30px;padding-right: 90px;padding-top: -1vh;/* padding-bottom: 16vh; *//* padding-bottom: 0px; */position: absolute;width: 100%;height: 100%;transform: translateZ(0px);font-size: 73px;font-weight: 500;text-align: left;box-sizing: border-box;pointer-events: none;--color: #fff;z-index: 5;/* letter-spacing: 3px;*/">
         {{user.campus}}</ion-title>
-        
-    <ion-icon #animation8 style="color: white;left: 0px;bottom: 0px;padding-bottom: 65vh;padding-left: 37px;padding-right: 79px;padding-top: -1vh;position: absolute;font-size: 34px;font-weight: 500;text-align: left;box-sizing: border-box;pointer-events: none;z-index: 5;" [name]="nombreIcono"></ion-icon>
+
+    <ion-icon #animation8 style="color: white;left: 0px;bottom: 0px;padding-bottom: 65vh;padding-left: 37px;padding-right: 79px;padding-top: -1vh;position: absolute;font-size: 34px;font-weight: 500;text-align: left;box-sizing: border-box;pointer-events: none;z-index: 5;"
+        [src]="nombreIcono"></ion-icon>
 
     <ion-title mode="ios" style="left: 0px;top: 0px;padding-left: 30px;padding-right: 90px;padding-top:67vh;padding-bottom: 0px;position: absolute;width: 100%;height: 100%;transform: translateZ(0px);font-size: 39px;font-weight: 700;text-align: left;box-sizing: border-box;pointer-events: none;z-index: 5;--color: #fff;letter-spacing: 3px;">{{header}}</ion-title>
 
@@ -61,7 +76,7 @@ right: 0px;" mode="ios">
 </div>
 
 <ion-fab mode="ios" vertical="bottom" horizontal="center" slot="fixed" style="transform: translateX(-57px);/*margin-left: 23vw;*/">
-    <ion-fab-button #fabstart  mode="ios" size="small" style="--box-shadow:none ;--background-activated: #F4315D;  --background: #F4315D;width: 46px;
+    <ion-fab-button #fabstart mode="ios" size="small" style="--box-shadow:none ;--background-activated: #F4315D;  --background: #F4315D;width: 46px;
     height:46px;transform: scale(0);display: none;">
         <ion-icon name="list-outline"></ion-icon>
     </ion-fab-button>
@@ -95,9 +110,9 @@ right: 0px;" mode="ios">
 </ion-fab>
 <!-- Termina botones para escritorio -->
 
-<div #div2  class="edu1" style="transform: translateY(60vh)">
-    <div  style="position: -webkit-sticky;top: 0;font-size: 29px;z-index: 999;position: sticky;">    
-        <app-pill-menu (click)="test()"  #pillMenu [itemsMenu]="tabs" [selectOption]="selectOption" (indicatorChanged)="segmentChanged($event)"></app-pill-menu>
+<div #div2 class="edu1" style="transform: translateY(60vh)">
+    <div style="position: -webkit-sticky;top: 0;font-size: 29px;z-index: 999;position: sticky;">
+        <app-pill-menu (click)="test()" #pillMenu [itemsMenu]="tabs" [selectOption]="selectOption" (indicatorChanged)="segmentChanged($event)"></app-pill-menu>
     </div>
     <ion-header [translucent]="false" mode="ios"></ion-header>
     <ion-content #IonContentScroll [scrollY]="scrollenable" style="--background: #ffffff;">
@@ -106,7 +121,7 @@ right: 0px;" mode="ios">
         <ion-slides [options]="slideOptsdos" #slideDown (ionSlideTouchEnd)="ionSlideTouchEnd(slideUp,slideDown)" *ngIf="selectSeccion == 1" style="min-height: 72.6vh;">
             <ion-slide>
                 <app-codes style="width: 100%;" (librosDescargados)="librosDescargados($event)" *ngIf="codigoVisible"></app-codes>
-                <app-books style="width: 100%;"  (buscarPortadas)="buscarPortadas()" (updateAutoHeightSlider)="updateAutoHeightSlider()" #booksComponent [librosIN]="libros" *ngIf="!codigoVisible"> </app-books>
+                <app-books style="width: 100%;" (buscarPortadas)="buscarPortadas()" (updateAutoHeightSlider)="updateAutoHeightSlider()" #booksComponent [librosIN]="libros" *ngIf="!codigoVisible"> </app-books>
             </ion-slide>
             <ion-slide>
                 <app-codes style="width: 100%;" (librosDescargados)="librosDescargados($event)" *ngIf="codigoVisible"></app-codes>
@@ -132,7 +147,7 @@ right: 0px;" mode="ios">
         </ion-slides>
 
         <!--Community-->
-        <ion-slides [options]="slideOptsdos" #slideDown  (ionSlideTouchEnd)="ionSlideTouchEnd(slideUp,slideDown)" *ngIf="selectSeccion == 3" style="min-height: 72.6vh;">
+        <ion-slides [options]="slideOptsdos" #slideDown (ionSlideTouchEnd)="ionSlideTouchEnd(slideUp,slideDown)" *ngIf="selectSeccion == 3" style="min-height: 72.6vh;">
             <ion-slide>
                 <app-news *ngIf="pildora === 'Noticias'" #newsComponent style="width: 100%;" (updateAutoHeightSlider)="updateAutoHeightSlider()"></app-news>
             </ion-slide>

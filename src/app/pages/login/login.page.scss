@@ -1,0 +1,22 @@
+.cajaTexto {
+    background: white;
+    border-radius: 50px;
+    height: 45px;
+    text-align: center;
+}
+
+.divSimulacionIcono {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    contain: strict;
+    fill: currentcolor;
+    box-sizing: content-box !important;
+    font-size: 88px;
+}
+
+.divSimulacionIconoInner {
+    display: block;
+    height: 100%;
+    width: 100%;
+}

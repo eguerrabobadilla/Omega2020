@@ -3,6 +3,7 @@ ion-button {
     --color: #F4315D;
     --background-activated: #F4315D;
 }
+
 ion-item {
     --border-color: #ffffff;
 }
@@ -21,11 +22,11 @@ ion-item {
 
 //segundo container esta clase es importante ya que le dice hasta donde topa el segundo 
 #ion-content1 {
-  //  --offset-top: 39vh !important;
+    //  --offset-top: 39vh !important;
 }
 
 #ion-contentx {
-  //  --offset-top: -8vh !important;
+    //  --offset-top: -8vh !important;
 }
 
 #container strong {
@@ -34,14 +35,20 @@ ion-item {
 }
 
 .etitle {
+    padding-top: 4vh;
+    left: 0px;
+    top: 0px;
+    padding-left: 30px;
+    padding-right: 90px;
+    padding-bottom: 0px;
     height: 13vh;
     font-size: 3vh;
-    padding: 0px;
+    //  padding: 0px;
     position: relative;
     text-align: start;
     /* padding-left: var(--ion-safe-area-top, 0); */
-    padding-left: 8vw;
-    color: #272626;
+    //padding-left: 8vw;
+    color: white;
     backface-visibility: hidden;
     -webkit-font-smoothing: subpixel-antialiased;
 }
@@ -67,7 +74,7 @@ ion-content ion-toolbar {
 }
 
 ion-slides {
-  //  height: 100%;
+    //  height: 100%;
 }
 
 .avatar {
@@ -139,16 +146,16 @@ ion-item {
     top: 0vh;
 }
 
-	// eduardo test	
-    .edu1 {	
-        height: 78%;	
-        top: 28%;	
-        position: absolute;	
-        display: block;	
-        background-color: #fff;	
-        width: 100%;	
-        border-top-right-radius: 44px;	
-        border-top-left-radius: 44px;	
-    }
+// eduardo test	
+.edu1 {
+    height: 78%;
+    top: 28%;
+    position: absolute;
+    display: block;
+    background-color: #fff;
+    width: 100%;
+    border-top-right-radius: 44px;
+    border-top-left-radius: 44px;
+}
 
 ///////////////////////css books BORRAR VUANDO SE CAMBIA A COMPONENTE

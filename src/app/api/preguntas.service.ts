@@ -82,6 +82,21 @@ export class PreguntasService extends apiBase {
    // return this.http.get<any[]>(`https://my-json-server.typicode.com/eguerrabobadilla/Omega2020/preguntas/${indexPregunta}`);
   }
 
+  
+  saveRelacionarPregunta(item:any): Observable<any[]>{
+
+    return this.http.post<any[]>(`${this.url}/${this.Ws}/saveRelacionar`,item);
+   // return this.http.get<any[]>(`https://my-json-server.typicode.com/eguerrabobadilla/Omega2020/preguntas/${indexPregunta}`);
+  }
+
+  deleteRelacionarPregunta(item:any): Observable<any[]>{
+
+    return this.http.post<any[]>(`${this.url}/${this.Ws}/deleteRelacionar`,item);
+   // return this.http.get<any[]>(`https://my-json-server.typicode.com/eguerrabobadilla/Omega2020/preguntas/${indexPregunta}`);
+  }
+
+
+
   getStatusExamen(examenId): Observable<any[]>{
 
     return this.http.get<any[]>(`${this.url}/${this.Ws}/getStatusExamen/${examenId}`);

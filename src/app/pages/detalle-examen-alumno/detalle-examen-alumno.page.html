@@ -53,7 +53,8 @@
 
 
         </ion-slide>
-        <ion-slide style="display: block;" *ngIf="item.status!='Finalizado'">
+        <ion-slide style="display: block;" *ngIf="!esRelacionar && item.status!='Finalizado'">
+            <!--*ngIf="item.status!='Finalizado'"-->
             <ion-list>
                 <ion-radio-group [(ngModel)]="respuestaSeleccionada">
                     <ion-list-header>
@@ -69,6 +70,26 @@
                 </ion-radio-group>
 
             </ion-list>
+        </ion-slide>
+        <!-- ///////////////slide Ejercicio Relacionar///////////////////-->
+        <ion-slide style="display: block;" *ngIf="esRelacionar && item.status!='Finalizado' ">
+            <!--*ngIf="item.status!='Finalizado'"-->
+            <ion-list-header>
+                <ion-label #child style="text-align: initial;" [innerHtml]="preguntaInfo['Pregunta']  | sanitizePipe"></ion-label>
+            </ion-list-header>
+            <ion-grid>
+                <ion-row *ngFor="let item of preguntasRelacionar;let i = index">
+                    <ion-col>
+                        <div #p style="border-radius: 30px;margin: 15px;border: none;background-color: #ffffff;" (click)="clickEjercicioRelacionar($event,item,i+1)" [innerHtml]="item.Respuesta | sanitizePipe"></div>
+                    </ion-col>
+                    <ion-col>
+                        <div #r style="border-radius: 30px;margin: 15px;border: none;background-color: #ffffff;" (click)="clickEjercicioRelacionar($event,respuestas[i],i+1)" [innerHtml]="respuestas[i].Respuesta | sanitizePipe"></div>
+                    </ion-col>
+                </ion-row>
+
+            </ion-grid>
+
+
         </ion-slide>
         <ion-slide style="height: 63vh;" *ngIf="item.status!='Finalizado'">
             <div>
@@ -121,7 +142,7 @@
             <div>
                 <div>
                     <ion-label style="font-size: 17px;font-weight: 600;text-align: center;text-overflow: ellipsis;">
-                        {{ textoInformacionInicioFin }} <br> {{fechaAplicacionExamen  | date:'medium'}}
+                        {{ textoInformacionInicioFin }} <br> {{fechaAplicacionExamen | date:'medium'}}
                     </ion-label>
                 </div>
 

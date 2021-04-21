@@ -1,11 +1,17 @@
-<ion-header #toolbar [translucent]="false" style="background-color: white;
+<ion-header #toolbar [translucent]="false" style="background-color: #ffffff00;
 border-radius: 0px 0px 0px 50px;" mode="ios">
-    <ion-toolbar style="height: 13vh;
+    <ion-toolbar style="height: 16vh;
    border-radius: 0px 0px 0px 50px;--background:ffffff00">
         <ion-title #text class="etitle">
-            <ion-icon name="add-circle" #avatarUser style="color: black; transform: translateY(0.8vh);
+            <ion-icon name="add-circle" #avatarUser style="display: none;color: white; transform: translateY(0.8vh);
             font-size: 27px;font-size: 4vh;"></ion-icon>
-            <span style="opacity:0;    margin-right: -10px;">-</span> Hola, {{user.nombre}}!
+            <!--  <span style="opacity:0;    margin-right: -10px;">-</span>-->
+            <div *ngIf="hayConexion">Hola, {{user.nombre}}!</div>
+            <div *ngIf="!hayConexion">Sin conexión</div>
+            <div *ngIf="hayConexion" style="display: flex;padding-top: 7px;"><span style="font-size: 1.5vh;font-weight: 600;color:white">LBS+</span></div>
+            <div *ngIf="!hayConexion" style="display: flex;padding-top: 7px;"><span style="font-size: 1.5vh;font-weight: 600;color:white">Tu dispositivo no cuenta con una</span></div>
+            <div *ngIf="hayConexion"><span style="display: flex;font-size: 1.5vh;font-weight: 600;color:white">Versión 61</span></div>
+            <div *ngIf="!hayConexion"><span style="display: flex;font-size: 1.5vh;font-weight: 600;color:white">conexión a internet</span></div>
         </ion-title>
 
     </ion-toolbar>
@@ -16,22 +22,30 @@ border-radius: 0px 0px 0px 50px;" mode="ios">
 <!--v17----test-->
 <ion-header #toolbar1 slot="end" [translucent]="false" style=" top: 0;height: 20vh;
 border-radius: 0px 0px 0px 40px;
-background-color: #FF426D;
+background-color: #ffffff00;
 position: absolute;
 width: 19vw;
 max-width: 130px;
 right: 0px;" mode="ios">
 
     <div style="height: 50%;
-    padding-top: 3vh;
-    padding-left: 36%;
+    padding-top: 3.6vh;
+    padding-left: 5%;
     font-size: 4vh;
     color: white;" (click)="Salir()">
-        <ion-icon name="exit-outline"></ion-icon>
+        <ion-fab>
+            <ion-fab-button size="small" style="width: 35px;height: 35px;--background: #F4315D;
+            --background-activated: #f76e8d;
+            --background-focused: #f76e8d;
+            --background-hover: #f76e8d;">
+                <ion-icon src="assets/img/cerrar_sesion_icono.svg" style="font-size: 12px;"></ion-icon>
+            </ion-fab-button>
+        </ion-fab>
+        <!--   <ion-icon name="exit-outline"></ion-icon>-->
 
     </div>
 
-    <div style="  height: 50%;
+    <!--  <div style="  height: 50%;
     background-color: #F4315D;
     top: 50%;
     border-radius: 0px 0px 0px 40px;
@@ -39,7 +53,7 @@ right: 0px;" mode="ios">
     padding-top: 3vh;
     font-size: 22px;
     color: aliceblue;">
-        V61</div>
+        V61</div>-->
 
 </ion-header>
 
@@ -86,7 +100,7 @@ top: 0;" mode="ios">
     text-align: left;
     box-sizing: border-box;
     pointer-events: none;
-    --color: #fff;
+    --color: white;
      z-index: 5;
     /* letter-spacing: 3px;*/">
         {{user.grado}}</ion-title>
@@ -103,8 +117,7 @@ top: 0;" mode="ios">
     text-align: left;
     box-sizing: border-box;
     pointer-events: none;
-    z-index: 5;
-  " [name]="nombreIcono"></ion-icon>
+    z-index: 5;" [src]="nombreIcono"></ion-icon>
 
 
     <ion-title mode="ios" style="left: 0px;
@@ -124,7 +137,18 @@ top: 0;" mode="ios">
     pointer-events: none;
     z-index: 5;
     --color: #fff;
-    letter-spacing: 3px;">{{header}}</ion-title>
+    letter-spacing: 0px;">{{header}}</ion-title>
+
+    <ion-fab mode="ios" vertical="bottom" horizontal="center" slot="fixed" style="padding-bottom: 150px;">
+        <ion-fab-button #fabflechaarriba mode="ios" size="small" style="display: none; --box-shadow:none ;--background-activated: #f4315d00; --background: #f4315d00;width: 46px;
+    height:46px;">
+            <div>
+                <ion-icon src="assets/img/flecha_arriba_icono.svg" style="font-size: 20px;color: #ffa906;"></ion-icon>
+            </div>
+
+        </ion-fab-button>
+    </ion-fab>
+
 
     <ion-slides #slideUp type="ios" style="transform: translateY(4vh);height: 100%;" (ionSlideTransitionStart)="ionSlideTransitionStart()" (ionSlideTouchStart)="ionSlideTouchStart()" (ionSlideTouchEnd)="ionSlideTouchEndSlide()" [options]="slideOpts">
         <ion-slide>
@@ -217,7 +241,7 @@ top: 0;" mode="ios">
             </ion-slide>
             <ion-slide>
                 <app-codes (librosDescargados)="librosDescargados($event)" *ngIf="codigoVisible"></app-codes>
-                <app-books (updateAutoHeightSlider)="updateAutoHeightSlider()"  #booksComponentEspanol [librosIN]="libros | filter : 'Espanol' : 'Idioma'" *ngIf="!codigoVisible"> </app-books>
+                <app-books (updateAutoHeightSlider)="updateAutoHeightSlider()" #booksComponentEspanol [librosIN]="libros | filter : 'Espanol' : 'Idioma'" *ngIf="!codigoVisible"> </app-books>
             </ion-slide>
             <!--<ion-slide>
                 <app-codes (librosDescargados)="librosDescargados($event)"></app-codes>
@@ -265,7 +289,7 @@ top: 0;" mode="ios">
                         <ion-card-content style="padding-inline-start: 0px;padding-inline-end: 0px;padding-bottom: 0px;">
                             <div #calendar style="width: 100%">
                                 <!-- <mbsc-calendar [marked]="events" [options]="events"></mbsc-calendar>-->
-                                <mbsc-calendar #mobi  [marked]="events" [options]="settings"></mbsc-calendar>
+                                <mbsc-calendar #mobi [marked]="events" [options]="settings"></mbsc-calendar>
                             </div>
 
                         </ion-card-content>
