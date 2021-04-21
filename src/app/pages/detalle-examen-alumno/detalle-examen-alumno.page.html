@@ -78,12 +78,12 @@
                 <ion-label #child style="text-align: initial;" [innerHtml]="preguntaInfo['Pregunta']  | sanitizePipe"></ion-label>
             </ion-list-header>
             <ion-grid>
-                <ion-row *ngFor="let item of preguntasRelacionar;let i = index">
-                    <ion-col  class="ion-align-self-center">
-                        <div #p style="border-radius: 30px;margin: 15px;border: none;background-color: #ffffff;height: 100%;" (click)="clickEjercicioRelacionar($event,item,i+1)" [innerHtml]="item.Respuesta | sanitizePipe"></div>
+                <ion-row *ngFor="let item of preguntasRelacionar;let i = index" class="ion-align-items-center" style="justify-content: center;">
+                    <ion-col class="ion-align-self-center">
+                        <div #p style="border-radius: 30px;margin: 15px;border: none;background-color: #ffffff;height: 100%;max-width: 250px;" (click)="clickEjercicioRelacionar($event,item,i+1)" [innerHtml]="item.Respuesta | sanitizePipe"></div>
                     </ion-col>
-                    <ion-col  class="ion-align-self-center">
-                        <div #r style="border-radius: 30px;margin: 15px;border: none;background-color: #ffffff;height: 100%;" (click)="clickEjercicioRelacionar($event,respuestas[i],i+1)" [innerHtml]="respuestas[i].Respuesta | sanitizePipe"></div>
+                    <ion-col class="ion-align-self-center">
+                        <div #r style="border-radius: 30px;margin: 15px;border: none;background-color: #ffffff;height: 100%;max-width: 250px;" (click)="clickEjercicioRelacionar($event,respuestas[i],i+1)" [innerHtml]="respuestas[i].Respuesta | sanitizePipe"></div>
                     </ion-col>
                 </ion-row>
 
