@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FileTransfer } from '@ionic-native/file-transfer/ngx';
 import { File } from '@ionic-native/file/ngx';
 import { AlertController, IonList, LoadingController, ModalController, Platform, ToastController } from '@ionic/angular';
+import { timeStamp } from 'console';
 
 declare var window;
 
@@ -36,22 +37,24 @@ export class ExplorerFilePage implements OnInit {
 
     const pathDownload = this.platform.is("android") ? this.file.dataDirectory  :  this.file.dataDirectory;
 
-    this.file.listDir(pathDownload,'exportPreguntas/').then(files => {
-      files.reverse();
+    this.file.listDir(pathDownload,'exportPreguntas/').then(async files => {
 
-      files.forEach(async (file, index) => { 
+      await Promise.all(files.map(async (file) => { 
         let fileEntry = await this.resolveLocalFileSystem(file);
         let metadata  = await this.getMetadataFile(fileEntry);
         file["modificationTime"] = metadata["modificationTime"];
-        console.log(file);
+        file["dateTimeStamp"] = Date.parse(file["modificationTime"]);
         this.LstFiles.push(file);
-      });
+      }));
       
+      this.LstFiles.sort((a, b) => (a.dateTimeStamp > b.dateTimeStamp) ? 1 : -1);
+      this.LstFiles.reverse();
       this.loadingController.dismiss();
       
     }).catch(error =>{
       this.loadingController.dismiss();
     });
+
   }
   
   resolveLocalFileSystem(file) {
