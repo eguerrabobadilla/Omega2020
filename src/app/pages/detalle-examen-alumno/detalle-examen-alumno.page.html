@@ -53,7 +53,7 @@
 
 
         </ion-slide>
-        <ion-slide style="display: block;" *ngIf="!esRelacionar">
+        <ion-slide style="display: block;" *ngIf="!esRelacionar && item.status!='Finalizado'">
             <!--*ngIf="item.status!='Finalizado'"-->
             <ion-list>
                 <ion-radio-group [(ngModel)]="respuestaSeleccionada">
@@ -72,16 +72,18 @@
             </ion-list>
         </ion-slide>
         <!-- ///////////////slide Ejercicio Relacionar///////////////////-->
-        <ion-slide style="display: block;" *ngIf="esRelacionar">
+        <ion-slide style="display: block;" *ngIf="esRelacionar && item.status!='Finalizado' ">
             <!--*ngIf="item.status!='Finalizado'"-->
-
+            <ion-list-header>
+                <ion-label #child style="text-align: initial;" [innerHtml]="preguntaInfo['Pregunta']  | sanitizePipe"></ion-label>
+            </ion-list-header>
             <ion-grid>
                 <ion-row *ngFor="let item of preguntasRelacionar;let i = index">
                     <ion-col>
-                        <div (click)="clickEjercicioRelacionar($event,item,i+1)" [innerHtml]="item.Respuesta | sanitizePipe"></div>
+                        <div #p style="border-radius: 30px;margin: 15px;border: none;background-color: #ffffff;" (click)="clickEjercicioRelacionar($event,item,i+1)" [innerHtml]="item.Respuesta | sanitizePipe"></div>
                     </ion-col>
                     <ion-col>
-                        <div (click)="clickEjercicioRelacionar($event,respuestas[i],i+1)" [innerHtml]="respuestas[i].Respuesta | sanitizePipe"></div>
+                        <div #r style="border-radius: 30px;margin: 15px;border: none;background-color: #ffffff;" (click)="clickEjercicioRelacionar($event,respuestas[i],i+1)" [innerHtml]="respuestas[i].Respuesta | sanitizePipe"></div>
                     </ion-col>
                 </ion-row>
 

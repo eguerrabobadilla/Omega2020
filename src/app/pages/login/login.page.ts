@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AlertController, LoadingController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { WebsocketService } from 'src/app/services/websocket.service';
+import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 @Component({
   selector: 'app-login',
@@ -15,7 +16,7 @@ export class LoginPage implements OnInit {
 
   constructor(private authService: AuthenticationService, private fb: FormBuilder,
     private alertCtrl: AlertController,public loadingController: LoadingController,
-    public alertController: AlertController,private router: Router,public webSocket: WebsocketService) { 
+    public alertController: AlertController,private router: Router,public webSocket: WebsocketService,private statusBar: StatusBar ) { 
       this.FrmLogin = this.fb.group({
         Usuario: ['', [Validators.required]],
         Password: ['',[Validators.required]]
@@ -23,7 +24,12 @@ export class LoginPage implements OnInit {
     }
 
   ngOnInit() {
+    this.statusBar.backgroundColorByHexString('#6228cf');
 
+  }
+
+  ngAfterViewInit() {
+    this.statusBar.backgroundColorByHexString('#6228cf');
   }
   async loginUser(){
     let loading;

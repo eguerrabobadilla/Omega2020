@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild, ApplicationRef, ElementRef, Renderer2 } from '@angular/core';
+import { Component, Input, OnInit, ViewChild, ApplicationRef, ElementRef, Renderer2, ViewChildren, QueryList } from '@angular/core';
 import { IonSlides, PopoverController, ModalController, LoadingController, IonVirtualScroll } from '@ionic/angular';
 import { PreguntasService } from 'src/app/api/preguntas.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
@@ -36,6 +36,13 @@ export class DetalleExamenAlumnoPage implements OnInit {
   banderaslideFinExamen=false;
   headerResultadoVisible=false;
   loading: any;
+  estadoClickRelacionar=0;//relacionar
+  itemSeleccionadoRelacionar:any;//relacionar
+  primerClickRelacionar= true;//relacionar
+  coloresSeleccionados=[];
+  colores=['red','blue','green','yellow','black','magenta'];
+
+  elementoSeleccionadoRelacionar: any;
   textoInformacionInicioFin:string;
   spiner=false;
   inicioContador=false;
@@ -45,6 +52,8 @@ export class DetalleExamenAlumnoPage implements OnInit {
   @ViewChild('countdown', {static: false}) counter: CountdownComponent;
   @ViewChild("child", {static: false}) child: ElementRef<HTMLElement>;
   @ViewChild(IonVirtualScroll, {static: false}) virtualScroll: IonVirtualScroll;
+  @ViewChildren('p') componentsp:QueryList<ElementRef>;
+  @ViewChildren('r') componentsr:QueryList<ElementRef>;
   config ={
     demand: false
   };
@@ -82,8 +91,7 @@ export class DetalleExamenAlumnoPage implements OnInit {
      }
 
      else if(data["status"]=="Proceso"){
-          console.log(data)
-            this.iniciarExamen(data["tiempoRestante"]);
+        this.iniciarExamen(data["tiempoRestante"]);
      }
      else if (data["status"]=="periodoFinalizado"){
       setTimeout(() => {
@@ -92,7 +100,6 @@ export class DetalleExamenAlumnoPage implements OnInit {
         this.slideOpts={autoHeight: true,initialSlide:4,allowTouchMove: false};
         this.textoInformacionInicioFin="La fecha en la que puedes aplicar este examen ha finalizado. "
         this.fechaAplicacionExamen=data["fechaTerminoExamen"];
-        console.log(data["status"])
 
        });
 
@@ -137,8 +144,7 @@ export class DetalleExamenAlumnoPage implements OnInit {
     }, 100);
       
   this.apiPreguntas.getExamen(this.examenId).subscribe(data =>{
-    console.log("DURACION EXAMEN")
-    console.log(duracionExamen)
+
         if(duracionExamen==null)this.duracionExamen=this.item.DuracionExamen*60;
         else this.duracionExamen=duracionExamen*60;
         
@@ -152,8 +158,7 @@ export class DetalleExamenAlumnoPage implements OnInit {
   }
 
   async cambioPregunta(direccion , numero){
-   // console.log(direccion)
-   // console.log(numero)
+
 
   //  if(this.contadorPregunta==5-1)this.slider.slidePrev();
   
@@ -199,16 +204,25 @@ export class DetalleExamenAlumnoPage implements OnInit {
     setTimeout(() => {
       this.spiner=true;
     });
-    this.botonAnteriorDisable=true;
-    this.botonSiguienteDisable=true;
+    this.botonAnteriorDisable=true;  //los p ongo disable antes de la peticion para bloquearlos
+    this.botonSiguienteDisable=true; //los p ongo disable antes de la peticion para bloquearlos
+
+    
     this.apiPreguntas.getPreguntaExamen(this.examenId,this.contadorPregunta,this.preguntaAnterior,this.respuestaSeleccionada).subscribe(data =>{
       this.preguntaInfo = data;
 
      if(this.banderaslideFinExamen==true)this.botonSiguienteDisable=true;else this.botonSiguienteDisable=false ;
+
      if(this.contadorPregunta==1)this.botonAnteriorDisable=true;else this.botonAnteriorDisable = false;
      // si es ejercicio relacionar
-     if(data['TipoPregunta']=='relacionar')this.exercicioRelacionar(data);
-     else  this.exercicioUnaSolaRespuesta(data);
+     if(data['TipoPregunta']=='relacionar'){
+      this.exercicioRelacionar(data);
+      this.esRelacionar=true;
+     }
+     else{
+      this.esRelacionar=false;
+      this.exercicioUnaSolaRespuesta(data);
+     } 
  
       
       setTimeout(() => {
@@ -228,7 +242,9 @@ export class DetalleExamenAlumnoPage implements OnInit {
       });
     },error => {
       console.log(error);
-      
+      this.botonAnteriorDisable=false;  //los p ongo disable antes de la peticion para bloquearlos
+      this.botonSiguienteDisable=false;
+      if(this.banderaslideFinExamen==true)this.botonSiguienteDisable=true;
     });
 
     
@@ -258,7 +274,7 @@ export class DetalleExamenAlumnoPage implements OnInit {
   async preguntaFinalizarExamen(){
     try {
 
-      console.log("slideNext")
+
       this.headerResultadoVisible=true;
       this.slider.slideTo(3);
       this.botonHeaderVisible=false;
@@ -268,7 +284,6 @@ export class DetalleExamenAlumnoPage implements OnInit {
 //      this.resultadoExamen= await this.apiExamenes.examenTerminado(this.item.Id,this.item).toPromise();
 
       this.apiExamenes.examenTerminado(this.item.Id,this.item).subscribe(data  =>{
-        console.log(data['Preguntas']);
          this.resultadoExamen=data;
          setTimeout(() => {
           this.spiner=false;
@@ -336,10 +351,30 @@ export class DetalleExamenAlumnoPage implements OnInit {
 
 
   exercicioRelacionar(data: any[]){
-    console.log("dentroex ercicioRelacionar")
-    console.log(data);
+
     this.preguntasRelacionar=data['Preguntas'];
     this.respuestas= data['Respuestas'];
+setTimeout(() => {
+  data['Preguntas'].forEach(element => {
+
+    if(element.Relacionado!='NO'){
+      this.render.setStyle(this.componentsr.toArray()[element.Relacionado-1].nativeElement,'border','solid 5px');
+      this.render.setStyle(this.componentsp.toArray()[element.Id.charAt(0)-1].nativeElement,'border','solid 5px');
+      this.render.setStyle(this.componentsr.toArray()[element.Relacionado-1].nativeElement,'border-color',element.Background);
+      this.render.setStyle(this.componentsp.toArray()[element.Id.charAt(0)-1].nativeElement,'border-color',element.Background);
+
+      let indexEliminar=this.colores.indexOf(element.Background);
+      this.colores.splice(indexEliminar,1);
+    //  if(indexEliminar)
+   //   
+
+      
+    }
+
+  });
+
+}, 600);
+ 
   }
 
   exercicioUnaSolaRespuesta(data: any[]){
@@ -348,30 +383,126 @@ export class DetalleExamenAlumnoPage implements OnInit {
   }
 
   clickEjercicioRelacionar(element,item,index){
+
+    let derechoIdRelacionado;
+    let izquierdoIdRelacionado;
     //1.- si da click en la imagen, le indico que el elemento va hacer el div padre de la imagen
     if(element.target.tagName==='IMG')element=element.path[2];
     else element=element.target;
-    //2.- si ya tiene dibujado el color lo quito
-    if(element.style.background!==''){
-      this.render.removeStyle(element,'background')
+  
+    if(this.estadoClickRelacionar==0){
+
+      if(this.primerClickRelacionar){
+        this.itemSeleccionadoRelacionar=item;
+        this.elementoSeleccionadoRelacionar=element;
+      }
+
+       if(item.Relacionado !== 'NO'){//si ya esta relacionado elimino la relacion
+        console.log("element.style")
+        console.log(element.style)
+          this.colores.push(element.style.borderColor);
+          this.render.removeStyle(element,'border');
+          this.render.removeStyle(element,'border-color');
+
+        if(item.lado=='derecho'){
+          this.render.removeStyle(this.componentsp.toArray()[item.Relacionado-1].nativeElement,'border');
+          this.render.removeStyle(this.componentsp.toArray()[item.Relacionado-1].nativeElement,'border-color');
+          derechoIdRelacionado=this.preguntasRelacionar[item.Relacionado-1].Relacionado;
+          izquierdoIdRelacionado=item.Relacionado;
+           this.preguntasRelacionar[item.Relacionado-1].Relacionado='NO'
+        }
+        if(item.lado=='izquierdo'){
+          
+          this.render.removeStyle(this.componentsr.toArray()[item.Relacionado-1].nativeElement,'border');
+          this.render.removeStyle(this.componentsr.toArray()[item.Relacionado-1].nativeElement,'border-color');
+          izquierdoIdRelacionado=this.respuestas[item.Relacionado-1].Relacionado;
+          derechoIdRelacionado=item.Relacionado;
+          this.respuestas[item.Relacionado-1].Relacionado='NO'
+        }
+                //eliminar la relacion en la base datoos
+              let objDeleteRelacionar={
+                  examenId: this.examenId,
+                  indexPregunta : this.contadorPregunta,
+                  IdRelacionadoDerecho : izquierdoIdRelacionado ,
+                  IdRelacionadoIzquierdo : derechoIdRelacionado ,
+                 // ColorRelacionado : colorRelacionado
+          
+          
+                }
+        
+
+        this.apiPreguntas.deleteRelacionarPregunta(objDeleteRelacionar).subscribe(data  =>{
+  
+        });
+  
+        item.Relacionado='NO'
+         
+        return;
+       }
+
+        this.itemSeleccionadoRelacionar=item;
+        this.elementoSeleccionadoRelacionar=element;
+        this.colorDivRelacionar=this.coloresRelacionar();
+        this.render.setStyle(element,'border','solid 5px');
+        this.render.setStyle(element,'border-color',this.colorDivRelacionar);
+        this.estadoClickRelacionar=1;
+
     }
-    else{
-      this.colorDivRelacionar=this.coloresRelacionar(index);
-      this.render.setStyle(element,'background',this.colorDivRelacionar);
+    else if(this.estadoClickRelacionar==1){
+
+      if(item.lado == this.itemSeleccionadoRelacionar.lado && (element.style.borderColor==''|| element.style.borderColor=='initial') ){//si selecciona una de la misma columna
+        this.colores.push(this.elementoSeleccionadoRelacionar.style.borderColor);
+        this.itemSeleccionadoRelacionar=item;
+        this.colorDivRelacionar=this.coloresRelacionar();
+        this.render.setStyle(element,'border','solid 5px');
+        this.render.setStyle(element,'border-color',this.colorDivRelacionar);
+        this.render.removeStyle(this.elementoSeleccionadoRelacionar,'border');
+        this.render.removeStyle(this.elementoSeleccionadoRelacionar,'border-color');
+        this.elementoSeleccionadoRelacionar=element;
+        this.estadoClickRelacionar=1;
+
+      }
+
+      if(item.lado != this.itemSeleccionadoRelacionar.lado && (element.style.borderColor==''|| element.style.borderColor=='initial')){
+        let colorRelacionado=this.colorDivRelacionar;
+        this.render.setStyle(element,'border','solid 5px');
+        this.render.setStyle(element,'border-color',colorRelacionado);
+        item.Relacionado=this.itemSeleccionadoRelacionar.Id.charAt(0);
+        this.itemSeleccionadoRelacionar.Relacionado=item.Id.charAt(0);
+        this.estadoClickRelacionar=0;
+        console.log(item.Relacionado)
+        let ladoDerechoRelacionado = item.lado=='derecho' ? item.Relacionado : this.itemSeleccionadoRelacionar.Relacionado;
+        let ladoIzquierdoRelacionado = item.lado=='izquierdo' ? item.Relacionado : this.itemSeleccionadoRelacionar.Relacionado;
+        let objSaveRelacionar={
+          examenId: this.examenId,
+          indexPregunta : this.contadorPregunta,
+          IdRelacionadoDerecho : ladoDerechoRelacionado,
+          IdRelacionadoIzquierdo : ladoIzquierdoRelacionado,
+          ColorRelacionado : colorRelacionado
+
+
+        }
+        this.apiPreguntas.saveRelacionarPregunta(objSaveRelacionar).subscribe(data  =>{
+
+        });
+
+      }
+
+      this.primerClickRelacionar=false;
       
     }
 
   }
 
-  coloresRelacionar(codigoColor):string{
-   const colores= {
-       1 : 'red',
-       2 : 'blue',
-       3 : 'green',
-       4 : 'blue'
+  coloresRelacionar():string{
 
-      }
-    return colores[codigoColor];
+      
+      let numRandmom;
+      numRandmom=Math.floor(Math.random() * this.colores.length);
+      let colorSeleccionado=this.colores[numRandmom];
+      this.colores.splice(numRandmom, 1);
+
+    return colorSeleccionado;
 
   }
 

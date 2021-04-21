@@ -123,7 +123,7 @@ export class HomeDirectorPage {
   primeraVez = true;
   headersText: any = [];
   header = 'Books';
-  nombreIcono = 'book-outline';
+  nombreIcono = 'assets/img/books_icono.svg';
   iconos: any[];
   public swipeUp = false;
   public swipeUp2 = false;
@@ -274,7 +274,7 @@ export class HomeDirectorPage {
  
        animation2.play();
        animation3.play();
-       animation4.play();
+   //    animation4.play();
      //  animation5.play();
        animation6.play();
        animation7.play();
@@ -383,7 +383,7 @@ export class HomeDirectorPage {
  
        animation2.play();
        animation3.play();
-       animation4.play();
+    //   animation4.play();
     //   animation5.play();
        animation6.play();
        animation7.play();
@@ -569,7 +569,7 @@ export class HomeDirectorPage {
    console.log("Es celular:",this.globalServicies.isMobileDevice())
    this.isMobile =this.globalServicies.isMobileDevice();
      // set status bar to white
-      this.statusBar.backgroundColorByHexString('#FFFFFF');
+      this.statusBar.backgroundColorByHexString('#6228cf');
       this.selectSeccion = 1;
     //  this.statusBar.hide();
 
@@ -593,7 +593,7 @@ export class HomeDirectorPage {
         this.checkCodePush();
         if(!this.platform.is("ipad") || !this.platform.is("iphone") || !this.platform.is("ios")){
           this.statusBar.show();
-          this.statusBar.backgroundColorByHexString('#FFFFFF');
+          this.statusBar.backgroundColorByHexString('#6228cf');
        }
        else{
         this.statusBar.hide();
@@ -630,7 +630,8 @@ export class HomeDirectorPage {
 
       this.header = this.headersText[index - 1];
       console.log(this.header);
-      this.nombreIcono = this.iconos[index - 1];
+      
+      this.nombreIcono = 'assets/img/'+ this.iconos[index - 1];
 
 
       if (index === 1) {
@@ -767,7 +768,7 @@ export class HomeDirectorPage {
 
       //this.LstTareas = await this.apiTareas.get().toPromise();
       
-      this.iconos = ['book-outline','search-outline'];
+      this.iconos = ['books_icono.svg','users_icono.svg','community_icono.svg'];
       this.headersText = ['Books', 'Users','Community'];
       this.tabs = ['Todos', 'Inglés', 'Español'];
 
