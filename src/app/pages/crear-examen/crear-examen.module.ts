@@ -13,6 +13,7 @@ import { CalendarComponent } from 'src/app/components/calendar/calendar.componen
 import { SeleccionUnaRespuestaComponent } from 'src/app/components/examenes/seleccion-una-respuesta/seleccion-una-respuesta.component';
 import { ListPreguntasComponent } from 'src/app/components/examenes/list-preguntas/list-preguntas.component';
 import  {QuillModule}  from 'ngx-quill';
+import { RelacionarComponent } from 'src/app/components/examenes/relacionar/relacionar.component';
 
 
 
@@ -21,7 +22,8 @@ import  {QuillModule}  from 'ngx-quill';
   entryComponents : [
     CalendarComponent,
     SeleccionUnaRespuestaComponent,
-    ListPreguntasComponent
+    ListPreguntasComponent,
+    RelacionarComponent
   ],
   imports: [
     CommonModule,
@@ -33,6 +35,6 @@ import  {QuillModule}  from 'ngx-quill';
     MbscModule,
     QuillModule.forRoot()
   ],
-  declarations: [CrearExamenPage,CalendarComponent,SeleccionUnaRespuestaComponent,ListPreguntasComponent]
+  declarations: [CrearExamenPage,CalendarComponent,SeleccionUnaRespuestaComponent,ListPreguntasComponent,RelacionarComponent]
 })
 export class CrearExamenPageModule {}

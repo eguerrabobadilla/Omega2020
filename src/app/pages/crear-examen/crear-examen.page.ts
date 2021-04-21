@@ -21,6 +21,8 @@ import { File,FileEntry } from '@ionic-native/file/ngx';
 import Quill from 'quill';
 import  ImageResize  from 'src/assets/quill-image-resize-module-fix-for-mobile';
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
+import { RelacionarComponent } from 'src/app/components/examenes/relacionar/relacionar.component';
+import { ExplorerFilePage } from '../explorer-file/explorer-file.page';
 
 
 let BaseImageFormat = Quill.import('formats/image');
@@ -85,6 +87,7 @@ export class CrearExamenPage implements OnInit {
   @ViewChild('quill', {read: ElementRef, static: false}) quill: ElementRef;
 
   @ViewChild('opcionMultipleUnaRespuesta', {static: false}) opcionMultipleUnaRespuesta: SeleccionUnaRespuestaComponent; 
+  @ViewChild('relacionarPreguntas', {static: false}) relacionarPreguntas: RelacionarComponent; 
 
   public FrmItem: FormGroup;
   public submitAttempt: boolean = false;
@@ -106,6 +109,7 @@ export class CrearExamenPage implements OnInit {
   banderaEdito: boolean=false;
   permissionStorageDowload=false;
   public Editor = ClassicEditor;
+  private fileBlob: any;
   slideOpts = {
 
     autoHeight: true,
@@ -544,6 +548,15 @@ export class CrearExamenPage implements OnInit {
           cssClass: 'left-align-buttons',
           mode: 'ios',
           buttons: [{
+              text: ' Relacionar',
+              role: 'destructive',
+              icon: 'git-compare-outline',
+              handler: () => {
+                this.itemPreguntaSeleccionada=undefined;
+                this.viewComponentSelect="relacionarPreguntas";
+              }
+          },
+          {
             text: ' Selección (una respuesta)',
             role: 'destructive',
             icon: 'list',
@@ -629,9 +642,25 @@ export class CrearExamenPage implements OnInit {
         text: ' Importar',
         role: 'destructive',
         icon: 'share',
-        handler: () => {
+         handler: async () => {
           console.log('Share clicked');
-          this.inputFileBancoHTML.nativeElement.click();
+          if (this.platform.is('cordova')) {
+            const modal = await this.modalCtrl.create({
+              component: ExplorerFilePage
+              //cssClass: 'my-custom-class'
+            });
+            
+            await modal.present();
+
+            let resp = await modal.onDidDismiss();
+            console.log(resp);
+
+            resp.data.file.file(file => this.readFile(file));
+  
+          } else {
+            this.inputFileBancoHTML.nativeElement.click();
+          }
+
         }
       },
       {
@@ -645,6 +674,19 @@ export class CrearExamenPage implements OnInit {
     });
     await actionSheet.present();
   }
+
+  readFile(file: any) {
+    const reader = new FileReader();
+    reader.onload = () => {
+        this.fileBlob = new Blob([reader.result], {
+            type: file.type
+        });
+
+        this.onFileChangeMovil();
+    };
+
+    reader.readAsArrayBuffer(file);
+   }
 
   async download(url,NameFile) {
     const token = localStorage.getItem('USER_INFO');
@@ -667,11 +709,19 @@ export class CrearExamenPage implements OnInit {
 
     const fileTransfer: FileTransferObject = this.transfer.create();
     const extension = url.split('.').pop();
-    //const pathDownload = this.platform.is("android") ? this.file.dataDirectory  :  this.file.dataDirectory;
+    const pathDownload = this.platform.is("android") ? this.file.dataDirectory  :  this.file.dataDirectory;
     //const pathDownload = this.platform.is("android") ? this.file.externalDataDirectory :  this.file.documentsDirectory;
-    const pathDownload = this.platform.is("android") ? this.file.externalRootDirectory + "download/" :  this.file.documentsDirectory;
+    //const pathDownload = this.platform.is("android") ? this.file.externalRootDirectory + "download/" :  this.file.documentsDirectory;
 
-    fileTransfer.download(url, pathDownload + NameFile + '.zip',true,options).then((entry) => {
+    try {
+      await this.file.checkFile(pathDownload ,"exportPreguntas/" + NameFile + '.zip');
+      await this.file.removeFile(pathDownload + "exportPreguntas/" , NameFile + '.zip');
+    } catch (error) {
+      console.error(error);
+    }
+ 
+
+    fileTransfer.download(url, pathDownload + "exportPreguntas/" + NameFile + '.zip',true,options).then((entry) => {
         console.log('download complete: ' + entry.toURL());
         this.loadingController.dismiss();
         this.presentToast("Examen exportado");
@@ -688,7 +738,10 @@ export class CrearExamenPage implements OnInit {
   }
 
   guardarPregunta() {
-    this.opcionMultipleUnaRespuesta.save();
+    if(this.viewComponentSelect=='multipleUnaRespuesta')
+      this.opcionMultipleUnaRespuesta.save();
+    else if(this.viewComponentSelect=='relacionarPreguntas')
+      this.relacionarPreguntas.save();
   }
 
   cancelar() {
@@ -696,9 +749,16 @@ export class CrearExamenPage implements OnInit {
   }
 
   onClickPregunta(itemPregunta) {
-    //console.log(itemPregunta);
-    this.itemPreguntaSeleccionada=itemPregunta;
-    this.viewComponentSelect="multipleUnaRespuesta";
+    console.log(itemPregunta);
+    if(itemPregunta.TipoPregunta=='multipleUnaRespuesta') {
+      this.itemPreguntaSeleccionada=itemPregunta;
+      this.viewComponentSelect="multipleUnaRespuesta";
+    }
+    else if(itemPregunta.TipoPregunta=='relacionarPreguntas') {
+      this.itemPreguntaSeleccionada=itemPregunta;
+      this.viewComponentSelect="relacionarPreguntas";
+    }
+
   }
 
   async onFileChange($event: any) {
@@ -738,6 +798,59 @@ export class CrearExamenPage implements OnInit {
         // need to run CD since file load runs outside of zone
         this.cd.markForCheck();
       }
+    }
+    catch(err) {
+      this.inputFileBancoHTML.nativeElement.value = "";
+      await this.loadingController.dismiss();
+
+      const alert = await this.alertController.create({
+        header: 'LBS Plus',
+        //subHeader: 'Subtitle',
+        message: err.error,
+        buttons: ['Aceptar']
+      });
+  
+      this.cd.markForCheck();
+      await alert.present();
+    }
+  }
+
+  async onFileChangeMovil() {
+    console.log("onFileChange");
+    try {
+        const re = new RegExp('\.zip', 'g');      
+        
+        //Solo se permiten formatos de imagen;
+        if(re.test(this.fileBlob.type)==false) {
+          this.presentToast("Archivo no valido, solo se permite archivos zip.");
+          return;
+        }
+
+        const file=this.fileBlob;
+
+        const payload = new FormData();
+        payload.append('ExamenId', this.item.Id);  
+        payload.append('File', file, file.name);
+
+        this.loading =await this.loadingController.create({
+          //cssClass: 'my-custom-class',
+          message: 'Importando...',
+          duration: 120000
+        });
+        
+        const tareaUpload = await this.apiPreguntas.setBancosPreguntas(payload).toPromise();
+
+        this.loadingController.dismiss();
+
+        this.componentListaPreguntas.loadData2();
+
+        this.presentToast("Examen importado");
+
+        //this.inputFileBancoHTML.nativeElement.value = "";
+
+        // need to run CD since file load runs outside of zone
+        this.cd.markForCheck();
+    
     }
     catch(err) {
       this.inputFileBancoHTML.nativeElement.value = "";

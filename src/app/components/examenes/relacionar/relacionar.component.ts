@@ -1,25 +1,25 @@
-import { Component, OnInit,Input,Output,EventEmitter,ViewChild,ElementRef } from '@angular/core';
-import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import { FormGroup, FormBuilder, Validators,FormArray } from '@angular/forms';
-import { AlertController, LoadingController } from '@ionic/angular';
-import { PreguntasService } from 'src/app/api/preguntas.service';
-import { UploadAdapter } from 'src/app/class/UploadAdapter';
 import { HttpClient } from '@angular/common/http';
+import { Component, OnInit,Input,Output,EventEmitter,ViewChild,ElementRef  } from '@angular/core';
+import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { FormGroup, FormBuilder, Validators,FormArray  } from '@angular/forms';
+import { AlertController, LoadingController } from '@ionic/angular';
 import { apiBase } from 'src/app/api/apiBase';
+import { PreguntasService } from 'src/app/api/preguntas.service';
 import Quill from 'quill';
 import  ImageResize  from 'src/assets/quill-image-resize-module-fix-for-mobile';
 Quill.register('modules/imageResize', ImageResize);
 
 @Component({
-  selector: 'app-seleccion-una-respuesta',
-  templateUrl: './seleccion-una-respuesta.component.html',
-  styleUrls: ['./seleccion-una-respuesta.component.scss'],
+  selector: 'app-relacionar',
+  templateUrl: './relacionar.component.html',
+  styleUrls: ['./relacionar.component.scss'],
 })
-export class SeleccionUnaRespuestaComponent implements OnInit {
+export class RelacionarComponent implements OnInit {
   public Editor = ClassicEditor;
-  public numeroRespuestas: number = 5;
+  public numeroRespuestas: number = 8;
   public FrmItem: FormGroup;
   public submitAttempt: boolean = false;
+  Preguntas: FormArray;
   Respuestas: FormArray;
   @Output() backPage = new EventEmitter();
   @Input() examen;
@@ -47,21 +47,28 @@ export class SeleccionUnaRespuestaComponent implements OnInit {
     ],
     imageResize: true
   };
-  editorStyle = { 'width':'100%;' }
+  quillConfigurationRespuestas = {
+    'toolbar': [
+      ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+      [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+      ['image'],                         // link and image, video
+    ],
+    imageResize: true
+  };
 
   constructor(private formBuilder: FormBuilder,public loadingController: LoadingController,private alertCtrl: AlertController,
-              private apiPreguntas: PreguntasService, public http: HttpClient,private api: apiBase) {
-    this.FrmItem = formBuilder.group({
-      //_id:   [''],
-      ExamenId:   [0, Validators.compose([Validators.required])],
-      Pregunta:   ['', Validators.compose([Validators.required])],
-      Puntos:   ['', Validators.compose([Validators.required])],
-      TipoCarga:   ['azar', Validators.compose([Validators.required])],
-      Correcta:   ['rp1', Validators.compose([Validators.required])],
-      Respuestas: this.formBuilder.array([ /*this.createItem()*/ ])
-    });
+    private apiPreguntas: PreguntasService, public http: HttpClient,private api: apiBase) {
+      this.FrmItem = formBuilder.group({
+        //_id:   [''],
+        ExamenId:   [0, Validators.compose([Validators.required])],
+        Pregunta:   ['', Validators.compose([Validators.required])],
+        Puntos:   ['', Validators.compose([Validators.required])],
+        Preguntas: this.formBuilder.array([ /*this.createItem()*/ ]),
+        Respuestas: this.formBuilder.array([ /*this.createItem()*/ ])
+      });
+  }
 
-   }
+  ngOnInit() {}
 
   ngAfterViewInit() {
     setTimeout(() => {
@@ -72,7 +79,7 @@ export class SeleccionUnaRespuestaComponent implements OnInit {
   
       //Modo edicion de pregunta
       if(this.itemPreguntaSeleccionada != undefined) { 
-        //console.log(this.itemPreguntaSeleccionada);
+        console.log(this.itemPreguntaSeleccionada);
         this.FrmItem.patchValue(this.itemPreguntaSeleccionada);
       }
     });
@@ -84,21 +91,40 @@ export class SeleccionUnaRespuestaComponent implements OnInit {
     }
   }
 
-  ngOnInit() {
-    setTimeout(() => {
-      this.headerHtml.nativeElement.scrollIntoView();
-    }, 10);
+  createItem(index): FormGroup {
+    return this.formBuilder.group({
+      Id: index + 'p',
+      Respuesta : '',
+      Correcta: index + 'r',
+      Relacionado : "NO",
+      Background : "",
+    });
   }
 
-  counter(i: number) {
-    return new Array(i);
+  createItemRespuesta(index): FormGroup {
+    return this.formBuilder.group({
+      Id: index + 'r', 
+      Respuesta : '',
+      Correcta: index + 'p',
+      Relacionado : "NO",
+      Background : "",
+    });
   }
 
-  async save(){
-    //console.log(this.FrmItem);
+  addItem(index): void {
+    this.Preguntas = this.FrmItem.get('Preguntas') as FormArray;
+    this.Preguntas.push(this.createItem(index));
+
+    this.Respuestas = this.FrmItem.get('Respuestas') as FormArray;
+    this.Respuestas.push(this.createItemRespuesta(index));
+  }
+
+  async save(){ 
+    console.log("save");
+    console.log(this.FrmItem.value);
     try  {
         this.submitAttempt = true;
-        //console.log(this.FrmItem.value);
+        
         
         const loading = await this.loadingController.create({
           message: 'Guardando...'
@@ -121,17 +147,24 @@ export class SeleccionUnaRespuestaComponent implements OnInit {
 
         this.item = this.FrmItem.value;
         console.log(this.item);
-        this.item.TipoPregunta="multipleUnaRespuesta";
+        this.item.TipoPregunta="relacionarPreguntas";
 
         //Elimina las preguntas vacias
-        for( var i = 0; i < this.item.Respuestas.length; i++){ 
-                                      
-          if ( this.item.Respuestas[i].Respuesta === "") { 
-            this.item.Respuestas.splice(i, 1); 
+        for( var i = 0; i < this.item.Preguntas.length; i++){ 
+          if ( this.item.Preguntas[i].Respuesta === "") { 
+             this.item.Preguntas.splice(i, 1); 
+             this.item.Respuestas.splice(i, 1);
               i--; 
+          } else {
+            console.log(i);
+            this.item.Preguntas[i].Id = (i+1) + 'p';
+            this.item.Preguntas[i].Correcta = (i+1) + 'r';
+            this.item.Respuestas[i].Id = (i+1) + 'r';
+            this.item.Respuestas[i].Correcta = (i+1) +'p';
           }
         }
 
+        
         
         if(this.itemPreguntaSeleccionada === undefined) {
           const tareaUpload = await this.apiPreguntas.save(this.item).toPromise();
@@ -157,11 +190,13 @@ export class SeleccionUnaRespuestaComponent implements OnInit {
                 text: 'Crear otra', handler: () =>{ 
                   this.FrmItem.reset(); 
                   //this.FrmItem.controls['Id'].setValue(0);
-                  this.FrmItem.controls['TipoCarga'].setValue("azar");
-                  this.FrmItem.controls['Correcta'].setValue("rp1");
+                  //this.FrmItem.controls['TipoCarga'].setValue("azar");
+                  //this.FrmItem.controls['Correcta'].setValue("rp1");
                   this.FrmItem.controls['ExamenId'].setValue(this.examen.Id);
-                  let frmArray = this.FrmItem.get('Respuestas') as FormArray;
+                  let frmArray = this.FrmItem.get('Preguntas') as FormArray;
                   frmArray.clear();
+                  let frmArray2 = this.FrmItem.get('Respuestas') as FormArray;
+                  frmArray2.clear();
 
                   this.loadRespuestas();
 
@@ -189,6 +224,7 @@ export class SeleccionUnaRespuestaComponent implements OnInit {
         }
     }
     catch(err) {
+      console.log(err);
       await this.loadingController.dismiss();
 
       const alert = await this.alertCtrl.create({
@@ -200,26 +236,6 @@ export class SeleccionUnaRespuestaComponent implements OnInit {
   
       await alert.present();
     }
-  }
-
-  createItem(index): FormGroup {
-    return this.formBuilder.group({
-      Id:'rp' + index,
-      Respuesta: ''
-    });
-  }
-
-  addItem(index): void {
-    this.Respuestas = this.FrmItem.get('Respuestas') as FormArray;
-    this.Respuestas.push(this.createItem(index));
-  }
-
-  onReadyRichText($event){
-    $event.plugins.get('FileRepository').createUploadAdapter = (loader)=> {
-      //console.log('loader : ', loader)
-      //console.log(btoa(loader.file));
-      return new UploadAdapter(loader,this.http,this.api);
-    };
   }
 
 }

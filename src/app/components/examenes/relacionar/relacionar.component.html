@@ -1,0 +1,59 @@
+<form [formGroup]="FrmItem" style="margin-bottom: 81px">
+  <ion-list>
+      <ion-list-header>
+          <ion-label>
+            Indicaciones
+          </ion-label>
+      </ion-list-header>
+      <ion-item lines="none">
+          <ion-input hidden type="text" formControlName="ExamenId" name="ExamenId"></ion-input>
+          <quill-editor style="width: 100%;" formControlName="Pregunta" name="Pregunta" [modules]="quillConfiguration" class="content-editor" [placeholder]="''"> </quill-editor>
+      </ion-item>
+      <div *ngIf="!FrmItem.controls.Pregunta.valid && (FrmItem.controls.Pregunta.dirty || submitAttempt)">
+          <p class="text-error">Por favor escriba las indicaciones del ejercicio.</p>
+      </div>
+      <ion-item>
+          <ion-label position="stacked">Puntos</ion-label>
+          <ion-input formControlName="Puntos" name="Puntos" placeholder="Puntos de la pregunta" type="number"></ion-input>
+      </ion-item>
+      <div *ngIf="!FrmItem.controls.Puntos.valid && (FrmItem.controls.Puntos.dirty || submitAttempt)">
+          <p class="text-error">Por favor asigne una puntuación a la pregunta.</p>
+      </div>
+      <!--Respuestas-->
+      <ion-list-header>
+          <ion-label>Opciones</ion-label>
+      </ion-list-header>
+  </ion-list>
+  <ion-grid >
+    <ion-row>
+        <ion-col size="6">
+          <div formArrayName="Preguntas" *ngFor="let item of FrmItem.get('Preguntas')['controls'];let i = index;">
+            <ion-row >
+              <ion-item lines="none">
+                  <ion-label style="color: #000000;">Opcion {{i+1}}</ion-label>
+              </ion-item> 
+            </ion-row>
+            <ion-row>
+                <div [formGroupName]="i" style="width: 100%;">
+                  <quill-editor style="width: 100%;"  formControlName="Respuesta" name="Respuesta" [modules]="quillConfigurationRespuestas" class="content-editor" [placeholder]="''"> </quill-editor>
+                </div>
+            </ion-row>
+          </div>
+        </ion-col>
+        <ion-col size="6">
+          <div formArrayName="Respuestas" *ngFor="let item of FrmItem.get('Respuestas')['controls'];let i = index;">
+            <ion-row >
+              <ion-item lines="none">
+                  <ion-label style="color: #ffffff;">Oculto</ion-label>
+              </ion-item> 
+            </ion-row>
+            <ion-row >
+                <div [formGroupName]="i" style="width: 100%;">
+                  <quill-editor style="width: 100%;"  formControlName="Respuesta" name="Respuesta" [modules]="quillConfigurationRespuestas" class="content-editor" [placeholder]="''"> </quill-editor>
+                </div>
+            </ion-row>
+          </div>
+        </ion-col>
+      </ion-row>  
+  </ion-grid>
+</form>

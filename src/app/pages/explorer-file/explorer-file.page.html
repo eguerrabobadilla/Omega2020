@@ -1,0 +1,40 @@
+<ion-header>
+  <ion-toolbar>
+    <!--<ion-buttons slot="start">
+      <ion-button>
+        Clear
+      </ion-button>
+    </ion-buttons>-->
+    <ion-buttons slot="end">
+      <ion-button (click)="cerrar()">
+        Cerrar
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Bancos Preguntas</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list >
+    <ion-list-header>
+      Archivos Recientes
+    </ion-list-header>
+
+    <ion-item-sliding *ngFor="let file of LstFiles">
+      <ion-item-options side="end">
+        <ion-item-option  color="danger" (click)="eliminar(file)">
+          <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+        </ion-item-option>
+      </ion-item-options>
+
+      <ion-item button (click)="importar(file)">
+        <ion-icon name="library-outline" slot="start" style="transform: translateY(-5px);"></ion-icon>
+        <ion-label>
+          <h3>{{file.name}}</h3>
+          <p>{{ file.modificationTime | date:'mediumDate'}} {{ file.modificationTime | date:'mediumTime'}}</p>
+        </ion-label>
+      </ion-item>
+      
+    </ion-item-sliding>
+  </ion-list>
+</ion-content>

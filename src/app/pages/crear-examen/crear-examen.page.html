@@ -146,6 +146,7 @@
                 <ion-card class="ion-no-border" no style="text-align: initial;margin-bottom: 81px" mode="ios">
                     <ion-card-content>
                         <app-seleccion-una-respuesta (backPage)="cancelar()" [itemPreguntaSeleccionada]="itemPreguntaSeleccionada" [examen]="item" #opcionMultipleUnaRespuesta *ngIf="viewComponentSelect=='multipleUnaRespuesta' && this.item != undefined"></app-seleccion-una-respuesta>
+                        <app-relacionar (backPage)="cancelar()" #relacionarPreguntas  [itemPreguntaSeleccionada]="itemPreguntaSeleccionada" [examen]="item" *ngIf="viewComponentSelect=='relacionarPreguntas' && this.item != undefined"></app-relacionar>
                         <app-list-preguntas #componentListaPreguntas  [examen]="item" (loadSpinner)="loadSpinner($event)" (onClickPregunta)="onClickPregunta($event)" *ngIf="viewComponentSelect=='listRespuestas' && this.item != undefined"></app-list-preguntas>
                     </ion-card-content>
                 </ion-card>
@@ -176,7 +177,7 @@
             Cancelar
         </ion-button>-->
 
-        <ion-button *ngIf="viewComponentSelect=='multipleUnaRespuesta'" style="width: 144.06px;" slot="end" size="small" fill="outline" type="button" icon-start outline block (click)="guardarPregunta()">
+        <ion-button *ngIf="viewComponentSelect=='multipleUnaRespuesta' || viewComponentSelect=='relacionarPreguntas'" style="width: 144.06px;" slot="end" size="small" fill="outline" type="button" icon-start outline block (click)="guardarPregunta()">
             <ion-icon name="save-outline" style="margin-right: 3px;"></ion-icon>
             Guardar Pregunta
         </ion-button>

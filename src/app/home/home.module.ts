@@ -56,6 +56,8 @@ import { DetalleResultadosExamenesPageModule } from '../pages/detalle-resultados
 import { SortByPipe } from '../pipes/sort-by.pipe';
 import { DetalleResultadoProfesorPage } from '../pages/detalle-resultado-profesor/detalle-resultado-profesor.page';
 import { DetalleResultadoProfesorPageModule } from '../pages/detalle-resultado-profesor/detalle-resultado-profesor.module';
+import { ExplorerFilePage } from '../pages/explorer-file/explorer-file.page';
+import { ExplorerFilePageModule } from '../pages/explorer-file/explorer-file.module';
 
 
 @NgModule({
@@ -75,7 +77,8 @@ import { DetalleResultadoProfesorPageModule } from '../pages/detalle-resultado-p
     DetalleExamenAlumnoPage,
     ListComponent,
     DetalleResultadosExamenesPage,
-    DetalleResultadoProfesorPage
+    DetalleResultadoProfesorPage,
+    ExplorerFilePage
   ],
   imports: [ 
     MbscModule,  
@@ -103,7 +106,8 @@ import { DetalleResultadoProfesorPageModule } from '../pages/detalle-resultado-p
     GlobalModule,
     DetalleExamenAlumnoPageModule,
     DetalleResultadosExamenesPageModule,
-    DetalleResultadoProfesorPageModule
+    DetalleResultadoProfesorPageModule,
+    ExplorerFilePageModule
   ],
   declarations: [ HomePage, ListComponent, 
     ListResourceComponent, ForumComponent,GraphicsComponent,
