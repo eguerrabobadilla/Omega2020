@@ -470,8 +470,9 @@ setTimeout(() => {
         this.render.setStyle(element,'border-color',colorRelacionado);
         item.Relacionado=this.itemSeleccionadoRelacionar.index.charAt(0);
         this.itemSeleccionadoRelacionar.Relacionado=item.index.charAt(0);
+        var Id1=this.itemSeleccionadoRelacionar.Id.charAt(0);
+        var Id2=item.Id.charAt(0);
         this.estadoClickRelacionar=0;
-        //console.log(item.Relacionado)
         let ladoDerechoRelacionado = item.lado=='derecho' ? item.Relacionado : this.itemSeleccionadoRelacionar.Relacionado;
         let ladoIzquierdoRelacionado = item.lado=='izquierdo' ? item.Relacionado : this.itemSeleccionadoRelacionar.Relacionado;
         let objSaveRelacionar={
@@ -483,6 +484,7 @@ setTimeout(() => {
 
 
         }
+        console.log(objSaveRelacionar)
         this.apiPreguntas.saveRelacionarPregunta(objSaveRelacionar).subscribe(data  =>{
 
         });
