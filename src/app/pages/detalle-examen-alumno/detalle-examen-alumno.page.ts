@@ -206,6 +206,7 @@ export class DetalleExamenAlumnoPage implements OnInit {
     });
     this.botonAnteriorDisable=true;  //los p ongo disable antes de la peticion para bloquearlos
     this.botonSiguienteDisable=true; //los p ongo disable antes de la peticion para bloquearlos
+    this.colores=['red','blue','green','yellow','black','magenta'];
 
     
     this.apiPreguntas.getPreguntaExamen(this.examenId,this.contadorPregunta,this.preguntaAnterior,this.respuestaSeleccionada).subscribe(data =>{
@@ -215,7 +216,7 @@ export class DetalleExamenAlumnoPage implements OnInit {
 
      if(this.contadorPregunta==1)this.botonAnteriorDisable=true;else this.botonAnteriorDisable = false;
      // si es ejercicio relacionar
-     if(data['TipoPregunta']=='relacionar'){
+     if(data['TipoPregunta']=='relacionarPreguntas'){
       this.exercicioRelacionar(data);
       this.esRelacionar=true;
      }
@@ -316,11 +317,11 @@ export class DetalleExamenAlumnoPage implements OnInit {
   eventCountdown(event){
     console.log(event)
         if(this.counter && this.inicioContador==false){
-          console.log("dentro del if")
+          //console.log("dentro del if")
           this.inicioContador=true;
         }
        if(event.status==3 && this.inicioContador ){
-         console.log("finalizo el reloj")
+         //console.log("finalizo el reloj")
           this.preguntaFinalizarExamen();
 
        }
@@ -359,9 +360,9 @@ setTimeout(() => {
 
     if(element.Relacionado!='NO'){
       this.render.setStyle(this.componentsr.toArray()[element.Relacionado-1].nativeElement,'border','solid 5px');
-      this.render.setStyle(this.componentsp.toArray()[element.Id.charAt(0)-1].nativeElement,'border','solid 5px');
+      this.render.setStyle(this.componentsp.toArray()[element.index.charAt(0)-1].nativeElement,'border','solid 5px');
       this.render.setStyle(this.componentsr.toArray()[element.Relacionado-1].nativeElement,'border-color',element.Background);
-      this.render.setStyle(this.componentsp.toArray()[element.Id.charAt(0)-1].nativeElement,'border-color',element.Background);
+      this.render.setStyle(this.componentsp.toArray()[element.index.charAt(0)-1].nativeElement,'border-color',element.Background);
 
       let indexEliminar=this.colores.indexOf(element.Background);
       this.colores.splice(indexEliminar,1);
@@ -398,8 +399,8 @@ setTimeout(() => {
       }
 
        if(item.Relacionado !== 'NO'){//si ya esta relacionado elimino la relacion
-        console.log("element.style")
-        console.log(element.style)
+        //console.log("element.style")
+        //console.log(element.style)
           this.colores.push(element.style.borderColor);
           this.render.removeStyle(element,'border');
           this.render.removeStyle(element,'border-color');
@@ -467,10 +468,10 @@ setTimeout(() => {
         let colorRelacionado=this.colorDivRelacionar;
         this.render.setStyle(element,'border','solid 5px');
         this.render.setStyle(element,'border-color',colorRelacionado);
-        item.Relacionado=this.itemSeleccionadoRelacionar.Id.charAt(0);
-        this.itemSeleccionadoRelacionar.Relacionado=item.Id.charAt(0);
+        item.Relacionado=this.itemSeleccionadoRelacionar.index.charAt(0);
+        this.itemSeleccionadoRelacionar.Relacionado=item.index.charAt(0);
         this.estadoClickRelacionar=0;
-        console.log(item.Relacionado)
+        //console.log(item.Relacionado)
         let ladoDerechoRelacionado = item.lado=='derecho' ? item.Relacionado : this.itemSeleccionadoRelacionar.Relacionado;
         let ladoIzquierdoRelacionado = item.lado=='izquierdo' ? item.Relacionado : this.itemSeleccionadoRelacionar.Relacionado;
         let objSaveRelacionar={

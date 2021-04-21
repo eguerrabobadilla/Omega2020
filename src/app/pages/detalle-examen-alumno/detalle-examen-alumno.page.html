@@ -79,11 +79,11 @@
             </ion-list-header>
             <ion-grid>
                 <ion-row *ngFor="let item of preguntasRelacionar;let i = index">
-                    <ion-col>
-                        <div #p style="border-radius: 30px;margin: 15px;border: none;background-color: #ffffff;" (click)="clickEjercicioRelacionar($event,item,i+1)" [innerHtml]="item.Respuesta | sanitizePipe"></div>
+                    <ion-col  class="ion-align-self-center">
+                        <div #p style="border-radius: 30px;margin: 15px;border: none;background-color: #ffffff;height: 100%;" (click)="clickEjercicioRelacionar($event,item,i+1)" [innerHtml]="item.Respuesta | sanitizePipe"></div>
                     </ion-col>
-                    <ion-col>
-                        <div #r style="border-radius: 30px;margin: 15px;border: none;background-color: #ffffff;" (click)="clickEjercicioRelacionar($event,respuestas[i],i+1)" [innerHtml]="respuestas[i].Respuesta | sanitizePipe"></div>
+                    <ion-col  class="ion-align-self-center">
+                        <div #r style="border-radius: 30px;margin: 15px;border: none;background-color: #ffffff;height: 100%;" (click)="clickEjercicioRelacionar($event,respuestas[i],i+1)" [innerHtml]="respuestas[i].Respuesta | sanitizePipe"></div>
                     </ion-col>
                 </ion-row>
 
