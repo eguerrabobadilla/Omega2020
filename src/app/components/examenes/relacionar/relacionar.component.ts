@@ -16,7 +16,7 @@ Quill.register('modules/imageResize', ImageResize);
 })
 export class RelacionarComponent implements OnInit {
   public Editor = ClassicEditor;
-  public numeroRespuestas: number = 8;
+  public numeroRespuestas: number = 6;
   public FrmItem: FormGroup;
   public submitAttempt: boolean = false;
   Preguntas: FormArray;
@@ -92,20 +92,24 @@ export class RelacionarComponent implements OnInit {
   }
 
   createItem(index): FormGroup {
+    //Preguntas lado izquierdo
     return this.formBuilder.group({
       Id: index + 'p',
       Respuesta : '',
       Correcta: index + 'r',
+      lado : "izquierdo",
       Relacionado : "NO",
       Background : "",
     });
   }
 
   createItemRespuesta(index): FormGroup {
+    //Respuestas lados derecho
     return this.formBuilder.group({
       Id: index + 'r', 
       Respuesta : '',
       Correcta: index + 'p',
+      lado : "derecho",
       Relacionado : "NO",
       Background : "",
     });
