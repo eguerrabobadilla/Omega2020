@@ -14,6 +14,16 @@ import { LinkifyPipe } from '../pipes/linkifypipe ';
 import { SortByPipe } from '../pipes/sort-by.pipe';
 import { SanitizePipe } from '../pipes/sanitize.pipe';
 import { MensajeAdeudoComponent } from '../components/mensaje-adeudo/mensaje-adeudo.component';
+import { ListResourceComponent } from '../components/list-resource/list-resource.component';
+import { ForumComponent } from '../components/forum/forum.component';
+import { GraphicsComponent } from '../components/graphics/graphics.component';
+import { EvidencesComponent } from '../components/evidences/evidences.component';
+import { SubjectsComponent } from '../components/subjects/subjects.component';
+import { QuestionsComponent } from '../components/questions/questions.component';
+import { ContactComponent } from '../components/contact/contact.component';
+import { PerfilComponent } from '../components/perfil/perfil.component';
+import { ReportComponent } from '../components/report/report.component';
+import { ListExamenesComponent } from '../components/list-examenes/list-examenes.component';
 
 @NgModule({
     imports: [
@@ -21,8 +31,12 @@ import { MensajeAdeudoComponent } from '../components/mensaje-adeudo/mensaje-ade
         CommonModule,
         FormsModule
     ],
-    declarations:[PillMenuComponent,CircleProgressComponent,CodesComponent,BooksComponent,FilterPipe,CircleProgressReportComponent,ChatsComponent,NewsComponent,LinkifyPipe,SortByPipe,SanitizePipe,MensajeAdeudoComponent],
-    exports:[PillMenuComponent,CircleProgressComponent,CodesComponent,BooksComponent,FilterPipe,CircleProgressReportComponent,ChatsComponent,NewsComponent,LinkifyPipe,SortByPipe,SanitizePipe,MensajeAdeudoComponent]
+    declarations:[PillMenuComponent,CircleProgressComponent,CodesComponent,BooksComponent,FilterPipe,CircleProgressReportComponent,ChatsComponent,NewsComponent,LinkifyPipe,SortByPipe,SanitizePipe,MensajeAdeudoComponent,ListResourceComponent,
+                  ForumComponent,GraphicsComponent,EvidencesComponent,SubjectsComponent,QuestionsComponent,ContactComponent,
+                  PerfilComponent,ReportComponent,ListExamenesComponent],
+    exports:[PillMenuComponent,CircleProgressComponent,CodesComponent,BooksComponent,FilterPipe,CircleProgressReportComponent,ChatsComponent,NewsComponent,LinkifyPipe,SortByPipe,SanitizePipe,MensajeAdeudoComponent,ListResourceComponent,
+             ForumComponent,GraphicsComponent,EvidencesComponent,SubjectsComponent,QuestionsComponent,ContactComponent,
+             PerfilComponent,ReportComponent,ListExamenesComponent ]
 })
 export class GlobalModule
 {
