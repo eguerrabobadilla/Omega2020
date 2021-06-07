@@ -1,10 +1,11 @@
 import { Component, Input, OnInit, ViewChild, ApplicationRef, ElementRef, Renderer2, ViewChildren, QueryList } from '@angular/core';
-import { IonSlides, PopoverController, ModalController, LoadingController, IonVirtualScroll } from '@ionic/angular';
+import { IonSlides, PopoverController, ModalController, LoadingController, IonVirtualScroll, IonBackdrop, AlertController } from '@ionic/angular';
 import { PreguntasService } from 'src/app/api/preguntas.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import {ListComponent} from 'src/app/components/list/list.component';
 import { CountdownComponent } from 'ngx-countdown';
 import { ExamenesService } from 'src/app/api/examenes.service';
+import { timeStamp } from 'console';
 
 
 
@@ -25,6 +26,8 @@ export class DetalleExamenAlumnoPage implements OnInit {
   contadorPregunta= 1;
   botonSiguienteDisable=false;
   botonAnteriorDisable=true;
+  botonPopoverDisable=false;
+  backDropVisible=false;
   examenId:number;
   fechaAplicacionExamen:any;
   respuestaSeleccionada="[sin-respuesta]";
@@ -54,6 +57,7 @@ export class DetalleExamenAlumnoPage implements OnInit {
   @ViewChild(IonVirtualScroll, {static: false}) virtualScroll: IonVirtualScroll;
   @ViewChildren('p') componentsp:QueryList<ElementRef>;
   @ViewChildren('r') componentsr:QueryList<ElementRef>;
+  @ViewChild('backDrop', {static: false}) ionBackdro: HTMLElement;
   config ={
     demand: false
   };
@@ -67,10 +71,11 @@ export class DetalleExamenAlumnoPage implements OnInit {
 
  
   constructor(private apiPreguntas: PreguntasService, public popoverController: PopoverController,private modalCtrl: ModalController,
-              private apiExamenes: ExamenesService,private loadingController: LoadingController,private applicationRef: ApplicationRef, private render: Renderer2) { }
+              private apiExamenes: ExamenesService,private loadingController: LoadingController,private applicationRef: ApplicationRef, private render: Renderer2,
+              private alertController: AlertController) { }
 
   ngOnInit() {
- 
+      
    }
 
    ionViewDidEnter() {
@@ -204,15 +209,15 @@ export class DetalleExamenAlumnoPage implements OnInit {
     setTimeout(() => {
       this.spiner=true;
     });
-    this.botonAnteriorDisable=true;  //los p ongo disable antes de la peticion para bloquearlos
-    this.botonSiguienteDisable=true; //los p ongo disable antes de la peticion para bloquearlos
+    this.botonAnteriorDisable=true;  //los pongo disable antes de la peticion para bloquearlos
+    this.botonSiguienteDisable=true; //los pongo disable antes de la peticion para bloquearlos
+    this.botonPopoverDisable=true; //los pongo disable antes de la peticion para bloquearlos
+    this.backDropVisible=true; //los pongo disable antes de la peticion para bloquearlos
     this.colores=['red','blue','green','yellow','black','magenta'];
 
     
     this.apiPreguntas.getPreguntaExamen(this.examenId,this.contadorPregunta,this.preguntaAnterior,this.respuestaSeleccionada).subscribe(data =>{
       this.preguntaInfo = data;
-
-     if(this.banderaslideFinExamen==true)this.botonSiguienteDisable=true;else this.botonSiguienteDisable=false ;
 
      if(this.contadorPregunta==1)this.botonAnteriorDisable=true;else this.botonAnteriorDisable = false;
      // si es ejercicio relacionar
@@ -237,14 +242,22 @@ export class DetalleExamenAlumnoPage implements OnInit {
           
           this.virtualScroll.checkEnd();
           this.slider.updateAutoHeight();
+
+          
+          if(this.banderaslideFinExamen==true)this.botonSiguienteDisable=true;else this.botonSiguienteDisable=false ;
+          this.botonPopoverDisable=false;
+          this.backDropVisible=false;
+
         }, 1000);
        
         
       });
     },error => {
       console.log(error);
-      this.botonAnteriorDisable=false;  //los p ongo disable antes de la peticion para bloquearlos
+      this.botonAnteriorDisable=false;  //los pongo disable antes de la peticion para bloquearlos
       this.botonSiguienteDisable=false;
+      this.botonPopoverDisable=false;
+      this.backDropVisible=false;
       if(this.banderaslideFinExamen==true)this.botonSiguienteDisable=true;
     });
 
@@ -284,34 +297,44 @@ export class DetalleExamenAlumnoPage implements OnInit {
       });
 //      this.resultadoExamen= await this.apiExamenes.examenTerminado(this.item.Id,this.item).toPromise();
 
-      this.apiExamenes.examenTerminado(this.item.Id,this.item).subscribe(data  =>{
-         this.resultadoExamen=data;
-         setTimeout(() => {
-          this.spiner=false;
-          this.slider.update;
-          this.slider.slideTo(3);
-          this.slideOpts={autoHeight: true,initialSlide:4,allowTouchMove: false};
-          
+      this.apiExamenes.examenTerminado(this.item.Id,this.item).subscribe(data  =>  {
+          this.resultadoExamen=data;
           setTimeout(() => {
-            this.virtualScroll.checkEnd();
-            this.slider.updateAutoHeight();
-          }, 500);
-         
-          
-        });
-  
-
-   });
-      
-
-
-      
-      
+            this.spiner=false;
+            this.slider.update;
+            this.slider.slideTo(3);
+            this.slideOpts={autoHeight: true,initialSlide:4,allowTouchMove: false};
+            
+            setTimeout(() => {
+              this.virtualScroll.checkEnd();
+              this.slider.updateAutoHeight();
+            }, 500);
+            
+          });
+      },error =>{
+        console.log(error['error']);
+        this.presentAlert(error['error']);
+      });
     } catch (error) {
       console.error(error);
 
     }
    
+  }
+
+  async presentAlert(msg: string) {
+    const alert = await this.alertController.create({
+      header: 'LBS Plus',
+      //subHeader: 'Subtitle',
+      message: msg,
+      mode: 'ios',
+      buttons: ['Aceptar']
+    });
+
+    await alert.present();
+
+    const { role } = await alert.onDidDismiss();
+    console.log('onDidDismiss resolved with role', role);
   }
 
   eventCountdown(event){

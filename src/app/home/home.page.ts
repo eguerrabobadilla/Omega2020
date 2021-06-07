@@ -102,7 +102,6 @@ export class HomePage {
   },
   onDayChange : (event, inst) => {
    this.abrirCalendarioSemana(event);
-
   }
   
 };
@@ -1440,10 +1439,13 @@ this.pillMenu.animacion();
 
       modal.onDidDismiss().then( async (data) => {
         if(data.data != undefined) {
-          this.cargandoAnimation('Cargando...');
+          await this.cargandoAnimation('Cargando...');
           this.apiCalendario.getCalendario().subscribe(data => {
             console.log("getCalendario");
             this.events = data;
+            this.loadingController.dismiss();
+          },error =>{ 
+            console.log(error);
             this.loadingController.dismiss();
           });
         }

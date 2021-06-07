@@ -35,6 +35,7 @@ export class ListTareasComponent implements OnInit {
       this.contadorInfinieScroll += 10;
       this.updateAutoHeightSlider.emit();
       this.spiner =false;
+      console.log(data);
     });
   }
 

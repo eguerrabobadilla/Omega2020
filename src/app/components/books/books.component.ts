@@ -51,7 +51,7 @@ export class BooksComponent implements OnInit {
   constructor(public  webSocket: WebsocketService,private serviceDownload: DownloadFileService,private transfer: FileTransfer,
               private file: File,private platform: Platform,private booksService: BooksService,private zip: Zip,
               private webview: WebView,private storage: Storage,private applicationRef:ApplicationRef,private globalServicies: GlobalService,
-              private renderer: Renderer2,private apiPortadas: PortadasService,private api: apiBase,private sanitizer: DomSanitizer) {
+              private renderer: Renderer2,private apiPortadas: PortadasService,private api: apiBase,public sanitizer: DomSanitizer) {
   }
 
   abrirKinder(){

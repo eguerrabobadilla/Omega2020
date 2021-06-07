@@ -91,7 +91,7 @@ export class ReportComponent implements OnInit {
 
   }
   cargarEstadisticas(){
-    console.log(this.mesActual);
+    //console.log(this.mesActual);
 
     const mesesReal = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo',
     'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
@@ -104,6 +104,7 @@ export class ReportComponent implements OnInit {
     this.apiEstadisticas.getEstadisticasAlumno(this.mesActualNumero).subscribe(data => {
       setTimeout(() => {
         this.loadingController.dismiss();
+        this.updateAutoHeightSlider.emit();
       }, 500);
       this.LstEstadisticas = data;
       this.calcularGrafica();  
@@ -175,9 +176,12 @@ export class ReportComponent implements OnInit {
               this.apiEstadisticas.getEstadisticasAlumno(value.Meses.value).subscribe(data => {
                 this.LstEstadisticas = data;
                 //console.log(this.LstEstadisticas);
+                setTimeout(() => {
+                  this.loadingController.dismiss();
+                  this.updateAutoHeightSlider.emit();
+                }, 500);
                 this.calcularGrafica();
                 //this.bars.update();
-                this.loadingController.dismiss();
               });
 
             }
@@ -198,7 +202,7 @@ export class ReportComponent implements OnInit {
   aplicarEstilos(item){
     const statusPanel = item.getAttribute("status");
 
-    console.log(item);
+    //console.log(item);
     if (statusPanel == "close") {
       this.renderer.removeStyle(item, 'max-height');
    //   this.renderer.addClass(item.botonKinder.nativeElement, 'active');
@@ -244,7 +248,7 @@ export class ReportComponent implements OnInit {
     Dado que el año escolar no inicia en Enero se tiene que ajustar para llenar el picker 
     ejemplo enero en lugar de ser index 1 es 6
     */
-   console.log("getRealMonth");
+   //console.log("getRealMonth");
    const actualDate = new Date();
    let month = actualDate.getMonth() + 1;
 
@@ -262,7 +266,7 @@ export class ReportComponent implements OnInit {
     else if (month == 11) month = 3;
 
 
-   console.log(month);
+   //console.log(month);
    return month;
   }
 

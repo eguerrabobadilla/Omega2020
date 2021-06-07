@@ -125,8 +125,8 @@ export class SeleccionUnaRespuestaComponent implements OnInit {
 
         //Elimina las preguntas vacias
         for( var i = 0; i < this.item.Respuestas.length; i++){ 
-                                      
-          if ( this.item.Respuestas[i].Respuesta === "") { 
+          console.log(this.item.Respuestas[i].Respuesta);                             
+          if (this.item.Respuestas[i].Respuesta === "" || this.item.Respuestas[i].Respuesta === null) { 
             this.item.Respuestas.splice(i, 1); 
               i--; 
           }

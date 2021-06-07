@@ -1,3 +1,4 @@
+<ion-backdrop #backDrop tappable="false" [ngStyle]="{'display': backDropVisible === false ? 'none' : 'block' }"></ion-backdrop>
 <ion-progress-bar *ngIf="spiner" type="indeterminate" style="background: white;"></ion-progress-bar>
 <ion-header>
     <ion-toolbar>
@@ -7,7 +8,7 @@
             </span>
             <span>Pregunta</span>
             <span>
-               <ion-button style="--background: #ffffff00;
+               <ion-button [disabled]="botonPopoverDisable" style="--background: #ffffff00;
                color: black;
                --color: black;
                --background-activated: #d4d4d461;
@@ -147,7 +148,8 @@
             <div>
                 <div>
                     <ion-label style="font-size: 17px;font-weight: 600;text-align: center;text-overflow: ellipsis;">
-                        {{ textoInformacionInicioFin }} <br> {{fechaAplicacionExamen | date:'medium'}}
+                        <!--{{ textoInformacionInicioFin }} <br> {{fechaAplicacionExamen | date:'medium'}}-->
+                        {{ textoInformacionInicioFin }} <br> {{ fechaAplicacionExamen| date:'mediumDate'}} {{ fechaAplicacionExamen | date:'mediumTime'}}
                     </ion-label>
                 </div>
 

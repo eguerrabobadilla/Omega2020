@@ -74,7 +74,6 @@ export class CalendarEventsPage implements OnInit {
 };
 
   ngOnInit() {
-    //console.log(this.item);
     this.cargar();
   }
 

@@ -155,7 +155,7 @@ export class RelacionarComponent implements OnInit {
 
         //Elimina las preguntas vacias
         for( var i = 0; i < this.item.Preguntas.length; i++){ 
-          if ( this.item.Preguntas[i].Respuesta === "") { 
+          if ( this.item.Preguntas[i].Respuesta === "" || this.item.Respuestas[i].Respuesta === null) { 
              this.item.Preguntas.splice(i, 1); 
              this.item.Respuestas.splice(i, 1);
               i--; 

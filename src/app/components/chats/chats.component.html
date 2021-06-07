@@ -7,7 +7,8 @@
     </ion-list-header>
 
     <ion-spinner name="lines" style="width: 100%;" [ngStyle] ="{'display': cargandoGrupos === true ? 'block' : 'none' }"></ion-spinner>
-
+    
+    <app-mensaje-adeudo *ngIf="LstChat==null"></app-mensaje-adeudo>
     <ion-item button lines="none" (click)="openDetailGroups($event,item)" *ngFor="let item of LstGrupos | sortBy:'asc': 'Mensajesgruposusuarios[0].Visto'" detail="false" [ngStyle] ="{'visibility': cargandoGrupos === true ? 'hidden' : 'visible' }">
         <ion-avatar slot="start">
             <!--<span style="

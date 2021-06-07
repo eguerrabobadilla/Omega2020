@@ -149,6 +149,7 @@
 </div>
 <div *ngIf="(esConferencia)">
     <ion-list mode="ios">
+        <app-mensaje-adeudo *ngIf="LstRecursos==null"></app-mensaje-adeudo>
         <ion-virtual-scroll [items]="LstRecursos" approxItemHeight="300px" style="margin-bottom: 100px;z-index: 999999;">
             <ion-card style="text-align: initial;border-bottom: 0.6px solid #d0d0d0;border-left: none;border-radius: 0px;box-shadow: none !important;" mode="ios" *virtualItem="let item">
 

@@ -47,12 +47,32 @@
                               <p class="text-error">Por favor ingresa un título.</p>
                           </div>
                       </ion-col>
-                      <ion-col size="12">
+                      <!--<ion-col size="12">
                         <ion-item>
                             <ion-label color="light" position="floating">Fecha</ion-label>
                             <ion-datetime formControlName="FechaPublicacion" name="FechaPublicacion" displayFormat="DDDD DD MMM, YYYY" pickerFormat="DD MMMM YYYY"></ion-datetime>
                         </ion-item>
                         <div *ngIf="!FrmItem.controls.FechaPublicacion.valid && (FrmItem.controls.FechaPublicacion.dirty || submitAttempt)">
+                            <p class="text-error">Por favor ingresa una fecha.</p>
+                        </div>
+                      </ion-col>-->
+                      <ion-col size="12">
+                        <ion-item>
+                            <ion-label color="light" position="floating">Fecha Inicio</ion-label>
+                            <ion-input type="text" (ionFocus)="ionFocusFechaInicio()" readonly formControlName="FechaPublicacion" name="FechaPublicacion"></ion-input>
+                            <mbsc-calendar #mobi [options]="settings" style="display: none;"></mbsc-calendar>
+                        </ion-item>
+                        <div *ngIf="!FrmItem.controls.FechaPublicacion.valid && (FrmItem.controls.FechaPublicacion.dirty || submitAttempt)">
+                            <p class="text-error">Por favor ingresa una fecha.</p>
+                        </div>
+                    </ion-col>
+                    <ion-col size="12">
+                        <ion-item>
+                            <ion-label color="light" position="floating">Fecha Termino</ion-label>
+                            <ion-input type="text" (ionFocus)="ionFocusFechaTermino()" readonly formControlName="FechaFin" name="FechaFin"></ion-input>
+                            <mbsc-calendar #mobi2 [options]="settings2" style="display: none;"></mbsc-calendar>
+                        </ion-item>
+                        <div *ngIf="!FrmItem.controls.FechaFin.valid && (FrmItem.controls.FechaFin.dirty || submitAttempt)">
                             <p class="text-error">Por favor ingresa una fecha.</p>
                         </div>
                     </ion-col>

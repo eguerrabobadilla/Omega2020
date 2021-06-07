@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
+import { MbscModule } from '@mobiscroll/angular';
 
 import { CrearTopicPageRoutingModule } from './crear-topic-routing.module';
 
@@ -14,7 +15,8 @@ import { CrearTopicPage } from './crear-topic.page';
     FormsModule,
     IonicModule,
     CrearTopicPageRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MbscModule
   ],
   declarations: [CrearTopicPage]
 })

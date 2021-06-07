@@ -1,9 +1,16 @@
 import { Component, OnInit, ChangeDetectorRef, Renderer2,ViewChild,ElementRef,Input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ModalController, AlertController, PickerController,IonInput, LoadingController } from '@ionic/angular';
+import { ModalController, AlertController, PickerController,IonInput, LoadingController, ToastController } from '@ionic/angular';
 import { ChatService } from 'src/app/api/chat.service';
 import { MateriasService } from 'src/app/api/materias.service';
 import { TemasService } from 'src/app/api/temas.service';
+import { mobiscroll, MbscCalendarOptions, MbscCalendar, MbscCalendarComponent } from '@mobiscroll/angular';
+
+mobiscroll.settings = {
+  theme: 'mobiscroll',
+  themeVariant: 'light',
+  layout: 'liquid'
+};
 
 @Component({
   selector: 'app-crear-topic',
@@ -15,6 +22,8 @@ export class CrearTopicPage implements OnInit {
   @ViewChild('txtGradoGrupo', {read: ElementRef, static: true}) txtGradoGrupoHTML: ElementRef;
   @ViewChild('txtMateria', {static: false}) txtMateria: IonInput;
   @ViewChild('txtMateria', {read: ElementRef, static: true}) txtMateriaHTML: ElementRef;
+  @ViewChild('mobi', {static: false}) mobi: MbscCalendar; 
+  @ViewChild('mobi2', {static: false}) mobi2: MbscCalendar; 
   public FrmItem: FormGroup;
   public  texto_adjuntar_portada: string = 'Adjuntar Tema';
   public submitAttempt: boolean = false;
@@ -31,18 +40,88 @@ export class CrearTopicPage implements OnInit {
   loading: any;
   GrupoIngles: any;
 
+  settings: MbscCalendarOptions = {
+    theme: 'mobiscroll',
+    display: 'bottom',
+    themeVariant: 'light',
+    calendarScroll: 'vertical',
+    controls: ['calendar'],
+    tabs: false,
+    buttons: [
+      'set',
+      {
+          text: 'Aceptar',
+          handler: 'set',
+          icon: 'checkmark',
+          cssClass: 'my-btn'
+      }
+    ],
+    onSet: (event, inst) => {
+      if(this.FrmItem.controls['FechaFin'].value=='') {
+        this.FrmItem.controls['FechaFin'].setValue(event.valueText);
+        this.mobi2.instance.setDate(new Date(event.valueText));
+      }
+      
+      if(this.FrmItem.controls['FechaPublicacion'].value!='' && this.FrmItem.controls['FechaFin'].value!='') {
+        const FInicio    = new Date(event.valueText); 
+        const FFin = new Date(this.FrmItem.controls['FechaFin'].value);
+
+        if(FInicio > FFin) {
+          this.presentToast("La fecha de inicio no puede ser mayor a la de finalización");
+          return;
+        }
+      }
+
+      this.FrmItem.controls['FechaPublicacion'].setValue(event.valueText);
+    },
+    months: 1
+  };
+
+  
+  settings2: MbscCalendarOptions = {
+    theme: 'mobiscroll',
+    display: 'bottom',
+    themeVariant: 'light',
+    calendarScroll: 'vertical',
+    controls: ['calendar'],
+    tabs: false,
+    buttons: [
+      'set',
+      {
+          text: 'Aceptar',
+          handler: 'set',
+          icon: 'checkmark',
+          cssClass: 'my-btn'
+      }
+    ],
+    onSet: (event, inst) => {
+      const FInicio = new Date(this.FrmItem.controls['FechaPublicacion'].value);
+      const FFin    = new Date(event.valueText); 
+
+      if(FFin < FInicio) {
+        this.presentToast("La fecha de finalización no puede ser mayor a la de inicio");
+        return;
+      }
+
+      this.FrmItem.controls['FechaFin'].setValue(event.valueText);
+    },
+    months: 1
+  };
+  
+
   @Input() item;
 
   constructor(private modalCtrl: ModalController,private formBuilder: FormBuilder,private cd:ChangeDetectorRef,
               private alertCtrl: AlertController,private pickerController: PickerController,private renderer: Renderer2,
               private apiChat: ChatService,private apiMaterias: MateriasService,private apiTemas: TemasService,
-              public loadingController: LoadingController) { 
+              public loadingController: LoadingController,public toastController: ToastController) { 
           this.FrmItem = formBuilder.group({
             Id:   [0, Validators.compose([Validators.required])],
             Grupo:   ['', Validators.compose([Validators.required])],
             MateriaId:   ['', Validators.compose([Validators.required])],
             Titulo: ['', Validators.compose([Validators.required])],
-            FechaPublicacion:['', Validators.compose([Validators.required])]
+            FechaPublicacion:['', Validators.compose([Validators.required])],
+            FechaFin:['', Validators.compose([Validators.required])]
           });
   }
 
@@ -55,6 +134,13 @@ export class CrearTopicPage implements OnInit {
 
       //El recursoId sale de la tabla calendario
       this.apiTemas.get(this.item.RecursoId).subscribe(data => {
+        this.mobi.instance.setDate(new Date(data["FechaPublicacion"]));
+        this.mobi2.instance.setDate(new Date(data["FechaFin"]));
+  
+        data["FechaPublicacion"] = this.formatAMPM(new Date(data["FechaPublicacion"]));
+        data["FechaFin"] = this.formatAMPM(new Date(data["FechaFin"]));
+
+
         this.FrmItem.patchValue(data);
       
         this.gradoSeleccionado = this.item.Grado;
@@ -76,6 +162,35 @@ export class CrearTopicPage implements OnInit {
     }
   }
 
+  async presentToast(text) {
+    const toast = await this.toastController.create({
+      message: text,
+      color: "dark",
+      mode: "ios",
+      cssClass : "toastCenter",
+      duration: 3000
+    });
+
+    toast.present();
+  }
+
+  formatAMPM(date) {
+    console.log(date);
+    const year = date.getFullYear();
+    const month = ('0' + (date.getMonth() + 1)).slice(-2);;
+    const day = ('0' + date.getDate()).slice(-2);;
+    /*let hours = date.getHours();
+    let minutes = date.getMinutes();
+    let ampm = hours >= 12 ? 'pm' : 'am';
+    hours = hours % 12;
+    hours = hours ? hours : 12; // the hour '0' should be '12'
+    minutes = minutes < 10 ? '0'+minutes : minutes;
+    //const strTime = hours + ':' + minutes + ' ' + ampm;*/
+    const strTime = `${month}/${day}/${year}`;
+    console.log(strTime);
+    return strTime;
+  }
+
   async crearNoticia() {
     this.submitAttempt = true;
 
@@ -85,7 +200,6 @@ export class CrearTopicPage implements OnInit {
 
 
     if (!this.FrmItem.valid) {
-
       const alert = await  this.alertCtrl.create({
         header: 'No concluiste con el formulario',
         subHeader: 'El formulario se encuentra incompleto, favor de completar los datos faltantes.',
@@ -105,7 +219,8 @@ export class CrearTopicPage implements OnInit {
     this.item.Grado = this.gradoSeleccionado;
     this.item.Grupo = this.grupoSeleccionado;
     this.item.GrupoIngles = this.GrupoIngles;
-
+    this.item.FechaPublicacion = new Date(this.item.FechaPublicacion.toString()).toISOString();
+    this.item.FechaFin = new Date(this.item.FechaFin.toString()).toISOString();
 
     //const temasWS = await this.apiTemas.save(this.item).toPromise();9
     if(this.item.Id == 0)
@@ -255,4 +370,12 @@ export class CrearTopicPage implements OnInit {
     this.modalCtrl.dismiss();
   }
   
+  ionFocusFechaInicio(){
+    this.mobi.instance.show();
+  }
+
+  ionFocusFechaTermino() {
+    this.mobi2.instance.show();
+  }
+
 }

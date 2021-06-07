@@ -4,6 +4,7 @@
 <ion-progress-bar *ngIf="spiner" type="indeterminate"></ion-progress-bar>
 <ion-grid fixed>
     <ion-row class="ion-no-padding">
+        <app-mensaje-adeudo *ngIf="LstNoticias==null"></app-mensaje-adeudo>
         <ion-virtual-scroll [items]="LstNoticias" approxItemHeight="300px" style="margin-bottom: 100px;z-index: 999999;">
             <ion-col *virtualItem="let item" size="12" size-lg="12" size-md="12" size-sm="12" size-xs="12" class="ion-no-padding">
                 <ion-card style="text-align: initial;border-bottom: 0.6px solid #d0d0d0;border-left: none;box-shadow: none !important;" class="ion-activatable ripple-parent" mode="ios" (click)="openDetail($event,item)">
