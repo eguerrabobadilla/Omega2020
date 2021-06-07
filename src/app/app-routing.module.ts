@@ -22,7 +22,13 @@ const routes: Routes = [
     path: 'home-director',
     loadChildren: () => import('./pages/home-director/home-director.module').then( m => m.HomeDirectorPageModule),
     canActivate: [AuthGuardService]
+  },
+  {
+    path: 'home-universidad',
+    loadChildren: () => import('./pages/home-universidad/home-universidad.module').then( m => m.HomeUniversidadPageModule),
+    canActivate: [AuthGuardService]
   }
+
 ];
 
 @NgModule({

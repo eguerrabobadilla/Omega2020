@@ -53,8 +53,13 @@ export class AppComponent {
 
         if(this.getKeyToken("tipo")=="Director")
             this.router.navigate(['home-director']);
-        else
-            this.router.navigate(['home']);
+        else{
+          if(this.getKeyToken("escolaridad")=="SAC" || this.getKeyToken("escolaridad")=="Universidad" )
+          this.router.navigate(['home-universidad']);
+          else
+          this.router.navigate(['home']);
+        }
+           
       } else {
         this.router.navigate(['login']);
       }

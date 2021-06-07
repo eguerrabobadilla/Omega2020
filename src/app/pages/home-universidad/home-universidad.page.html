@@ -1,0 +1,325 @@
+<ion-header #toolbar [translucent]="false" style="background-color: #ffffff00;
+border-radius: 0px 0px 0px 50px;" mode="ios">
+    <ion-toolbar style="height: 16vh;
+   border-radius: 0px 0px 0px 50px;--background:ffffff00">
+        <ion-title #text class="etitle">
+            <ion-icon name="add-circle" #avatarUser style="display: none;color: white; transform: translateY(0.8vh);
+            font-size: 27px;font-size: 4vh;"></ion-icon>
+            <!--  <span style="opacity:0;    margin-right: -10px;">-</span>-->
+            <div *ngIf="hayConexion">Hola, {{user.nombre}}!</div>
+            <div *ngIf="!hayConexion">Sin conexión</div>
+            <div *ngIf="hayConexion" style="display: flex;padding-top: 7px;"><span style="font-size: 1.5vh;font-weight: 600;color:white">LBS+</span></div>
+            <div *ngIf="!hayConexion" style="display: flex;padding-top: 7px;"><span style="font-size: 1.5vh;font-weight: 600;color:white">Tu dispositivo no cuenta con una</span></div>
+            <div *ngIf="hayConexion"><span style="display: flex;font-size: 1.5vh;font-weight: 600;color:white">Versión 62</span></div>
+            <div *ngIf="!hayConexion"><span style="display: flex;font-size: 1.5vh;font-weight: 600;color:white">conexión a internet</span></div>
+        </ion-title>
+
+    </ion-toolbar>
+</ion-header>
+<!--v17----test-->
+<!--v17----test-->
+<!--v17----test-->
+<!--v17----test-->
+<ion-header #toolbar1 slot="end" [translucent]="false" style=" top: 0;height: 20vh;
+border-radius: 0px 0px 0px 40px;
+background-color: #ffffff00;
+position: absolute;
+width: 19vw;
+max-width: 130px;
+right: 0px;" mode="ios">
+
+    <div style="height: 50%;
+    padding-top: 3.6vh;
+    padding-left: 5%;
+    font-size: 4vh;
+    color: white;" (click)="Salir()">
+        <ion-fab>
+            <ion-fab-button size="small" style="width: 35px;height: 35px;--background: #F4315D;
+            --background-activated: #f76e8d;
+            --background-focused: #f76e8d;
+            --background-hover: #f76e8d;">
+                <ion-icon src="assets/img/cerrar_sesion_icono.svg" style="font-size: 12px;"></ion-icon>
+            </ion-fab-button>
+        </ion-fab>
+        <!--   <ion-icon name="exit-outline"></ion-icon>-->
+
+    </div>
+
+    <!--  <div style="  height: 50%;
+    background-color: #F4315D;
+    top: 50%;
+    border-radius: 0px 0px 0px 40px;
+    text-align: center;
+    padding-top: 3vh;
+    font-size: 22px;
+    color: aliceblue;">
+        V61</div>-->
+
+</ion-header>
+
+<!--<ion-header #toolbar2 class="inverted-border-radius" [translucent]="false" style="    height: 20vh;
+background-color: #6228cf00;
+z-index: 5;
+position: absolute;
+top: 0;" mode="ios">
+</ion-header>
+<div #toolbar2 class="inverted-border-radius-left" style="height: 20vh;
+background-color: #6228cf00;
+z-index: 5;
+position: absolute;
+top: 0;" mode="ios">
+</div>
+<div #toolbar3 class="inverted-border-radius-right" style="height: 20vh;
+background-color: #6228cf00;
+z-index: 5;
+position: absolute;
+top: 0;" mode="ios">
+</div>
+
+
+<ion-content [fullscreen]="true" scrollY="false">
+
+</ion-content>-->
+
+
+<div #content id="container" style="background-color: #6228cf;" slot="fixed">
+    <ion-title #animation7 mode="ios" style="left: 0px;
+    bottom: 0px;
+    padding-bottom: 49vh;
+    padding-left: 30px;
+    padding-right: 90px;
+    padding-top: -1vh;
+    /* padding-bottom: 16vh; */
+    /* padding-bottom: 0px; */
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    transform: translateZ(0px);
+    font-size: 73px;
+    font-weight: 500;
+    text-align: left;
+    box-sizing: border-box;
+    pointer-events: none;
+    --color: white;
+     z-index: 5;
+    /* letter-spacing: 3px;*/">
+        {{user.grado}}</ion-title>
+    <ion-icon #animation8 style="color: white;
+    left: 0px;
+    bottom: 0px;
+    padding-bottom: 65vh;
+    padding-left: 37px;
+    padding-right: 79px;
+    padding-top: -1vh;
+    position: absolute;
+    font-size: 34px;
+    font-weight: 500;
+    text-align: left;
+    box-sizing: border-box;
+    pointer-events: none;
+    z-index: 5;" [src]="nombreIcono"></ion-icon>
+
+
+    <ion-title mode="ios" style="left: 0px;
+    top: 0px;
+    padding-left: 30px;
+    padding-right: 90px;
+    padding-top:67vh;
+    padding-bottom: 0px;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    transform: translateZ(0px);
+    font-size: 39px;
+    font-weight: 700;
+    text-align: left;
+    box-sizing: border-box;
+    pointer-events: none;
+    z-index: 5;
+    --color: #fff;
+    letter-spacing: 0px;">{{header}}</ion-title>
+
+    <ion-fab mode="ios" vertical="bottom" horizontal="center" slot="fixed" style="padding-bottom: 150px;">
+        <ion-fab-button #fabflechaarriba mode="ios" size="small" style="display: none; --box-shadow:none ;--background-activated: #f4315d00; --background: #f4315d00;width: 46px;
+    height:46px;">
+            <div>
+                <ion-icon src="assets/img/flecha_arriba_icono.svg" style="font-size: 20px;color: #ffa906;"></ion-icon>
+            </div>
+
+        </ion-fab-button>
+    </ion-fab>
+
+
+    <ion-slides #slideUp type="ios" style="transform: translateY(4vh);height: 100%;" (ionSlideTransitionStart)="ionSlideTransitionStart()" (ionSlideTouchStart)="ionSlideTouchStart()" (ionSlideTouchEnd)="ionSlideTouchEndSlide()" [options]="slideOpts">
+        <ion-slide>
+            <div class="animated zoomIn fast" style="margin-bottom: 90pxn; width: 100%;height:100%;background-image: url(assets/img/1.svg);background-repeat: no-repeat;background-size: 100% 100%;"></div>
+        </ion-slide>
+        <!--   <ion-slide>
+            <div class="animated zoomIn fast" style="margin-bottom: 90px; width: 100%;height:100%;background-image: url(assets/img/2.svg);background-repeat: no-repeat;background-size: 100% 100%;"></div>
+        </ion-slide>
+        <ion-slide>
+            <div class="animated zoomIn fast" style="margin-bottom: 90px; width: 100%;height:100%;background-image: url(assets/img/3.svg);background-repeat: no-repeat;background-size: 100% 100%;"></div>
+        </ion-slide>-->
+        <ion-slide>
+            <div class="animated zoomIn fast" style="margin-bottom: 90px; width: 100%;height:100%;background-image: url(assets/img/4.svg);background-repeat: no-repeat;background-size: 100% 100%;"></div>
+        </ion-slide>
+        <ion-slide>
+            <div class="animated zoomIn fast" style="margin-bottom: 90px; width: 100%;height:100%;background-image: url(assets/img/5.svg);background-repeat: no-repeat;background-size: 100% 100%;"></div>
+        </ion-slide>
+        <!--   <ion-slide>
+            <div class="animated zoomIn fast" style="margin-bottom: 90px; width: 100%;height:100%;background-image: url(assets/img/6.svg);background-repeat: no-repeat;background-size: 100% 100%;"></div>
+        </ion-slide>-->
+        <!--<ion-slide>
+            <div class="animated zoomIn fast" style="margin-bottom: 90px; width: 100%;height:100%;background-image: url(assets/img/6.svg);background-repeat: no-repeat;background-size: 100% 100%;"></div>
+        </ion-slide>-->
+
+    </ion-slides>
+
+</div>
+
+<ion-item style="display: none;">
+    <ion-label style="display: none;">Materias</ion-label>
+    <ion-select style="display: none;" #filtrosControl [compareWith]="compareWith" multiple="true" (ionChange)="ionChangeFiltros($event)">
+        <ion-select-option *ngFor="let materia of materias" [value]="materia">{{materia.Nombre}}</ion-select-option>
+    </ion-select>
+</ion-item>
+
+<ion-fab mode="ios" vertical="bottom" horizontal="center" slot="fixed" style="transform: translateX(-57px);/*margin-left: 23vw;*/">
+    <ion-fab-button #fabstart (click)="openPicker()" mode="ios" size="small" style="--box-shadow:none ;--background-activated: #F4315D;  --background: #F4315D;width: 46px;
+    height:46px;transform: scale(0);display: none;">
+        <ion-icon name="list-outline"></ion-icon>
+    </ion-fab-button>
+</ion-fab>
+<ion-fab mode="ios" vertical="bottom" horizontal="center" slot="fixed">
+    <ion-fab-button (click)="mover()" mode="ios" size="small" #fab style="--box-shadow:none ;--background-activated: #F4315D;  --background: #F4315D;width: 46px;
+    height:46px;transform: scale(0);">
+        <ion-icon name="chevron-down-outline" style="font-size: 24px;"></ion-icon>
+    </ion-fab-button>
+</ion-fab>
+<ion-fab mode="ios" vertical="bottom" horizontal="center" slot="fixed" style="transform: translateX(57px);/*margin-right: 21vw;*/">
+    <ion-fab-button #fabend (click)="nuevoRecurso($event)" mode="ios" size="small" style="--box-shadow:none ;--background-activated: #F4315D;  --background: #F4315D;width: 46px;
+    height:46px;transform: scale(0);display: none;">
+        <ion-icon name="add-outline"></ion-icon>
+    </ion-fab-button>
+</ion-fab>
+
+<!-- Botones para escritorio -->
+<ion-fab mode="ios" vertical="center" horizontal="end" slot="fixed" [ngStyle]="{'display': !isMobile ? 'block' : 'none' }">
+    <ion-fab-button #fabNext (click)="nextSlide()" mode="ios" size="small" style="--box-shadow:none ;--background-activated: #F4315D;  --background: #F4315D;width: 46px;
+    height:46px;">
+        <ion-icon name="chevron-forward-outline"></ion-icon>
+    </ion-fab-button>
+</ion-fab>
+
+
+<ion-fab mode="ios" vertical="center" horizontal="start" slot="fixed" [ngStyle]="{'display': !isMobile ? 'block' : 'none' }">
+    <ion-fab-button #fabPrev (click)="prevSlide()" mode="ios" size="small" style="--box-shadow:none ;--background-activated: #F4315D;  --background: #F4315D;width: 46px;
+    height:46px;">
+        <ion-icon name="chevron-back-outline"></ion-icon>
+    </ion-fab-button>
+</ion-fab>
+<!-- Termina botones para escritorio -->
+
+<div #div2 (click)="clickDiv()" class="edu1" style="transform: translateY(60vh)">
+    <div style="position: -webkit-sticky;top: 0;font-size: 29px;z-index: 999;position: sticky;">
+
+        <app-pill-menu (click)="test()" #pillMenu [itemsMenu]="tabs" [selectOption]="selectOption" (indicatorChanged)="segmentChanged($event)" (clickFab)="nuevoRecurso($event)" (clickFiltro)="openPicker()"></app-pill-menu>
+    </div>
+    <ion-header [translucent]="false" mode="ios"></ion-header>
+
+    <ion-content #IonContentScroll [scrollY]="scrollenable" style="--background: #ffffff;">
+        <div #elementsToProcess style="bottom: -0.04vh;position: relative;"></div>
+
+        <ion-slides [options]="slideOptsdos" #slideDown (ionSlideTouchEnd)="ionSlideTouchEnd(slideUp,slideDown)" *ngIf="selectSeccion == 1" style="min-height: 72.6vh;">
+            <ion-slide>
+                <app-codes (librosDescargados)="librosDescargados($event)" *ngIf="codigoVisible"></app-codes>
+                <app-books (buscarPortadas)="buscarPortadas()" (updateAutoHeightSlider)="updateAutoHeightSlider()" #booksComponent [librosIN]="libros" *ngIf="!codigoVisible"> </app-books>
+            </ion-slide>
+            <ion-slide>
+                <app-codes (librosDescargados)="librosDescargados($event)" *ngIf="codigoVisible"></app-codes>
+                <app-books (updateAutoHeightSlider)="updateAutoHeightSlider()" #booksComponentIngles [librosIN]="libros | filter : 'Ingles' : 'Idioma'" *ngIf="!codigoVisible"> </app-books>
+            </ion-slide>
+            <ion-slide>
+                <app-codes (librosDescargados)="librosDescargados($event)" *ngIf="codigoVisible"></app-codes>
+                <app-books (updateAutoHeightSlider)="updateAutoHeightSlider()" #booksComponentEspanol [librosIN]="libros | filter : 'Espanol' : 'Idioma'" *ngIf="!codigoVisible"> </app-books>
+            </ion-slide>
+            <!--<ion-slide>
+                <app-codes (librosDescargados)="librosDescargados($event)"></app-codes>
+            </ion-slide>-->
+        </ion-slides>
+
+        <ion-slides #slideDown [options]="slideOptsdos" (ionSlideTouchEnd)="ionSlideTouchEnd(slideUp,slideDown)" *ngIf="selectSeccion == 2" style="min-height: 72.6vh;">
+            <!--    <ion-slide>
+                <app-list-tareas *ngIf="pildora === 'Tareas'" #tareasComponent (updateAutoHeightSlider)="updateAutoHeightSlider()" style="width: 100%;"></app-list-tareas>
+            </ion-slide>
+            <ion-slide>
+                <app-forum *ngIf="pildora === 'Foro'" #forumComponent (updateAutoHeightSlider)="updateAutoHeightSlider()" style="width: 100%;"></app-forum>
+            </ion-slide>
+            <ion-slide>
+                <app-list-resource #resourceComponent (updateAutoHeightSlider)="updateAutoHeightSlider()" (changeIonChip)="changeIonChipRecursos($event)" style="width: 100%;"></app-list-resource>
+            </ion-slide>
+            <ion-slide *ngIf="!permisoEditar()">
+                <app-evidences *ngIf="pildora === 'Evidencias'" #evidenceComponent (updateAutoHeightSlider)="updateAutoHeightSlider()" style="width: 100%;"></app-evidences>
+            </ion-slide>-->
+            <ion-slide>
+                <app-perfil style="width: 100%;"></app-perfil>
+            </ion-slide>
+            <!-- <ion-slide>
+                <app-subjects style="width: 100%;"></app-subjects>
+            </ion-slide>-->
+
+        </ion-slides>
+
+        <ion-slides #slideDown [options]="slideOptsdos" (ionSlideTouchEnd)="ionSlideTouchEnd(slideUp,slideDown)" *ngIf="selectSeccion == 3" style="min-height: 72.6vh;">
+
+            <ion-slide>
+                <app-questions style="width: 100%;"></app-questions>
+            </ion-slide>
+
+            <ion-slide>
+                <app-contact style="width: 100%;"></app-contact>
+            </ion-slide>
+        </ion-slides>
+        <ion-slides #slideDown [options]="slideOptsdos" (ionSlideTouchEnd)="ionSlideTouchEnd(slideUp,slideDown)" *ngIf="selectSeccion == 4 " style="min-height: 72.6vh;">
+
+            <ion-slide>
+                <app-perfil style="width: 100%;"></app-perfil>
+            </ion-slide>
+            <ion-slide>
+                <app-subjects style="width: 100%;"></app-subjects>
+            </ion-slide>
+            <ion-slide>
+                <app-graphics *ngIf="permisoEditar()" #appGraphics (updateAutoHeightSlider)="updateAutoHeightSlider()" style="width: 100%;"></app-graphics>
+                <app-report *ngIf="!permisoEditar()" #appReport (updateAutoHeightSlider)="updateAutoHeightSlider()" style="width: 100%;"></app-report>
+            </ion-slide>
+        </ion-slides>
+
+        <ion-slides #slideDown [options]="slideOptsdos" (ionSlideTouchEnd)="ionSlideTouchEnd(slideUp,slideDown)" *ngIf="selectSeccion == 5" style="min-height: 72.6vh;">
+
+            <ion-slide>
+                <app-questions style="width: 100%;"></app-questions>
+            </ion-slide>
+
+            <ion-slide>
+                <app-contact style="width: 100%;"></app-contact>
+            </ion-slide>
+        </ion-slides>
+        <!-- Examenes-->
+        <ion-slides #slideDown [options]="slideOptsdos" (ionSlideTouchEnd)="ionSlideTouchEnd(slideUp,slideDown)" *ngIf="selectSeccion == 6 " style="min-height: 72.6vh;">
+            <ion-slide>
+                <app-list-examenes (updateAutoHeightSlider)="updateAutoHeightSlider()" #examenesComponent *ngIf="pildoraExamenes === 'Examenes'" style="width: 100%;"></app-list-examenes>
+            </ion-slide>
+
+            <!--<ion-slide>
+                
+            </ion-slide>-->
+        </ion-slides>
+        <!-- Examenes-->
+    </ion-content>
+
+</div>
+<!--<ion-content [scrollY]="scrollenable" #content [fullscreen]="true" id="ion-content1" style="--offset-top:487px !important;width: 100%; z-index:4;position: relative;--background: #fff0;">
+
+
+
+</ion-content>-->
