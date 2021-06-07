@@ -50,8 +50,12 @@ export class LoginPage implements OnInit {
 
       if(this.getKeyToken("tipo")=="Director")
         this.router.navigate(['home-director']);
-      else
+      else{
+        if(this.getKeyToken("escolaridad")=="SAC" || this.getKeyToken("escolaridad")=="Universidad" )
+        this.router.navigate(['home-universidad']);
+        else
         this.router.navigate(['home']);
+      }
 
       await this.loadingController.dismiss();
 
