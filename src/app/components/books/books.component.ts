@@ -155,7 +155,7 @@ export class BooksComponent implements OnInit {
     console.log("ngAfterViewInit");
     
     setTimeout(() => {
-      this.updateAutoHeightSlider.emit();
+      //this.updateAutoHeightSlider.emit();
       this.spiner = false;
     }, 2500);
     /*this.ArrayCircleProgress.changes.subscribe((items: Array<CircleProgressComponent>) => {
@@ -428,6 +428,12 @@ export class BooksComponent implements OnInit {
       
       //console.log(`Files are ${status}% downloaded`); 
     });
+  }
+
+  loadData(event){
+    //console.log(event);
+    this.updateAutoHeightSlider.emit();
+    event.target.complete();
   }
 
 }
