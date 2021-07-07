@@ -121,6 +121,12 @@
                 </div>
             </div>
              <!--Termina Preparatoria -->
+             <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
+                <ion-infinite-scroll-content
+                  loadingSpinner="bubbles" 
+                  loadingText="Loading more books...">
+                </ion-infinite-scroll-content>
+              </ion-infinite-scroll>
         </ng-template>
         <ng-template #derechaTemplate>
             <div class="images">
@@ -150,4 +156,10 @@
                 </div>
             </div>
             </div>
+            <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
+                <ion-infinite-scroll-content
+                  loadingSpinner="bubbles" 
+                  loadingText="Loading more books...">
+                </ion-infinite-scroll-content>
+              </ion-infinite-scroll>
         </ng-template>
