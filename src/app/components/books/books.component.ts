@@ -181,9 +181,20 @@ export class BooksComponent implements OnInit {
         const date = new Date();
         const timestamp = date.getTime();
 
-        const urlCover = `${this.file.dataDirectory}covers/${item.RutaThumbnails}`;
-        item.RutaThumbnails = item.RutaThumbnails.includes("?t=") ? item.RutaThumbnails : `${this.webview.convertFileSrc(urlCover)}?t=${timestamp}`;
-       
+        //item.RutaThumbnails = item.RutaThumbnails.includes("?t=") ? item.RutaThumbnails : `${this.webview.convertFileSrc(urlCover)}?t=${timestamp}`;
+      
+        if(item.RutaThumbnails.includes("?t=")){
+          let NombreCover=item.RutaThumbnails.split("/");
+
+          const urlCover = `${this.file.dataDirectory}covers/${NombreCover[NombreCover.length-1].split("?")[0]}`;
+          //console.log(item.RutaThumbnails);
+          //console.log(urlCover);
+          item.RutaThumbnails = `${this.webview.convertFileSrc(urlCover)}?t=${timestamp}`;
+        }
+        else{
+          const urlCover = `${this.file.dataDirectory}covers/${item.RutaThumbnails}`;
+          item.RutaThumbnails=`${this.webview.convertFileSrc(urlCover)}?t=${timestamp}`;
+        }
       } else {
         const date = new Date();
         const timestamp = date.getTime();
