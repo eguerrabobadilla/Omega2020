@@ -14,6 +14,7 @@ import { LinkifyPipe } from '../pipes/linkifypipe ';
 import { SortByPipe } from '../pipes/sort-by.pipe';
 import { SanitizePipe } from '../pipes/sanitize.pipe';
 import { MensajeAdeudoComponent } from '../components/mensaje-adeudo/mensaje-adeudo.component';
+import { MensajeInternetComponent } from '../components/mensaje-internet/mensaje-internet.component';
 import { ListResourceComponent } from '../components/list-resource/list-resource.component';
 import { ForumComponent } from '../components/forum/forum.component';
 import { GraphicsComponent } from '../components/graphics/graphics.component';
@@ -31,10 +32,10 @@ import { ListExamenesComponent } from '../components/list-examenes/list-examenes
         CommonModule,
         FormsModule
     ],
-    declarations:[PillMenuComponent,CircleProgressComponent,CodesComponent,BooksComponent,FilterPipe,CircleProgressReportComponent,ChatsComponent,NewsComponent,LinkifyPipe,SortByPipe,SanitizePipe,MensajeAdeudoComponent,ListResourceComponent,
+    declarations:[PillMenuComponent,CircleProgressComponent,CodesComponent,BooksComponent,FilterPipe,CircleProgressReportComponent,ChatsComponent,NewsComponent,LinkifyPipe,SortByPipe,SanitizePipe,MensajeAdeudoComponent,MensajeInternetComponent,ListResourceComponent,
                   ForumComponent,GraphicsComponent,EvidencesComponent,SubjectsComponent,QuestionsComponent,ContactComponent,
                   PerfilComponent,ReportComponent,ListExamenesComponent],
-    exports:[PillMenuComponent,CircleProgressComponent,CodesComponent,BooksComponent,FilterPipe,CircleProgressReportComponent,ChatsComponent,NewsComponent,LinkifyPipe,SortByPipe,SanitizePipe,MensajeAdeudoComponent,ListResourceComponent,
+    exports:[PillMenuComponent,CircleProgressComponent,CodesComponent,BooksComponent,FilterPipe,CircleProgressReportComponent,ChatsComponent,NewsComponent,LinkifyPipe,SortByPipe,SanitizePipe,MensajeAdeudoComponent,MensajeInternetComponent,ListResourceComponent,
              ForumComponent,GraphicsComponent,EvidencesComponent,SubjectsComponent,QuestionsComponent,ContactComponent,
              PerfilComponent,ReportComponent,ListExamenesComponent ]
 })

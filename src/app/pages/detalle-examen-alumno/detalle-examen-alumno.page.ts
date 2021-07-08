@@ -5,7 +5,8 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import {ListComponent} from 'src/app/components/list/list.component';
 import { CountdownComponent } from 'ngx-countdown';
 import { ExamenesService } from 'src/app/api/examenes.service';
-import { timeStamp } from 'console';
+import { WebsocketService } from '../../services/websocket.service';
+
 
 
 
@@ -23,6 +24,7 @@ export class DetalleExamenAlumnoPage implements OnInit {
   respuestas: any[] = [];
   preguntaInfo: any[] = [];
   resultadoExamen: any;
+  totalPreguntas:any;
   contadorPregunta= 1;
   botonSiguienteDisable=false;
   botonAnteriorDisable=true;
@@ -72,7 +74,7 @@ export class DetalleExamenAlumnoPage implements OnInit {
  
   constructor(private apiPreguntas: PreguntasService, public popoverController: PopoverController,private modalCtrl: ModalController,
               private apiExamenes: ExamenesService,private loadingController: LoadingController,private applicationRef: ApplicationRef, private render: Renderer2,
-              private alertController: AlertController) { }
+              private alertController: AlertController,public  webSocket: WebsocketService) { }
 
   ngOnInit() {
       
@@ -148,14 +150,16 @@ export class DetalleExamenAlumnoPage implements OnInit {
       this.slider.slideNext();
     }, 100);
       
-  this.apiPreguntas.getExamen(this.examenId).subscribe(data =>{
+  this.apiExamenes.GetExamenInformacion(this.examenId).subscribe(data =>{
 
         if(duracionExamen==null)this.duracionExamen=this.item.DuracionExamen*60;
         else this.duracionExamen=duracionExamen*60;
         
         this.cambioPregunta("especifico",1);
-       
-
+        console.log("this.item")
+       console.log(data)
+       console.log(this.examenId)
+       this.totalPreguntas= data['TotalPreguntas'];
      },(err) => {
        console.log(err);
      });
@@ -172,7 +176,7 @@ export class DetalleExamenAlumnoPage implements OnInit {
     if (this.respuestaSeleccionada=="")this.respuestaSeleccionada="[sin-respuesta]";
 
     if (direccion==="siguiente"){
-        if(this.contadorPregunta==this.item.TotalPreguntas){
+        if(this.contadorPregunta==this.totalPreguntas){
           this.slider.slideNext();
           this.botonSiguienteDisable=true
           this.banderaslideFinExamen=true;
@@ -182,9 +186,9 @@ export class DetalleExamenAlumnoPage implements OnInit {
     }
     
     if (direccion==="anterior"){
-      if(this.contadorPregunta==this.item.TotalPreguntas && this.banderaslideFinExamen==true){
+      if(this.contadorPregunta==this.totalPreguntas && this.banderaslideFinExamen==true){
         this.slider.slidePrev();
-        this.preguntaAnterior=this.item.TotalPreguntas;
+        this.preguntaAnterior=this.totalPreguntas;
         this.banderaslideFinExamen=false;
         this.botonSiguienteDisable=false;
       }else
@@ -193,9 +197,9 @@ export class DetalleExamenAlumnoPage implements OnInit {
     }
 
     if (direccion==="especifico"){
-      if(this.contadorPregunta==this.item.TotalPreguntas && this.banderaslideFinExamen==true){
+      if(this.contadorPregunta==this.totalPreguntas && this.banderaslideFinExamen==true){
         this.slider.slidePrev();
-        this.preguntaAnterior=this.item.TotalPreguntas;
+        this.preguntaAnterior=this.totalPreguntas;
         this.banderaslideFinExamen=false;
         this.botonSiguienteDisable=false;
       }
@@ -244,7 +248,8 @@ export class DetalleExamenAlumnoPage implements OnInit {
           this.slider.updateAutoHeight();
 
           
-          if(this.banderaslideFinExamen==true)this.botonSiguienteDisable=true;else this.botonSiguienteDisable=false ;
+          if(this.banderaslideFinExamen==true)this.botonSiguienteDisable=true;
+          else this.botonSiguienteDisable=false ;
           this.botonPopoverDisable=false;
           this.backDropVisible=false;
 
@@ -254,19 +259,42 @@ export class DetalleExamenAlumnoPage implements OnInit {
       });
     },error => {
       console.log(error);
-      this.botonAnteriorDisable=false;  //los pongo disable antes de la peticion para bloquearlos
-      this.botonSiguienteDisable=false;
-      this.botonPopoverDisable=false;
-      this.backDropVisible=false;
-      if(this.banderaslideFinExamen==true)this.botonSiguienteDisable=true;
+      this.mensajeConexionLenta();
     });
 
+ 
     
 /*if(this.contadorPregunta==this.item.TotalPreguntas){
       this.botonSiguienteDisable=true
       this.slider.slideNext();
     }else this.botonSiguienteDisable=false;*/
 
+      
+  }
+
+  async mensajeConexionLenta(){
+
+    try  {
+
+      const alertTerminado = await this.alertController.create({
+        header: 'Conexión lenta',
+        message: 'Estas conectado a una red wifi inestable, favor de conectarse a una red estable para una mejor experiencia de uso. ',
+        backdropDismiss :false,
+        buttons: [
+          {
+            text: 'Entendido', handler: () =>  {
+              this.closeModal();
+              return;
+            }
+          }
+        ]
+      });
+
+      alertTerminado.present();
+    } catch(err) {
+
+
+    }
       
   }
   imagenLeida(){
@@ -358,7 +386,7 @@ export class DetalleExamenAlumnoPage implements OnInit {
         event: ev,
         translucent: false,
         componentProps: {
-          numerovueltas: this.item.TotalPreguntas,
+          numerovueltas: this.totalPreguntas,
           onClick: (number) => {
             popover.dismiss();
             this.cambioPregunta('especifico',number);

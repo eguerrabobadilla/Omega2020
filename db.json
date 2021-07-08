@@ -1,93 +1,44 @@
-{
-  "preguntas": [
+[{
+  "name": "universidad",
+  "styles": [{
+      "themeVariable": "--ion-color-principal",
+      "value": "#1a2029"
+    },
     {
-        "id": 1,
-        "Pregunta" : "<p>Pregunta 1</p>",
-        "Respuestas" : [ 
-            {
-                "Id" : "rp1",
-                "Respuesta" : "<p>dasdas</p>"
-            }, 
-            {
-                "Id" : "rp2",
-                "Respuesta" : "<p>asdas</p>"
-            }, 
-            {
-                "Id" : "rp3",
-                "Respuesta" : "<p>asd</p>"
-            }, 
-            {
-                "Id" : "rp4",
-                "Respuesta" : "hola 1"
-            }, 
-            {
-                "Id" : "rp5",
-                "Respuesta" : "hola 2"
-            }
-        ]
+      "themeVariable": "--ion-color-principal-rgb",
+      "value": "60,60,60"
     },
-        {
-        "id": 2,
-        "Pregunta" : "<p>Pregunta 2</p>",
-        "Respuestas" : [ 
-            {
-                "Id" : "rp1",
-                "Respuesta" : "<p>asdfadqwerqwer</p>"
-            }, 
-            {
-                "Id" : "rp2",
-                "Respuesta" : "<p>ppppp</p>"
-            }, 
-            {
-                "Id" : "rp3",
-                "Respuesta" : "<p>afffffffsd</p>"
-            }, 
-            {
-                "Id" : "rp4",
-                "Respuesta" : "otro"
-            }, 
-            {
-                "Id" : "rp5",
-                "Respuesta" : "otro 1"
-            }
-        ]
+    {
+      "themeVariable": "--ion-color-principal-contrast",
+      "value": "#ffffff"
     },
-        {
-        "id": 3,
-        "Pregunta" : "<p>Pregunta 3</p>",
-        "Respuestas" : [ 
-            {
-                "Id" : "rp1",
-                "Respuesta" : "<p>dasdas</p>"
-            }, 
-            {
-                "Id" : "rp2",
-                "Respuesta" : "<p>asdcccccas</p>"
-            }, 
-            {
-                "Id" : "rp3",
-                "Respuesta" : "<p>avvvvvsd</p>"
-            }
-        ]
+    {
+      "themeVariable": "--ion-color-principal-contrast-rgb",
+      "value": "255,255,255"
     },
-        {
-        "id": 4,
-        "Pregunta" : "<p>Pregunta 4</p>",
-        "Respuestas" : [ 
-            {
-                "Id" : "rp1",
-                "Respuesta" : "<p>daadsfsdas</p>"
-            }, 
-            {
-                "Id" : "rp2",
-                "Respuesta" : "<p>asdas</p>"
-            }, 
-            {
-                "Id" : "rp3",
-                "Respuesta" : "<p>adsf</p>"
-            }
-
-        ]
+    {
+      "themeVariable": "--ion-color-principal-shade",
+      "value": "#353535"
+    },
+    {
+      "themeVariable": "--ion-color-principal-tint",
+      "value": "#505050"
+    },
+    {
+      "themeVariable": "--ion-color-principal-cerrarCesion-background",
+      "value": "#ffa906"
+    },
+    {
+      "themeVariable": "--ion-color-principal-titulosHeader",
+      "value": "#ffa906"
+    },
+    {
+      "themeVariable": "--ion-color-principal-titulosHeader",
+      "value": "#ffa906"
+    },
+    {
+      "themeVariable": "--ion-color-principal-titulosHeader",
+      "value": "#ffa906"
     }
-    ]
-}
+  ]
+}]

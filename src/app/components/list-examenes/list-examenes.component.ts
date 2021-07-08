@@ -4,6 +4,7 @@ import { ExamenesService } from 'src/app/api/examenes.service';
 import { CrearExamenPage } from 'src/app/pages/crear-examen/crear-examen.page';
 import { DetalleResultadosExamenesPage } from 'src/app/pages/detalle-resultados-examenes/detalle-resultados-examenes.page';
 import { DetalleExamenAlumnoPage } from '../../pages/detalle-examen-alumno/detalle-examen-alumno.page';
+import { WebsocketService } from '../../services/websocket.service';
 
 @Component({
   selector: 'app-list-examenes',
@@ -16,6 +17,7 @@ export class ListExamenesComponent implements OnInit {
   loading: any;
   visto = false;
   visto2 = false;
+  conexionStatus = true;
   cargarConFiltro = false;
   spiner = true;
   contadorInfinieScroll = 0;
@@ -24,7 +26,7 @@ export class ListExamenesComponent implements OnInit {
   @ViewChild(IonVirtualScroll, {static: false}) virtualScroll: IonVirtualScroll;
 
   constructor(private apiExamenes : ExamenesService, private modalCrl: ModalController, 
-              private loadingController: LoadingController, private alertController: AlertController) { 
+              private loadingController: LoadingController, private alertController: AlertController,public  webSocket: WebsocketService) { 
 
   }
 
@@ -44,6 +46,21 @@ export class ListExamenesComponent implements OnInit {
       this.contadorInfinieScroll += 10;
       this.updateAutoHeightSlider.emit();
       this.spiner =false;
+    });
+    this.subscribeToEvents();
+  }
+
+  private subscribeToEvents(): void {
+    this.webSocket.connectionEstablished.subscribe((status: any) => {
+       console.log("socket")
+       console.log(status)
+       if(status==false){
+        this.conexionStatus=false;
+       }
+       if(status==true){
+        this.conexionStatus=true;
+        
+       }
     });
   }
 
