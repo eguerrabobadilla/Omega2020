@@ -25,6 +25,14 @@ export class ExamenesService extends apiBase {
     return this.http.put(`${this.url}/${this.Ws}/examenTerminado/${examenId}`,item);
   }
 
+  GetExamenDatos(examenId): Observable<any[]> {
+    return this.http.get<any[]>(`${this.url}/${this.Ws}/GetExamenDatos/${examenId}`);
+  }
+  GetExamenInformacion(examenId): Observable<any[]> {
+    return this.http.get<any[]>(`${this.url}/${this.Ws}/GetExamenInformacion/${examenId}`);
+  }
+  
+
   
   examenTerminadoVistaProfesor(examenId,usuarioId){
     return this.http.get(`${this.url}/${this.Ws}/examenTerminadoVistaProfesor/${examenId}/${usuarioId}`);

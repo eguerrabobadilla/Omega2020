@@ -30,6 +30,8 @@ export class PreguntasService extends apiBase {
     return this.http.get<any[]>(`${this.url}/${this.Ws}/getExamen/${examenId}`);
   }
 
+  
+
   getInfinite(skip,take,examenId): Observable<any[]> {
     return this.http.get<any[]>(`${this.url}/${this.Ws}/infinite/${skip}/${take}/${examenId}`);
   }

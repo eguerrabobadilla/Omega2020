@@ -81,4 +81,11 @@ export class AppComponent {
 
     return value;
   }
+
+  interfaceApp(){
+   const colores ={
+     backgoundPincipal : 'blue'
+
+    }
+  }
 }
