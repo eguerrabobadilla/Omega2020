@@ -48,6 +48,8 @@ export class LoginPage implements OnInit {
       console.log("segund socket");
       //this.webSocket.initSocket();
 
+      this.FrmLogin.reset();
+
       if(this.getKeyToken("tipo")=="Director")
         this.router.navigate(['home-director']);
       else{

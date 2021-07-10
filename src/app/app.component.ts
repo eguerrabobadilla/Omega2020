@@ -61,6 +61,7 @@ export class AppComponent {
         }
            
       } else {
+        console.log("va al login");
         this.router.navigate(['login']);
       }
     });

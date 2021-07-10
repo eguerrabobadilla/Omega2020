@@ -187,19 +187,26 @@ export class BooksComponent implements OnInit {
           let NombreCover=item.RutaThumbnails.split("/");
 
           const urlCover = `${this.file.dataDirectory}covers/${NombreCover[NombreCover.length-1].split("?")[0]}`;
+          const pathIcono = `${this.file.dataDirectory}covers/iconos/${item.NombreArchivo}.svg`
           //console.log(item.RutaThumbnails);
           //console.log(urlCover);
           item.RutaThumbnails = `${this.webview.convertFileSrc(urlCover)}?t=${timestamp}`;
+          item.Icono=`${this.webview.convertFileSrc(pathIcono)}?t=${timestamp}`;
         }
         else{
           const urlCover = `${this.file.dataDirectory}covers/${item.RutaThumbnails}`;
+          const pathIcono = `${this.file.dataDirectory}covers/iconos/${item.NombreArchivo}.svg`
+
           item.RutaThumbnails=`${this.webview.convertFileSrc(urlCover)}?t=${timestamp}`;
+          item.Icono=`${this.webview.convertFileSrc(pathIcono)}?t=${timestamp}`;
         }
       } else {
         const date = new Date();
         const timestamp = date.getTime();
         
         item.RutaThumbnails = item.RutaThumbnails.includes("?t=") ? item.RutaThumbnails : `${this.api.url}/covers/${item.RutaThumbnails}?t=${timestamp}`;
+        item.Icono = `${this.api.url}/covers/iconos/${item.NombreArchivo}.svg?t=${timestamp}`;
+        //console.log(item.Icono);
       }
       if (this.platform.is('cordova')) {
         this.existeLibro(directory,'Libro'+ item.Id).then(() =>{
