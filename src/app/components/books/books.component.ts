@@ -51,7 +51,8 @@ export class BooksComponent implements OnInit {
   constructor(public  webSocket: WebsocketService,private serviceDownload: DownloadFileService,private transfer: FileTransfer,
               private file: File,private platform: Platform,private booksService: BooksService,private zip: Zip,
               private webview: WebView,private storage: Storage,private applicationRef:ApplicationRef,private globalServicies: GlobalService,
-              private renderer: Renderer2,private apiPortadas: PortadasService,private api: apiBase,public sanitizer: DomSanitizer) {
+              private renderer: Renderer2,private apiPortadas: PortadasService,private api: apiBase,public sanitizer: DomSanitizer,
+              private elem: ElementRef) {
   }
 
   abrirKinder(){
@@ -138,8 +139,6 @@ export class BooksComponent implements OnInit {
 
   async ngOnInit() {
 
-    
-    
     this.pathStorage = await this.globalServicies.getNameStorage();
     console.log("pathStorage");
     this.tipoUsuario = this.globalServicies.getKeyToken("tipo");
@@ -164,9 +163,101 @@ export class BooksComponent implements OnInit {
     });*/
   }
 
+  waitForImages() {
+    console.log("waitForImages");
+    //var grid = document.getElementById("masonry");
+    //let allItems = document.querySelectorAll('.masonry-item');
+    let allItems = this.elem.nativeElement.querySelectorAll('.masonry-item');
+    if( allItems ) {
+      for(var i=0;i<allItems.length;i++){
+        /*imagesLoaded( allItems[i], (instance) => {
+          var item = instance.elements[0];
+          this.resizeMasonryItem(item);
+          console.log("Waiting for Images");
+        } );*/
+      }
+    }
+  }
+
+  resizeMasonryItem(item){
+    /* Get the grid object, its row-gap, and the size of its implicit rows */
+    //let grid = document.getElementsByClassName('masonry')[0];
+    let grid = this.elem.nativeElement.getElementsByClassName('masonry')[0];
+    
+    console.log(grid);
+    if( grid ) {
+      let rowGap = parseInt(window.getComputedStyle(grid).getPropertyValue('grid-row-gap')),
+          rowHeight = parseInt(window.getComputedStyle(grid).getPropertyValue('grid-auto-rows')),
+          gridImagesAsContent = item.querySelector('img.masonry-content');
+ 
+      /*
+       * Spanning for any brick = S
+       * Grid's row-gap = G
+       * Size of grid's implicitly create row-track = R
+       * Height of item content = H
+       * Net height of the item = H1 = H + G
+       * Net height of the implicit row-track = T = G + R
+       * S = H1 / T
+       */
+      let rowSpan = Math.ceil((item.querySelector('.masonry-content').getBoundingClientRect().height+rowGap)/(rowHeight+rowGap));
+      
+      /* Set the spanning as calculated above (S) */
+      item.style.gridRowEnd = 'span '+rowSpan;
+      if(gridImagesAsContent) {
+        //item.querySelector('img.masonry-content').style.height = item.getBoundingClientRect().height + "px";
+      }
+    }
+  }
+  
+  reorder(arr, columns) {
+    // READ HERE
+    // this is the magic
+    // re-order the array so the "cards" read left-right
+    // cols === CSS column-count value
+    
+    const cols = columns;
+    const out = [];
+    let col = 0;
+    while(col < cols) {
+        for(let i = 0; i < arr.length; i += cols) {
+            let _val = arr[i + col];
+            if (_val !== undefined)
+                out.push(_val);
+        }
+        if(col==0)
+        {
+          const fakeBook= {
+            Escolaridad: "Kinder",
+            Grados: "1",
+            Id: 0,
+            Idioma: "Espanol",
+            Libroscodigos: [],
+            Librospreparatoria: [],
+            Materias: [],
+            Nombre: "Lectoescritura",
+            NombreArchivo: "KIN_01_lectoescritura",
+            RutaThumbnails: "assets/img/temp.jpg",
+            Suffix: "st",
+            TipoLibro: "Real",
+            Usuariolibros: [],
+            Version: 1,
+            Versiones: []
+          }
+          //Inserta libro falso
+          out.push(fakeBook)
+        }
+        col++;
+    }
+    //this.setState({ cards: out, columns: columns });
+
+    this.libros = out;
+    // yes, I know Nick... you had another slicker ES6-y implementation
+    // but this one I could understand :)
+  }
+
   iniciarValidacion() {
     const directory = this.file.dataDirectory + "books2020/";
-
+    
     //this.data = new BehaviorSubject(element);
     
     this.libros = this.librosIN;
@@ -253,7 +344,7 @@ export class BooksComponent implements OnInit {
 
     if (this.platform.is('cordova')) {
         this.verificarLibro(item);
-    } else {
+    } else {      
       console.log("Opcion solo en celular");
       console.log(item.NombreArchivo);
       item.status="terminado";

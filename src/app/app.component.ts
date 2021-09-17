@@ -8,6 +8,8 @@ import { AuthenticationService } from './services/authentication.service';
 import { Router } from '@angular/router';
 import { WebsocketService } from './services/websocket.service';
 import { PushService } from './services/push.service';
+import { File } from '@ionic-native/file/ngx';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-root',
@@ -22,18 +24,57 @@ export class AppComponent {
     private PushService : PushService,
     private router: Router,
     private authenticationService: AuthenticationService,
-    public  webSocket: WebsocketService
+    public  webSocket: WebsocketService,
+    private file: File,
+    public alertController: AlertController
   ) {
     this.initializeApp();
   }
+
+  async presentAlert() {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      backdropDismiss: false,
+      header: 'Falta espacio',
+      //subHeader: 'Error:',
+      message: 'No cuentas con espacio suficiente en tu dispositivo, libera espacio de almacenamiento, debes tener 3GB libres o más.',
+      buttons: [
+        {
+          text: 'Entendido',
+          role: 'cancel',
+          cssClass: 'secondary'
+        }
+      ]
+    });
+
+    await alert.present();
+
+    const { role } = await alert.onDidDismiss();
+    console.log('onDidDismiss resolved with role', role);
+  }
+
 
   initializeApp() {
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
       this.PushService.configuracionInicial();
+      
+      if(this.platform.is('cordova')) {
+        this.file.getFreeDiskSpace().then(data => {
+          console.log("Espacio:",data);
+          //1gb= 1048576 kb
+          // 15gb = 15728640 kb
+          setInterval(() => { 
+            if(data < 15728640) 
+            this.presentAlert();
+          }, 10000);
+          
+        });
+      }
 
     });
+    
     
 
     //Login

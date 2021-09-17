@@ -21,13 +21,13 @@
                                     </div>
                                     {{item.Nombre}}
                                 </div>
-                                <!--<div class="grid-item item2" style="width: 30px;height: 30px;background-color: #6228cf; border-radius: 50%;text-align: left;">
-                                </div>-->
                                 <div class="grid-item item2" style="width: 30px;height: 30px;background-color: #6228cf; border-radius: 50%;text-align: left;">
+                                </div>
+                                <!--<div class="grid-item item2" style="width: 30px;height: 30px;background-color: #6228cf; border-radius: 50%;text-align: left;">
                                     <ion-avatar>
                                         <img style="width: 30px;height: 30px;" [src]="sanitizer.bypassSecurityTrustResourceUrl(item.Icono)" >
                                     </ion-avatar>
-                                </div>
+                                </div>-->
                                 <div class="grid-item item3">{{item.Grados}}{{item.Suffix}} Grade</div>
                                 <div class="grid-item item4">{{item.Escolaridad}}</div>
                             </div>
@@ -56,13 +56,13 @@
                                     </div>
                                     {{item.Nombre}}
                                 </div>
-                                <!--<div class="grid-item item2" style="width: 30px;height: 30px;background-color: #6228cf; border-radius: 50%;text-align: left;">
-                                </div>-->
                                 <div class="grid-item item2" style="width: 30px;height: 30px;background-color: #6228cf; border-radius: 50%;text-align: left;">
+                                </div>
+                                <!--<div class="grid-item item2" style="width: 30px;height: 30px;background-color: #6228cf; border-radius: 50%;text-align: left;">
                                     <ion-avatar>
                                         <img style="width: 30px;height: 30px;" [src]="sanitizer.bypassSecurityTrustResourceUrl(item.Icono)" >
                                     </ion-avatar>
-                                </div>
+                                </div>-->
                                 <div class="grid-item item3">{{item.Grados}}{{item.Suffix}} Grade</div>
                                 <div class="grid-item item4">{{item.Escolaridad}}</div>
                             </div>
@@ -91,13 +91,13 @@
                                     </div>
                                     {{item.Nombre}}
                                 </div>
-                                <!--<div class="grid-item item2" style="width: 30px;height: 30px;background-color: #6228cf; border-radius: 50%;text-align: left;">
-                                </div>-->
                                 <div class="grid-item item2" style="width: 30px;height: 30px;background-color: #6228cf; border-radius: 50%;text-align: left;">
+                                </div>
+                                <!--<div class="grid-item item2" style="width: 30px;height: 30px;background-color: #6228cf; border-radius: 50%;text-align: left;">
                                     <ion-avatar>
                                         <img style="width: 30px;height: 30px;" [src]="sanitizer.bypassSecurityTrustResourceUrl(item.Icono)" >
                                     </ion-avatar>
-                                </div>
+                                </div>-->
                                 <div class="grid-item item3">{{item.Grados}}{{item.Suffix}} Grade</div>
                                 <div class="grid-item item4">{{item.Escolaridad}}</div>
                             </div>
@@ -126,13 +126,13 @@
                                     </div>
                                     {{item.Nombre}}
                                 </div>
-                                <!--<div class="grid-item item2" style="width: 30px;height: 30px;background-color: #6228cf; border-radius: 50%;text-align: left;">
-                                </div>-->
                                 <div class="grid-item item2" style="width: 30px;height: 30px;background-color: #6228cf; border-radius: 50%;text-align: left;">
+                                </div>
+                                <!--<div class="grid-item item2" style="width: 30px;height: 30px;background-color: #6228cf; border-radius: 50%;text-align: left;">
                                     <ion-avatar>
                                         <img style="width: 30px;height: 30px;" [src]="sanitizer.bypassSecurityTrustResourceUrl(item.Icono)" >
                                     </ion-avatar>
-                                </div>
+                                </div>-->
                                 <div class="grid-item item3">{{item.Grados}}{{item.Suffix}} Semester</div>
                                 <div class="grid-item item4">{{item.Escolaridad}}</div>
                             </div>
@@ -150,36 +150,43 @@
         </ng-template>
         <ng-template #derechaTemplate>
             <div class="images">
-            <div class="one-image" *ngFor="let item of libros">
-                <!--<div style="width: 100px;height: 100px;background-color: red;position: absolute;z-index: 2;top: 40%;left: 50%;margin-right: -50%;transform: translate(-50%, -50%);"></div>-->
-                <app-circle-progress [ngStyle] ="{'display' : item.descarga}" [item]="item" (click)="openBook(item)" style="position: absolute;z-index: 3;top: 40%;left: 50%;margin-right: -50%;transform: translate(-50%, -50%);cursor: pointer;"></app-circle-progress>
-                <ion-icon name="cloud-download" [ngStyle] ="{'display' : item.flecha}" class="downLoadSytle" (click)="openBook(item)"></ion-icon>
-                <ion-spinner name="crescent"  [ngStyle] ="{'display' : item.spinner}" class="spinnerStyle"></ion-spinner>
-                <div style="position:relative" style="cursor: pointer;">
-                    <!--<img src="assets/img/cover/{{item.RutaThumbnails}}" class="image-rouder" width="100%" style="min-height: 200px;cursor: pointer;" (click)="openBook(item)">-->
-                    <img [src]="sanitizer.bypassSecurityTrustResourceUrl(item.RutaThumbnails)" onerror="this.onerror=null;this.src='assets/img/temp.jpg';"  class="image-rouder" width="100%" style="min-height: 200px;cursor: pointer;" (click)="openBook(item)">
-                    <div class="grid-container" style="position: relative;width: 100%">
-                        <div class="grid-item item1">
-                            <div class="version">
-                                <span>{{item.Version}}</span>
+                <div class="one-image" *ngFor="let item of libros">
+                        <!--<div style="width: 100px;height: 100px;background-color: red;position: absolute;z-index: 2;top: 40%;left: 50%;margin-right: -50%;transform: translate(-50%, -50%);"></div>-->
+                        <app-circle-progress [ngStyle] ="{'display' : item.descarga}" [item]="item" (click)="openBook(item)" style="position: absolute;z-index: 3;top: 40%;left: 50%;margin-right: -50%;transform: translate(-50%, -50%);cursor: pointer;"></app-circle-progress>
+                        <ion-icon name="cloud-download" [ngStyle] ="{'display' : item.flecha}" class="downLoadSytle" (click)="openBook(item)"></ion-icon>
+                        <ion-spinner name="crescent"  [ngStyle] ="{'display' : item.spinner}" class="spinnerStyle"></ion-spinner>
+                        <!--<img src="assets/img/cover/{{item.RutaThumbnails}}" class="image-rouder" width="100%" style="min-height: 200px;cursor: pointer;" (click)="openBook(item)">-->
+                        <div style="position:relative" style="cursor: pointer;">
+                            <img [src]="sanitizer.bypassSecurityTrustResourceUrl(item.RutaThumbnails)" onerror="this.onerror=null;this.src='assets/img/temp.jpg';"  class="image-rouder masonry-content" width="100%" style="min-height: 200px;cursor: pointer;" (click)="openBook(item)">                        
+                            <div class="grid-container" style="position: relative;width: 100%">
+                                <div class="grid-item item1">
+                                    <div class="version">
+                                        <span>{{item.Version}}</span>
+                                    </div>
+                                    {{item.Nombre}}
+                                </div>
+                                <div class="grid-item item2" style="width: 30px;height: 30px;background-color: #6228cf; border-radius: 50%;text-align: left;">
+                                </div>
+                                <!--<div class="grid-item item2" style="width: 30px;height: 30px;background-color: #6228cf; border-radius: 50%;text-align: left;">
+                                    <ion-avatar>
+                                        <img style="width: 30px;height: 30px;" [src]="sanitizer.bypassSecurityTrustResourceUrl(item.Icono)" >
+                                    </ion-avatar>
+                                </div>-->
+                                <div class="grid-item item3" style="position:relative;top:1px">
+                                    <span *ngIf="item.Escolaridad!='Universidad'" style="position: relative;top: 5px;">{{item.Grados}}</span>
+                                    <span *ngIf="item.Escolaridad=='Universidad'" style="position: relative;top: 5px;">Bloque </span>
+                                    <span *ngIf="item.Escolaridad!='Universidad'" style="position: relative;top: 5px;">{{item.Suffix}} </span>
+                                    <span *ngIf="item.Escolaridad=='Kinder'" style="position: relative;top: 5px;">Grade</span>
+                                    <span *ngIf="item.Escolaridad=='Elementary School'" style="position: relative;top: 5px;">Grade</span>
+                                    <span *ngIf="item.Escolaridad=='Junior High School'" style="position: relative;top: 5px;">Grade</span>
+                                    <span *ngIf="item.Escolaridad=='High School'" style="position: relative;top: 5px;">Semester</span>
+                                    <span *ngIf="item.Escolaridad=='Universidad'" style="position: relative;top: 5px;">{{item.Grados}}</span>
+                                </div>
+                                <div *ngIf="item.Escolaridad!='Universidad'" class="grid-item item4" style="position:relative;top:-1px">{{item.Escolaridad}}</div>
+                                <div *ngIf="item.Escolaridad=='Universidad'" class="grid-item item4" style="position:relative;top:-1px">SAC</div>
                             </div>
-                            {{item.Nombre}}
                         </div>
-                        <!--<div class="grid-item item2" style="width: 30px;height: 30px;background-color: #6228cf; border-radius: 50%;text-align: left;">
-                        </div>-->
-                        <div class="grid-item item2" style="width: 30px;height: 30px;background-color: #6228cf; border-radius: 50%;text-align: left;">
-                            <ion-avatar>
-                                <img style="width: 30px;height: 30px;" [src]="sanitizer.bypassSecurityTrustResourceUrl(item.Icono)" >
-                            </ion-avatar>
-                        </div>
-                        <div class="grid-item item3">{{item.Grados}}{{item.Suffix}} 
-                            <span *ngIf="item.Escolaridad=='High School'">Semester</span>
-                            <span *ngIf="item.Escolaridad!='High School'">Grade</span>
-                        </div>
-                        <div class="grid-item item4">{{item.Escolaridad}}</div>
-                    </div>
                 </div>
-            </div>
             </div>
             <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
                 <ion-infinite-scroll-content

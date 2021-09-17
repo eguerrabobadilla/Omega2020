@@ -49,7 +49,7 @@ export class AuthenticationService {
       //this.router.navigate(['login']);
       
       if (this.platform.is('cordova') || isDevMode()==true) {
-          //window.location.reload();
+          window.location.reload();
       } else {
         window.top.location.href = "http://lbsplus.mx/";
       }
