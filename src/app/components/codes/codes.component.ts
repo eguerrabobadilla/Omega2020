@@ -13,7 +13,7 @@ import { GlobalService } from 'src/app/services/global.service';
   styleUrls: ['./codes.component.scss'],
 })
 export class CodesComponent implements OnInit {
-  libros: any[];
+  libros: any[]=[];
   @Output() librosDescargados = new EventEmitter();
   pathStorage:any;
   FrmCodigo = {
@@ -39,7 +39,7 @@ export class CodesComponent implements OnInit {
   }
 
   iniciarValidacion() {
-    this.storage.get(this.pathStorage).then((librosLocales) => {
+    this.storage.get(this.pathStorage).then(async (librosLocales) => {
       const status = this.webSocket.getStatusSocket() == 1 ? true : false;
       //console.log(librosLocales);
       //console.log(status);
@@ -52,8 +52,13 @@ export class CodesComponent implements OnInit {
         //Si el tipo es alumno y no hay libros guardados de manera local en la bd
         //if(tipo==="Alumno" && librosLocales==null) {
         if(librosLocales==null) {
-          this.booksService.getBooksGrado().subscribe(data => {
-            data.forEach(element => { element.descargado="no"});
+          this.booksService.getBooksGrado().subscribe(async data => {
+            //data.forEach(element => { element.descargado="no"});
+
+            await Promise.all(data.map(async (element) => { 
+              element.descargado="no"
+            }));
+
             this.libros = data;
             this.storage.set(this.pathStorage,this.libros).then( () =>{
               this.librosDescargados.emit(this.libros);
@@ -62,8 +67,9 @@ export class CodesComponent implements OnInit {
         }
         //else if(tipo==="Alumno") {
         else {
+          
           console.log("ya tiene libros");
-          this.booksService.getBooksGrado().subscribe(data => {
+          this.booksService.getBooksGrado().subscribe(async data => {
             //Busca si viene algun nuevo libro del servidor
             data.forEach(element => {
                const libroD = librosLocales.filter(l => l.Id == element.Id);
@@ -72,17 +78,42 @@ export class CodesComponent implements OnInit {
                   librosLocales.push(element);
             });
 
-            //Busco si algun libro ya no debe estar en el dispostivo
+            /*await Promise.all(data.map(async (element) => { 
+              const libroD = librosLocales.filter(l => l.Id == element.Id);
+              element.descargado="no"
+              if(libroD.length == 0)
+                 librosLocales.push(element);
+            }));*/
+
+            //Busco si algun libro ya no debe esta en el dispostivo
             let index=0;
             librosLocales.forEach(element => {
               const libroD = data.filter(l => l.Id == element.Id);
-              if(libroD.length == 0)
-                 librosLocales.splice(index,1);
-                 //console.log(element);
+              //Esta logica no eliminaba los libros de manera correcta
+              /*if(libroD.length == 0)
+                 librosLocales.splice(index,1);*/
+              //Solo selecciona los elementos que no se deben eliminar
+              if(libroD.length != 0) {
+                const libro = librosLocales.filter(l => l.Id == element.Id);
+                this.libros.push(libro[0]);
+              }
+                
               index++;
            });
 
-            this.libros = librosLocales;
+            /*let index=0;
+            await Promise.all(librosLocales.map(async (element) => { 
+              const libroD = data.filter(l => l.Id == element.Id);
+              if(libroD.length == 0)
+                 librosLocales.splice(index,1);
+              //Solo selecciona los elementos que no se deben eliminar
+              if(libroD.length != 0)
+                  this.libros.push(libroD[0]);
+              index++;
+            }));*/
+
+            //this.libros = librosLocales;
+            //console.log(this.libros);
             this.storage.set(this.pathStorage,this.libros).then( () => {
               this.librosDescargados.emit(this.libros);
             });
