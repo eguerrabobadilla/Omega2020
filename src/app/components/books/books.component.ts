@@ -47,6 +47,7 @@ export class BooksComponent implements OnInit {
   @Output() buscarPortadas = new EventEmitter();
   pathStorage:any;
   tipoUsuario:any;
+  token:any;
 
   constructor(public  webSocket: WebsocketService,private serviceDownload: DownloadFileService,private transfer: FileTransfer,
               private file: File,private platform: Platform,private booksService: BooksService,private zip: Zip,
@@ -358,6 +359,7 @@ export class BooksComponent implements OnInit {
     const directory = this.file.dataDirectory + "books2020/";
     console.log(directory);
     console.log('Libro'+ item.Id);
+    this.token=localStorage.getItem('USER_INFO');
     
     item.flecha="none";
 
@@ -368,7 +370,7 @@ export class BooksComponent implements OnInit {
         item.status="terminado";
 
         if(status=== false) {
-          (<any>window).modusecho.echo([directory + 'Libro'+ item.Id, item.Id ,"Lbs"]);
+          (<any>window).modusecho.echo([directory + 'Libro'+ item.Id, item.Id ,"Lbs",this.token]);
         }
         else {
           this.buscarActualizaciones(item).then(data => {
@@ -380,10 +382,10 @@ export class BooksComponent implements OnInit {
                 this.download(data["url"] + "/" + item.Version,item,data["version"],"update");
             }
             else 
-              (<any>window).modusecho.echo([directory + 'Libro'+ item.Id, item.Id ,"Lbs"]);
+              (<any>window).modusecho.echo([directory + 'Libro'+ item.Id, item.Id ,"Lbs",this.token]);
           }).catch(() => {
               //En caso de error abre el libro;
-              (<any>window).modusecho.echo([directory + 'Libro'+ item.Id, item.Id ,"Lbs"]);
+              (<any>window).modusecho.echo([directory + 'Libro'+ item.Id, item.Id ,"Lbs",this.token]);
           });
         } 
         //console.log(this.webview.convertFileSrc(directory + 'Libro' + item.id + "/index.html"));

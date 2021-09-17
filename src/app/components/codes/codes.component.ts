@@ -73,7 +73,7 @@ export class CodesComponent implements OnInit {
             //Busca si viene algun nuevo libro del servidor
             data.forEach(element => {
                const libroD = librosLocales.filter(l => l.Id == element.Id);
-               element.descargado="no"
+               element.descargado="no";
                if(libroD.length == 0)
                   librosLocales.push(element);
             });
