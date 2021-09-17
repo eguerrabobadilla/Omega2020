@@ -73,7 +73,7 @@ ion-spinner {
     padding: 0px;
     font-size: 15x;
     font-weight: bold;
-    font-family: sans-serif;
+    font-family: MyriadProRegular !important;
     text-align: left;
 }
 
@@ -288,6 +288,7 @@ ion-spinner {
  
    }
    .item4 {
+        top: -1px;
         grid-column: 1 /span 4;
         grid-row: 3 ;
         font-size: 12px;
@@ -297,7 +298,6 @@ ion-spinner {
         text-overflow: ellipsis;
         white-space: nowrap;
         padding-left: 37px;
-
    }
 
    .version{
@@ -375,6 +375,7 @@ ion-spinner {
  
    }
    .item4 {
+        top: -1px;
         grid-column: 1 /span 4;
         grid-row: 3 ;
         font-size: 12px;
@@ -462,6 +463,7 @@ ion-spinner {
  
    }
    .item4 {
+        top: -1px;
         grid-column: 1 /span 4;
         grid-row: 3 ;
         font-size: 12px;
@@ -548,6 +550,7 @@ ion-spinner {
      
       }
       .item4 {
+        top: 1px;
         grid-column: 1 /span 4;
         grid-row: 3;
         font-size: 14px;
