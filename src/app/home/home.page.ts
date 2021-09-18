@@ -1190,6 +1190,11 @@ this.pillMenu.animacion();
       return o1.Id === o2.Id;
     }
 
+    ngOnDestroy() {
+      // Do something on page destroy
+      console.log("ngOnDestroy");
+    }
+
     async openPicker() {
       console.log("filtros");
 
@@ -1533,6 +1538,7 @@ this.pillMenu.animacion();
                   this.webSocket.finishWebScoket();
                 });
               });*/
+              
               this.authenticationService.logout().then( data => {
                 this.webSocket.finishWebScoket();
               });

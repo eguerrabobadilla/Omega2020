@@ -41,7 +41,7 @@ export class WebsocketService {
 
   private createConnection() {
     const token: string = localStorage.getItem('USER_INFO');
-
+    
     this._hubConnection = new HubConnectionBuilder()
       //.withUrl('https://172.16.12.21:5001/' + 'MessageHub')
       .withUrl(`${this.api.url}/MessageHub`,{
@@ -84,6 +84,7 @@ export class WebsocketService {
   public finishWebScoket(): void {
     this.closedConnection = true;
     this._hubConnection.stop();
+    this._hubConnection = undefined;
   }
 
   private registerOnServerEvents(): void {

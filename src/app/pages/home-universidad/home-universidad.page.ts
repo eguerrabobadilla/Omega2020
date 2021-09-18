@@ -1018,6 +1018,12 @@ this.pillMenu.animacion();
       }
     }
 
+    ngOnDestroy() {
+      // Do something on page destroy
+      console.log("ngOnDestroy");
+    }
+
+
     download(url,versionDevice,versionServer) {
       this.cargandoAnimation("Actualizando portadas");
       

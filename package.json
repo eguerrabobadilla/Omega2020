@@ -48,6 +48,7 @@
         "code-push": "^3.0.1",
         "com-moduscreate-plugins-echo": "/Users/appalfalbs/Documents/plugin/modusechoplugin/ModusEcho",
         "cordova-android": "8.1.0",
+        "cordova-android-play-services-gradle-release": "^4.0.0",
         "cordova-browser": "6.0.0",
         "cordova-ios": "4.5.5",
         "cordova-plugin-advanced-http": "^3.0.1",

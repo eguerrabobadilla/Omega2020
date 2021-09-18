@@ -947,6 +947,12 @@ export class HomeDirectorPage {
       }
     }
 
+    ngOnDestroy() {
+      // Do something on page destroy
+      console.log("ngOnDestroy");
+    }
+
+
     download(url,versionDevice,versionServer) {
       const fileTransfer: FileTransferObject = this.transfer.create();
   

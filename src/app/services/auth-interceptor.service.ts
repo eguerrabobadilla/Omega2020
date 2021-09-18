@@ -4,6 +4,7 @@ import { Observable,throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { AuthenticationService } from './authentication.service';
+import { NavController } from '@ionic/angular';
 
 /*
 Esta servicio intercepta todas las peticiones http y le agrega el 
@@ -16,7 +17,8 @@ tener que modificar cada servicio api manualmente.
 export class AuthInterceptorService {
 
   constructor(
-    private router: Router,public authenticationService: AuthenticationService
+    private router: Router,public authenticationService: AuthenticationService,
+    private navCtrl: NavController
   ) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -35,7 +37,8 @@ export class AuthInterceptorService {
       catchError((err: HttpErrorResponse) => {
 
         if (err.status === 401) {
-          this.router.navigate(['login']);
+          this.router.navigate(['login'],{ replaceUrl: true });
+          //this.navCtrl.navigateRoot('login');
         }
 
         return throwError( err );
