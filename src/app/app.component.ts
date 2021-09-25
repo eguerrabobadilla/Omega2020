@@ -74,7 +74,6 @@ export class AppComponent {
         this.file.getFreeDiskSpace().then(data => {
           console.log("Espacio:",data);
       
-          setInterval(() => { 
             if(this.platform.is('android'))
             {
               //1gb= 1048576 kb
@@ -86,10 +85,10 @@ export class AppComponent {
               //1gb= 1073741824 Bytes
               // 15gb = 16106127360 Bytes
               // 3gb = 3221225472 Bytes
-              if(data < 3221225472)
+              if(data < 1610612736)
                 this.presentAlert();
             }
-          }, 10000);
+          
           
         });
       }
