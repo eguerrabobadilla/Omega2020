@@ -236,11 +236,11 @@ top: 0;" mode="ios">
                 <app-books (buscarPortadas)="buscarPortadas()" (updateAutoHeightSlider)="updateAutoHeightSlider()" #booksComponent [librosIN]="libros" *ngIf="!codigoVisible"> </app-books>
             </ion-slide>
             <ion-slide>
-                <app-codes (librosDescargados)="librosDescargados($event)" *ngIf="codigoVisible"></app-codes>
+                <!--<app-codes (librosDescargados)="librosDescargados($event)" *ngIf="codigoVisible"></app-codes>-->
                 <app-books (updateAutoHeightSlider)="updateAutoHeightSlider()" #booksComponentIngles [librosIN]="libros | filter : 'Ingles' : 'Idioma'" *ngIf="!codigoVisible"> </app-books>
             </ion-slide>
             <ion-slide>
-                <app-codes (librosDescargados)="librosDescargados($event)" *ngIf="codigoVisible"></app-codes>
+                <!--<app-codes (librosDescargados)="librosDescargados($event)" *ngIf="codigoVisible"></app-codes>-->
                 <app-books (updateAutoHeightSlider)="updateAutoHeightSlider()" #booksComponentEspanol [librosIN]="libros | filter : 'Espanol' : 'Idioma'" *ngIf="!codigoVisible"> </app-books>
             </ion-slide>
             <!--<ion-slide>
