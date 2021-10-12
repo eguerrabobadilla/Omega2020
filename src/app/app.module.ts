@@ -34,7 +34,6 @@ import { FormsModule } from '@angular/forms';
 import { IonicStorageModule } from '@ionic/storage';
 import { Zip } from '@ionic-native/zip/ngx';
 import { WebView } from '@ionic-native/ionic-webview/ngx';
-import { CodePush } from '@ionic-native/code-push/ngx';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
@@ -80,7 +79,6 @@ import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
     Zip,
     WebView,
     Camera,
-    CodePush,
     InAppBrowser,
     OneSignal,
     AndroidPermissions,

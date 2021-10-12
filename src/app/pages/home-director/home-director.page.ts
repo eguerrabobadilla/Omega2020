@@ -27,7 +27,6 @@ import { CrearEvidencePage } from '../../pages/crear-evidence/crear-evidence.pag
 import { EvidencesComponent } from '../../components/evidences/evidences.component';
 import { CrearTopicPage } from '../../pages/crear-topic/crear-topic.page';
 import { ListResourceComponent } from '../../components/list-resource/list-resource.component';
-import { CodePush,InstallMode, SyncStatus } from '@ionic-native/code-push/ngx';
 import { Storage } from '@ionic/storage';
 import { from } from 'rxjs';
 import { Router } from '@angular/router';
@@ -155,7 +154,7 @@ export class HomeDirectorPage {
               public authenticationService: AuthenticationService ,
               private apiTareas: TareasService, public  webSocket: WebsocketService, private apiCalendario: CalendarioService,
               private pickerController: PickerController, private apiMaterias: MateriasService,
-              private codePush : CodePush,private storage: Storage,private router: Router,private resolver: ComponentFactoryResolver,
+              private storage: Storage,private router: Router,private resolver: ComponentFactoryResolver,
               private globalServicies: GlobalService,private apiDevice: DevicesService,private pushService:PushService,
               private apiPortadas: PortadasService,private transfer: FileTransfer,private file: File,private zip: Zip) {
     //  this.scrollenable = true;
@@ -590,7 +589,6 @@ export class HomeDirectorPage {
 
       this.observer.observe(this.elementsToProcess.nativeElement);
       setTimeout(() => {
-        this.checkCodePush();
         if(!this.platform.is("ipad") || !this.platform.is("iphone") || !this.platform.is("ios")){
           this.statusBar.show();
           this.statusBar.backgroundColorByHexString('#6228cf');
@@ -869,7 +867,7 @@ export class HomeDirectorPage {
              this.scrollenable = true;
              this.div2.nativeElement.click();
             this.pocisionInicial === true;
-            this.checkCodePush();*/
+            */
 
 
            } else {
@@ -946,6 +944,12 @@ export class HomeDirectorPage {
         }
       }
     }
+
+    ngOnDestroy() {
+      // Do something on page destroy
+      console.log("ngOnDestroy");
+    }
+
 
     download(url,versionDevice,versionServer) {
       const fileTransfer: FileTransferObject = this.transfer.create();
@@ -1210,7 +1214,6 @@ export class HomeDirectorPage {
     this.scrollenable = true;
     this.div2.nativeElement.click();
    this.pocisionInicial === true;
-   this.checkCodePush();
    this.animacionButonSlide(true);
   }
  }
@@ -1232,28 +1235,7 @@ export class HomeDirectorPage {
     // }
     }
 
-    public checkCodePush() {
-      return;
-      const downloadProgress = (downloadProgress) => { 
-        alert(downloadProgress.receivedBytes)
-        console.log(`Downloaded ${downloadProgress.receivedBytes} of ${downloadProgress.totalBytes}`); 
-      }
-        
-      this.codePush.sync({
-        ignoreFailedUpdates:false,
-        updateDialog: {
-          appendReleaseDescription:true,
-          descriptionPrefix: "\n\nChange log:\n",
-        },
-        installMode: InstallMode.IMMEDIATE
-      },downloadProgress
-      ).subscribe(syncStatus => {
-        console.log("syncStatus");
-        console.log(syncStatus);
-        this.onSyncStatusChange(syncStatus);
-      })
-
-    }
+ 
 
     clickDiv() {
       // console.log("Click Div")
@@ -1302,59 +1284,7 @@ export class HomeDirectorPage {
 
     }
 
-    async onSyncStatusChange(syncStatus){
-      
-      switch (syncStatus) {
-          case SyncStatus.CHECKING_FOR_UPDATE:
-              // Show "Checking for update" notification
-              console.log("CHECKING_FOR_UPDATE");
-              //alert("CHECKING_FOR_UPDATE");
-              break;
-          case SyncStatus.AWAITING_USER_ACTION:
-              // Show "Checking for update" notification
-              console.log("AWAITING_USER_ACTION");
-              //alert("AWAITING_USER_ACTION");
-              break;
-          case SyncStatus.DOWNLOADING_PACKAGE:
-              // Show "downloading" notification
-              console.log("DOWNLOADING_PACKAGE");
-              this.cargandoAnimation('Instalando actualización, favor no cerrar la aplicación');
-              //alert("DOWNLOADING_PACKAGE");
-              break;
-          case SyncStatus.INSTALLING_UPDATE:
-              // Show "installing" notification
-              console.log("INSTALLING_UPDATE:");
-              //alert("INSTALLING_UPDATE");
-              break;
-          case SyncStatus.IN_PROGRESS:
-              // Show "installing" notification
-              console.log("IN_PROGRESS:");
-              //alert("IN_PROGRESS");
-              break;
-          case SyncStatus.UP_TO_DATE:
-                // Show "installing" notification
-                console.log("UP_TO_DATE:");
-                //alert("UP_TO_DATE");
-                break;
-        case SyncStatus.UPDATE_IGNORED:
-                // Show "installing" notification
-                console.log("UPDATE_IGNORED:");
-                //alert("UPDATE_IGNORED");
-                break;
-          case SyncStatus.UPDATE_INSTALLED:
-                // Show "installing" notification
-                console.log("UPDATE_INSTALLED:");
-                this.loadingController.dismiss();
-                //alert("UPDATE_INSTALLED");
-                break;
-          case SyncStatus.ERROR:
-                // Show "installing" notification
-                console.log("ERROR");
-                this.loadingController.dismiss();
-                //alert("ERROR");
-                break;
-      }
-    }
+    
 
     async cargandoAnimation(text) {
       this.loading = await this.loadingController.create({

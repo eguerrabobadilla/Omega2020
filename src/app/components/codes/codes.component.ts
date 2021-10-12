@@ -31,6 +31,7 @@ export class CodesComponent implements OnInit {
     this.pathStorage = await this.globalServicies.getNameStorage();
 
     setTimeout(() => {
+      //alert("iniciarValidacion");
       this.iniciarValidacion();
     }, 1000);
   }

@@ -17,6 +17,8 @@ import { AlertController } from '@ionic/angular';
   styleUrls: ['app.component.scss']
 })
 export class AppComponent {
+  mensajeEspacio = false;
+
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
@@ -32,6 +34,8 @@ export class AppComponent {
   }
 
   async presentAlert() {
+    if(this.mensajeEspacio==true) return;
+
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
       backdropDismiss: false,
@@ -46,11 +50,13 @@ export class AppComponent {
         }
       ]
     });
-
+    
+    this.mensajeEspacio=true;
     await alert.present();
 
     const { role } = await alert.onDidDismiss();
     console.log('onDidDismiss resolved with role', role);
+    this.mensajeEspacio = false;
   }
 
 
@@ -59,16 +65,30 @@ export class AppComponent {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
       this.PushService.configuracionInicial();
+
+      /**
+       * Nota: En android el peso se mide en Kb y en IOS en Bytes
+       * * */
       
       if(this.platform.is('cordova')) {
         this.file.getFreeDiskSpace().then(data => {
           console.log("Espacio:",data);
-          //1gb= 1048576 kb
-          // 15gb = 15728640 kb
-          setInterval(() => { 
-            if(data < 15728640) 
-            this.presentAlert();
-          }, 10000);
+      
+            if(this.platform.is('android'))
+            {
+              //1gb= 1048576 kb
+              // 15gb = 15728640 kb
+              // 3gb = 3145728 kb
+              if(data < 3145728) 
+                this.presentAlert();
+            } else {
+              //1gb= 1073741824 Bytes
+              // 15gb = 16106127360 Bytes
+              // 3gb = 3221225472 Bytes
+              if(data < 1610612736)
+                this.presentAlert();
+            }
+          
           
         });
       }
@@ -103,7 +123,9 @@ export class AppComponent {
            
       } else {
         console.log("va al login");
-        this.router.navigate(['login']);
+        
+        this.router.navigate(['login'],{ replaceUrl: true });
+        //this.router.navigate(['login']);
       }
     });
   
