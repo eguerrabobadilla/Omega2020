@@ -139,7 +139,7 @@ export class BooksComponent implements OnInit {
   }
 
   async ngOnInit() {
-
+    console.log("inicia componente bookssssssssssssssssssssssssssssssssss");
     this.pathStorage = await this.globalServicies.getNameStorage();
     console.log("pathStorage");
     this.tipoUsuario = this.globalServicies.getKeyToken("tipo");
@@ -262,6 +262,7 @@ export class BooksComponent implements OnInit {
     //this.data = new BehaviorSubject(element);
     
     this.libros = this.librosIN;
+    //console.log(JSON.stringify(this.librosIN));
     this.libros.forEach(item => {
 
 
@@ -275,7 +276,7 @@ export class BooksComponent implements OnInit {
 
         //item.RutaThumbnails = item.RutaThumbnails.includes("?t=") ? item.RutaThumbnails : `${this.webview.convertFileSrc(urlCover)}?t=${timestamp}`;
       
-        if(item.RutaThumbnails.includes("?t=")){
+        if(item.RutaThumbnails.includes("?t=")){ 
           let NombreCover=item.RutaThumbnails.split("/");
 
           const urlCover = `${this.file.dataDirectory}covers/${NombreCover[NombreCover.length-1].split("?")[0]}`;
@@ -330,6 +331,10 @@ export class BooksComponent implements OnInit {
     const tipo=this.globalServicies.getKeyToken("tipo");
     
     return tipo;
+  }
+
+  async eliminarLibro(item) {
+    console.log(item);
   }
 
   async openBook(item){
@@ -391,6 +396,7 @@ export class BooksComponent implements OnInit {
         //console.log(this.webview.convertFileSrc(directory + 'Libro' + item.id + "/index.html"));
     }).catch(err => {
         console.log(err);
+        //alert(err);
     });
   }
 

@@ -27,6 +27,7 @@ export class CodesComponent implements OnInit {
 
   async ngOnInit() {
     console.log("ngAfterViewInit");
+    console.log("inicia componente codesssssssssssssssssssssssssssssssssssss");
     this.pathStorage = await this.globalServicies.getNameStorage();
 
     setTimeout(() => {
@@ -115,6 +116,7 @@ export class CodesComponent implements OnInit {
             //this.libros = librosLocales;
             //console.log(this.libros);
             this.storage.set(this.pathStorage,this.libros).then( () => {
+              //console.log(JSON.stringify(this.libros));
               this.librosDescargados.emit(this.libros);
             });
           });

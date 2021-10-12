@@ -1072,9 +1072,9 @@ this.pillMenu.animacion();
       this.filtrosControl.value="";
 
       const itemOption = this.pillMenu.itemsMenu[event.detail.value];
-      console.log(itemOption);
+      //console.log(itemOption);
       this.pildora = itemOption;
-      console.log(this.selectSeccion);
+      //console.log(this.selectSeccion);
       if(itemOption == 'Estadísticas' && this.getKeyToken('tipo')=='Alumno'){
           this.appReport.cargarEstadisticas();
       }
@@ -1127,7 +1127,7 @@ this.pillMenu.animacion();
           }
       }
 
-      console.log(this.selectSeccion);
+      //console.log(this.selectSeccion);
 
        this.slideDown.slideTo(event.detail.value);
       // this.slideUp.slideTo(event.detail.value);
