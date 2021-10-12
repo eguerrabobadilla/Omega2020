@@ -303,8 +303,8 @@ export class BooksComponent implements OnInit {
       if (this.platform.is('cordova')) {
         this.existeLibro(directory,'Libro'+ item.Id).then(() =>{
           //item.opacity= 1;
-          if(item.descargado=="no")
-              throw new Error("El libro no esta descargado");
+          /*if(item.descargado=="no")
+              throw new Error("El libro no esta descargado");*/
 
           item.descarga = "none";
           item.flecha= "none";
@@ -397,7 +397,7 @@ export class BooksComponent implements OnInit {
   existeLibro(directory,path){
     var promise = new Promise((resolve, reject) => {
       this.file.checkDir(directory,path).then(_ =>{
-          console.log("Existe el directorio");
+          console.log("Existe el directorio existeLibro");
           resolve("ok");
       }).catch(err => {
           reject();
@@ -410,10 +410,10 @@ export class BooksComponent implements OnInit {
   existeDirectorio(directory,path,item){
     var promise = new Promise((resolve, reject) => {
       this.file.checkDir(directory,path).then(_ =>{
-          if(item.descargado=="no")
-              throw new Error("El libro no esta descargado");
+          /*if(item.descargado=="no")
+              throw new Error("El libro no esta descargado");*/
               
-          console.log("Existe el directorio");
+          console.log("Existe el directorio directorio");
           resolve("ok");
       }).catch(err => {
           console.log("No existe el directorio");
