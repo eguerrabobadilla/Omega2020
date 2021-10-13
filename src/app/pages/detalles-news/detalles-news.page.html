@@ -27,7 +27,11 @@
 
         </ion-card-header>
         <ion-card-content [innerHTML]="item.Descripcion | linkify : item.Id" style="white-space: pre-line;">
-            
+
         </ion-card-content>
-    </ion-card>
+        <ion-button (click)="onErrorImage(item)" expand="block" fill="clear" shape="round" style="color: #6228cf;">
+            Click to Show Image
+        </ion-button>
+    </ion-card>    
+
 </ion-content>
