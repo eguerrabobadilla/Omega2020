@@ -311,9 +311,9 @@ export class BooksComponent implements OnInit {
           item.flecha= "none";
         }).catch(() =>{
           //item.opacity= 0.2;
-          item.descargado="no";
-          item.descarga = "block";
-          item.flecha= "block";
+          //item.descargado="no";
+          //item.descarga = "block";
+          //item.flecha= "block";
         });
       }
     });
@@ -334,7 +334,21 @@ export class BooksComponent implements OnInit {
   }
 
   async eliminarLibro(item) {
+    return;
     console.log(item);
+    const directory = this.file.dataDirectory + "books2020/";
+
+    /*this.file.removeRecursively(directory,"Libro" + item.Id).then(()=>{
+        alert("Libro eliminado");
+    }).catch((error)=>{
+      console.log(error);
+    });*/
+
+    this.file.removeFile(directory + "Libro" + item.Id,"index.html").then(() => {
+      alert("IndexEliminado");
+    }).catch((error)=>{
+      console.log(error);
+    });
   }
 
   async openBook(item){
@@ -402,7 +416,9 @@ export class BooksComponent implements OnInit {
 
   existeLibro(directory,path){
     var promise = new Promise((resolve, reject) => {
-      this.file.checkDir(directory,path).then(_ =>{
+      //this.file.checkDir(directory,path).then(_ =>{
+        console.log(directory + path + "/");
+      this.file.checkFile(directory + path + "/","index.html").then(_ =>{
           console.log("Existe el directorio existeLibro");
           resolve("ok");
       }).catch(err => {
@@ -415,7 +431,9 @@ export class BooksComponent implements OnInit {
 
   existeDirectorio(directory,path,item){
     var promise = new Promise((resolve, reject) => {
-      this.file.checkDir(directory,path).then(_ =>{
+      //this.file.checkDir(directory,path).then(_ =>{
+      console.log(directory + path + "/");
+      this.file.checkFile(directory + path + "/","index.html").then(_ =>{
           /*if(item.descargado=="no")
               throw new Error("El libro no esta descargado");*/
               
@@ -426,6 +444,11 @@ export class BooksComponent implements OnInit {
           console.log(err);
           item.spinner="block";
 
+          if(item.descargado=="si"){
+            item.descargado="no";
+            item.descarga = "block";
+            //item.flecha= "block";
+          }
           //Solicita la url de descarga
           this.booksService.getBook(item.Id).subscribe(data => {
             this.download(data["url"],item,data["version"],"install");
@@ -508,6 +531,7 @@ export class BooksComponent implements OnInit {
 
       this.storage.set(this.pathStorage,this.libros).then( () => {
         console.log("guardo libros");
+       
       });
     })
     .catch(err => {
