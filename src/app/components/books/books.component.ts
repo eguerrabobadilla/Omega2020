@@ -417,7 +417,7 @@ export class BooksComponent implements OnInit {
   existeLibro(directory,path){
     var promise = new Promise((resolve, reject) => {
       //this.file.checkDir(directory,path).then(_ =>{
-        console.log(directory + path + "/");
+      //console.log(directory + path + "/");
       this.file.checkFile(directory + path + "/","index.html").then(_ =>{
           console.log("Existe el directorio existeLibro");
           resolve("ok");
@@ -529,10 +529,19 @@ export class BooksComponent implements OnInit {
       item.progreso=0;
       item.Version=version;
 
-      this.storage.set(this.pathStorage,this.libros).then( () => {
-        console.log("guardo libros");
-       
+      //Obtiene el storage actual
+      this.storage.get(this.pathStorage).then((data)=> {
+        const index = data.findIndex(x => x.Id==item.Id);
+        data[index] = item;
+        //console.log("libroobj:",data[index]);
+
+        this.storage.set(this.pathStorage,data).then(() => {
+          console.log("guardo libros");
+        });
+
       });
+
+     
     })
     .catch(err => {
       /*console.error(err);
@@ -552,8 +561,18 @@ export class BooksComponent implements OnInit {
         const circleP=this.ArrayCircleProgress.toArray().find(x => x.item.Id===item.Id);
         circleP.restartProgress();
 
-        this.storage.set(this.pathStorage,this.libros).then( () => {
+        /*this.storage.set(this.pathStorage,this.libros).then( () => {
           console.log("guardo libros");
+        });*/
+        
+        //Obtiene el storage actual
+        this.storage.get(this.pathStorage).then((data)=> {
+          const index = data.findIndex(x => x.Id==item.Id);
+          data[index] = item;
+
+          this.storage.set(this.pathStorage,data).then(() => {
+            console.log("guardo libros");
+          });
         });
       }
     });
