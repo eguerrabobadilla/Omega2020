@@ -29,6 +29,7 @@ export class DetalleExamenAlumnoPage implements OnInit {
   botonSiguienteDisable=false;
   botonAnteriorDisable=true;
   botonPopoverDisable=false;
+  botonIcinicarExamenDisable=false;
   backDropVisible=false;
   examenId:number;
   fechaAplicacionExamen:any;
@@ -137,7 +138,11 @@ export class DetalleExamenAlumnoPage implements OnInit {
 
   async iniciarExamen(duracionExamen){
 
+    this.botonIcinicarExamenDisable=true;
 
+    setTimeout(() => {
+      this.botonIcinicarExamenDisable=false;
+    },100000);
     setTimeout(() => {
       this.spiner=true;
     });
@@ -223,7 +228,7 @@ export class DetalleExamenAlumnoPage implements OnInit {
     this.apiPreguntas.getPreguntaExamen(this.examenId,this.contadorPregunta,this.preguntaAnterior,this.respuestaSeleccionada).subscribe(data =>{
       this.preguntaInfo = data;
 
-     if(this.contadorPregunta==1)this.botonAnteriorDisable=true;else this.botonAnteriorDisable = false;
+     
      // si es ejercicio relacionar
      if(data['TipoPregunta']=='relacionarPreguntas'){
       this.exercicioRelacionar(data);
@@ -250,6 +255,7 @@ export class DetalleExamenAlumnoPage implements OnInit {
           
           if(this.banderaslideFinExamen==true)this.botonSiguienteDisable=true;
           else this.botonSiguienteDisable=false ;
+          if(this.contadorPregunta==1)this.botonAnteriorDisable=true;else this.botonAnteriorDisable = false;
           this.botonPopoverDisable=false;
           this.backDropVisible=false;
 

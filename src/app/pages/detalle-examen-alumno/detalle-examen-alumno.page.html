@@ -168,7 +168,7 @@
             <ion-icon name="caret-back-outline" style="margin-right: 3px;"></ion-icon>
             Anterior
         </ion-button>
-        <ion-button *ngIf="instruccionesVisible" style="width: 160.06px;" slot="end" size="small" fill="outline" type="button" icon-start outline block (click)="iniciarExamen(null)">
+        <ion-button *ngIf="instruccionesVisible" [disabled]='botonIcinicarExamenDisable' style="width: 160.06px;" slot="end" size="small" fill="outline" type="button" icon-start outline block (click)="iniciarExamen(null)">
             <ion-icon name="play-circle-outline" style="margin-right: 3px;"></ion-icon>
             Iniciar Examen
         </ion-button>
