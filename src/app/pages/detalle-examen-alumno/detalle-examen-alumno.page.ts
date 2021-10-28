@@ -180,7 +180,7 @@ export class DetalleExamenAlumnoPage implements OnInit {
     if (this.respuestaSeleccionada=="")this.respuestaSeleccionada="[sin-respuesta]";
 
     if (direccion==="siguiente"){
-        if(this.contadorPregunta==this.totalPreguntas){
+        if(this.contadorPregunta==this.totalPreguntas && this.banderaslideFinExamen==false){
           this.slider.slideNext();
           this.botonSiguienteDisable=true
           this.banderaslideFinExamen=true;
