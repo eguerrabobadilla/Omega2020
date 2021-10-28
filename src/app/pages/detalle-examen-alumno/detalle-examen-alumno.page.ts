@@ -172,8 +172,7 @@ export class DetalleExamenAlumnoPage implements OnInit {
   }
 
   async cambioPregunta(direccion , numero){
-
-
+   if(this.botonPopoverDisable)return; // solocion para IOS ya que en las ipad no respeta el disable y dejaba avanzar; causaba mucho problemas
   //  if(this.contadorPregunta==5-1)this.slider.slidePrev();
   
      this.getStatusExamenSiguientePregunta();
@@ -224,11 +223,9 @@ export class DetalleExamenAlumnoPage implements OnInit {
     this.backDropVisible=true; //los pongo disable antes de la peticion para bloquearlos
     this.colores=['red','blue','green','yellow','black','magenta'];
 
-    
     this.apiPreguntas.getPreguntaExamen(this.examenId,this.contadorPregunta,this.preguntaAnterior,this.respuestaSeleccionada).subscribe(data =>{
       this.preguntaInfo = data;
 
-     
      // si es ejercicio relacionar
      if(data['TipoPregunta']=='relacionarPreguntas'){
       this.exercicioRelacionar(data);
