@@ -180,10 +180,11 @@ export class DetalleExamenAlumnoPage implements OnInit {
     if (this.respuestaSeleccionada=="")this.respuestaSeleccionada="[sin-respuesta]";
 
     if (direccion==="siguiente"){
-        if(this.contadorPregunta==this.totalPreguntas && this.banderaslideFinExamen==false){
-          this.slider.slideNext();
-          this.botonSiguienteDisable=true
-          this.banderaslideFinExamen=true;
+        if(this.contadorPregunta==this.totalPreguntas ){
+           if(this.banderaslideFinExamen) return; //problema Ios boton no acepta el disable
+            this.slider.slideNext();
+            this.botonSiguienteDisable=true
+            this.banderaslideFinExamen=true;
           
           } else  this.contadorPregunta++;
           
