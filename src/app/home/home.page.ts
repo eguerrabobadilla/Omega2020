@@ -119,6 +119,12 @@ export class HomePage {
   @ViewChild('IonContentScroll', {static: true}) IonContentScroll: IonContent;
   @ViewChild('content', {read: ElementRef, static: true}) contentref: ElementRef;
   @ViewChild('calendar', {static: false}) calendar: ElementRef;
+  @ViewChild('fondo1', {static: false}) fondo1: ElementRef;
+  @ViewChild('fondo2', {static: false}) fondo2: ElementRef;
+  @ViewChild('fondo3', {static: false}) fondo3: ElementRef;
+  @ViewChild('fondo4', {static: false}) fondo4: ElementRef;
+  @ViewChild('fondo5', {static: false}) fondo5: ElementRef;
+  @ViewChild('fondo6', {static: false}) fondo6: ElementRef;
 
   @ViewChild('pillMenu', {static: false}) pillMenu: PillMenuComponent;
   @ViewChild('appReport', {static: false}) appReport: ReportComponent;
@@ -608,8 +614,11 @@ this.pillMenu.animacion();
     console.log("Es celular:",this.globalServicies.isMobileDevice())
     this.isMobile =this.globalServicies.isMobileDevice();
      // set status bar to white
-     console.log()
+     console.log(this.fondo1.nativeElement);
      
+	 this.fondo1.nativeElement.style.backgroundImage = "url(\"assets/img/2.svg\")";
+	 console.log(this.fondo1.nativeElement.style);
+
      this.themeSwitcher.themeSwitch().then((data) => {
       this.statusBar.backgroundColorByHexString(this.themeSwitcher.principalColor);
     }).catch((err) => {
