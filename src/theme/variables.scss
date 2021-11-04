@@ -67,6 +67,18 @@
     --ion-color-light-contrast-rgb: 0, 0, 0;
     --ion-color-light-shade: #d7d8da;
     --ion-color-light-tint: #f5f6f9;
+    /** principal **/
+    --ion-color-principal: #6228cf;
+    --ion-color-principal-rgb: 98, 40, 207;
+    --ion-color-principal-contrast: #ffffff;
+    --ion-color-principal-contrast-rgb: 255, 255, 255;
+    --ion-color-principal-shade: #5623b6;
+    --ion-color-principal-tint: #723ed4;
+    --ion-color-principal-cerrarCesion-background: #F4315D;
+    --ion-color-principal-cerrarCesion-activated: #f76e8d;
+    --ion-color-principal-cerrarCesion-focused: #f76e8d;
+    --ion-color-principal-cerrarCesion-hover: #f76e8d;
+    --ion-color-principal-titulosHeader: white;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -135,7 +147,7 @@
    * -------------------------------------------
    */
     .ios body {
-     /*   --ion-background-color: #000000;
+        /*   --ion-background-color: #000000;
         --ion-background-color-rgb: 0, 0, 0;
         --ion-text-color: #ffffff;
         --ion-text-color-rgb: 255, 255, 255;
@@ -196,5 +208,18 @@
     }
     ion-title.title-large {
         --color: white;
+    }
+    .ion-color-principal {
+        --ion-color-base: var(--ion-color-principal) !important;
+        --ion-color-base-rgb: var(--ion-color-principal-rgb) !important;
+        --ion-color-contrast: var(--ion-color-principal-contrast) !important;
+        --ion-color-contrast-rgb: var(--ion-color-principal-contrast-rgb) !important;
+        --ion-color-shade: var(--ion-color-principal-shade) !important;
+        --ion-color-tint: var(--ion-color-principal-tint) !important;
+        --ion-color-principal-cerrarCesion-background: var(--ion-color-principal-cerrarCesion-background) !important;
+        --ion-color-principal-cerrarCesion-activated: var( --ion-color-principal-cerrarCesion-activated) !important;
+        --ion-color-principal-cerrarCesion-focused: var(--ion-color-principal-cerrarCesion-focused) !important;
+        --ion-color-principal-cerrarCesion-hover: var(--ion-color-principal-cerrarCesion-hover) !important;
+        --ion-color-principal-titulosHeader: var(--ion-color-principal-titulosHeader) !important;
     }
 }

@@ -43,6 +43,8 @@ import { PortadasService } from '../api/portadas.service';
 import { Zip } from '@ionic-native/zip/ngx';
 import { File } from '@ionic-native/file/ngx';
 import { FileTransfer, FileTransferObject } from '@ionic-native/file-transfer/ngx';
+import { ThemeSwitcherService } from '../services/theme-switcher.service';
+import { runInThisContext } from 'vm';
 
 mobiscroll.settings = {
   theme: 'mobiscroll',
@@ -79,6 +81,7 @@ export class HomePage {
   /****Tipo seleccionado Rercuso****/
   TipoSeleccionado: any = 'Archivos';
   public Editor = ClassicEditor;
+  lstthemeswitcher: any[] = [];//EDUARDO ENTREGA 03072021
 
 
   settings: MbscCalendarOptions = {
@@ -187,7 +190,7 @@ export class HomePage {
               private pickerController: PickerController, private apiMaterias: MateriasService,
               private storage: Storage,private router: Router,private globalServicies: GlobalService,
               private pushService: PushService,private apiDevice: DevicesService,private apiPortadas: PortadasService,
-              private transfer: FileTransfer,private file: File,private zip: Zip) {
+              private transfer: FileTransfer,private file: File,private zip: Zip,public themeSwitcher: ThemeSwitcherService) {
     //  this.scrollenable = true;
 
 
@@ -605,7 +608,8 @@ this.pillMenu.animacion();
     console.log("Es celular:",this.globalServicies.isMobileDevice())
     this.isMobile =this.globalServicies.isMobileDevice();
      // set status bar to white
-      this.statusBar.backgroundColorByHexString('#6228cf');
+     this.statusBar.backgroundColorByHexString('--ion-color-principal');
+     // this.statusBar.backgroundColorByHexString('#6228cf');
       this.llenar_libros();
       this.selectSeccion = 1;
     //  this.statusBar.hide();
@@ -629,14 +633,16 @@ this.pillMenu.animacion();
       setTimeout(() => {
         if(!this.platform.is("ipad") || !this.platform.is("iphone") || !this.platform.is("ios")){
           this.statusBar.show();
-          this.statusBar.backgroundColorByHexString('#6228cf');
+         // this.statusBar.backgroundColorByHexString('#6228cf');
+      
+         this.statusBar.backgroundColorByHexString('--ion-color-principal');
        }
        else{
         this.statusBar.hide();
         }
 
       }, 500);
-      
+     
 
     }
     async  ionSlideTouchStart() {
@@ -804,7 +810,9 @@ this.pillMenu.animacion();
     async ngOnInit() {
       console.log("home principal");
       this.subscribeToEvents();
-      this.statusBar.backgroundColorByHexString('#6228cf');
+     // this.statusBar.backgroundColorByHexString('#6228cf');
+      this.statusBar.backgroundColorByHexString('--ion-color-principal');
+      
 
       //this.LstTareas = await this.apiTareas.get().toPromise();
 
@@ -959,7 +967,7 @@ this.pillMenu.animacion();
       this.gesture3.enable();
 
       this.animacionFlechaArriba();
-
+      
       
     }
 
@@ -1011,6 +1019,8 @@ this.pillMenu.animacion();
         }
       }
     }
+
+
 
     download(url,versionDevice,versionServer) {
       this.cargandoAnimation("Actualizando portadas");
@@ -1745,6 +1755,7 @@ this.pillMenu.animacion();
       this.TipoSeleccionado = data;
       console.log(this.TipoSeleccionado);
     }
+ 
 }
 
 const lorem = 'Lorem iuis aute irure dol cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.';

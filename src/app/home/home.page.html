@@ -1,17 +1,33 @@
 <ion-header #toolbar [translucent]="false" style="background-color: #ffffff00;
 border-radius: 0px 0px 0px 50px;" mode="ios">
-    <ion-toolbar style="height: 16vh;
+    <!--   <ion-toolbar style="height: 16vh; /////////////////ANTES DEL CAMBIO SWITCH THEMES
    border-radius: 0px 0px 0px 50px;--background:ffffff00">
         <ion-title #text class="etitle">
             <ion-icon name="add-circle" #avatarUser style="display: none;color: white; transform: translateY(0.8vh);
             font-size: 27px;font-size: 4vh;"></ion-icon>
-            <!--  <span style="opacity:0;    margin-right: -10px;">-</span>-->
+ 
             <div *ngIf="hayConexion">Hola, {{user.nombre}}!</div>
             <div *ngIf="!hayConexion">Sin conexión</div>
             <div *ngIf="hayConexion" style="display: flex;padding-top: 7px;"><span style="font-size: 1.5vh;font-weight: 600;color:white">LBS+</span></div>
             <div *ngIf="!hayConexion" style="display: flex;padding-top: 7px;"><span style="font-size: 1.5vh;font-weight: 600;color:white">Tu dispositivo no cuenta con una</span></div>
             <div *ngIf="hayConexion"><span style="display: flex;font-size: 1.5vh;font-weight: 600;color:white">Versión 68</span></div>
             <div *ngIf="!hayConexion"><span style="display: flex;font-size: 1.5vh;font-weight: 600;color:white">conexión a internet</span></div>
+        </ion-title>
+
+    </ion-toolbar>-->
+
+    <ion-toolbar style="height: 16vh; 
+    border-radius: 0px 0px 0px 50px;--background:ffffff00">
+        <ion-title #text class="etitle">
+            <ion-icon name="add-circle" #avatarUser style="display: none;color: white; transform: translateY(0.8vh);
+             font-size: 27px;font-size: 4vh;"></ion-icon>
+
+            <div *ngIf="hayConexion">Hola, {{user.nombre}}!</div>
+            <div style="color: var(--ion-color-principal-titulosHeader);" *ngIf="!hayConexion">Sin conexión</div>
+            <div *ngIf="hayConexion" style="display: flex;padding-top: 7px;"><span style="font-size: 1.5vh;font-weight: 600;color: var(--ion-color-principal-titulosHeader)">LBS+</span></div>
+            <div *ngIf="!hayConexion" style="display: flex;padding-top: 7px;"><span style="font-size: 1.5vh;font-weight: 600;color: var(--ion-color-principal-titulosHeader)">Tu dispositivo no cuenta con una</span></div>
+            <div style="color: var(--ion-color-principal-titulosHeader);" *ngIf="hayConexion"><span style="display: flex;font-size: 1.5vh;font-weight: 600;color: var(--ion-color-principal-titulosHeader);">Versión 68</span></div>
+            <div *ngIf="!hayConexion"><span style="display: flex;font-size: 1.5vh;font-weight: 600;color: var(--ion-color-principal-titulosHeader);">conexión a internet</span></div>
         </ion-title>
 
     </ion-toolbar>
@@ -34,13 +50,16 @@ right: 0px;" mode="ios">
     font-size: 4vh;
     color: white;">
         <ion-fab style="right: 21px;">
-            <ion-fab-button (click)="Salir()" size="small" style="width: 35px;height: 35px;--background: #F4315D;
-            --background-activated: #f76e8d;
-            --background-focused: #f76e8d;
-            --background-hover: #f76e8d;">
+            <ion-fab-button (click)="Salir()" size="small" style="width: 35px;height: 35px;
+            --background: var(--ion-color-principal-cerrarCesion-background);
+            --background-activated: var(--ion-color-principal-cerrarCesion-activated);
+            --background-focused: var(--ion-color-principal-cerrarCesion-focused);
+            --background-hover: var(--ion-color-principal-cerrarCesion-hover)">
                 <ion-icon src="assets/img/cerrar_sesion_icono.svg" style="font-size: 12px;"></ion-icon>
             </ion-fab-button>
         </ion-fab>
+
+
         <!--   <ion-icon name="exit-outline"></ion-icon>-->
 
     </div>
@@ -82,7 +101,7 @@ top: 0;" mode="ios">
 </ion-content>-->
 
 
-<div #content id="container" style="background-color: #6228cf;" slot="fixed">
+<div #content id="container" style="background: var(--ion-color-principal);" slot="fixed">
     <ion-title #animation7 mode="ios" style="left: 0px;
     bottom: 0px;
     padding-bottom: 49vh;
@@ -100,7 +119,7 @@ top: 0;" mode="ios">
     text-align: left;
     box-sizing: border-box;
     pointer-events: none;
-    --color: white;
+    --color: var(--ion-color-principal-titulosHeader);
      z-index: 5;
     /* letter-spacing: 3px;*/">
         {{user.grado}}</ion-title>

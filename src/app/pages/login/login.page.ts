@@ -5,6 +5,7 @@ import { AlertController, LoadingController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { WebsocketService } from 'src/app/services/websocket.service';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
+import { ThemeSwitcherService } from 'src/app/services/theme-switcher.service';
 
 @Component({
   selector: 'app-login',
@@ -16,7 +17,7 @@ export class LoginPage implements OnInit {
 
   constructor(private authService: AuthenticationService, private fb: FormBuilder,
     private alertCtrl: AlertController,public loadingController: LoadingController,
-    public alertController: AlertController,private router: Router,public webSocket: WebsocketService,private statusBar: StatusBar ) { 
+    public alertController: AlertController,private router: Router,public webSocket: WebsocketService,private statusBar: StatusBar, private themeSwitcher: ThemeSwitcherService  ) { 
       this.FrmLogin = this.fb.group({
         Usuario: ['', [Validators.required]],
         Password: ['',[Validators.required]]
@@ -53,10 +54,15 @@ export class LoginPage implements OnInit {
       if(this.getKeyToken("tipo")=="Director")
         this.router.navigate(['home-director']);
       else{
-        if(this.getKeyToken("escolaridad")=="SAC" || this.getKeyToken("escolaridad")=="Universidad" )
-        this.router.navigate(['home-universidad']);
-        else
+        if(this.getKeyToken("escolaridad")=="SAC" || this.getKeyToken("escolaridad")=="Universidad" ){
+          this.router.navigate(['home-universidad']);
+    //      this.themeSwitcher.setTheme('universidad');
+        }
+        
+        else{
+     //   this.themeSwitcher.setTheme('kinder');
         this.router.navigate(['home']);
+      }
       }
 
       await this.loadingController.dismiss();
