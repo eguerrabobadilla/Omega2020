@@ -21,6 +21,7 @@ export class ThemeSwitcherService {
 
   private themes: Theme[] = [];
   private currentTheme: number = 0;
+  public principalColor: string="";
 
   constructor(private domCtrl: DomController, @Inject(DOCUMENT) private document,private http: HttpClient,private storage: Storage) {
     
@@ -47,17 +48,22 @@ export class ThemeSwitcherService {
 
   
     
-    this.loadDataLocal().then((data) => {
+  
+  }
+
+  async themeSwitch(){
+    await  this.loadDataLocal().then((data) => {
       this.cambioColorApp(data);
     }).catch((err) => {
       
     });
 
-    this.loadData().subscribe(data =>{
+   await  this.loadData().subscribe(data =>{
       this.themes=data;
       this.storage.set("themes",this.themes);
       console.log(data)
     });
+
   }
 
   loadData(){
@@ -95,12 +101,13 @@ export class ThemeSwitcherService {
     this.themes=data;
     console.log(data)
     let theme = this.themes.find(theme => theme.name === name);
-    //console.log(theme)
+     this.principalColor=theme.styles[0].value;
+     console.log(this.principalColor)
         this.domCtrl.write(() => {
     
           theme.styles.forEach(style => {
-    //console.log(style)
-    
+       
+                
             document.documentElement.style.setProperty(style.themeVariable, style.value);
           });
   });
@@ -112,6 +119,8 @@ export class ThemeSwitcherService {
     });*/
 
   }
+
+
 
   loadDataLocal(){
     return  this.storage.get("themes");

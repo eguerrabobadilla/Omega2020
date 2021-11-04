@@ -608,7 +608,14 @@ this.pillMenu.animacion();
     console.log("Es celular:",this.globalServicies.isMobileDevice())
     this.isMobile =this.globalServicies.isMobileDevice();
      // set status bar to white
-     this.statusBar.backgroundColorByHexString('--ion-color-principal');
+     console.log()
+     
+     this.themeSwitcher.themeSwitch().then((data) => {
+      this.statusBar.backgroundColorByHexString(this.themeSwitcher.principalColor);
+    }).catch((err) => {
+      
+    });
+   
      // this.statusBar.backgroundColorByHexString('#6228cf');
       this.llenar_libros();
       this.selectSeccion = 1;
@@ -630,12 +637,20 @@ this.pillMenu.animacion();
       }, {threshold: 0});
 
       this.observer.observe(this.elementsToProcess.nativeElement);
+
+      
       setTimeout(() => {
         if(!this.platform.is("ipad") || !this.platform.is("iphone") || !this.platform.is("ios")){
           this.statusBar.show();
          // this.statusBar.backgroundColorByHexString('#6228cf');
-      
-         this.statusBar.backgroundColorByHexString('--ion-color-principal');
+         console.log(this.themeSwitcher.principalColor)
+        
+         this.themeSwitcher.themeSwitch().then((data) => {
+          this.statusBar.backgroundColorByHexString(this.themeSwitcher.principalColor);
+        }).catch((err) => {
+          
+        });
+         
        }
        else{
         this.statusBar.hide();
@@ -811,7 +826,13 @@ this.pillMenu.animacion();
       console.log("home principal");
       this.subscribeToEvents();
      // this.statusBar.backgroundColorByHexString('#6228cf');
-      this.statusBar.backgroundColorByHexString('--ion-color-principal');
+    
+     this.themeSwitcher.themeSwitch().then((data) => {
+      this.statusBar.backgroundColorByHexString(this.themeSwitcher.principalColor);
+    }).catch((err) => {
+      
+    });
+     
       
 
       //this.LstTareas = await this.apiTareas.get().toPromise();
