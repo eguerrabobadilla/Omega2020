@@ -141,7 +141,7 @@ export class BooksComponent implements OnInit {
   async ngOnInit() {
     console.log("inicia componente bookssssssssssssssssssssssssssssssssss");
     this.pathStorage = await this.globalServicies.getNameStorage();
-    console.log("pathStorage");
+    console.log(this.pathStorage);
     this.tipoUsuario = this.globalServicies.getKeyToken("tipo");
 
     setTimeout(() => {
