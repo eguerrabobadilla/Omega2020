@@ -45,6 +45,7 @@ import { File } from '@ionic-native/file/ngx';
 import { FileTransfer, FileTransferObject } from '@ionic-native/file-transfer/ngx';
 import { ThemeSwitcherService } from '../services/theme-switcher.service';
 import { runInThisContext } from 'vm';
+import { apiBase } from '../api/apiBase';
 
 mobiscroll.settings = {
   theme: 'mobiscroll',
@@ -196,7 +197,8 @@ export class HomePage {
               private pickerController: PickerController, private apiMaterias: MateriasService,
               private storage: Storage,private router: Router,private globalServicies: GlobalService,
               private pushService: PushService,private apiDevice: DevicesService,private apiPortadas: PortadasService,
-              private transfer: FileTransfer,private file: File,private zip: Zip,public themeSwitcher: ThemeSwitcherService) {
+              private transfer: FileTransfer,private file: File,private zip: Zip,public themeSwitcher: ThemeSwitcherService,
+			  private api: apiBase) {
     //  this.scrollenable = true;
 
 
@@ -614,10 +616,18 @@ this.pillMenu.animacion();
     console.log("Es celular:",this.globalServicies.isMobileDevice())
     this.isMobile =this.globalServicies.isMobileDevice();
      // set status bar to white
-     console.log(this.fondo1.nativeElement);
+     //console.log(this.fondo1.nativeElement);
      
-	 this.fondo1.nativeElement.style.backgroundImage = "url(\"assets/img/2.svg\")";
-	 console.log(this.fondo1.nativeElement.style);
+	 const escolaridad=this.getKeyToken("escolaridad");
+	
+
+	 //this.fondo1.nativeElement.style.backgroundImage = "url(\"assets/img/2.svg\")";
+	 
+	 const date = new Date();
+	 const timestamp = date.getTime();
+
+	 this.fondo1.nativeElement.style.backgroundImage = `url(${this.api.url}/covers/fondo/kinder/1.svg?t=${timestamp}`;
+	 //console.log(this.fondo1.nativeElement.style);
 
      this.themeSwitcher.themeSwitch().then((data) => {
       this.statusBar.backgroundColorByHexString(this.themeSwitcher.principalColor);
