@@ -46,6 +46,7 @@ import { FileTransfer, FileTransferObject } from '@ionic-native/file-transfer/ng
 import { ThemeSwitcherService } from '../services/theme-switcher.service';
 import { runInThisContext } from 'vm';
 import { apiBase } from '../api/apiBase';
+import { WebView } from '@ionic-native/ionic-webview/ngx';
 
 mobiscroll.settings = {
   theme: 'mobiscroll',
@@ -177,6 +178,9 @@ export class HomePage {
     nombre : '',
     grado  : ''
   };
+  public fondos ={
+	fondo1: ''
+  };
   slideOpts = {
     loop: true
   };
@@ -198,7 +202,7 @@ export class HomePage {
               private storage: Storage,private router: Router,private globalServicies: GlobalService,
               private pushService: PushService,private apiDevice: DevicesService,private apiPortadas: PortadasService,
               private transfer: FileTransfer,private file: File,private zip: Zip,public themeSwitcher: ThemeSwitcherService,
-			  private api: apiBase) {
+			  private api: apiBase,private webview: WebView) {
     //  this.scrollenable = true;
 
 
@@ -618,7 +622,7 @@ this.pillMenu.animacion();
      // set status bar to white
      //console.log(this.fondo1.nativeElement);
      
-	 const escolaridad=this.getKeyToken("escolaridad");
+	 const escolaridad=this.getKeyToken("escolaridad").toLocaleLowerCase();
 	
 
 	 //this.fondo1.nativeElement.style.backgroundImage = "url(\"assets/img/2.svg\")";
@@ -626,8 +630,37 @@ this.pillMenu.animacion();
 	 const date = new Date();
 	 const timestamp = date.getTime();
 
-	 this.fondo1.nativeElement.style.backgroundImage = `url(${this.api.url}/covers/fondo/kinder/1.svg?t=${timestamp}`;
-	 //console.log(this.fondo1.nativeElement.style);
+	 if(this.platform.is('cordova')) {
+		 setTimeout(() => {
+			const pathFondo1 = `${this.file.dataDirectory}covers/fondo/${escolaridad}/1.svg`;
+			const pathFondo2 = `${this.file.dataDirectory}covers/fondo/${escolaridad}/2.svg`;
+			const pathFondo3 = `${this.file.dataDirectory}covers/fondo/${escolaridad}/3.svg`;
+			const pathFondo4 = `${this.file.dataDirectory}covers/fondo/${escolaridad}/4.svg`;
+			const pathFondo5 = `${this.file.dataDirectory}covers/fondo/${escolaridad}/5.svg`;
+			const pathFondo6 = `${this.file.dataDirectory}covers/fondo/${escolaridad}/6.svg`;
+	
+			console.log(pathFondo1);
+			console.log(this.file);
+			console.log(this.file.dataDirectory);
+			
+			this.fondos.fondo1 = `"${this.webview.convertFileSrc(pathFondo1)}?t=${timestamp}"`;
+			//this.fondo1.nativeElement.style.backgroundImage = `url(${this.webview.convertFileSrc(pathFondo1)}?t=${timestamp})`;
+			this.fondo2.nativeElement.style.backgroundImage = `url(${this.webview.convertFileSrc(pathFondo2)}?t=${timestamp})`;
+			this.fondo3.nativeElement.style.backgroundImage = `url(${this.webview.convertFileSrc(pathFondo3)}?t=${timestamp})`;
+			this.fondo4.nativeElement.style.backgroundImage = `url(${this.webview.convertFileSrc(pathFondo4)}?t=${timestamp})`;
+			this.fondo5.nativeElement.style.backgroundImage = `url(${this.webview.convertFileSrc(pathFondo5)}?t=${timestamp})`;
+			this.fondo6.nativeElement.style.backgroundImage = `url(${this.webview.convertFileSrc(pathFondo6)}?t=${timestamp})`; 
+		 }, 1000);
+
+	 }
+	 else {
+	 	this.fondo1.nativeElement.style.backgroundImage = `url(${this.api.url}/covers/fondo/${escolaridad}/1.svg?t=${timestamp})`;
+	 	this.fondo2.nativeElement.style.backgroundImage = `url(${this.api.url}/covers/fondo/${escolaridad}/2.svg?t=${timestamp})`;
+	 	this.fondo3.nativeElement.style.backgroundImage = `url(${this.api.url}/covers/fondo/${escolaridad}/3.svg?t=${timestamp})`;
+	 	this.fondo4.nativeElement.style.backgroundImage = `url(${this.api.url}/covers/fondo/${escolaridad}/4.svg?t=${timestamp})`;
+	 	this.fondo5.nativeElement.style.backgroundImage = `url(${this.api.url}/covers/fondo/${escolaridad}/5.svg?t=${timestamp})`;
+	 	this.fondo6.nativeElement.style.backgroundImage = `url(${this.api.url}/covers/fondo/${escolaridad}/6.svg?t=${timestamp})`;
+	}
 
      this.themeSwitcher.themeSwitch().then((data) => {
       this.statusBar.backgroundColorByHexString(this.themeSwitcher.principalColor);
