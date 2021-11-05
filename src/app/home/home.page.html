@@ -101,7 +101,11 @@ top: 0;" mode="ios">
 </ion-content>-->
 
 
-<div #content id="container" style="background: var(--ion-color-principal);" slot="fixed">
+<div #content id="container" style="background: var(--ion-color-principal);-webkit-transition: background-color 1000ms linear;
+-moz-transition: background-color 1000ms linear;
+-o-transition: background-color 1000ms linear;
+-ms-transition: background-color 1000ms linear;
+transition: background-color 1000ms linear;" slot="fixed">
     <ion-title #animation7 mode="ios" style="left: 0px;
     bottom: 0px;
     padding-bottom: 49vh;
