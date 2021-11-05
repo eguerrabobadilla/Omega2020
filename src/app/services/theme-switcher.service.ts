@@ -22,6 +22,7 @@ export class ThemeSwitcherService {
   private themes: Theme[] = [];
   private currentTheme: number = 0;
   public principalColor: string="";
+  public escolaridad: string="";
 
   constructor(private domCtrl: DomController, @Inject(DOCUMENT) private document,private http: HttpClient,private storage: Storage) {
     
@@ -46,7 +47,7 @@ export class ThemeSwitcherService {
 
    
 
-  
+    
     
   
   }
@@ -61,7 +62,7 @@ export class ThemeSwitcherService {
    await  this.loadData().subscribe(data =>{
       this.themes=data;
       this.storage.set("themes",this.themes);
-      console.log(data)
+
     });
 
   }
@@ -75,39 +76,30 @@ export class ThemeSwitcherService {
   cycleTheme(): void {
     this.loadData().subscribe(data =>{
       this.themes=data;
-      console.log(data)
       if(this.themes.length > this.currentTheme + 1){
         this.currentTheme++;
       } else {
         this.currentTheme = 0;
       }
-  console.log(this.themes[0])
-  console.log(this.currentTheme)
       this.setTheme(this.themes[this.currentTheme]["name"],"");
     });
 
  
 
   }
-  cambioColorApp(data){
-    console.log("escolaridad")
-  console.log(this.getKeyToken("escolaridad"))
-  if( this.getKeyToken("escolaridad")=="Kinder")
-      this.setTheme('kinder',data);
-
+  async cambioColorApp(data){
+      this.escolaridad = await this.getKeyToken("escolaridad");
+      this.setTheme(this.escolaridad,data);
  }
   setTheme(name,data): void {
 
     this.themes=data;
-    console.log(data)
     let theme = this.themes.find(theme => theme.name === name);
      this.principalColor=theme.styles[0].value;
-     console.log(this.principalColor)
         this.domCtrl.write(() => {
     
           theme.styles.forEach(style => {
-       
-                
+
             document.documentElement.style.setProperty(style.themeVariable, style.value);
           });
   });
@@ -127,7 +119,6 @@ export class ThemeSwitcherService {
   }
 
   getKeyToken(key: string): string {
-
     const jwt = localStorage.getItem('USER_INFO');
 
     const jwtData = jwt.split('.')[1];
@@ -136,8 +127,9 @@ export class ThemeSwitcherService {
     const decodedJwtData = JSON.parse(decodedJwtJsonData);
 
     const value = decodedJwtData[key];
-
+      
     return value;
+
   }
 
 }
