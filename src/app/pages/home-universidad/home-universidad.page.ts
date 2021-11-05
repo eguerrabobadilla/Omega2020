@@ -43,6 +43,7 @@ import { PortadasService } from '../../api/portadas.service';
 import { Zip } from '@ionic-native/zip/ngx';
 import { File } from '@ionic-native/file/ngx';
 import { FileTransfer, FileTransferObject } from '@ionic-native/file-transfer/ngx';
+import { ThemeSwitcherService } from '../../services/theme-switcher.service';
 
 mobiscroll.settings = {
   theme: 'mobiscroll',
@@ -188,7 +189,7 @@ export class HomeUniversidadPage implements OnInit {
               private pickerController: PickerController, private apiMaterias: MateriasService,
               private storage: Storage,private router: Router,private globalServicies: GlobalService,
               private pushService: PushService,private apiDevice: DevicesService,private apiPortadas: PortadasService,
-              private transfer: FileTransfer,private file: File,private zip: Zip) {
+              private transfer: FileTransfer,private file: File,private zip: Zip,public themeSwitcher: ThemeSwitcherService) {
     //  this.scrollenable = true;
 
 
@@ -606,7 +607,11 @@ this.pillMenu.animacion();
     console.log("Es celular:",this.globalServicies.isMobileDevice())
     this.isMobile =this.globalServicies.isMobileDevice();
      // set status bar to white
-      this.statusBar.backgroundColorByHexString('#6228cf');
+     this.themeSwitcher.themeSwitch().then((data) => {
+      this.statusBar.backgroundColorByHexString(this.themeSwitcher.principalColor);
+    }).catch((err) => {
+      
+    });
       this.llenar_libros();
       this.selectSeccion = 1;
     //  this.statusBar.hide();
@@ -630,7 +635,11 @@ this.pillMenu.animacion();
       setTimeout(() => {
         if(!this.platform.is("ipad") || !this.platform.is("iphone") || !this.platform.is("ios")){
           this.statusBar.show();
-          this.statusBar.backgroundColorByHexString('#6228cf');
+          this.themeSwitcher.themeSwitch().then((data) => {
+            this.statusBar.backgroundColorByHexString(this.themeSwitcher.principalColor);
+          }).catch((err) => {
+            
+          });
        }
        else{
         this.statusBar.hide();
@@ -808,7 +817,11 @@ this.pillMenu.animacion();
     async ngOnInit() {
       console.log("home principal");
       this.subscribeToEvents();
-      this.statusBar.backgroundColorByHexString('#6228cf');
+      this.themeSwitcher.themeSwitch().then((data) => {
+        this.statusBar.backgroundColorByHexString(this.themeSwitcher.principalColor);
+      }).catch((err) => {
+        
+      });
 
       //this.LstTareas = await this.apiTareas.get().toPromise();
 
