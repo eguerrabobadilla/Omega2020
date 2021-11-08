@@ -179,7 +179,7 @@ export class HomePage {
     grado  : ''
   };
   public fondos ={
-	fondo1: ''
+	  fondo1: ''
   };
   slideOpts = {
     loop: true
@@ -643,8 +643,8 @@ this.pillMenu.animacion();
 			console.log(this.file);
 			console.log(this.file.dataDirectory);
 			
-			this.fondos.fondo1 = `"${this.webview.convertFileSrc(pathFondo1)}?t=${timestamp}"`;
-			//this.fondo1.nativeElement.style.backgroundImage = `url(${this.webview.convertFileSrc(pathFondo1)}?t=${timestamp})`;
+			//this.fondos.fondo1 = `"${this.webview.convertFileSrc(pathFondo1)}?t=${timestamp}"`;
+			this.fondo1.nativeElement.style.backgroundImage = `url(${this.webview.convertFileSrc(pathFondo1)}?t=${timestamp})`;
 			this.fondo2.nativeElement.style.backgroundImage = `url(${this.webview.convertFileSrc(pathFondo2)}?t=${timestamp})`;
 			this.fondo3.nativeElement.style.backgroundImage = `url(${this.webview.convertFileSrc(pathFondo3)}?t=${timestamp})`;
 			this.fondo4.nativeElement.style.backgroundImage = `url(${this.webview.convertFileSrc(pathFondo4)}?t=${timestamp})`;
