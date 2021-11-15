@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UsuariosService } from 'src/app/api/usuarios.service';
+import { PushService } from 'src/app/services/push.service';
 
 @Component({
   selector: 'app-perfil',
@@ -16,11 +17,12 @@ export class PerfilComponent implements OnInit {
     GradoIngles: '',
     GrupoIngles: '',
     Usuario: '',
-    Tipo:''
+    Tipo:'',
+    PlayerId: ''
   };
   /*public user:any;*/
 
-  constructor(private apiUsuarios: UsuariosService) { }
+  constructor(private apiUsuarios: UsuariosService,private pushService: PushService) { }
 
   ngOnInit() {
     const UsuarioId =this.getKeyToken('id');
@@ -33,6 +35,7 @@ export class PerfilComponent implements OnInit {
        this.user.GrupoIngles = data["GrupoIngles"];
        this.user.Usuario = data["Usuario"];
        this.user.Tipo = data["Tipo"];
+       this.user.PlayerId = this.pushService.userId;
     });
 
     /*this.user.nombre = this.getKeyToken('nombre');

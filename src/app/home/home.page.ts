@@ -178,11 +178,34 @@ export class HomePage {
     nombre : '',
     grado  : ''
   };
-  public fondos ={
-	  fondo1: ''
+  public fondos = {
+	  fondo1: null
   };
+  public fondoSVG =[];
   slideOpts = {
-    loop: true
+    loop: true,
+    /*loopPreventsSlide: false,
+    loopedSlides: 6*/
+    /*updateOnImagesReady:false,
+    preloadImages:false*/
+    on: { 
+      beforeInit:() => {
+        console.log("beforeInit swiper");
+        
+	      if(this.platform.is('cordova')) {
+          const escolaridad=this.getKeyToken("escolaridad").toLocaleLowerCase();        
+          const date = new Date();
+          const timestamp = date.getTime();
+
+          let pathFondo1 = this.webview.convertFileSrc(`${this.file.dataDirectory}covers/fondo/${escolaridad}/1.svg?t=${timestamp}`);
+          if( pathFondo1.startsWith("undefined/") ) {
+            pathFondo1 = pathFondo1.replace("undefined/", "http://localhost/");  
+          }
+
+          this.fondo1.nativeElement.style.backgroundImage = `url(${pathFondo1})`;
+        }
+      }
+    }
   };
   slideOptsdos = {
     autoHeight: true
@@ -609,6 +632,15 @@ this.pillMenu.animacion();
     this.IonContentScroll.scrollToPoint(0, 0, 0);
   }
 
+  applyStyles(index) {
+    console.log(index);
+    const date = new Date();
+	  const timestamp = date.getTime();
+    const escolaridad=this.getKeyToken("escolaridad").toLocaleLowerCase();
+    const style = {marginBottom: '90px', width: '100%', height:'100%',backgroundImage:`url(${this.api.url}/covers/fondo/${escolaridad}/${index}.svg?t=${timestamp})`, backgroundRepeat: 'no-repeat',backgroundSize: '100% 100%'}
+    //console.log(style);
+    return style;
+  }
 
   // tslint:disable-next-line: use-lifecycle-interface
   ngAfterViewInit() {
@@ -623,34 +655,29 @@ this.pillMenu.animacion();
      //console.log(this.fondo1.nativeElement);
      
 	 const escolaridad=this.getKeyToken("escolaridad").toLocaleLowerCase();
-	
-
-	 //this.fondo1.nativeElement.style.backgroundImage = "url(\"assets/img/2.svg\")";
 	 
 	 const date = new Date();
 	 const timestamp = date.getTime();
 
 	 if(this.platform.is('cordova')) {
 		 setTimeout(() => {
-			const pathFondo1 = `${this.file.dataDirectory}covers/fondo/${escolaridad}/1.svg`;
-			const pathFondo2 = `${this.file.dataDirectory}covers/fondo/${escolaridad}/2.svg`;
-			const pathFondo3 = `${this.file.dataDirectory}covers/fondo/${escolaridad}/3.svg`;
-			const pathFondo4 = `${this.file.dataDirectory}covers/fondo/${escolaridad}/4.svg`;
-			const pathFondo5 = `${this.file.dataDirectory}covers/fondo/${escolaridad}/5.svg`;
-			const pathFondo6 = `${this.file.dataDirectory}covers/fondo/${escolaridad}/6.svg`;
-	
-			console.log(pathFondo1);
-			console.log(this.file);
-			console.log(this.file.dataDirectory);
-			
-			//this.fondos.fondo1 = `"${this.webview.convertFileSrc(pathFondo1)}?t=${timestamp}"`;
-			this.fondo1.nativeElement.style.backgroundImage = `url(${this.webview.convertFileSrc(pathFondo1)}?t=${timestamp})`;
-			this.fondo2.nativeElement.style.backgroundImage = `url(${this.webview.convertFileSrc(pathFondo2)}?t=${timestamp})`;
-			this.fondo3.nativeElement.style.backgroundImage = `url(${this.webview.convertFileSrc(pathFondo3)}?t=${timestamp})`;
-			this.fondo4.nativeElement.style.backgroundImage = `url(${this.webview.convertFileSrc(pathFondo4)}?t=${timestamp})`;
-			this.fondo5.nativeElement.style.backgroundImage = `url(${this.webview.convertFileSrc(pathFondo5)}?t=${timestamp})`;
-			this.fondo6.nativeElement.style.backgroundImage = `url(${this.webview.convertFileSrc(pathFondo6)}?t=${timestamp})`; 
-		 }, 1000);
+       this.platform.ready().then(async ()=>{
+        //const pathFondo1 = `${this.file.dataDirectory}covers/fondo/${escolaridad}/1.svg`;
+        const pathFondo2 = `${this.file.dataDirectory}covers/fondo/${escolaridad}/2.svg`;
+        const pathFondo3 = `${this.file.dataDirectory}covers/fondo/${escolaridad}/3.svg`;
+        const pathFondo4 = `${this.file.dataDirectory}covers/fondo/${escolaridad}/4.svg`;
+        const pathFondo5 = `${this.file.dataDirectory}covers/fondo/${escolaridad}/5.svg`;
+        const pathFondo6 = `${this.file.dataDirectory}covers/fondo/${escolaridad}/6.svg`;
+    
+
+        //this.fondo1.nativeElement.style.backgroundImage = `url(${this.webview.convertFileSrc(pathFondo1)}?t=${timestamp})`;
+        this.fondo2.nativeElement.style.backgroundImage = `url(${this.webview.convertFileSrc(pathFondo2)}?t=${timestamp})`;
+        this.fondo3.nativeElement.style.backgroundImage = `url(${this.webview.convertFileSrc(pathFondo3)}?t=${timestamp})`;
+        this.fondo4.nativeElement.style.backgroundImage = `url(${this.webview.convertFileSrc(pathFondo4)}?t=${timestamp})`;
+        this.fondo5.nativeElement.style.backgroundImage = `url(${this.webview.convertFileSrc(pathFondo5)}?t=${timestamp})`;
+        this.fondo6.nativeElement.style.backgroundImage = `url(${this.webview.convertFileSrc(pathFondo6)}?t=${timestamp})`; 
+       });
+		 }, 2000);
 
 	 }
 	 else {
@@ -725,6 +752,8 @@ this.pillMenu.animacion();
 
     }
     async ionSlideTouchEndSlide() {
+      console.log("ionSlideTouchEndSlide");
+      
       let index = await this.slideUp.getActiveIndex();
 
       // Por mientras
@@ -867,7 +896,6 @@ this.pillMenu.animacion();
           this.slideUp.lockSwipes(true);
         }
 
-        
 
       }, 100);
 
@@ -884,8 +912,7 @@ this.pillMenu.animacion();
     }).catch((err) => {
       
     });
-     
-      
+
 
       //this.LstTareas = await this.apiTareas.get().toPromise();
 
@@ -1557,8 +1584,6 @@ this.pillMenu.animacion();
       this.pillMenu.nextSegment(index);
     }
 
-
-
     clickDiv() {
      // console.log("Click Div")
 
@@ -1613,13 +1638,14 @@ this.pillMenu.animacion();
             }
           }, {
             text: 'Si',
-            handler: () => {
+            handler: async () => {
               /*this.storage.remove("books2020").then(() => {
                 this.authenticationService.logout().then( data => {
                   this.webSocket.finishWebScoket();
                 });
               });*/
-              
+              await this.apiDevice.delete(this.pushService.userId).toPromise();
+
               this.authenticationService.logout().then( data => {
                 this.webSocket.finishWebScoket();
               });
@@ -1656,8 +1682,10 @@ this.pillMenu.animacion();
       if (status == true) {
             console.log("status");
             try {
-              if(this.pushService.userId != undefined)
+              if(this.pushService.userId != undefined) {
+                console.log("playerId:",this.pushService.userId);
                 await this.apiDevice.update(this.pushService.userId).toPromise();
+              }
             } catch (error) {
               console.error(error);
               // expected output: ReferenceError: nonExistentFunction is not defined
