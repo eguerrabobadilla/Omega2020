@@ -98,12 +98,10 @@ export class ThemeSwitcherService {
      this.tipoUsuario= await this.getKeyToken("tipo");
      this.escolaridad = await this.getKeyToken("escolaridad");
      if(this.tipoUsuario !=="Alumno"){
-      this.cssStyle='--ion-color-universidad'
       this.setTheme(this.tipoUsuario,data)
      }
         
      else{
-       this.cssStyle='--ion-color-'+this.escolaridad
       this.setTheme(this.escolaridad,data);
      }
       
