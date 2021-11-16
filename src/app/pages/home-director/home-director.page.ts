@@ -1051,8 +1051,10 @@ export class HomeDirectorPage {
                   this.webSocket.finishWebScoket();
                 });
               });*/
-              await this.apiDevice.delete(this.pushService.userId).toPromise();
-
+              if(this.platform.is('cordova')) 
+              {
+                await this.apiDevice.delete(this.pushService.userId).toPromise();
+              } 
               this.authenticationService.logout().then( data => {
                 this.webSocket.finishWebScoket();
               });

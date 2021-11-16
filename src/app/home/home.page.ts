@@ -189,9 +189,7 @@ export class HomePage {
     /*updateOnImagesReady:false,
     preloadImages:false*/
     on: { 
-      beforeInit:() => {
-        console.log("beforeInit swiper");
-        
+      beforeInit:() => {        
 	      if(this.platform.is('cordova')) {
           const escolaridad=this.getKeyToken("escolaridad").toLocaleLowerCase();        
           const date = new Date();
@@ -225,7 +223,7 @@ export class HomePage {
               private storage: Storage,private router: Router,private globalServicies: GlobalService,
               private pushService: PushService,private apiDevice: DevicesService,private apiPortadas: PortadasService,
               private transfer: FileTransfer,private file: File,private zip: Zip,public themeSwitcher: ThemeSwitcherService,
-			  private api: apiBase,private webview: WebView) {
+			        private api: apiBase,private webview: WebView) {
     //  this.scrollenable = true;
 
 
@@ -1644,7 +1642,11 @@ this.pillMenu.animacion();
                   this.webSocket.finishWebScoket();
                 });
               });*/
-              await this.apiDevice.delete(this.pushService.userId).toPromise();
+
+              if(this.platform.is('cordova'))
+              {
+                await this.apiDevice.delete(this.pushService.userId).toPromise();
+              }
 
               this.authenticationService.logout().then( data => {
                 this.webSocket.finishWebScoket();
