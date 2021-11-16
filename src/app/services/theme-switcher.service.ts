@@ -23,27 +23,34 @@ export class ThemeSwitcherService {
   private currentTheme: number = 0;
   public principalColor: string="";
   public escolaridad: string="";
+  public tipoUsuario: string="";
+  public cssStyle:string ="";
 
   constructor(private domCtrl: DomController, @Inject(DOCUMENT) private document,private http: HttpClient,private storage: Storage) {
     
     this.themes = [
       {
-        name: 'universidad',
+        name: 'default',
         styles: [
-          { themeVariable: '--ion-color-principal', value: '#1a2029'},
-          { themeVariable: '--ion-color-principal-rgb', value: '60,60,60'},
+
+    
+          { themeVariable: '--ion-color-principal', value: '#6228cf'},
+          { themeVariable: '--ion-color-principal-rgb', value: '98, 40, 207'},
           { themeVariable: '--ion-color-principal-contrast', value: '#ffffff'},
           { themeVariable: '--ion-color-principal-contrast-rgb', value: '255,255,255'},
-          { themeVariable: '--ion-color-principal-shade', value: '#353535'},
-          { themeVariable: '--ion-color-principal-tint', value: '#505050'},
-          { themeVariable: '--ion-color-principal-cerrarCesion-background', value: '#ffa906'},
-          { themeVariable: '--ion-color-principal-titulosHeader', value: '#ffa906'},
-          { themeVariable: '--ion-color-principal-titulosHeader', value: '#ffa906'},
-          { themeVariable: '--ion-color-principal-titulosHeader', value: '#ffa906'},
+          { themeVariable: '--ion-color-principal-shade', value: '#5623b6'},
+          { themeVariable: '--ion-color-principal-tint', value: '#723ed4'},
+          { themeVariable: '--ion-color-principal-cerrarCesion-background', value: '#F4315D'},
+          { themeVariable: '--ion-color-principal-cerrarCesion-activated', value: '#f76e8d'},
+          { themeVariable: '--ion-color-principal-cerrarCesion-focused', value: '#f76e8d'},
+          { themeVariable: ' --ion-color-principal-cerrarCesion-hover', value: '#f76e8d'},
+          { themeVariable: '--ion-color-principal-titulosHeader', value: 'white'},
 
         ]
       }
     ]
+
+   // this.storage.set("themesDefault",this.themes);
 
    
 
@@ -88,8 +95,18 @@ export class ThemeSwitcherService {
 
   }
   async cambioColorApp(data){
-      this.escolaridad = await this.getKeyToken("escolaridad");
+     this.tipoUsuario= await this.getKeyToken("tipo");
+     this.escolaridad = await this.getKeyToken("escolaridad");
+     if(this.tipoUsuario !=="Alumno"){
+      this.cssStyle='--ion-color-universidad'
+      this.setTheme(this.tipoUsuario,data)
+     }
+        
+     else{
+       this.cssStyle='--ion-color-'+this.escolaridad
       this.setTheme(this.escolaridad,data);
+     }
+      
  }
   setTheme(name,data): void {
 

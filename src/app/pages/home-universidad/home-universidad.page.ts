@@ -192,7 +192,6 @@ export class HomeUniversidadPage implements OnInit {
               private transfer: FileTransfer,private file: File,private zip: Zip,public themeSwitcher: ThemeSwitcherService) {
     //  this.scrollenable = true;
 
-
   }
 
   async animacion(isRegreso: boolean, click: boolean) {
