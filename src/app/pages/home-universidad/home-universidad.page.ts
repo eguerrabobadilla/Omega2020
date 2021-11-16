@@ -233,7 +233,6 @@ export class HomeUniversidadPage implements OnInit {
               private webview: WebView,private api: apiBase) {
     //  this.scrollenable = true;
 
-
   }
 
   async animacion(isRegreso: boolean, click: boolean) {

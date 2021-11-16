@@ -80,6 +80,8 @@ export class HomePage {
   hayConexion= true;
   numeroclicks=0;
   loading: any;
+  temaCss:string="";
+  
   /****Tipo seleccionado Rercuso****/
   TipoSeleccionado: any = 'Archivos';
   public Editor = ClassicEditor;
@@ -96,7 +98,6 @@ export class HomePage {
     setTimeout(() => { //temporal
       this.activarEventoTouch();
       this.apiCalendario.getCalendario().subscribe(data => {
-        console.log("getCalendario");
         this.events = data;
       });
     }, 100);
@@ -698,6 +699,7 @@ this.pillMenu.animacion();
 	}
 
      this.themeSwitcher.themeSwitch().then((data) => {
+      this.temaCss='.ion-color-principal';
       this.statusBar.backgroundColorByHexString(this.themeSwitcher.principalColor);
     }).catch((err) => {
       
@@ -730,10 +732,11 @@ this.pillMenu.animacion();
         if(!this.platform.is("ipad") || !this.platform.is("iphone") || !this.platform.is("ios")){
           this.statusBar.show();
          // this.statusBar.backgroundColorByHexString('#6228cf');
-         console.log(this.themeSwitcher.principalColor)
+         
         
          this.themeSwitcher.themeSwitch().then((data) => {
           this.statusBar.backgroundColorByHexString(this.themeSwitcher.principalColor);
+          console.log(this.themeSwitcher.principalColor)
         }).catch((err) => {
           
         });
@@ -741,6 +744,8 @@ this.pillMenu.animacion();
        }
        else{
         this.statusBar.hide();
+        this.themeSwitcher.themeSwitch();
+        this.temaCss='.ion-color-principal';
         }
 
       }, 500);
@@ -891,7 +896,7 @@ this.pillMenu.animacion();
     }
 
     ionViewDidEnter() {
-      console.log("ionViewDidEnter");
+
       setTimeout(async () => {
         const status = this.webSocket.getStatusSocket() == 1 ? true : false;
         this.inforConnectionScoket(status);
@@ -911,11 +916,15 @@ this.pillMenu.animacion();
 
 
     async ngOnInit() {
-      console.log("home principal");
+
       this.subscribeToEvents();
      // this.statusBar.backgroundColorByHexString('#6228cf');
     
      this.themeSwitcher.themeSwitch().then((data) => {
+       
+       this.temaCss='.ion-color-principal';
+       console.log("temassssssssss",this.temaCss)
+       console.log(this.temaCss)
       this.statusBar.backgroundColorByHexString(this.themeSwitcher.principalColor);
     }).catch((err) => {
       
@@ -1030,7 +1039,7 @@ this.pillMenu.animacion();
             //console.log("SwipeDown",this.swipeDown);
             
             if (this.swipeUp2 === true && !this.estadoArriba) {
-              console.log("this.swipeUp2 === true && !this.estadoArriba Uppppp");
+ 
             //  this.divArriba();
           /*   this.swipeUp2 = true;
                           this.div2.nativeElement.click();
@@ -1049,7 +1058,7 @@ this.pillMenu.animacion();
 
            } else {
               if ((this.swipeDown2 === true && this.estadoArriba)&& this.swipeUp2=== false) {
-                console.log("this.swipeDown2 === true && this.estadoArriba)&& this.swipeUp2=== false down");
+    
                 this.divAbajo();
              /*  this.gesture.enable(true);	
 
@@ -1080,7 +1089,7 @@ this.pillMenu.animacion();
     }
 
     async buscarPortadas(){
-      console.log("buscarPortadas");
+
       //Verifica conexion con el servidor
       const status = this.webSocket.getStatusSocket() == 1 ? true : false;
       
@@ -1108,14 +1117,13 @@ this.pillMenu.animacion();
       const data =await this.apiPortadas.getPortadasVersion().toPromise();
 
       if(versionPortadas==null){
-        console.log(data["version"]);
-        console.log(data["url"]);
+
         this.download(data["url"],0,data["version"]);
       }
       else{
-        console.log("versionPortadas",versionPortadas);
+
         if(parseInt(data["version"]) > parseInt(versionPortadas)) {
-          console.log("update portadas");
+ 
           this.download(data["url"],versionPortadas,data["version"]);
         }
         else {
@@ -1143,12 +1151,11 @@ this.pillMenu.animacion();
       fileTransfer.download(url + versionDevice, directory + nameFile).then(entry => {
   
         //Descomprime libro
-        console.log(entry.toURL());
-        console.log(directory + 'covers');
+
         return this.zip.unzip(entry.toURL(), directory + 'covers');
       })
       .then(result =>{
-        console.log(result);
+
         if(result === 0) { console.log('SUCCESS'); }
         if(result === -1) { console.log('FAILED'); }
   
@@ -1156,11 +1163,8 @@ this.pillMenu.animacion();
         return this.file.removeFile(directory,nameFile);
       })
       .then( data =>{
-        console.log(data);
-        console.log("Terminado");
-  
+
         this.storage.set("versionPortadas",versionServer).then( () => {
-          console.log("guardo portadas");
           this.loadingController.dismiss();
           setTimeout(() => {
             this.booksComponent.iniciarValidacion();
@@ -1184,14 +1188,11 @@ this.pillMenu.animacion();
       this.filtrosControl.value="";
 
       const itemOption = this.pillMenu.itemsMenu[event.detail.value];
-      console.log(itemOption);
       this.pildora = itemOption;
-      console.log(this.selectSeccion);
       if(itemOption == 'Estadísticas' && this.getKeyToken('tipo')=='Alumno'){
           this.appReport.cargarEstadisticas();
       }
       else if(itemOption == 'Estadísticas' && this.getKeyToken('tipo')=='Profesor'){
-        console.log(this.getKeyToken('tipo'));
         this.appGraphics.cargarEstadisticas();
       }
      // console.log(itemOption);
@@ -1213,7 +1214,6 @@ this.pillMenu.animacion();
 
         //Si el usuario es un director disfrazado de otro usuario bloquea los add
         if(this.getKeyToken("estatus")!=undefined) {
-          console.log("entro this.getKeyToken");
           this.renderer.setStyle(this.fabend.nativeElement,'display','none');
           //this.renderer.setStyle(this.fabstart.nativeElement,'display','none');
         }
@@ -1239,7 +1239,6 @@ this.pillMenu.animacion();
           }
       }
 
-      console.log(this.selectSeccion);
 
        this.slideDown.slideTo(event.detail.value);
       // this.slideUp.slideTo(event.detail.value);
@@ -1262,13 +1261,11 @@ this.pillMenu.animacion();
         }
       });
 
-      console.log(filtro);
 
       this.IonContentScroll.scrollToPoint(0, 0, 0);
 
       const itemOption =this.pillMenu.itemsMenu[this.pillMenu.indexAnterior];
 
-      console.log(event.detail.value.length);
       if(itemOption==="Tareas") {
         if (event.detail.value.length === 0) {
           this.tareasComponent.cargar(0);
@@ -1312,7 +1309,7 @@ this.pillMenu.animacion();
     }
 
     async openPicker() {
-      console.log("filtros");
+
 
       this.materias = await this.apiMaterias.get().toPromise();
       //console.log(this.materias);
@@ -1400,7 +1397,6 @@ this.pillMenu.animacion();
           await modal.present();
 
           modal.onDidDismiss().then( async (data) => {
-              console.log(data);
               if(data.data.banderaEdito==true)
               {
                   /*await this.cargandoAnimation('Cargando...');
@@ -1533,7 +1529,6 @@ this.pillMenu.animacion();
 
         modal.onDidDismiss().then( async (data) => {
 
-          console.log(data);
           if(data.data.banderaEdito==true)
           {
               /*await this.cargandoAnimation('Cargando...');
@@ -1545,7 +1540,6 @@ this.pillMenu.animacion();
     }
 
    async abrirCalendarioSemana(item){
-      console.log("abrirCalendarioSemana");
       const modal = await this.modalCrl.create({
         component: CalendarEventsPage,
         // cssClass: 'my-custom-modal-css',
@@ -1562,7 +1556,6 @@ this.pillMenu.animacion();
         if(data.data != undefined) {
           await this.cargandoAnimation('Cargando...');
           this.apiCalendario.getCalendario().subscribe(data => {
-            console.log("getCalendario");
             this.events = data;
             this.loadingController.dismiss();
           },error =>{ 
@@ -1598,7 +1591,6 @@ this.pillMenu.animacion();
     }
 
     clickHoyCalendario(){
-      console.log("clickHoyCalendario");
       this.mobi.instance.navigate(new Date(Date.now()), true);
     }
 
@@ -1613,7 +1605,6 @@ this.pillMenu.animacion();
     }
 
     updateAutoHeightSlider(){
-      console.log("updateAutoHeightSlider");
       this.slideDown.updateAutoHeight();
     }
 
@@ -1693,7 +1684,6 @@ this.pillMenu.animacion();
 
     public async inforConnectionScoket(status) {
       if (status == true) {
-            console.log("status");
             try {
               if(this.pushService.userId != undefined) {
                 console.log("playerId:",this.pushService.userId);
@@ -1705,7 +1695,6 @@ this.pillMenu.animacion();
               // Note - error messages will vary depending on browser
             }
 
-            console.log("this.hayConexion = true;");
             this.hayConexion = true;
             this.renderer.setStyle(this.avatarUser.nativeElement, 'color', `#FF426D`);
             this.slideUp.lockSwipes(false);
@@ -1772,7 +1761,7 @@ this.pillMenu.animacion();
   }
  }
  divAbajo(){	
-  console.log("divAbajo")
+
   this.gesture.enable(true);	
 
   this.gesture.enable(true);
@@ -1867,7 +1856,6 @@ this.pillMenu.animacion();
 
     changeIonChipRecursos(data){
       this.TipoSeleccionado = data;
-      console.log(this.TipoSeleccionado);
     }
  
 }
