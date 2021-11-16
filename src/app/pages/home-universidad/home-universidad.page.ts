@@ -187,12 +187,27 @@ export class HomeUniversidadPage implements OnInit {
           const date = new Date();
           const timestamp = date.getTime();
 
-          let pathFondo1 = this.webview.convertFileSrc(`${this.file.dataDirectory}covers/fondo/${escolaridad}/1.svg?t=${timestamp}`);
+          /*let pathFondo1 = this.webview.convertFileSrc(`${this.file.dataDirectory}covers/fondo/${escolaridad}/1.svg?t=${timestamp}`);
           if( pathFondo1.startsWith("undefined/") ) {
             pathFondo1 = pathFondo1.replace("undefined/", "http://localhost/");  
           }
+          this.fondo1.nativeElement.style.backgroundImage = `url(${pathFondo1})`;*/
+		  this.platform.ready().then(async ()=>{ 
+			let pathFondo1 = this.webview.convertFileSrc(`${this.file.dataDirectory}covers/fondo/${escolaridad}/1.svg?t=${timestamp}`);
 
-          this.fondo1.nativeElement.style.backgroundImage = `url(${pathFondo1})`;
+			this.fondo1.nativeElement.style.backgroundImage = `url(${pathFondo1})`;
+
+			console.log(`${this.file.dataDirectory}covers/fondo/${escolaridad}/1.svg?t=${timestamp}`);
+			
+			let swiper = await this.slideUp.getSwiper();
+
+			//Actualiza las diaposrtivas duplicadas
+			setTimeout(()=>{
+			  	swiper.loopDestroy();
+			  	swiper.loopCreate();
+			  	console.log('reborn!')
+			},2000);
+		  });
         }
       }
     }

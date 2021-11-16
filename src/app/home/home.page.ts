@@ -85,7 +85,6 @@ export class HomePage {
   public Editor = ClassicEditor;
   lstthemeswitcher: any[] = [];//EDUARDO ENTREGA 03072021
 
-
   settings: MbscCalendarOptions = {
     theme: 'mobiscroll',
     display: 'inline',
@@ -195,12 +194,20 @@ export class HomePage {
           const date = new Date();
           const timestamp = date.getTime();
 
-          let pathFondo1 = this.webview.convertFileSrc(`${this.file.dataDirectory}covers/fondo/${escolaridad}/1.svg?t=${timestamp}`);
-          if( pathFondo1.startsWith("undefined/") ) {
-            pathFondo1 = pathFondo1.replace("undefined/", "http://localhost/");  
-          }
+		  this.platform.ready().then(async ()=>{ 
+			let pathFondo1 = this.webview.convertFileSrc(`${this.file.dataDirectory}covers/fondo/${escolaridad}/1.svg?t=${timestamp}`);
 
-          this.fondo1.nativeElement.style.backgroundImage = `url(${pathFondo1})`;
+			this.fondo1.nativeElement.style.backgroundImage = `url(${pathFondo1})`;
+
+			let swiper = await this.slideUp.getSwiper();
+
+			//Actualiza las diaposrtivas duplicadas
+			setTimeout(()=>{
+			  	swiper.loopDestroy();
+			  	swiper.loopCreate();
+			  	console.log('reborn!')
+			},2000);
+		  });
         }
       }
     }
@@ -660,6 +667,9 @@ this.pillMenu.animacion();
 	 if(this.platform.is('cordova')) {
 		 setTimeout(() => {
        this.platform.ready().then(async ()=>{
+		
+		
+
         //const pathFondo1 = `${this.file.dataDirectory}covers/fondo/${escolaridad}/1.svg`;
         const pathFondo2 = `${this.file.dataDirectory}covers/fondo/${escolaridad}/2.svg`;
         const pathFondo3 = `${this.file.dataDirectory}covers/fondo/${escolaridad}/3.svg`;
@@ -1608,6 +1618,7 @@ this.pillMenu.animacion();
     }
 
     async Salir() {
+
       //Busca si se existe un sesion del director iniciada
       const jwt_temp = localStorage.getItem('USER_INFO_TEMP');
   
