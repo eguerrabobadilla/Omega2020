@@ -4,6 +4,7 @@ import { FormGroup, FormBuilder, Validators  } from '@angular/forms';
 import { RecursosService } from '../api/recursos.service';
 import { ChatService } from '../api/chat.service';
 import { MateriasService } from '../api/materias.service';
+import { element } from 'protractor';
 
 @Component({
   selector: 'app-new-resource',
@@ -141,6 +142,8 @@ export class NewResourcePage implements OnInit {
     });
 
     picker.columns[0].selectedIndex = this.getRealMonth();
+
+
     picker.present();
 
   }
@@ -451,7 +454,7 @@ export class NewResourcePage implements OnInit {
   }
 
   async openPickerMaterias() {
-    const picker = await this.pickerController.create({
+    let picker = await this.pickerController.create({
         mode : 'ios',
         buttons: [
           {
@@ -472,10 +475,26 @@ export class NewResourcePage implements OnInit {
           }
         ]
     });
+  
+picker.columns[0].options.map(element =>{
+ 
+  delete element.selected;
+  delete element.duration;
+  delete element.transform;
+  console.log(element)
+})
+
+
+    setTimeout(() => {
+       picker.present();
+      console.log(picker.columns)
+     
+    }, 1000);
     
-    picker.present();
 
   }
+
+
 
   async openPickerTipo() {
     const picker = await this.pickerController.create({

@@ -10,6 +10,7 @@ import { WebsocketService } from './services/websocket.service';
 import { PushService } from './services/push.service';
 import { File } from '@ionic-native/file/ngx';
 import { AlertController } from '@ionic/angular';
+import { ThemeSwitcherService } from 'src/app/services/theme-switcher.service';
 
 @Component({
   selector: 'app-root',
@@ -28,7 +29,8 @@ export class AppComponent {
     private authenticationService: AuthenticationService,
     public  webSocket: WebsocketService,
     private file: File,
-    public alertController: AlertController
+    public alertController: AlertController,
+    private themeSwitcher : ThemeSwitcherService
   ) {
     this.initializeApp();
   }
@@ -65,6 +67,12 @@ export class AppComponent {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
       this.PushService.configuracionInicial();
+
+    this.themeSwitcher.themeSwitch().then((data) => {
+      this.statusBar.backgroundColorByHexString(this.themeSwitcher.principalColor);
+    }).catch((err) => {
+      
+    });
 
       /**
        * Nota: En android el peso se mide en Kb y en IOS en Bytes
