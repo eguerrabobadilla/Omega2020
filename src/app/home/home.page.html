@@ -168,13 +168,18 @@ top: 0;" mode="ios">
         </ion-fab-button>
     </ion-fab>
 
+    <!--<ion-slides #slideUp type="ios" style="transform: translateY(4vh);height: 100%;" (ionSlideTransitionStart)="ionSlideTransitionStart()" (ionSlideTouchStart)="ionSlideTouchStart()" (ionSlideTouchEnd)="ionSlideTouchEndSlide()" [options]="slideOpts">
+        <ion-slide  *ngFor="let fondo of fondoSVG">
+            <div #fondo1 class="animated zoomIn fast" [ngStyle]="applyStyles(fondo.index)"></div>
+        </ion-slide>
+    </ion-slides>-->
 
     <ion-slides #slideUp type="ios" style="transform: translateY(4vh);height: 100%;" (ionSlideTransitionStart)="ionSlideTransitionStart()" (ionSlideTouchStart)="ionSlideTouchStart()" (ionSlideTouchEnd)="ionSlideTouchEndSlide()" [options]="slideOpts">
         <ion-slide>
-            <div #fondo1 class="animated zoomIn fast" style="margin-bottom: 90pxn; width: 100%;height:100%;background-image: url({{ fondos.fondo1 }});background-repeat: no-repeat;background-size: 100% 100%;"></div>
+            <div #fondo1 class="animated zoomIn fast" style="margin-bottom: 90pxn; width: 100%;height:100%;background-repeat: no-repeat;background-size: 100% 100%;"></div>
         </ion-slide>
         <ion-slide>
-            <div #fondo2 class="animated zoomIn fast" style="margin-bottom: 90px; width: 100%;height:100%;background-image: url(assets/img/2.svg);background-repeat: no-repeat;background-size: 100% 100%;"></div>
+            <div #fondo2 class="animated zoomIn fast" style="margin-bottom: 90px; width: 100%;height:100%;background-repeat: no-repeat;background-size: 100% 100%;"></div>
         </ion-slide>
         <ion-slide>
             <div #fondo3 class="animated zoomIn fast" style="margin-bottom: 90px; width: 100%;height:100%;background-image: url(assets/img/3.svg);background-repeat: no-repeat;background-size: 100% 100%;"></div>
@@ -188,10 +193,6 @@ top: 0;" mode="ios">
         <ion-slide>
             <div #fondo6 class="animated zoomIn fast" style="margin-bottom: 90px; width: 100%;height:100%;background-image: url(assets/img/6.svg);background-repeat: no-repeat;background-size: 100% 100%;"></div>
         </ion-slide>
-        <!--<ion-slide>
-            <div class="animated zoomIn fast" style="margin-bottom: 90px; width: 100%;height:100%;background-image: url(assets/img/6.svg);background-repeat: no-repeat;background-size: 100% 100%;"></div>
-        </ion-slide>-->
-
     </ion-slides>
 
 </div>

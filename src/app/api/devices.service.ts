@@ -13,7 +13,13 @@ export class DevicesService extends apiBase {
   }
 
   update(id: any) {
+    console.log(id);
     return this.http.put(`${this.url}/${this.Ws}/${id}`, undefined);
+  }
+
+  delete(id: any) {
+    console.log(id);
+    return this.http.delete(`${this.url}/${this.Ws}/${id}`);
   }
 
 }

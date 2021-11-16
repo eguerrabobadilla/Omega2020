@@ -1045,12 +1045,16 @@ export class HomeDirectorPage {
             }
           }, {
             text: 'Si',
-            handler: () => {
+            handler: async () => {
              /* this.storage.remove("books2020").then(() => {
                 this.authenticationService.logout().then( data => {
                   this.webSocket.finishWebScoket();
                 });
               });*/
+              if(this.platform.is('cordova')) 
+              {
+                await this.apiDevice.delete(this.pushService.userId).toPromise();
+              } 
               this.authenticationService.logout().then( data => {
                 this.webSocket.finishWebScoket();
               });

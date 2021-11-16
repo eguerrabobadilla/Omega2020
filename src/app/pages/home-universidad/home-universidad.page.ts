@@ -44,6 +44,9 @@ import { Zip } from '@ionic-native/zip/ngx';
 import { File } from '@ionic-native/file/ngx';
 import { FileTransfer, FileTransferObject } from '@ionic-native/file-transfer/ngx';
 import { ThemeSwitcherService } from '../../services/theme-switcher.service';
+import { WebView } from '@ionic-native/ionic-webview/ngx';
+import { apiBase } from 'src/app/api/apiBase';
+
 
 mobiscroll.settings = {
   theme: 'mobiscroll',
@@ -118,6 +121,12 @@ export class HomeUniversidadPage implements OnInit {
   @ViewChild('IonContentScroll', {static: true}) IonContentScroll: IonContent;
   @ViewChild('content', {read: ElementRef, static: true}) contentref: ElementRef;
   @ViewChild('calendar', {static: false}) calendar: ElementRef;
+  @ViewChild('fondo1', {static: false}) fondo1: ElementRef;
+  //@ViewChild('fondo2', {static: false}) fondo2: ElementRef;
+  //@ViewChild('fondo3', {static: false}) fondo3: ElementRef;
+  @ViewChild('fondo4', {static: false}) fondo4: ElementRef;
+  @ViewChild('fondo5', {static: false}) fondo5: ElementRef;
+  //@ViewChild('fondo6', {static: false}) fondo6: ElementRef;
 
   @ViewChild('pillMenu', {static: false}) pillMenu: PillMenuComponent;
   @ViewChild('appReport', {static: false}) appReport: ReportComponent;
@@ -170,7 +179,23 @@ export class HomeUniversidadPage implements OnInit {
     grado  : ''
   };
   slideOpts = {
-    loop: true
+    loop: true,
+    on: { 
+      beforeInit:() => {        
+	      if(this.platform.is('cordova')) {
+          const escolaridad=this.getKeyToken("escolaridad").toLocaleLowerCase();        
+          const date = new Date();
+          const timestamp = date.getTime();
+
+          let pathFondo1 = this.webview.convertFileSrc(`${this.file.dataDirectory}covers/fondo/${escolaridad}/1.svg?t=${timestamp}`);
+          if( pathFondo1.startsWith("undefined/") ) {
+            pathFondo1 = pathFondo1.replace("undefined/", "http://localhost/");  
+          }
+
+          this.fondo1.nativeElement.style.backgroundImage = `url(${pathFondo1})`;
+        }
+      }
+    }
   };
   slideOptsdos = {
     autoHeight: true
@@ -189,7 +214,8 @@ export class HomeUniversidadPage implements OnInit {
               private pickerController: PickerController, private apiMaterias: MateriasService,
               private storage: Storage,private router: Router,private globalServicies: GlobalService,
               private pushService: PushService,private apiDevice: DevicesService,private apiPortadas: PortadasService,
-              private transfer: FileTransfer,private file: File,private zip: Zip,public themeSwitcher: ThemeSwitcherService) {
+              private transfer: FileTransfer,private file: File,private zip: Zip,public themeSwitcher: ThemeSwitcherService,
+              private webview: WebView,private api: apiBase) {
     //  this.scrollenable = true;
 
   }
@@ -605,6 +631,42 @@ this.pillMenu.animacion();
    //  this.statusBar.overlaysWebView(true);
     console.log("Es celular:",this.globalServicies.isMobileDevice())
     this.isMobile =this.globalServicies.isMobileDevice();
+
+    const escolaridad=this.getKeyToken("escolaridad").toLocaleLowerCase();
+	 
+    const date = new Date();
+    const timestamp = date.getTime();
+ 
+    if(this.platform.is('cordova')) {
+      setTimeout(() => {
+        this.platform.ready().then(async ()=>{
+         //const pathFondo1 = `${this.file.dataDirectory}covers/fondo/${escolaridad}/1.svg`;
+         const pathFondo2 = `${this.file.dataDirectory}covers/fondo/${escolaridad}/2.svg`;
+         const pathFondo3 = `${this.file.dataDirectory}covers/fondo/${escolaridad}/3.svg`;
+         const pathFondo4 = `${this.file.dataDirectory}covers/fondo/${escolaridad}/4.svg`;
+         const pathFondo5 = `${this.file.dataDirectory}covers/fondo/${escolaridad}/5.svg`;
+         const pathFondo6 = `${this.file.dataDirectory}covers/fondo/${escolaridad}/6.svg`;
+     
+ 
+         //this.fondo1.nativeElement.style.backgroundImage = `url(${this.webview.convertFileSrc(pathFondo1)}?t=${timestamp})`;
+         //this.fondo2.nativeElement.style.backgroundImage = `url(${this.webview.convertFileSrc(pathFondo2)}?t=${timestamp})`;
+         //this.fondo3.nativeElement.style.backgroundImage = `url(${this.webview.convertFileSrc(pathFondo3)}?t=${timestamp})`;
+         this.fondo4.nativeElement.style.backgroundImage = `url(${this.webview.convertFileSrc(pathFondo4)}?t=${timestamp})`;
+         this.fondo5.nativeElement.style.backgroundImage = `url(${this.webview.convertFileSrc(pathFondo5)}?t=${timestamp})`;
+         //this.fondo6.nativeElement.style.backgroundImage = `url(${this.webview.convertFileSrc(pathFondo6)}?t=${timestamp})`; 
+        });
+      }, 2000);
+ 
+    }
+    else {
+      this.fondo1.nativeElement.style.backgroundImage = `url(${this.api.url}/covers/fondo/${escolaridad}/1.svg?t=${timestamp})`;
+      //this.fondo2.nativeElement.style.backgroundImage = `url(${this.api.url}/covers/fondo/${escolaridad}/2.svg?t=${timestamp})`;
+      //this.fondo3.nativeElement.style.backgroundImage = `url(${this.api.url}/covers/fondo/${escolaridad}/3.svg?t=${timestamp})`;
+      this.fondo4.nativeElement.style.backgroundImage = `url(${this.api.url}/covers/fondo/${escolaridad}/4.svg?t=${timestamp})`;
+      this.fondo5.nativeElement.style.backgroundImage = `url(${this.api.url}/covers/fondo/${escolaridad}/5.svg?t=${timestamp})`;
+      //this.fondo6.nativeElement.style.backgroundImage = `url(${this.api.url}/covers/fondo/${escolaridad}/6.svg?t=${timestamp})`;
+   }
+ 
      // set status bar to white
      this.themeSwitcher.themeSwitch().then((data) => {
       this.statusBar.backgroundColorByHexString(this.themeSwitcher.principalColor);
@@ -1544,12 +1606,16 @@ this.pillMenu.animacion();
             }
           }, {
             text: 'Si',
-            handler: () => {
+            handler: async () => {
               /*this.storage.remove("books2020").then(() => {
                 this.authenticationService.logout().then( data => {
                   this.webSocket.finishWebScoket();
                 });
               });*/
+              if(this.platform.is('cordova')) 
+              {
+                await this.apiDevice.delete(this.pushService.userId).toPromise();
+              } 
               this.authenticationService.logout().then( data => {
                 this.webSocket.finishWebScoket();
               });
