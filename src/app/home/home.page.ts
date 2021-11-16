@@ -190,26 +190,30 @@ export class HomePage {
     preloadImages:false*/
     on: { 
       beforeInit:() => {        
-	      if(this.platform.is('cordova')) {
+	      /*if(this.platform.is('cordova')) {
           const escolaridad=this.getKeyToken("escolaridad").toLocaleLowerCase();        
           const date = new Date();
           const timestamp = date.getTime();
 
-		  this.platform.ready().then(async ()=>{ 
-			let pathFondo1 = this.webview.convertFileSrc(`${this.file.dataDirectory}covers/fondo/${escolaridad}/1.svg?t=${timestamp}`);
+          this.platform.ready().then(async ()=>{ 
+            let pathFondo1 = this.webview.convertFileSrc(`${this.file.dataDirectory}covers/fondo/${escolaridad}/1.svg?t=${timestamp}`);
 
-			this.fondo1.nativeElement.style.backgroundImage = `url(${pathFondo1})`;
+            if( pathFondo1.startsWith("undefined/") ) {
+              pathFondo1 = pathFondo1.replace("undefined/", "http://localhost/");  
+            }
 
-			let swiper = await this.slideUp.getSwiper();
+            this.fondo1.nativeElement.style.backgroundImage = `url(${pathFondo1})`;
 
-			//Actualiza las diaposrtivas duplicadas
-			setTimeout(()=>{
-			  	swiper.loopDestroy();
-			  	swiper.loopCreate();
-			  	console.log('reborn!')
-			},2000);
-		  });
-        }
+            let swiper = await this.slideUp.getSwiper();
+
+            //Actualiza las diaposrtivas duplicadas
+            setTimeout(()=>{
+                swiper.loopDestroy();
+                swiper.loopCreate();
+                console.log('reborn!')
+            },2000);
+          });
+        }*/
       }
     }
   };
@@ -648,6 +652,62 @@ this.pillMenu.animacion();
     return style;
   }
 
+  async changeSVG(){
+    const escolaridad=this.getKeyToken("escolaridad").toLocaleLowerCase();
+	 
+    const date = new Date();
+    const timestamp = date.getTime();
+ 
+    if(this.platform.is('cordova')) {
+      setTimeout(() => {
+        this.platform.ready().then(async ()=>{
+     
+         //const pathFondo1 = `${this.file.dataDirectory}covers/fondo/${escolaridad}/1.svg`;
+         let pathFondo1 = this.webview.convertFileSrc(`${this.file.dataDirectory}covers/fondo/${escolaridad}/1.svg?t=${timestamp}`);
+         let pathFondo2 = this.webview.convertFileSrc(`${this.file.dataDirectory}covers/fondo/${escolaridad}/2.svg?t=${timestamp}`);
+         let pathFondo3 = this.webview.convertFileSrc(`${this.file.dataDirectory}covers/fondo/${escolaridad}/3.svg?t=${timestamp}`);
+         let pathFondo4 = this.webview.convertFileSrc(`${this.file.dataDirectory}covers/fondo/${escolaridad}/4.svg?t=${timestamp}`);
+         let pathFondo5 = this.webview.convertFileSrc(`${this.file.dataDirectory}covers/fondo/${escolaridad}/5.svg?t=${timestamp}`);
+         let pathFondo6 = this.webview.convertFileSrc(`${this.file.dataDirectory}covers/fondo/${escolaridad}/6.svg?t=${timestamp}`);
+
+         if(pathFondo1.startsWith("undefined/") ) {
+          pathFondo1 = pathFondo1.replace("undefined/", "http://localhost/");  
+          pathFondo2 = pathFondo2.replace("undefined/", "http://localhost/");  
+          pathFondo3 = pathFondo3.replace("undefined/", "http://localhost/");  
+          pathFondo4 = pathFondo4.replace("undefined/", "http://localhost/");  
+          pathFondo5 = pathFondo5.replace("undefined/", "http://localhost/");  
+          pathFondo6 = pathFondo6.replace("undefined/", "http://localhost/");  
+        }
+     
+         this.fondo1.nativeElement.style.backgroundImage = `url(${pathFondo1})`;            
+         this.fondo2.nativeElement.style.backgroundImage = `url(${pathFondo2})`;            
+         this.fondo3.nativeElement.style.backgroundImage = `url(${pathFondo3})`;            
+         this.fondo4.nativeElement.style.backgroundImage = `url(${pathFondo4})`;            
+         this.fondo5.nativeElement.style.backgroundImage = `url(${pathFondo5})`;            
+         this.fondo6.nativeElement.style.backgroundImage = `url(${pathFondo6})`; 
+         
+         let swiper = await this.slideUp.getSwiper();
+
+         //Actualiza las diaposrtivas duplicadas
+         setTimeout(()=>{
+             swiper.loopDestroy();
+             swiper.loopCreate();
+             console.log('reborn!')
+         },2000);
+        });
+      }, 100);
+ 
+    }
+    else {
+      this.fondo1.nativeElement.style.backgroundImage = `url(${this.api.url}/covers/fondo/${escolaridad}/1.svg?t=${timestamp})`;
+      this.fondo2.nativeElement.style.backgroundImage = `url(${this.api.url}/covers/fondo/${escolaridad}/2.svg?t=${timestamp})`;
+      this.fondo3.nativeElement.style.backgroundImage = `url(${this.api.url}/covers/fondo/${escolaridad}/3.svg?t=${timestamp})`;
+      this.fondo4.nativeElement.style.backgroundImage = `url(${this.api.url}/covers/fondo/${escolaridad}/4.svg?t=${timestamp})`;
+      this.fondo5.nativeElement.style.backgroundImage = `url(${this.api.url}/covers/fondo/${escolaridad}/5.svg?t=${timestamp})`;
+      this.fondo6.nativeElement.style.backgroundImage = `url(${this.api.url}/covers/fondo/${escolaridad}/6.svg?t=${timestamp})`;
+   }
+  }
+
   // tslint:disable-next-line: use-lifecycle-interface
   ngAfterViewInit() {
 
@@ -660,44 +720,8 @@ this.pillMenu.animacion();
      // set status bar to white
      //console.log(this.fondo1.nativeElement);
      
-	 const escolaridad=this.getKeyToken("escolaridad").toLocaleLowerCase();
-	 
-	 const date = new Date();
-	 const timestamp = date.getTime();
-
-	 if(this.platform.is('cordova')) {
-		 setTimeout(() => {
-       this.platform.ready().then(async ()=>{
-		
-		
-
-        //const pathFondo1 = `${this.file.dataDirectory}covers/fondo/${escolaridad}/1.svg`;
-        const pathFondo2 = `${this.file.dataDirectory}covers/fondo/${escolaridad}/2.svg`;
-        const pathFondo3 = `${this.file.dataDirectory}covers/fondo/${escolaridad}/3.svg`;
-        const pathFondo4 = `${this.file.dataDirectory}covers/fondo/${escolaridad}/4.svg`;
-        const pathFondo5 = `${this.file.dataDirectory}covers/fondo/${escolaridad}/5.svg`;
-        const pathFondo6 = `${this.file.dataDirectory}covers/fondo/${escolaridad}/6.svg`;
-    
-
-        //this.fondo1.nativeElement.style.backgroundImage = `url(${this.webview.convertFileSrc(pathFondo1)}?t=${timestamp})`;
-        this.fondo2.nativeElement.style.backgroundImage = `url(${this.webview.convertFileSrc(pathFondo2)}?t=${timestamp})`;
-        this.fondo3.nativeElement.style.backgroundImage = `url(${this.webview.convertFileSrc(pathFondo3)}?t=${timestamp})`;
-        this.fondo4.nativeElement.style.backgroundImage = `url(${this.webview.convertFileSrc(pathFondo4)}?t=${timestamp})`;
-        this.fondo5.nativeElement.style.backgroundImage = `url(${this.webview.convertFileSrc(pathFondo5)}?t=${timestamp})`;
-        this.fondo6.nativeElement.style.backgroundImage = `url(${this.webview.convertFileSrc(pathFondo6)}?t=${timestamp})`; 
-       });
-		 }, 2000);
-
-	 }
-	 else {
-	 	this.fondo1.nativeElement.style.backgroundImage = `url(${this.api.url}/covers/fondo/${escolaridad}/1.svg?t=${timestamp})`;
-	 	this.fondo2.nativeElement.style.backgroundImage = `url(${this.api.url}/covers/fondo/${escolaridad}/2.svg?t=${timestamp})`;
-	 	this.fondo3.nativeElement.style.backgroundImage = `url(${this.api.url}/covers/fondo/${escolaridad}/3.svg?t=${timestamp})`;
-	 	this.fondo4.nativeElement.style.backgroundImage = `url(${this.api.url}/covers/fondo/${escolaridad}/4.svg?t=${timestamp})`;
-	 	this.fondo5.nativeElement.style.backgroundImage = `url(${this.api.url}/covers/fondo/${escolaridad}/5.svg?t=${timestamp})`;
-	 	this.fondo6.nativeElement.style.backgroundImage = `url(${this.api.url}/covers/fondo/${escolaridad}/6.svg?t=${timestamp})`;
-	}
-
+     this.changeSVG();
+     
      this.themeSwitcher.themeSwitch().then((data) => {
       this.temaCss='.ion-color-principal';
       this.statusBar.backgroundColorByHexString(this.themeSwitcher.principalColor);
@@ -1164,6 +1188,8 @@ this.pillMenu.animacion();
       })
       .then( data =>{
 
+        this.changeSVG();
+        
         this.storage.set("versionPortadas",versionServer).then( () => {
           this.loadingController.dismiss();
           setTimeout(() => {
@@ -1609,6 +1635,18 @@ this.pillMenu.animacion();
     }
 
     async Salir() {
+      await this.slideUp.update();
+
+      let swiper = await this.slideUp.getSwiper();
+      
+      //Actualiza las diaposrtivas duplicadas
+      setTimeout(()=>{
+          swiper.loopDestroy();
+          swiper.loopCreate();
+          console.log('reborn!')
+      },2000);
+      
+      return;
 
       //Busca si se existe un sesion del director iniciada
       const jwt_temp = localStorage.getItem('USER_INFO_TEMP');

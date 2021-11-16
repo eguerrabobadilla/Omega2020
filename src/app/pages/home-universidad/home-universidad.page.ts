@@ -182,33 +182,7 @@ export class HomeUniversidadPage implements OnInit {
     loop: true,
     on: { 
       beforeInit:() => {        
-	      if(this.platform.is('cordova')) {
-          const escolaridad=this.getKeyToken("escolaridad").toLocaleLowerCase();        
-          const date = new Date();
-          const timestamp = date.getTime();
-
-          /*let pathFondo1 = this.webview.convertFileSrc(`${this.file.dataDirectory}covers/fondo/${escolaridad}/1.svg?t=${timestamp}`);
-          if( pathFondo1.startsWith("undefined/") ) {
-            pathFondo1 = pathFondo1.replace("undefined/", "http://localhost/");  
-          }
-          this.fondo1.nativeElement.style.backgroundImage = `url(${pathFondo1})`;*/
-		  this.platform.ready().then(async ()=>{ 
-			let pathFondo1 = this.webview.convertFileSrc(`${this.file.dataDirectory}covers/fondo/${escolaridad}/1.svg?t=${timestamp}`);
-
-			this.fondo1.nativeElement.style.backgroundImage = `url(${pathFondo1})`;
-
-			console.log(`${this.file.dataDirectory}covers/fondo/${escolaridad}/1.svg?t=${timestamp}`);
-			
-			let swiper = await this.slideUp.getSwiper();
-
-			//Actualiza las diaposrtivas duplicadas
-			setTimeout(()=>{
-			  	swiper.loopDestroy();
-			  	swiper.loopCreate();
-			  	console.log('reborn!')
-			},2000);
-		  });
-        }
+	     
       }
     }
   };
@@ -636,6 +610,49 @@ this.pillMenu.animacion();
     this.IonContentScroll.scrollToPoint(0, 0, 0);
   }
 
+  async changeSVG(){
+    const escolaridad=this.getKeyToken("escolaridad").toLocaleLowerCase();
+	 
+    const date = new Date();
+    const timestamp = date.getTime();
+ 
+    if(this.platform.is('cordova')) {
+      setTimeout(() => {
+        this.platform.ready().then(async ()=>{
+     
+         //const pathFondo1 = `${this.file.dataDirectory}covers/fondo/${escolaridad}/1.svg`;
+         let pathFondo1 = this.webview.convertFileSrc(`${this.file.dataDirectory}covers/fondo/${escolaridad}/1.svg?t=${timestamp}`);
+         let pathFondo4 = this.webview.convertFileSrc(`${this.file.dataDirectory}covers/fondo/${escolaridad}/4.svg?t=${timestamp}`);
+         let pathFondo5 = this.webview.convertFileSrc(`${this.file.dataDirectory}covers/fondo/${escolaridad}/5.svg?t=${timestamp}`);
+
+         if(pathFondo1.startsWith("undefined/") ) {
+          pathFondo1 = pathFondo1.replace("undefined/", "http://localhost/");  
+          pathFondo4 = pathFondo4.replace("undefined/", "http://localhost/");  
+          pathFondo5 = pathFondo5.replace("undefined/", "http://localhost/");  
+        }
+     
+         this.fondo1.nativeElement.style.backgroundImage = `url(${pathFondo1})`;            
+         this.fondo4.nativeElement.style.backgroundImage = `url(${pathFondo4})`;            
+         this.fondo5.nativeElement.style.backgroundImage = `url(${pathFondo5})`;            
+         
+         let swiper = await this.slideUp.getSwiper();
+
+         //Actualiza las diaposrtivas duplicadas
+         setTimeout(()=>{
+             swiper.loopDestroy();
+             swiper.loopCreate();
+             console.log('reborn!')
+         },2000);
+        });
+      }, 100);
+ 
+    }
+    else {
+      this.fondo1.nativeElement.style.backgroundImage = `url(${this.api.url}/covers/fondo/${escolaridad}/1.svg?t=${timestamp})`;
+      this.fondo4.nativeElement.style.backgroundImage = `url(${this.api.url}/covers/fondo/${escolaridad}/4.svg?t=${timestamp})`;
+      this.fondo5.nativeElement.style.backgroundImage = `url(${this.api.url}/covers/fondo/${escolaridad}/5.svg?t=${timestamp})`;
+   }
+  }
 
   // tslint:disable-next-line: use-lifecycle-interface
   ngAfterViewInit() {
@@ -647,40 +664,7 @@ this.pillMenu.animacion();
     console.log("Es celular:",this.globalServicies.isMobileDevice())
     this.isMobile =this.globalServicies.isMobileDevice();
 
-    const escolaridad=this.getKeyToken("escolaridad").toLocaleLowerCase();
-	 
-    const date = new Date();
-    const timestamp = date.getTime();
- 
-    if(this.platform.is('cordova')) {
-      setTimeout(() => {
-        this.platform.ready().then(async ()=>{
-         //const pathFondo1 = `${this.file.dataDirectory}covers/fondo/${escolaridad}/1.svg`;
-         const pathFondo2 = `${this.file.dataDirectory}covers/fondo/${escolaridad}/2.svg`;
-         const pathFondo3 = `${this.file.dataDirectory}covers/fondo/${escolaridad}/3.svg`;
-         const pathFondo4 = `${this.file.dataDirectory}covers/fondo/${escolaridad}/4.svg`;
-         const pathFondo5 = `${this.file.dataDirectory}covers/fondo/${escolaridad}/5.svg`;
-         const pathFondo6 = `${this.file.dataDirectory}covers/fondo/${escolaridad}/6.svg`;
-     
- 
-         //this.fondo1.nativeElement.style.backgroundImage = `url(${this.webview.convertFileSrc(pathFondo1)}?t=${timestamp})`;
-         //this.fondo2.nativeElement.style.backgroundImage = `url(${this.webview.convertFileSrc(pathFondo2)}?t=${timestamp})`;
-         //this.fondo3.nativeElement.style.backgroundImage = `url(${this.webview.convertFileSrc(pathFondo3)}?t=${timestamp})`;
-         this.fondo4.nativeElement.style.backgroundImage = `url(${this.webview.convertFileSrc(pathFondo4)}?t=${timestamp})`;
-         this.fondo5.nativeElement.style.backgroundImage = `url(${this.webview.convertFileSrc(pathFondo5)}?t=${timestamp})`;
-         //this.fondo6.nativeElement.style.backgroundImage = `url(${this.webview.convertFileSrc(pathFondo6)}?t=${timestamp})`; 
-        });
-      }, 2000);
- 
-    }
-    else {
-      this.fondo1.nativeElement.style.backgroundImage = `url(${this.api.url}/covers/fondo/${escolaridad}/1.svg?t=${timestamp})`;
-      //this.fondo2.nativeElement.style.backgroundImage = `url(${this.api.url}/covers/fondo/${escolaridad}/2.svg?t=${timestamp})`;
-      //this.fondo3.nativeElement.style.backgroundImage = `url(${this.api.url}/covers/fondo/${escolaridad}/3.svg?t=${timestamp})`;
-      this.fondo4.nativeElement.style.backgroundImage = `url(${this.api.url}/covers/fondo/${escolaridad}/4.svg?t=${timestamp})`;
-      this.fondo5.nativeElement.style.backgroundImage = `url(${this.api.url}/covers/fondo/${escolaridad}/5.svg?t=${timestamp})`;
-      //this.fondo6.nativeElement.style.backgroundImage = `url(${this.api.url}/covers/fondo/${escolaridad}/6.svg?t=${timestamp})`;
-   }
+    this.changeSVG();
  
      // set status bar to white
      this.themeSwitcher.themeSwitch().then((data) => {
@@ -1139,6 +1123,8 @@ this.pillMenu.animacion();
       .then( data =>{
         console.log(data);
         console.log("Terminado");
+
+        this.changeSVG();
   
         this.storage.set("versionPortadas",versionServer).then( () => {
           console.log("guardo portadas");
