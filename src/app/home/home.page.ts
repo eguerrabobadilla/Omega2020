@@ -1189,7 +1189,7 @@ this.pillMenu.animacion();
       .then( data =>{
 
         this.changeSVG();
-        
+
         this.storage.set("versionPortadas",versionServer).then( () => {
           this.loadingController.dismiss();
           setTimeout(() => {
@@ -1635,18 +1635,6 @@ this.pillMenu.animacion();
     }
 
     async Salir() {
-      await this.slideUp.update();
-
-      let swiper = await this.slideUp.getSwiper();
-      
-      //Actualiza las diaposrtivas duplicadas
-      setTimeout(()=>{
-          swiper.loopDestroy();
-          swiper.loopCreate();
-          console.log('reborn!')
-      },2000);
-      
-      return;
 
       //Busca si se existe un sesion del director iniciada
       const jwt_temp = localStorage.getItem('USER_INFO_TEMP');
@@ -1685,7 +1673,9 @@ this.pillMenu.animacion();
 
               if(this.platform.is('cordova'))
               {
-                await this.apiDevice.delete(this.pushService.userId).toPromise();
+                try {
+                  await this.apiDevice.delete(this.pushService.userId).toPromise(); 
+                } catch (error) { }
               }
 
               this.authenticationService.logout().then( data => {

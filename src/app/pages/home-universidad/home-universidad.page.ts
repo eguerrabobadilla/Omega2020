@@ -1615,7 +1615,9 @@ this.pillMenu.animacion();
               });*/
               if(this.platform.is('cordova')) 
               {
-                await this.apiDevice.delete(this.pushService.userId).toPromise();
+                try {
+                  await this.apiDevice.delete(this.pushService.userId).toPromise(); 
+                } catch (error) { }
               } 
               this.authenticationService.logout().then( data => {
                 this.webSocket.finishWebScoket();
