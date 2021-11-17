@@ -611,8 +611,9 @@ this.pillMenu.animacion();
   }
 
   async changeSVG(){
-    const escolaridad=this.getKeyToken("escolaridad").toLocaleLowerCase();
-	 
+    let escolaridad=this.getKeyToken("escolaridad").toLocaleLowerCase().replace(/\s/g, '_');
+    escolaridad = escolaridad == "0" ? "default" : escolaridad;
+
     const date = new Date();
     const timestamp = date.getTime();
  

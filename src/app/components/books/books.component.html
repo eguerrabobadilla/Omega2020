@@ -182,8 +182,11 @@
                                     <span *ngIf="item.Escolaridad=='High School'" style="position: relative;top: 5px;">Semester</span>
                                     <span *ngIf="item.Escolaridad=='Universidad'" style="position: relative;top: 5px;">{{item.Grados}}</span>
                                 </div>
-                                <div *ngIf="item.Escolaridad=='Universidad'" class="grid-item item4" style="position:relative;">SAC</div>
-                                <div *ngIf="item.Escolaridad!='Universidad'" class="grid-item item4" style="position:relative;">{{item.Escolaridad}}</div>
+                                <div *ngIf="item.Escolaridad=='Universidad'" class="grid-item item4" style="position:relative;">Licenciatura SAC</div>
+                                <div *ngIf="item.Escolaridad=='Licenciatura SAC'" class="grid-item item4" style="position:relative;">Licenciatura SAC</div>
+                                <div *ngIf="item.Escolaridad=='Licenciatura'" class="grid-item item4" style="position:relative;">Licenciatura Presencial</div>
+                                <div *ngIf="item.Escolaridad=='Licenciatura Presencial'" class="grid-item item4" style="position:relative;">Licenciatura Presencial</div>
+                                <!--<div *ngIf="item.Escolaridad!='Universidad'" class="grid-item item4" style="position:relative;">{{item.Escolaridad}}</div>-->
                                 
                             </div>
                         </div>
