@@ -165,13 +165,13 @@
                                     </div>
                                     {{item.Nombre}}
                                 </div>
-                                <div (click)="eliminarLibro(item)" class="grid-item item2" style="width: 30px;height: 30px;background-color: #6228cf; border-radius: 50%;text-align: left;z-index: 999;">
+                                <div *ngIf="item.Escolaridad!='Licenciatura'" (click)="eliminarLibro(item)" class="grid-item item2" style="width: 30px;height: 30px;background-color: #6228cf; border-radius: 50%;text-align: left;z-index: 999;">
                                 </div>
-                                <!--<div class="grid-item item2" style="width: 30px;height: 30px;background-color: #6228cf; border-radius: 50%;text-align: left;">
+                                <div *ngIf="item.Escolaridad=='Licenciatura'" class="grid-item item2" style="width: 30px;height: 30px;background-color: #6228cf; border-radius: 50%;text-align: left;">
                                     <ion-avatar>
                                         <img style="width: 30px;height: 30px;" [src]="sanitizer.bypassSecurityTrustResourceUrl(item.Icono)" >
                                     </ion-avatar>
-                                </div>-->
+                                </div>
                                 <div class="grid-item item3" style="position:relative;top:1px">
                                     <span *ngIf="item.Escolaridad!='Universidad'" style="position: relative;top: 5px;">{{item.Grados}}</span>
                                     <span *ngIf="item.Escolaridad=='Universidad'" style="position: relative;top: 5px;">Bloque </span>
