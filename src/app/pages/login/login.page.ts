@@ -54,7 +54,7 @@ export class LoginPage implements OnInit {
       if(this.getKeyToken("tipo")=="Director")
         this.router.navigate(['home-director']);
       else{
-        if(this.getKeyToken("escolaridad")=="SAC" || this.getKeyToken("escolaridad")=="Universidad" ){
+        if(this.getKeyToken("escolaridad")=="SAC" || this.getKeyToken("escolaridad")=="Universidad" || this.getKeyToken("escolaridad")=="Licenciatura Presencial" || this.getKeyToken("escolaridad")=="Licenciatura SAC"){
           this.router.navigate(['home-universidad']);
     //      this.themeSwitcher.setTheme('universidad');
         }
@@ -62,7 +62,7 @@ export class LoginPage implements OnInit {
         else{
      //   this.themeSwitcher.setTheme('kinder');
         this.router.navigate(['home']);
-      }
+        }
       }
 
       await this.loadingController.dismiss();

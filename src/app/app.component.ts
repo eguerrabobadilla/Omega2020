@@ -125,8 +125,7 @@ export class AppComponent {
         if(this.getKeyToken("tipo")=="Director")
             this.router.navigate(['home-director']);
         else{
-          if(this.getKeyToken("escolaridad")=="SAC" || this.getKeyToken("escolaridad")=="Universidad" )
-          this.router.navigate(['home-universidad']);
+          if(this.getKeyToken("escolaridad")=="SAC" || this.getKeyToken("escolaridad")=="Universidad" || this.getKeyToken("escolaridad")=="Licenciatura Presencial" || this.getKeyToken("escolaridad")=="Licenciatura SAC")          this.router.navigate(['home-universidad']);
           else
           this.router.navigate(['home']);
         }
