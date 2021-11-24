@@ -25,11 +25,13 @@ export class LoginPage implements OnInit {
     }
 
   ngOnInit() {
+    
     this.statusBar.backgroundColorByHexString('#6228cf');
 
   }
 
   ngAfterViewInit() {
+    
     this.statusBar.backgroundColorByHexString('#6228cf');
   }
   async loginUser(){

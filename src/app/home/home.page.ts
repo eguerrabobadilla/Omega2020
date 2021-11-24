@@ -48,6 +48,8 @@ import { runInThisContext } from 'vm';
 import { apiBase } from '../api/apiBase';
 import { WebView } from '@ionic-native/ionic-webview/ngx';
 
+
+
 mobiscroll.settings = {
   theme: 'mobiscroll',
   themeVariant: 'light',
@@ -725,7 +727,6 @@ this.pillMenu.animacion();
      this.changeSVG();
      
      this.themeSwitcher.themeSwitch().then((data) => {
-      this.temaCss='.ion-color-principal';
       this.statusBar.backgroundColorByHexString(this.themeSwitcher.principalColor);
     }).catch((err) => {
       
@@ -762,7 +763,7 @@ this.pillMenu.animacion();
         
          this.themeSwitcher.themeSwitch().then((data) => {
           this.statusBar.backgroundColorByHexString(this.themeSwitcher.principalColor);
-          console.log(this.themeSwitcher.principalColor)
+          console.log(data)
         }).catch((err) => {
           
         });
@@ -771,7 +772,6 @@ this.pillMenu.animacion();
        else{
         this.statusBar.hide();
         this.themeSwitcher.themeSwitch();
-        this.temaCss='.ion-color-principal';
         }
 
       }, 500);
@@ -947,11 +947,7 @@ this.pillMenu.animacion();
      // this.statusBar.backgroundColorByHexString('#6228cf');
     
      this.themeSwitcher.themeSwitch().then((data) => {
-       
-       this.temaCss='.ion-color-principal';
-       console.log("temassssssssss",this.temaCss)
-       console.log(this.temaCss)
-      this.statusBar.backgroundColorByHexString(this.themeSwitcher.principalColor);
+     this.statusBar.backgroundColorByHexString(this.themeSwitcher.principalColor);
     }).catch((err) => {
       
     });

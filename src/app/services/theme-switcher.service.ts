@@ -106,11 +106,11 @@ export class ThemeSwitcherService {
      }
       
  }
-  setTheme(name,data): void {
+ async setTheme(name,data): Promise<void> {
 
     this.themes=data;
     let theme = this.themes.find(theme => theme.name === name);
-     this.principalColor=theme.styles[0].value;
+     this.principalColor= await theme.styles[0].value;
         this.domCtrl.write(() => {
     
           theme.styles.forEach(style => {
@@ -130,7 +130,10 @@ export class ThemeSwitcherService {
 
 
   loadDataLocal(){
+    console.log("temas")
+    console.log(this.storage.get("themes"))
     return  this.storage.get("themes");
+    
   }
 
   getKeyToken(key: string): string {
