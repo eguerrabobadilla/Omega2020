@@ -247,7 +247,7 @@ export class ThemeSwitcherService {
 
   loadData(){
     
-    return  this.http.get<any[]>('https://www.alfalbs.app/ApiOmega/api/themes/')
+    return  this.http.get<any[]>('https://www.alfalbs.app/ApiOmega/api/themes/1')
 
   }
 
@@ -270,53 +270,56 @@ export class ThemeSwitcherService {
     
      this.tipoUsuario= await this.getKeyToken("tipo");
      this.escolaridad = await this.getKeyToken("escolaridad");
+
+     if(this.tipoUsuario !=="Alumno"){
+      this.setTheme(this.tipoUsuario,data)
+     }
+        
+     else{
+      this.setTheme(this.escolaridad,data);
+     }
      console.log("data.length")
      console.log(data)
-     if(data ==null  || data.length<=0 ){//si por alguna cuestion no se descargan los themas de la nube, entran lo default
-        
-          console.log("THEMES DESCARGAS ERROR, ENTRAN DEFAULT")
-          if( this.escolaridad=="SAC" || this.escolaridad=="Universidad" || 
-              this.escolaridad=="Licenciatura Presencial" || this.escolaridad=="Licenciatura SAC") //si va al home universidad
-              this.setTheme("homeUniversidadThemeDefault",this.themes)
-              else // si va al home 
-              this.setTheme("homeThemeDefault",this.themes)
-
-     }
-     else{//continua logica normal, si hay themas descargados de la nube
-          console.log("THEMES FROM NUBE")
-             if(this.tipoUsuario !=="Alumno"){
-              this.setTheme(this.tipoUsuario,data)
-             }
-                
-             else{
-              this.setTheme(this.escolaridad,data);
-             }
-    }
-
+   
       
  }
  async setTheme(name,data): Promise<void> {
 
-    this.themes=data;
-    let theme = this.themes.find(theme => theme.name === name);
+   
+    let theme; 
     console.log("themAtomar:")
-    console.log(theme)
-     this.principalColor= await theme.styles[0].value;
-     this.statusBar.backgroundColorByHexString(this.principalColor);
-     console.log(this.principalColor)
-        this.domCtrl.write(() => {
-    
-          theme.styles.forEach(style => {
-
-            document.documentElement.style.setProperty(style.themeVariable, style.value);
-          });
-  });
-
-  /*  this.loadData().subscribe(data =>{
 
 
+    if(data ===null){//si por alguna cuestion no se descargan los themas de la nube, entran lo default
+        
+                console.log("THEMES DESCARGAS ERROR, ENTRAN DEFAULT")
+                console.log(theme=this.themes[1])
+                if( this.escolaridad=="SAC" || this.escolaridad=="Universidad" || 
+                    this.escolaridad=="Licenciatura Presencial" || this.escolaridad=="Licenciatura SAC") //si va al home universidad
+                    //this.setTheme("homeUniversidadThemeDefault",this.themes)
+                    theme=this.themes[1]
+                    else // si va al home 
+                    theme=this.themes[0]
+          //          this.setTheme("homeThemeDefault",this.themes)
 
-    });*/
+     }
+     else{//continua logica normal, si hay themas descargados de la nube
+              console.log("THEMES FROM NUBE")
+              this.themes=data;
+             theme= await this.themes.find(theme => theme.name === name);
+      }
+      this.principalColor= await theme.styles[0].value;
+      this.statusBar.backgroundColorByHexString(this.principalColor);
+      console.log(this.principalColor)
+         this.domCtrl.write(() => {
+     
+           theme.styles.forEach(style => {
+ 
+             document.documentElement.style.setProperty(style.themeVariable, style.value);
+           });
+   });
+
+   
 
   }
 
