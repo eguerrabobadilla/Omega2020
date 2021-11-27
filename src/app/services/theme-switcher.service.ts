@@ -27,6 +27,7 @@ export class ThemeSwitcherService {
   public tipoUsuario: string="";
   public cssStyle:string ="";
 
+
   constructor(private domCtrl: DomController, @Inject(DOCUMENT) private document,
               private http: HttpClient,private storage: Storage,private statusBar: StatusBar) {
     
@@ -214,9 +215,6 @@ export class ThemeSwitcherService {
 
     
     
-   
-
-    
     
   
   }
@@ -247,7 +245,7 @@ export class ThemeSwitcherService {
 
   loadData(){
     
-    return  this.http.get<any[]>('https://www.alfalbs.app/ApiOmega/api/themes/1')
+    return  this.http.get<any[]>('https://www.alfalbs.app/ApiOmega/api/themes/')
 
   }
 
@@ -286,11 +284,16 @@ export class ThemeSwitcherService {
  async setTheme(name,data): Promise<void> {
 
    
-    let theme; 
-    console.log("themAtomar:")
+   
+    console.log("themAtomar:------------")
+    console.log(data)
+    console.log(name)
+    this.themes=data;
+     let theme= data =! null ? this.themes.find(theme => theme.name === name) : null;
+     
 
 
-    if(data ===null){//si por alguna cuestion no se descargan los themas de la nube, entran lo default
+    if(theme ===undefined ){//si por alguna cuestion no se descargan los themas de la nube, entran lo default
         
                 console.log("THEMES DESCARGAS ERROR, ENTRAN DEFAULT")
                 console.log(theme=this.themes[1])
@@ -306,7 +309,7 @@ export class ThemeSwitcherService {
      else{//continua logica normal, si hay themas descargados de la nube
               console.log("THEMES FROM NUBE")
               this.themes=data;
-             theme= await this.themes.find(theme => theme.name === name);
+             
       }
       this.principalColor= await theme.styles[0].value;
       this.statusBar.backgroundColorByHexString(this.principalColor);
