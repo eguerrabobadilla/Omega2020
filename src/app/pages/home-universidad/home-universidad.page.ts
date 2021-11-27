@@ -669,6 +669,8 @@ this.pillMenu.animacion();
  
      // set status bar to white
      this.themeSwitcher.themeSwitch().then((data) => {
+      console.log("home principal");
+      console.log(this.themeSwitcher.principalColor);
       this.statusBar.backgroundColorByHexString(this.themeSwitcher.principalColor);
     }).catch((err) => {
       
@@ -697,6 +699,8 @@ this.pillMenu.animacion();
         if(!this.platform.is("ipad") || !this.platform.is("iphone") || !this.platform.is("ios")){
           this.statusBar.show();
           this.themeSwitcher.themeSwitch().then((data) => {
+            console.log("home principal");
+            console.log(this.themeSwitcher.principalColor);
             this.statusBar.backgroundColorByHexString(this.themeSwitcher.principalColor);
           }).catch((err) => {
             
@@ -876,9 +880,10 @@ this.pillMenu.animacion();
 
 
     async ngOnInit() {
-      console.log("home principal");
       this.subscribeToEvents();
       this.themeSwitcher.themeSwitch().then((data) => {
+      console.log("home principal");
+      console.log(this.themeSwitcher.principalColor);
         this.statusBar.backgroundColorByHexString(this.themeSwitcher.principalColor);
       }).catch((err) => {
         
@@ -1818,7 +1823,7 @@ this.pillMenu.animacion();
       .fromTo('transform', 'translateY(0px)', 'translateY(-70px)')
       .fromTo('opacity', '1', '0.2');
 
-   //   animationFlechaArriba.play();
+      animationFlechaArriba.play();
 
 
     }
