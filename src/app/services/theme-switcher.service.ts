@@ -271,8 +271,8 @@ export class ThemeSwitcherService {
      this.tipoUsuario= await this.getKeyToken("tipo");
      this.escolaridad = await this.getKeyToken("escolaridad");
      console.log("data.length")
-     console.log(data.length)
-     if(data.length<=2){//si por alguna cuestion no se descargan los themas de la nube, entran lo default
+     console.log(data)
+     if(data ==null  || data.length<=0 ){//si por alguna cuestion no se descargan los themas de la nube, entran lo default
         
           console.log("THEMES DESCARGAS ERROR, ENTRAN DEFAULT")
           if( this.escolaridad=="SAC" || this.escolaridad=="Universidad" || 
@@ -323,7 +323,9 @@ export class ThemeSwitcherService {
 
 
   async loadDataLocal(){
-    await this.storage.set("themes",this.themes);
+    
+
+  //  await  this.storage.set("themesDefault",this.themes);
     return  this.storage.get("themes");
     
   }
