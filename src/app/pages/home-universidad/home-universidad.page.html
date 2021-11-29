@@ -7,11 +7,11 @@ border-radius: 0px 0px 0px 50px;" mode="ios">
             font-size: 27px;font-size: 4vh;"></ion-icon>
             <!--  <span style="opacity:0;    margin-right: -10px;">-</span>-->
             <div *ngIf="hayConexion">Hola, {{user.nombre}}!</div>
-            <div style="color: var(--ion-color-principal-titulosHeader);" *ngIf="!hayConexion">Sin conexión</div>
-            <div *ngIf="hayConexion" style="display: flex;padding-top: 7px;"><span style="font-size: 1.5vh;font-weight: 600;color: var(--ion-color-principal-titulosHeader)">LBS+</span></div>
-            <div *ngIf="!hayConexion" style="display: flex;padding-top: 7px;"><span style="font-size: 1.5vh;font-weight: 600;color: var(--ion-color-principal-titulosHeader)">Tu dispositivo no cuenta con una</span></div>
-            <div style="color: var(--ion-color-principal-titulosHeader);" *ngIf="hayConexion"><span style="display: flex;font-size: 1.5vh;font-weight: 600;color: var(--ion-color-principal-titulosHeader)">Versión 68</span></div>
-            <div *ngIf="!hayConexion"><span style="display: flex;font-size: 1.5vh;font-weight: 600;color: var(--ion-color-principal-titulosHeader)">conexión a internet</span></div>
+            <div style="color: var(--ion-color-principal-tituloUsuario);" *ngIf="!hayConexion">Sin conexión</div>
+            <div *ngIf="hayConexion" style="display: flex;padding-top: 7px;"><span style="font-size: 1.5vh;font-weight: 600;color: var(--ion-color-principal-tituloVersion)">LBS+</span></div>
+            <div *ngIf="!hayConexion" style="display: flex;padding-top: 7px;"><span style="font-size: 1.5vh;font-weight: 600;color: var(--ion-color-principal-tituloVersion)">Tu dispositivo no cuenta con una</span></div>
+            <div style="color: var(--ion-color-principal-titulosHeader);" *ngIf="hayConexion"><span style="display: flex;font-size: 1.5vh;font-weight: 600;color: var(--ion-color-principal-tituloVersion)">Versión 70</span></div>
+            <div *ngIf="!hayConexion"><span style="display: flex;font-size: 1.5vh;font-weight: 600;color: var(--ion-color-principal-tituloVersion)">conexión a internet</span></div>
         </ion-title>
 
     </ion-toolbar>
@@ -34,11 +34,11 @@ right: 0px;" mode="ios">
     font-size: 4vh;
     color: white;">
         <ion-fab style="right: 21px;">
-            <ion-fab-button (click)="Salir()" size="small" style="width: 35px;height: 35px;--background: var(--ion-color-principal-cerrarCesion-background);
+            <ion-fab-button (click)="Salir()" size="small" style="width: 35px;height: 35px;--background: var(--ion-color-principal-botonCerrarCesion);
             --background-activated: var(--ion-color-principal-cerrarCesion-activated);
             --background-focused: var(--ion-color-principal-cerrarCesion-focused);
             --background-hover: var(--ion-color-principal-cerrarCesion-hover)">
-                <ion-icon src="assets/img/cerrar_sesion_icono.svg" style="font-size: 12px;"></ion-icon>
+                <ion-icon src="assets/img/cerrar_sesion_icono.svg" style="font-size: 12px;color: var(--ion-color-principal-iconoBotonCerrarCesion);"></ion-icon>
             </ion-fab-button>
         </ion-fab>
         <!--   <ion-icon name="exit-outline"></ion-icon>-->
@@ -100,11 +100,11 @@ top: 0;" mode="ios">
     text-align: left;
     box-sizing: border-box;
     pointer-events: none;
-    color: var(--ion-color-principal-titulosHeader);
+    color: var(--ion-color-principal-gradoUsuario);
      z-index: 5;
     /* letter-spacing: 3px;*/">
         {{user.grado}}</ion-title>
-    <ion-icon #animation8 style="color: white;
+    <ion-icon #animation8 style="color: var(--ion-color-principal-iconoCategoria);
     left: 0px;
     bottom: 0px;
     padding-bottom: 65vh;
@@ -117,6 +117,7 @@ top: 0;" mode="ios">
     text-align: left;
     box-sizing: border-box;
     pointer-events: none;
+
     z-index: 5;" [src]="nombreIcono"></ion-icon>
 
 
@@ -136,14 +137,16 @@ top: 0;" mode="ios">
     box-sizing: border-box;
     pointer-events: none;
     z-index: 5;
-    color: var(--ion-color-principal-titulosHeader);
+    color: var(--ion-color-principal-tituloCategoria);
     letter-spacing: 0px;">{{header}}</ion-title>
 
-    <ion-fab mode="ios" vertical="bottom" horizontal="center" slot="fixed" style="padding-bottom: 150px;">
-        <ion-fab-button #fabflechaarriba mode="ios" size="small" style="display: none; box-shadow:none ;--background-activated: #f4315d00; --background: #f4315d00;width: 46px;
+    <ion-fab mode="ios" vertical="bottom" horizontal="center" slot="fixed" style="padding-bottom: 150px;touch-action: none;
+    z-index: 0;">
+        <ion-fab-button disabled="true" #fabflechaarriba mode="ios" size="small" style="--background: #ffffff00;
+        --box-shadow: none;box-shadow:none ;width: 46px;
     height:46px;">
             <div>
-                <ion-icon src="assets/img/flecha_arriba_icono.svg" style="font-size: 20px;color: #ffa906;"></ion-icon>
+                <ion-icon src="assets/img/flecha_arriba_icono.svg" style="font-size: 20px;color:var(--ion-color-principal-iconoFlechaArriba) ;"></ion-icon>
             </div>
 
         </ion-fab-button>
@@ -191,7 +194,7 @@ top: 0;" mode="ios">
     </ion-fab-button>
 </ion-fab>
 <ion-fab mode="ios" vertical="bottom" horizontal="center" slot="fixed">
-    <ion-fab-button (click)="mover()" mode="ios" size="small" #fab style="--box-shadow:none ;--background-activated: #F4315D;  --background: #F4315D;width: 46px;
+    <ion-fab-button (click)="mover()" mode="ios" size="small" #fab style="--box-shadow:none ;--background-activated: var(--ion-color-principal-botonBajarContenedor); --background: var(--ion-color-principal-botonBajarContenedor);width: 46px;
     height:46px;transform: scale(0);">
         <ion-icon name="chevron-down-outline" style="font-size: 24px;"></ion-icon>
     </ion-fab-button>
@@ -220,7 +223,7 @@ top: 0;" mode="ios">
 </ion-fab>
 <!-- Termina botones para escritorio -->
 
-<div #div2 (click)="clickDiv()" class="edu1" style="transform: translateY(60vh)">
+<div #div2 (click)="clickDiv()" class="edu1" style="transform: translateY(60vh);box-shadow:0px -14px 38px 0px rgb(var(--ion-color-principal-sombra));">
     <div style="position: -webkit-sticky;top: 0;font-size: 29px;z-index: 999;position: sticky;">
 
         <app-pill-menu (click)="test()" #pillMenu [itemsMenu]="tabs" [selectOption]="selectOption" (indicatorChanged)="segmentChanged($event)" (clickFab)="nuevoRecurso($event)" (clickFiltro)="openPicker()"></app-pill-menu>

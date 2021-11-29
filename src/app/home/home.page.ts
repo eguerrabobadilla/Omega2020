@@ -1875,7 +1875,7 @@ this.pillMenu.animacion();
       .fromTo('transform', 'translateY(0px)', 'translateY(-70px)')
       .fromTo('opacity', '1', '0.2');
 
-   //   animationFlechaArriba.play();
+      animationFlechaArriba.play();
 
 
     }

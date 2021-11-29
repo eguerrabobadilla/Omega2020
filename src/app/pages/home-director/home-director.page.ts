@@ -1053,7 +1053,9 @@ export class HomeDirectorPage {
               });*/
               if(this.platform.is('cordova')) 
               {
+                try {
                 await this.apiDevice.delete(this.pushService.userId).toPromise();
+              } catch (error) { }
               } 
               this.authenticationService.logout().then( data => {
                 this.webSocket.finishWebScoket();

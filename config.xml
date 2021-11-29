@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="lbs.starter" version="0.9.68" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="lbs.starter" version="0.12.70" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>LBS Plus</name>
     <description>An awesome Ionic/Cordova app.</description>
     <author email="hi@ionicframework.com" href="http://ionicframework.com/">Ionic Framework Team</author>
@@ -25,7 +25,7 @@
     <preference name="SplashScreenDelay" value="3000" />
     <preference name="orientation" value="portrait" />
     <preference name="android-minSdkVersion" value="23" />
-    <preference name="android-targetSdkVersion" value="29" />
+    <preference name="android-targetSdkVersion" value="30" />
     <preference name="deployment-target" value="10.0" />
     <platform name="android">
         <edit-config file="app/src/main/AndroidManifest.xml" mode="merge" target="/manifest/application" xmlns:android="http://schemas.android.com/apk/res/android">
@@ -115,7 +115,6 @@
     <plugin name="cordova-plugin-device" spec="2.0.2" />
     <plugin name="cordova-plugin-splashscreen" spec="5.0.2" />
     <plugin name="cordova-plugin-ionic-keyboard" spec="^2.0.5" />
-    <plugin name="cordova-sqlite-storage" spec="^5.0.1" />
     <plugin name="cordova-plugin-httpd" spec="^0.9.3" />
     <plugin name="cordova-plugin-ionic-webview" spec="^4.0.0" />
     <plugin name="cordova-plugin-camera" spec="^4.1.0">
@@ -138,4 +137,5 @@
     <plugin name="cordova-plugin-inappbrowser" spec="^4.0.0" />
     <engine name="browser" spec="6.0.0" />
     <engine name="ios" spec="4.5.5" />
+    <engine name="android" spec="8.1.0" />
 </widget>
