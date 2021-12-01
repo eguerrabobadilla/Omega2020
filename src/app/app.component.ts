@@ -122,14 +122,17 @@ export class AppComponent {
             localStorage.setItem('USER_INFO',jwt_temp);
         }
 
-        if(this.getKeyToken("tipo")=="Director")
+        const home = this.getKeyToken("home");
+        this.router.navigate([home]);
+
+        /*if(this.getKeyToken("tipo")=="Director")
             this.router.navigate(['home-director']);
         else{
           if(this.getKeyToken("escolaridad")=="SAC" || this.getKeyToken("escolaridad")=="Universidad" || this.getKeyToken("escolaridad")=="Licenciatura Presencial" || this.getKeyToken("escolaridad")=="Licenciatura SAC")          
             this.router.navigate(['home-universidad']);
           else
           this.router.navigate(['home']);
-        }
+        }*/
            
       } else {
         console.log("va al login");
