@@ -124,7 +124,7 @@ export class AppComponent {
 
         const home = this.getKeyToken("home");
         this.router.navigate([home]);
-
+        //Test
         /*if(this.getKeyToken("tipo")=="Director")
             this.router.navigate(['home-director']);
         else{
