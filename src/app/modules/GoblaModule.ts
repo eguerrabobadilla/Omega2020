@@ -25,6 +25,8 @@ import { ContactComponent } from '../components/contact/contact.component';
 import { PerfilComponent } from '../components/perfil/perfil.component';
 import { ReportComponent } from '../components/report/report.component';
 import { ListExamenesComponent } from '../components/list-examenes/list-examenes.component';
+import { ListBibliotecaComponent } from '../components/biblioteca/list-biblioteca/list-biblioteca.component';
+import { FavoritosComponent } from '../components/biblioteca/favoritos/favoritos.component';
 
 @NgModule({
     imports: [
@@ -34,10 +36,10 @@ import { ListExamenesComponent } from '../components/list-examenes/list-examenes
     ],
     declarations:[PillMenuComponent,CircleProgressComponent,CodesComponent,BooksComponent,FilterPipe,CircleProgressReportComponent,ChatsComponent,NewsComponent,LinkifyPipe,SortByPipe,SanitizePipe,MensajeAdeudoComponent,MensajeInternetComponent,ListResourceComponent,
                   ForumComponent,GraphicsComponent,EvidencesComponent,SubjectsComponent,QuestionsComponent,ContactComponent,
-                  PerfilComponent,ReportComponent,ListExamenesComponent],
+                  PerfilComponent,ReportComponent,ListExamenesComponent, ListBibliotecaComponent, FavoritosComponent],
     exports:[PillMenuComponent,CircleProgressComponent,CodesComponent,BooksComponent,FilterPipe,CircleProgressReportComponent,ChatsComponent,NewsComponent,LinkifyPipe,SortByPipe,SanitizePipe,MensajeAdeudoComponent,MensajeInternetComponent,ListResourceComponent,
              ForumComponent,GraphicsComponent,EvidencesComponent,SubjectsComponent,QuestionsComponent,ContactComponent,
-             PerfilComponent,ReportComponent,ListExamenesComponent ]
+             PerfilComponent,ReportComponent,ListExamenesComponent, ListBibliotecaComponent, FavoritosComponent ]
 })
 export class GlobalModule
 {

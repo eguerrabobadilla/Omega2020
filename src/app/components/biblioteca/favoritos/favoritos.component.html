@@ -1,0 +1,161 @@
+<ion-searchbar animated (ionChange)="buscarFavoritos($event)" showCancelButton="focus" autoccorect="off" debounce="250" inputmode="text" 
+	placeholder="Buscar" cancelButtonText="Cancelar" mode="ios">
+</ion-searchbar>
+<ion-spinner *ngIf="spinnerLoad==true" style="padding-left:50%; padding-right: 50%; margin-top: 13px;width: 40px;height: 40px;"></ion-spinner>
+
+<ion-spinner *ngIf="(cargandoSpinner)" style="padding-left:50%; padding-right: 50%;
+ 	margin-top: 13px;width: 40px;height: 40px;">
+</ion-spinner>
+
+<div *ngIf="(noResults)" style="text-align: center;">
+	<ion-label style="text-align: center;">
+		No se encontraron resultados.
+	</ion-label>
+</div>
+
+<ion-list *ngIf="(!searchActive)">
+	<ion-virtual-scroll #virtualFavoritos [items]="datosFavoritos" [trackBy]="trackByFn" approxItemHeight="375">
+		<div *virtualItem="let dato; let i = index;">
+			<!-- item si tipo archivo no es audio-->
+			<div *ngIf="dato.Tipo !== 'Audio'">
+				<p></p><!-- sino se coloca, virtual scroll no itera en todos los elementos ??-->
+				<ion-item lines="none" class="ion-margin-vertical" mode="ios" (click)="eventClickItemSliding(i)">
+					<div class="img-container-item" [style.background-image]="dato.PathRecurso" (click)="abrirItem(dato, i)">
+					</div>
+					<div class="ion-margin-start">
+						<ion-label>
+							<h2 class="ion-text-wrap">{{ dato.Nombre }}</h2>
+							<p> {{ dato.Categoria }} </p>
+							<p> {{ dato.Tipo }} </p>
+							<span id="span-favorito{{ i }}" class="span-before span-after">
+								<ion-icon slot="end" id="favorito{{ i }}" style="border-radius: 20px;" 
+									[ngClass]="dato.favoritoClass" 
+									[name]="dato.esFavorito"
+									#heartIcon
+									(click)="favoritosAccion($event, dato, heartIcon, i, false)">
+								</ion-icon>
+							</span>
+						</ion-label>
+					</div>
+					<!-- <div slot="end" style="position: relative; margin: 0; margin-left: 1px;">
+						<ion-checkbox id="item_cb_{{ i }}" [(ngModel)]="checkboxes[i].isChecked" (ionChange)="clickCheckBox($event, dato, i)" 
+						slot="end" class="ion-float-right cb_items" style="margin-top: -20px;" size="small" color="dark"></ion-checkbox>
+					</div> -->
+				</ion-item>
+			</div>
+
+			<!-- item si tipo archivo es audio-->
+			<div *ngIf="dato.Tipo == 'Audio'">
+				<ion-item-sliding class="ion-margin-vertical" (ionDrag)="stopAudioWhenDragged($event);" (click)="eventClickItemSliding(i)">
+					<ion-item lines="none" class="" mode="ios">
+						<div class="img-container-item" [style.background-image]="dato.PathRecurso" (click)="abrirItem(dato, i)">
+						</div>
+						<div class="ion-margin-start">
+							<ion-label>
+								<h2 class="ion-text-wrap">{{ dato.Nombre }}</h2>
+								<p> {{ dato.Categoria }} </p>
+								<ion-icon slot="end" id="favorito{{ i }}" style="border-radius: 20px;"  
+									[ngClass]="dato.favoritoClass" 
+									[name]="dato.esFavorito"
+									#heartIcon
+									(click)="favoritosAccion($event, dato, heartIcon, i, false)">
+								</ion-icon>
+							</ion-label>
+						</div>
+						<!-- <div slot="end" style="position: relative; margin: 0; margin-left: 1px;">
+							<ion-checkbox id="item_cb_{{ i }}" [(ngModel)]="checkboxes[i].isChecked" (ionChange)="clickCheckBox($event, dato, i)" 
+								slot="end" class="ion-float-right cb_items" style="margin-top: -20px;" size="small" color="dark">
+							</ion-checkbox>
+						</div> -->
+					</ion-item>
+	
+					<ion-item-options side="start" (ionSwipe)="assignIndex(i)">
+						<ion-item-option class="color-pink-item" (click)="playAudioOnButtonClick(dato.name, i)">
+							<ion-icon [name]="isPlaying" size="large"></ion-icon>
+								<div id="waveform-{{ i }}" style="width: 1px; height: 1px; display: none;"></div>
+						</ion-item-option>
+					</ion-item-options>
+				</ion-item-sliding>
+
+			</div>
+		</div>
+		
+	</ion-virtual-scroll>
+</ion-list>
+
+<!-- SEARCH -->
+<div *ngIf="(searchActive)">
+	<ion-list>
+		<ion-virtual-scroll #virtualFavoritosSearch	 [items]="favoritosSearch" approxItemHeight="375">
+			<div *virtualItem="let search; let i = index;">
+				<div *ngIf="search.Tipo !== 'Audio'">
+					<ion-item lines="none" class="ion-margin-vertical" mode="ios">
+						<div class="img-container-item" [style.background-image]="search.PathRecurso" (click)="abrirItem(search, i)">
+						</div>
+						<div class="ion-margin-start">
+							<ion-label>
+								<h2 class="ion-text-wrap"> {{ search.Nombre }}</h2>
+								<p>{{ search.Categoria }}</p>
+								<ion-icon slot="end" id="favorito{{ i }}" style="border-radius: 20px;"  
+										[ngClass]="search.favoritoClass" 
+										[name]="search.esFavorito"
+										#heartIcon
+										(click)="favoritosAccion($event, search, heartIcon, i, true)">
+									</ion-icon>
+							</ion-label>
+						</div>
+						<!-- <div slot="end" style="position: relative; margin: 0; margin-left: 1px;">
+							<ion-checkbox id="item_cb_{{ i }}" [(ngModel)]="searchCheckboxes[i].isChecked" (ionChange)="searchClickCheckBox($event, search, i)" slot="end" 
+							class="ion-float-right cb_items" style="margin-top: -20%;" size="small" color="dark"></ion-checkbox>
+						</div> -->
+					</ion-item>
+				</div>
+
+				<div *ngIf="search.Tipo === 'Audio'">
+					<ion-item-sliding class="ion-margin-vertical" (ionDrag)="stopAudioWhenDragged($event);" (click)="eventClickItemSliding(i)">
+						<ion-item lines="none" class="" mode="ios">
+							<div class="img-container-item" [style.background-image]="search.PathRecurso" (click)="abrirItem(search, i)">
+							</div>
+							<div class="ion-margin-start">
+								<ion-label>
+									<h2 class="ion-text-wrap">{{ search.Nombre }}</h2>
+									<p> {{ search.Categoria }} </p>
+									<ion-icon slot="end" id="favorito{{ i }}" style="border-radius: 20px;"  
+										[ngClass]="search.favoritoClass" 
+										[name]="search.esFavorito"
+										#heartIcon
+										(click)="favoritosAccion($event, search, heartIcon, i, false)">
+									</ion-icon>
+								</ion-label>
+							</div>
+							<!-- <div slot="end" style="position: relative; margin: 0; margin-left: 1px;">
+								<ion-checkbox id="item_cb_{{ i }}" [(ngModel)]="checkboxes[i].isChecked" (ionChange)="clickCheckBox($event, dato, i)" 
+									slot="end" class="ion-float-right cb_items" style="margin-top: -20px;" size="small" color="dark">
+								</ion-checkbox>
+							</div> -->
+						</ion-item>
+		
+						<ion-item-options side="start" (ionSwipe)="assignIndex(i)">
+							<ion-item-option class="color-pink-item" (click)="playAudioOnButtonClick(search.Nombre, i)">
+								<ion-icon [name]="isPlaying" size="large"></ion-icon>
+									<div id="waveform-{{ i }}" style="width: 1px; height: 1px; display: none;"></div>
+							</ion-item-option>
+						</ion-item-options>
+					</ion-item-sliding>
+	
+				</div>
+			</div>
+			
+
+
+			<!-- audio container -->
+		</ion-virtual-scroll>
+	</ion-list>
+</div>
+
+<ion-infinite-scroll (ionInfinite)="doInfiniteScroll($event)"> 
+	<ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Cargando mas archivos...">
+	</ion-infinite-scroll-content>
+</ion-infinite-scroll>
+
+<div class="ion-margin-vertical">&nbsp;</div>

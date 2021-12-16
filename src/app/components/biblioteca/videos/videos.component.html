@@ -1,0 +1,43 @@
+
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-title style="text-align: center;">Selecciona Materia</ion-title>
+    <ion-buttons slot="start">
+      <ion-button (click)="goBack()">
+          <ion-icon size="large" slot="icon-only" color="dark" name="arrow-back-circle-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+
+<div *ngIf="showDatos == true">
+
+<ion-card *ngFor="let materia of materias;" (click)="emitMateriaSeleccionada(materia.nombre)" [ngClass]="{'ani-fadeInLeft': tipoEntrada == 'left-entrance', 'ani-fadeInRight': tipoEntrada == 'right-entrance'}">
+  <ion-card-header style="padding-left: 0; padding-bottom: 10px;">
+	  <ion-item>
+		  
+	<ion-thumbnail slot="start">
+		<img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y">
+	  </ion-thumbnail>
+	  
+    <ion-card-title>{{ materia.nombre }}</ion-card-title>
+
+	<ion-button fill="clear" mode="ios" class="btn-right">
+		<ion-icon slot="icon-only" name="chevron-forward-outline" color="dark"></ion-icon>
+	  </ion-button>
+</ion-item>
+  </ion-card-header>
+
+  <ion-card-content>
+    <ion-icon name="{{materia.icon}}" slot="start"></ion-icon>
+    {{ materia.total }} {{ materia.nombre }}
+    
+    
+  </ion-card-content>
+</ion-card>
+
+</div>
+
+
+

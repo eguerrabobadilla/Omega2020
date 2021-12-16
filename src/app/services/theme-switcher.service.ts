@@ -246,6 +246,7 @@ export class ThemeSwitcherService {
   loadData(){
     
     return  this.http.get<any[]>('https://www.alfalbs.app/ApiOmega/api/themes/')
+    //return  this.http.get<any[]>('https://localhost:5001/api/themes/')
 
   }
 
