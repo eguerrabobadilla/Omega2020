@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { WebsocketService } from 'src/app/services/websocket.service';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { ThemeSwitcherService } from 'src/app/services/theme-switcher.service';
+import { ThrowStmt } from '@angular/compiler';
 
 @Component({
   selector: 'app-login',
@@ -25,11 +26,13 @@ export class LoginPage implements OnInit {
     }
 
   ngOnInit() {
+    
     this.statusBar.backgroundColorByHexString('#6228cf');
 
   }
 
   ngAfterViewInit() {
+    
     this.statusBar.backgroundColorByHexString('#6228cf');
   }
   async loginUser(){
@@ -51,19 +54,18 @@ export class LoginPage implements OnInit {
 
       this.FrmLogin.reset();
 
-      if(this.getKeyToken("tipo")=="Director")
+      const home = this.getKeyToken("home");
+      this.router.navigate([home]);
+      /*if(this.getKeyToken("tipo")=="Director")
         this.router.navigate(['home-director']);
       else{
         if(this.getKeyToken("escolaridad")=="SAC" || this.getKeyToken("escolaridad")=="Universidad" || this.getKeyToken("escolaridad")=="Licenciatura Presencial" || this.getKeyToken("escolaridad")=="Licenciatura SAC"){
           this.router.navigate(['home-universidad']);
-    //      this.themeSwitcher.setTheme('universidad');
         }
-        
         else{
-     //   this.themeSwitcher.setTheme('kinder');
         this.router.navigate(['home']);
         }
-      }
+      }*/
 
       await this.loadingController.dismiss();
 

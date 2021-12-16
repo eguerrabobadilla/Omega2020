@@ -48,7 +48,7 @@ ion-item {
     text-align: start;
     /* padding-left: var(--ion-safe-area-top, 0); */
     //padding-left: 8vw;
-    color: white;
+    color: var(--ion-color-principal-tituloUsuario);
     backface-visibility: hidden;
     -webkit-font-smoothing: subpixel-antialiased;
 }
@@ -156,10 +156,6 @@ ion-item {
     width: 100%;
     border-top-right-radius: 44px;
     border-top-left-radius: 44px;
-}
-
-.universidad {
-    background: var(--ion-color-universidad)
 }
 
 ///////////////////////css books BORRAR VUANDO SE CAMBIA A COMPONENTE
