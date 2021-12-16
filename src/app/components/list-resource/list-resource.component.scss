@@ -1,3 +1,4 @@
+
 .header-ios ion-toolbar:last-of-type {
     --border-width: 0 0 0;
 }
@@ -80,4 +81,240 @@ ion-item {
 .quitarBottom {
     bottom: 0 !important;
     top: 0vh;
+}
+
+.margin-chips {
+	margin-inline: 1px;
+}
+
+.lista-archivos {
+	width: 100%; 
+	height: auto; 
+	overflow-y: scroll;
+	color: #ffffff;
+}
+
+.lista-archivos-ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 0 10px;
+	display: flex;
+	flex-wrap: wrap;
+}
+
+/* Media Queries  (Tamaños pantalla */
+@media (min-width: 325px) {
+	.margin-chips {
+		margin-inline: 1px;
+	}
+}
+
+@media (min-width: 515px) {
+	.margin-chips {
+		margin-inline: 4px;
+	}
+}
+
+
+/** animaciones **/
+/* Clases */
+.ani-slideInRight {
+	animation: slideInRight;
+	animation-duration: 0.4s;
+}
+
+.ani-slideInLeft {
+	animation: slideInLeft;
+	animation-duration: 0.4s;
+}
+
+.ani-slideOutLeft {
+	animation: slideOutLeft;
+	animation-duration: 0.4s;
+}
+
+.ani-slideOutRight {
+	animation: slideOutRight;
+	animation-duration: 0.4s;
+}
+
+.ani-fadeIn {
+	animation: fadeIn;
+	animation-duration: 0.5s;
+}
+/* KeyFrames */
+@-webkit-keyframes slideInRight {
+    0% {
+        -webkit-transform: translate3d(100%,0,0);
+        transform: translate3d(100%,0,0);
+        visibility: visible
+    }
+
+    to {
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0)
+    }
+}
+
+@keyframes slideInRight {
+    0% {
+        -webkit-transform: translate3d(100%,0,0);
+        transform: translate3d(100%,0,0);
+        visibility: visible
+    }
+
+    to {
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0)
+    }
+}
+
+.animate__slideInRight {
+    -webkit-animation-name: slideInRight;
+    animation-name: slideInRight
+}
+
+@-webkit-keyframes slideInLeft {
+    0% {
+        -webkit-transform: translate3d(-100%,0,0);
+        transform: translate3d(-100%,0,0);
+        visibility: visible
+    }
+
+    to {
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0)
+    }
+}
+
+@keyframes slideInLeft {
+    0% {
+        -webkit-transform: translate3d(-100%,0,0);
+        transform: translate3d(-100%,0,0);
+        visibility: visible
+    }
+
+    to {
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0)
+    }
+}
+
+.animate__slideInLeft {
+    -webkit-animation-name: slideInLeft;
+    animation-name: slideInLeft
+}
+
+@-webkit-keyframes slideOutLeft {
+    0% {
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0)
+    }
+
+    to {
+        visibility: hidden;
+        -webkit-transform: translate3d(-100%,0,0);
+        transform: translate3d(-100%,0,0)
+    }
+}
+
+@keyframes slideOutLeft {
+    0% {
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0)
+    }
+
+    to {
+        visibility: hidden;
+        -webkit-transform: translate3d(-100%,0,0);
+        transform: translate3d(-100%,0,0)
+    }
+}
+
+.animate__slideOutLeft {
+    -webkit-animation-name: slideOutLeft;
+    animation-name: slideOutLeft
+}
+
+@-webkit-keyframes slideOutRight {
+    0% {
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0)
+    }
+
+    to {
+        visibility: hidden;
+        -webkit-transform: translate3d(100%,0,0);
+        transform: translate3d(100%,0,0)
+    }
+}
+
+@keyframes slideOutRight {
+    0% {
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0)
+    }
+
+    to {
+        visibility: hidden;
+        -webkit-transform: translate3d(100%,0,0);
+        transform: translate3d(100%,0,0)
+    }
+}
+
+.animate__slideOutRight {
+    -webkit-animation-name: slideOutRight;
+    animation-name: slideOutRight
+}
+
+@-webkit-keyframes fadeIn {
+    0% {
+        opacity: 0
+    }
+
+    to {
+        opacity: 1
+    }
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0
+    }
+
+    to {
+        opacity: 1
+    }
+}
+
+.animate__fadeIn {
+    -webkit-animation-name: fadeIn;
+    animation-name: fadeIn
+}
+
+/* END KEYFRAMES */
+
+.slide-width{
+	width: 120px !important;
+	/* margin-left: 0;
+	margin-right: 0; */
+}
+
+.slide-width-filtro {
+	width: 130px !important;
+}
+
+.slide-width-clase {
+	width: 175px !important;
+}
+
+.slide-width-cerrar {
+	width: 45px !important;
+}
+
+.icon-close-chips {
+	--padding-start: 0;
+	--padding-end: 0;
+	--border-width: 0;
+	margin-top: 7px;
 }

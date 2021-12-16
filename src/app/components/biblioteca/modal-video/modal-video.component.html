@@ -1,0 +1,80 @@
+<ion-header class="ion-no-border">
+	<ion-toolbar>
+		<ion-title style="text-align: center;"></ion-title>
+			<ion-buttons slot="start">
+				<ion-button (click)="onDismissModal(false)">
+					<!-- <ion-icon size="large" slot="icon-only" color="dark" name="arrow-back-circle-outline"></ion-icon> -->
+					<ion-icon name="chevron-back-outline" slot="icon-only" color="dark" size="large" ></ion-icon>
+				</ion-button>
+				Regresar
+			</ion-buttons>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content>
+	<div class="videoplayer video-container">
+		<vg-player (onPlayerReady)="onPlayerReady($event)">
+			<vg-overlay-play></vg-overlay-play>
+			<vg-buffering></vg-buffering>
+
+			<vg-scrub-bar>
+				<vg-scrub-bar-current-time></vg-scrub-bar-current-time>
+				<vg-scrub-bar-buffering-time></vg-scrub-bar-buffering-time>
+			</vg-scrub-bar>
+
+			<vg-controls [vgAutohideTime]="3">
+				<vg-play-pause></vg-play-pause>
+				<vg-time-display vgFor="singleVideo" [vgProperty]="'current'" [vgFormat]="'mm:ss'"></vg-time-display>
+		
+				<vg-scrub-bar style="pointer-events: none;"></vg-scrub-bar>
+		
+				<vg-mute></vg-mute>
+				<vg-volume></vg-volume>
+		
+				<vg-fullscreen></vg-fullscreen>
+			</vg-controls>
+
+			<video class="videoplayer" [vgMedia]="media" #media id="singleVideo" preload="metadata" crossorigin>
+				<source [src]="urlVideo" type="video/mp4">
+			</video>
+		</vg-player>
+	</div>
+	
+	<div class="informacion-container">
+		<div class="">
+			<div class="info-titulo">
+				<p class="ion-text-wrap item-titulo"> <b>{{ datosItem.Nombre }}</b></p>
+			</div>
+			<div class="info-other">
+				<ion-label>
+					<h2 class="ion-text-wrap"> {{ datosItem.Categoria }}</h2>
+					<!-- <p class="ion-text-wrap"> Otros datos </p> -->
+				</ion-label>
+			</div>
+		</div>
+
+	</div>
+</ion-content>
+
+<!-- Open after main component enter -->
+<ion-footer class="footer-modal-item ani-slideInUp" *ngIf="afterEntrance === true">
+	<ion-toolbar color="dark" class="toolbar-footer-item">
+		<ion-item color="dark">
+			<ion-button slot="start" color="light" (click)="onDismissModal(true)">
+				<ion-icon name="add-outline"></ion-icon> Seleccionar
+			</ion-button>
+			<ion-button  style="margin: auto;" color="light" class="ion-text-wrap" 
+				(click)="favoritosAccion($event, datosItem, heartIcon)">
+				<!-- <ion-icon name="heart-outline"></ion-icon> A Favoritos -->
+				<ion-icon id="favorito{{ datosItem.Id }}" style="border-radius: 20px;"  
+					[ngClass]="datosItem.favoritoClass" 
+					[name]="datosItem.esFavorito"
+					#heartIcon>
+				</ion-icon> A Favoritos
+			</ion-button>
+			<ion-button *ngIf="(mostrarBtnAdjuntar)" slot="end" color="light" (click)="createAlertAdjuntar();">
+				<ion-icon name="attach-outline"></ion-icon> Adjuntar
+			</ion-button>
+		</ion-item>
+	</ion-toolbar>
+</ion-footer>
