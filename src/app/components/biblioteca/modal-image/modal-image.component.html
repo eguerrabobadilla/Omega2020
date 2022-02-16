@@ -1,0 +1,63 @@
+<ion-header class="ion-no-border">
+	<ion-toolbar>
+		<ion-title style="text-align: center;"></ion-title>
+			<ion-buttons slot="start">
+				<ion-button (click)="onDismissModal(false)">
+					<!-- <ion-icon size="large" slot="icon-only" color="dark" name="arrow-back-circle-outline"></ion-icon> -->
+					<ion-icon name="chevron-back-outline" slot="icon-only" color="dark" size="large" ></ion-icon>
+				</ion-button>
+				Regresar
+			</ion-buttons>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" mode="ios" class="ion-padding-bottom">
+
+<div style="margin-bottom: 20px">
+	<ion-card mode="ios" class="card-item">
+		<ion-img class="card-img" [src]="datosItem.pathImg"></ion-img>
+		<ion-card-header>
+			<ion-card-title style="font-size: 22px">
+				{{ datosItem.Nombre }}
+			</ion-card-title>
+		</ion-card-header>
+		<ion-card-content class="ion-text-wrap" style="padding-left: 5px; padding-right: 5px;">
+			<!-- <span *ngFor="let occupation of datosItem.occupation; let i = index;" >
+				{{ occupation }}<span *ngIf="i < datosItem.occupation.length -1">,</span>
+			</span> -->
+			<div >
+				<ion-chip color="danger" mode="ios">
+					<ion-label color="danger">{{ datosItem.Categoria }}</ion-label>
+					</ion-chip>
+			</div>
+			<ion-label>
+				<p class="ion-padding-start ion-padding-end ion-padding-top">{{ datosItem.Descripcion }}</p>
+			</ion-label>
+		</ion-card-content>
+	</ion-card>
+</div>
+	
+</ion-content>
+
+<!-- Open after main component enter -->
+<ion-footer mode="ios" class="footer-modal-item ani-slideInUp" *ngIf="afterEntrance === true">
+	
+	<ion-toolbar color="dark" class="toolbar-footer-item">
+		<ion-item color="dark">
+			<ion-button slot="start" color="light" (click)="onDismissModal(true)">
+				<ion-icon name="add-outline"></ion-icon> Seleccionar
+			</ion-button>
+			<ion-button  style="margin: auto;" color="light" class="ion-text-wrap" 
+				(click)="favoritosAccion($event, datosItem, heartIcon)">
+				<ion-icon id="favorito{{ datosItem.Id }}" style="border-radius: 20px;"  
+					[ngClass]="datosItem.favoritoClass" 
+					[name]="datosItem.esFavorito"
+					#heartIcon>
+				</ion-icon> A Favoritos
+			</ion-button>
+			<ion-button *ngIf="(mostrarBtnAdjuntar)" slot="end" color="light" (click)="createAlertAdjuntar();">
+				<ion-icon name="attach-outline"></ion-icon> Adjuntar
+			</ion-button>
+		</ion-item>
+	</ion-toolbar>	
+</ion-footer>

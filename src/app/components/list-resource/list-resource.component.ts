@@ -1,5 +1,5 @@
 import { Component, OnInit, HostListener, ElementRef, ViewChild, Output,EventEmitter } from '@angular/core';
-import { PickerController, Platform, ModalController, LoadingController, AlertController, GestureController, IonSlide, IonSlides, IonInfiniteScroll, IonVirtualScroll } from '@ionic/angular';
+import { PickerController, Platform, ModalController, LoadingController, AlertController, GestureController, IonSlide, IonSlides, IonInfiniteScroll, IonVirtualScroll, AnimationController } from '@ionic/angular';
 import { RecursosService } from '../../api/recursos.service';
 import { Plugins } from '@capacitor/core';
 import { File,FileEntry } from '@ionic-native/file/ngx';
@@ -7,8 +7,11 @@ import { FileTransfer, FileTransferObject } from '@ionic-native/file-transfer/ng
 import { FileOpener } from '@ionic-native/file-opener/ngx';
 import { apiBase } from 'src/app/api/apiBase';
 import { NewResourcePage } from 'src/app/new-resource/new-resource.page';
+import { ListBibliotecaComponent } from '../biblioteca/list-biblioteca/list-biblioteca.component';
 import { CommentStmt } from '@angular/compiler';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
+import { element } from 'protractor';
+
 
 @Component({
   selector: 'app-list-resource',
@@ -29,26 +32,71 @@ export class ListResourceComponent implements OnInit {
   materiaId =0;
   contadorInfinieScroll = 0;
   esConferencia=true;
+  esBiblioteca: boolean = false;
+  esFavoritos: boolean = false;
+  currentChip: number = 3;
+  nextChip: number;
   loading: any;
   evento:any;
   cargarConFiltro = false;
+  currentChipSlide: number;
   @Output() updateAutoHeightSlider = new EventEmitter();
   @ViewChild(IonInfiniteScroll, {static: false}) infiniteScroll: IonInfiniteScroll;
   @ViewChild(IonVirtualScroll, {static: false}) virtualScroll: IonVirtualScroll;
-  outline = [{id:'Foto', selected: true},
-             {id:'Video', selected: true},
-             {id:'Enlace', selected: true},
-             {id:'Todos', selected: true},
-             {id:'Zoom', selected: false}];
+  @ViewChild('slideChips', { static: false }) slideChips: IonSlides; // <----
+
+  
+  /**
+   * @param {node} element - element al que se le asiganara la animacion (class)
+   * @param {animation} string - class de la animacion
+   * @return Promise 
+   */
+  addAnimation = (node, animation) =>
+	// We create a Promise and return it
+		new Promise((resolve, reject) => {
+		//const node = document.querySelector(element);
+
+		node.classList.add(animation);
+
+		// When the animation ends, we clean the classes and resolve the Promise
+		function handleAnimationEnd(event) {
+			event.stopPropagation();
+			node.classList.remove(animation);
+			resolve('Animation ended');
+		}
+
+		node.addEventListener('animationend', handleAnimationEnd, {once: true});
+	});
+
+	slideChipsOptions = {
+		slidesPerView: 'auto', 
+		zoom: false, 
+		grabCursor: true, 
+		spaceBetween: 0, 
+		longSwipes: true, 
+		longSwipesMs: 100 
+	};
+	mostrarCerrarChips: boolean = false;
+
+  outline = [{id:'Foto', selected: true, animation: ''},
+             {id:'Video', selected: true, animation: ''},
+             {id:'Enlace', selected: true, animation: ''},
+             {id:'Zoom', selected: false, animation: ''},
+             {id:'Todos', selected: true, animation: ''},
+             {id:'Biblioteca', selected: true, animation: ''},
+             {id:'Favoritos', selected: true, animation: ''},
+			];
   slideOptsdos = {
 
               passiveListeners : false
             };
+	
+			@ViewChild('componentListBiblioteca', {read: ElementRef, static: false}) componentListBiblioteca: ElementRef;
 
   constructor(private pickerController: PickerController, private apiRecursos: RecursosService, private transfer: FileTransfer,
               private file: File, private platform: Platform,private fileOpener: FileOpener,private api: apiBase,
               private modalCrl: ModalController,public loadingController: LoadingController, private alertCtrl: AlertController,
-              private inAppBrowser: InAppBrowser,private gestureCtrl: GestureController) {
+              private inAppBrowser: InAppBrowser,private gestureCtrl: GestureController, private animationCtrl: AnimationController) {
   }
 
 ngOnInit() {
@@ -75,6 +123,10 @@ ngOnInit() {
     });
   //  this.activarEventoTouch();
     this.slideDown.lockSwipes(true);
+  }
+
+  emitUpdateHeight() {
+	  this.updateAutoHeightSlider.emit();
   }
 
   activarEventoTouch(){
@@ -206,9 +258,12 @@ ngOnInit() {
     if(materiaId==0){
       this.apiRecursos.getByMonthTipo(this.mesActual,'tipo=Foto&tipo=Video&tipo=Enlace&tipo=Documento&tipo=Texto').subscribe(data => {
         this.LstRecursos = data;
-        this.outline.find(x => x.id === 'Zoom').selected = true;
-        this.outline.find(x => x.id === 'Todos').selected = false;
+        /* this.outline.find(x => x.id === 'Zoom').selected = true;
+        this.outline.find(x => x.id === 'Todos').selected = false; */
+		this.changeOutLineChips('Todos');
         this.esConferencia = false;
+		this.esBiblioteca = false;
+		this.esFavoritos = false;
         this.loadingController.dismiss();  
         
         this.changeIonChip.emit('Archivo');
@@ -220,9 +275,12 @@ ngOnInit() {
     else{
       this.apiRecursos.getByMonthTipoMateria(this.mesActual,'tipo=Foto&tipo=Video&tipo=Enlace&tipo=Documento&tipo=Texto',materiaId).subscribe(data => {
         this.LstRecursos = data;
-        this.outline.find(x => x.id === 'Zoom').selected = true;
-        this.outline.find(x => x.id === 'Todos').selected = false;
+        /* this.outline.find(x => x.id === 'Zoom').selected = true;
+        this.outline.find(x => x.id === 'Todos').selected = false; */
+		this.changeOutLineChips('Todos');
         this.esConferencia = false;
+		this.esBiblioteca = false;
+		this.esFavoritos = false;
         this.loadingController.dismiss();  
         this.changeIonChip.emit('Archivo');
         setTimeout(() => {
@@ -230,6 +288,10 @@ ngOnInit() {
         }, 300);
       });
     }
+
+	this.mostrarCerrarChips == false ? this.hideChips('Todos', 2) : this.showAllChips(2);
+	this.changeAnimationContainers(4, "Todos");
+	//this.currentChip = this.getIndexOutLineChips('Todos');
   }
 
 
@@ -295,15 +357,21 @@ ngOnInit() {
         this.contadorInfinieScroll += 10;
 
          if(tipo=='Zoom'){
-          this.outline.find(x => x.id === 'Zoom').selected = false;
-          this.outline.find(x => x.id === 'Todos').selected = true;
+          /* this.outline.find(x => x.id === 'Zoom').selected = false;
+          this.outline.find(x => x.id === 'Todos').selected = true; */
+		  this.changeOutLineChips('Zoom');
           this.esConferencia = true;
+		  this.esBiblioteca = false;
+		  this.esFavoritos = false;
           this.changeIonChip.emit('Clase Virtual');
          }
          else{
-          this.outline.find(x => x.id === 'Zoom').selected = true;
-          this.outline.find(x => x.id === 'Todos').selected = false;
+          /* this.outline.find(x => x.id === 'Zoom').selected = true;
+          this.outline.find(x => x.id === 'Todos').selected = false; */
+		  this.changeOutLineChips('Zoom');
           this.esConferencia = false;
+		  this.esBiblioteca = false;
+		  this.esFavoritos = false;
           this.changeIonChip.emit('Archivo');
          }
 
@@ -320,15 +388,21 @@ ngOnInit() {
         this.LstRecursos = data;
         this.contadorInfinieScroll += 10;
         if(tipo=='Zoom'){
-          this.outline.find(x => x.id === 'Zoom').selected = false;
-          this.outline.find(x => x.id === 'Todos').selected = true;
+          /* this.outline.find(x => x.id === 'Zoom').selected = false;
+          this.outline.find(x => x.id === 'Todos').selected = true; */
+		  this.changeOutLineChips('Zoom');
           this.esConferencia = true;
+		  this.esBiblioteca = false;
+		  this.esFavoritos = false;
           this.changeIonChip.emit('Clase Virtual');
          }
          else{
-          this.outline.find(x => x.id === 'Zoom').selected = true;
-          this.outline.find(x => x.id === 'Todos').selected = false;
+          /* this.outline.find(x => x.id === 'Zoom').selected = true;
+          this.outline.find(x => x.id === 'Todos').selected = false; */
+		  this.changeOutLineChips('Zoom');
           this.esConferencia = false;
+		  this.esBiblioteca = false;
+		  this.esFavoritos = false;
           this.changeIonChip.emit('Archivo');
          }
 
@@ -338,6 +412,10 @@ ngOnInit() {
       });
 
     }
+
+	this.mostrarCerrarChips == false ? this.hideChips(tipo, 1) : this.showAllChips(1);
+	this.changeAnimationContainers(3, tipo);
+	//this.currentChip = this.getIndexOutLineChips(tipo);
   }
   stop(){
     console.log("stop")
@@ -400,6 +478,26 @@ ngOnInit() {
       await Browser.open({ url: `${this.api.url}/resources/${item.PathRecurso}` });
       this.loadingController.dismiss();
     }
+  }
+
+  async openFileBiblioteca(archivo) {
+	  this.loading = await this.loadingController.create({
+		  message: 'Cargando...',
+		  duration: 10000
+	  });
+
+	  this.loading.present();
+
+	  console.log(archivo);
+	  
+	  const { Browser } = Plugins;
+
+	  if(this.platform.is('cordova')) {
+		  this.download(`${this.api.url}/resources/${archivo.PathRecurso}`,archivo.PathRecursoUser)
+	  } else {
+		await Browser.open({ url: `${this.api.url}/resources/${archivo.PathRecurso}` });
+		this.loadingController.dismiss();
+	  }
   }
 
   urlify(text) {
@@ -569,4 +667,139 @@ ngOnInit() {
       }
     }
   }
+
+  	/**
+	 * 
+	 * @param tipo string -  el tipo (categoria) que pertenece el chip
+	 * @param indexChip number - index del chip al que pertenece (slide)
+	 */
+	abrirBiblioteca(tipo: string, indexChip: number) {
+		this.mostrarCerrarChips == false ? this.hideChips(tipo, indexChip) : this.showAllChips(3);
+		this.changeAnimationContainers(5, tipo);
+
+	  	this.esConferencia = false;
+		this.esBiblioteca = true;
+		this.esFavoritos = false;
+		//this.outline[outlineIndex].selected = true;
+		this.changeOutLineChips(tipo);
+		
+		setTimeout(() => {
+			this.updateAutoHeightSlider.emit();
+		}, 200);
+  	}
+	/**
+	 * 
+	 * @param tipo string -  el tipo (categoria) que pertenece el chip
+	 * @param indexChip number - index del chip al que pertenece (slide)
+	 */
+	abrirFavoritos(tipo: string, indexChip: number) {
+		this.mostrarCerrarChips == false ? this.hideChips(tipo, indexChip) : this.showAllChips(4);
+		this.changeAnimationContainers(6, tipo);
+
+		this.esConferencia = false;
+		this.esBiblioteca = false;
+		this.esFavoritos = true;
+		this.changeOutLineChips(tipo);
+
+		setTimeout(() => {
+			this.updateAutoHeightSlider.emit();
+		}, 200);
+	}
+
+	/**
+	 * 
+	 * @param tipo string - el tipo (categoria) que pertenece el chip
+	 * Cambia el outline del chip dependiendo el tipo que se selecciono
+	 */
+	changeOutLineChips(tipo: string) {
+		for(let i = 0 ; i < this.outline.length ; i++) {
+			if(tipo === this.outline[i].id)
+				this.outline[i].selected = false;
+			else
+				this.outline[i].selected = true;
+		}
+	}
+	
+
+	  /**
+	   * 
+	   * @param index number - index del outline que pertenece
+	   * @param tipo  string - el tipo (categoria) que pertenece el chip
+	   */
+	  changeAnimationContainers(index: number, tipo: string) {
+		this.nextChip = this.getIndexOutLineChips(tipo);
+		
+		if(this.currentChip < this.nextChip) {
+			this.outline[index].animation = 'ani-slideInRight';
+		} else if(this.currentChip > this.nextChip){
+			this.outline[index].animation = 'ani-slideInLeft';
+		}
+		// console.log("nextChip", this.nextChip);
+		// console.log("current", this.currentChip);
+	
+		this.currentChip = this.nextChip;
+	  }
+
+	/**
+	 * 
+	 * @param tipo string -  el tipo (categoria) que pertenece el chip
+	 * @returns number - index del outline de la categoria 
+	 */
+	getIndexOutLineChips(tipo) {
+		const index = this.outline.findIndex((element, index) => {
+			if(element.id == tipo) {
+				return true;
+			}
+		});
+		return index;
+	}
+
+	/**
+	 * 
+	 * @param tipo string - el tipo (categoria) que pertenece el chip
+	 * @param indexChip  number - index de la posicion del chip (slide)
+	 */
+	hideChips(tipo: string, indexChip: number) {
+		this.currentChipSlide = indexChip;
+		let elements = document.querySelectorAll('.slide-ani');	
+		if(tipo == 'Favoritos' || tipo == 'Biblioteca') {
+			for(let i = 0 ; i < elements.length; i++) {
+				if(i !== indexChip ) {
+					elements[i].classList.add('ion-hide');
+					this.slideChips.update();
+				}
+			} 
+			//this.mostrarCerrarChips = true;
+			this.addAnimation(elements[indexChip], 'ani-slideInRight');
+		} else if(tipo == 'Zoom' || tipo == 'Todos') {
+			for(let i = 1 ; i < elements.length ; i++) {
+				if(i !== indexChip) {
+					elements[i].classList.add('ion-hide');
+					this.slideChips.update();
+				}
+			}
+			this.addAnimation(elements[indexChip], 'ani-slideInRight');
+			this.addAnimation(elements[0], 'ani-slideInLeft');
+			//this.mostrarCerrarChips = true;	
+		}
+		this.mostrarCerrarChips = true;
+	}
+
+	/**
+	 * Muestra todos los chips al presionar X o al chip actual.
+	 */
+	showAllChips(index: number) {
+		let elements = document.querySelectorAll('.slide-ani');
+		for(let i = 0 ; i < elements.length; i ++) {
+			elements[i].classList.remove('ion-hide');
+			this.addAnimation(elements[i], 'ani-fadeIn');
+		}
+		this.mostrarCerrarChips = false;
+		setTimeout(() => {
+			this.slideChips.slideTo(index-1, 340);
+		}, 150);
+
+		
+	}
+	
 }

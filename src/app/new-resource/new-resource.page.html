@@ -47,6 +47,30 @@
                                 <p class="text-error">Por favor ingresa el tipo de recurso.</p>
                             </div>
                         </ion-col>
+						<ion-col size="12" *ngIf="(listaArchivosBiblioteca.length > 0)">
+							<ion-item detail="false" style="height: 30%;">
+								<ion-label color="light" position="stacked" style="">Recursos seleccionados</ion-label>
+							</ion-item>
+
+							<ion-item>
+								<div class="lista-archivos">
+									<ul class="lista-archivos-ul">
+										<li class="ion-text-wrap" *ngFor="let archivo of listaArchivosBiblioteca; let i = index;" >
+											<ion-chip color="light" class="color-chip-archivo">
+												<ion-icon *ngIf="archivo.Tipo == 'Video'" name="videocam-outline" ></ion-icon>
+												<ion-icon *ngIf="archivo.Tipo == 'Imagen'" name="images-outline" ></ion-icon>
+												<ion-icon *ngIf="archivo.Tipo == 'Audio'" name="mic-circle-outline"></ion-icon>
+												<ion-icon *ngIf="archivo.Tipo == 'Mapa'" name="map-outline"></ion-icon>	
+												<ion-icon *ngIf="archivo.Tipo == 'Mapa'" name="map-outline"></ion-icon>
+												<ion-icon name="attach-outline"></ion-icon>	
+												<ion-label>{{ archivo.PathRecurso }}</ion-label>
+												<ion-icon color="danger" name="close-circle-outline" (click)="deleteArchivoAdjuntar(archivo.Id)"></ion-icon>
+											</ion-chip>	
+										</li>
+									</ul>
+								</div>
+							</ion-item>
+						</ion-col>
                         <ion-col size="12">
                             <ion-item>
                                 <ion-label color="light" position="floating">Título</ion-label>
@@ -66,7 +90,7 @@
                                 <p class="text-error">Por favor ingresa una descripción.</p>
                             </div>
                         </ion-col>
-                        <ion-col size="12" *ngIf="TipoSeleccionada=='Archivo'">
+                        <ion-col size="12" *ngIf="TipoSeleccionada!='Zoom'">
                             <ion-item button (click)="openPicker()" detail="false">
                                 <ion-label color="light" position="floating">Fecha</ion-label>
                                 <ion-label color="light" position="floating">{{ FrmItem.controls.FechaPublicacion.value }}</ion-label>
@@ -85,9 +109,11 @@
                                 <p class="text-error">Por favor ingresa una fecha.</p>
                             </div>
                         </ion-col>
-                        <ion-col size="12" *ngIf="TipoSeleccionada=='Archivo'">
-                            <input #inputFilePortada style="opacity:0" name="Image" (change)="onFileChange($event)" type="file" />
-                            <ion-button expand="full" type="button" icon-start outline block (click)="inputFilePortada.click()">
+						<input #inputFilePortada style="opacity:0" name="Image" (change)="onFileChange($event)" type="file" style="display: none"/>
+                        <ion-col size="12" *ngIf="TipoSeleccionada=='Archivo'" style="display: none;">
+                            <!-- <input #inputFilePortada style="opacity:0" name="Image" (change)="onFileChange($event)" type="file" /> -->
+                            <!-- <ion-button expand="full" type="button" icon-start outline block (click)="inputFilePortada.click()"> -->
+							<ion-button expand="full" type="button" icon-start outline block (click)="openPickerSelectArchivo()">
                                 <ion-icon name="images"></ion-icon>
                                 {{texto_adjuntar_portada}}
                             </ion-button>
@@ -95,6 +121,19 @@
                                 <p class="text-error">Por favor selecciona una foto de portada.</p>
                             </div>
                         </ion-col>
+
+                        <!-- test buton -->
+                        <ion-col size="12" *ngIf="TipoSeleccionada=='Biblioteca'" style="text-align: center;">
+                            <ion-button #btnAbrirBiblioteca color="light" size="default" shape="round" type="button" icon-start outline block (click)="testAbrirBiblioteca()">
+                                <ion-icon name="folder"></ion-icon> &nbsp;
+                                 Abrir Biblioteca
+                            </ion-button>
+                            <!---- <div *ngIf="!FrmItem.controls.Image.valid && (FrmItem.controls.Image.dirty || submitAttempt)">
+                                <p class="text-error">Por favor selecciona una foto de portada.</p>
+                            </div> -->
+                        </ion-col>
+
+
                     </ion-row>
                     <ion-row>
                         <ion-col size="12">

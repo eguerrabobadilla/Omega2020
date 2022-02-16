@@ -32,3 +32,33 @@ ion-datetime {
 ion-item {
     --background: #000000;
 }
+
+
+/* chips test */
+.lista-archivos {
+	width: 100%; 
+	height: auto; 
+	overflow-y: scroll;
+	color: #ffffff;
+}
+
+.lista-archivos-ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 0 0;
+	display: flex;
+	flex-wrap: wrap;
+}
+
+/* Media Queries  (Tamaños pantalla */
+@media (min-width: 325px) {
+	.margin-chips {
+		margin-inline: 1px;
+	}
+}
+
+@media (min-width: 515px) {
+	.margin-chips {
+		margin-inline: 4px;
+	}
+}

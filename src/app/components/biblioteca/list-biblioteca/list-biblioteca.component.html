@@ -1,0 +1,45 @@
+<div class="">
+
+
+<!-- 	<ion-card style="text-align: initial;border-bottom: 0.6px solid #d0d0d0;border-left: none;border-radius: 0px;box-shadow: none !important;"
+	mode="ios">
+	   <ion-card-header>
+		   <ion-card-title >Audios</ion-card-title>
+	   </ion-card-header>
+	   <ion-card-content style="white-space: pre-line;">
+		   <ion-item lines="none">
+			   <ion-icon name="mic-circle-outline" slot="start"></ion-icon>
+			   <ion-label>
+				   <h2>Total 4 archivos.</h2>
+			   </ion-label>
+			   <ion-button (click)="abrirMostrarArchivos('Audio')" style="transform: translateX(12px);" fill="outline" color="danger" slot="end">Abrir</ion-button>
+		   </ion-item>
+	   </ion-card-content>
+   </ion-card>
+ -->
+	<ion-card style="text-align: initial;border-bottom: 0.6px solid #d0d0d0;border-left: none;border-radius: 0px;box-shadow: none !important;"
+	 mode="ios" *ngFor="let item of datosBiblioteca">
+
+		<ion-card-header>
+			<ion-card-title *ngIf="item.Tipo == 'Imagen'">Imagenes</ion-card-title>
+			<ion-card-title *ngIf="item.Tipo != 'Imagen'">{{ item.Tipo}}s</ion-card-title>
+		</ion-card-header>
+		<ion-card-content style="white-space: pre-line;">
+			<ion-item lines="none">
+				<ion-icon *ngIf="item.Tipo == 'Video'" name="videocam-outline" slot="start"></ion-icon>
+				<ion-icon *ngIf="item.Tipo == 'Imagen'" name="images-outline" slot="start"></ion-icon>
+				<ion-icon *ngIf="item.Tipo == 'Audio'" name="mic-circle-outline" slot="start"></ion-icon>
+				<ion-icon *ngIf="item.Tipo == 'Mapa'" name="map-outline" slot="start"></ion-icon>
+				<ion-label>
+					<h2>Total {{ item.Total }} archivos.</h2>
+					<!-- <h2>4 en Favoritos</h2> -->
+				</ion-label>
+				<ion-button (click)="abrirMostrarArchivos(item.Tipo)" style="transform: translateX(12px);" fill="outline" color="danger" slot="end">Abrir</ion-button>
+			</ion-item>
+			
+		</ion-card-content>
+		<!-- <ion-item style="margin-top: -6px;" lines="none">
+		</ion-item> -->
+	</ion-card>
+	<div class="ion-margin-vertical">&nbsp;</div>
+</div>

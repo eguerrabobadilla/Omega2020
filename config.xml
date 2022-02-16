@@ -135,7 +135,8 @@
     <plugin name="com-moduscreate-plugins-echo" spec="C:\ModusEcho" />
     <plugin name="cordova-plugin-whitelist" spec="1.3.3" />
     <plugin name="cordova-plugin-inappbrowser" spec="^4.0.0" />
+    <plugin name="cordova-plugin-media" spec="^5.0.3" />
+    <plugin name="onesignal-cordova-plugin" spec="^3.0.1" />
     <engine name="browser" spec="6.0.0" />
-    <engine name="ios" spec="4.5.5" />
-    <engine name="android" spec="8.1.0" />
+    <engine name="ios" spec="^4.5.5" />
 </widget>

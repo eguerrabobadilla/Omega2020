@@ -1,0 +1,180 @@
+<ion-header class="ion-no-border">
+	<ion-toolbar>
+		<ion-title style="text-align: center;">{{ datosArchivos }} </ion-title>
+			<ion-buttons slot="start">
+				<ion-button (click)="onDismissModal()">
+					<ion-icon size="large" slot="icon-only" color="dark" name="arrow-back-circle-outline"></ion-icon>
+				</ion-button>
+				<!-- <ion-button (click)="testData()" color="dark" size="small" slot="end">
+					Test
+				</ion-button> -->
+			</ion-buttons>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content>
+<!-- Animated Searchbar -->
+<div *ngIf="showComponent == true">
+<ion-searchbar animated showCancelButton="focus" (ionChange)="buscarEnBiblioteca($event)" autoccorect="off" debounce="300" inputmode="text" placeholder="Buscar" cancelButtonText="Cancelar" mode="ios"></ion-searchbar>
+<ion-spinner *ngIf="spinnerLoad==true" style="padding-left:50%; padding-right: 50%; margin-top: 13px;width: 40px;height: 40px;"></ion-spinner>
+
+<div *ngIf="datosArchivos !== 'Audio'">
+	<ion-list #listVideos *ngIf="(!searchActive)">
+		<ion-virtual-scroll #virtualVideos [items]="datosBiblioteca" approxItemHeight="375">
+			<ion-item lines="none" class="ion-margin-vertical" mode="ios"  *virtualItem="let dato; let i = index;">
+				<div class="img-container-item" [style.background-image]="dato.PathRecurso" (click)="abrirItem(dato, datosArchivos, i)">
+				</div>
+				<div class="ion-margin-start">
+					<ion-label>
+						<h2 class="ion-text-wrap">{{ dato.Nombre }}</h2>
+						<p> {{ dato.Categoria }} </p>
+						<span id="span-favorito{{ i }}" class="span-before span-after">
+							<ion-icon slot="end" id="favorito{{ i }}" style="border-radius: 20px;"  
+								[ngClass]="dato.favoritoClass" 
+								[name]="dato.esFavorito"
+								#heartIcon
+								(click)="favoritosAccion($event, dato, heartIcon, i)">
+							</ion-icon>
+						</span>
+					</ion-label>
+				</div>
+				<div slot="end" style="position: relative; margin: 0; margin-left: 1px;">
+					<ion-checkbox id="item_cb_{{ i }}" [(ngModel)]="checkboxes[i].isChecked" (ionChange)="clickCheckBox($event, dato, i)" 
+					slot="end" class="ion-float-right cb_items" style="margin-top: -20px;" size="small" color="dark"></ion-checkbox>
+				</div>
+			</ion-item>
+		</ion-virtual-scroll>
+	</ion-list>
+</div>
+<div *ngIf="datosArchivos !== 'Audio' && (searchActive)">
+	<ion-list #listVideosSearch>
+		<ion-virtual-scroll #virtualVideosSearch [items]="datosSearch" approxItemHeight="375">
+			<ion-item lines="none" class="ion-margin-vertical" mode="ios" *virtualItem="let search; let i = index;">
+				<div class="img-container-item" [style.background-image]="search.PathRecurso" (click)="abrirItem(search, datosArchivos, i)">
+				</div>
+				<div class="ion-margin-start">
+					<ion-label>
+						<h2 class="ion-text-wrap"> {{ search.Nombre }}</h2>
+						<p>{{ search.Categoria }}</p>
+						<ion-icon slot="end" id="favorito{{ i }}" style="border-radius: 20px;"  
+								[ngClass]="search.favoritoClass" 
+								[name]="search.esFavorito"
+								#heartIcon
+								(click)="favoritosAccion($event, search, heartIcon, i)">
+							</ion-icon>
+					</ion-label>
+				</div>
+				<div slot="end" style="position: relative; margin: 0; margin-left: 1px;">
+					<ion-checkbox id="item_cb_{{ i }}" [(ngModel)]="searchCheckboxes[i].isChecked" (ionChange)="searchClickCheckBox($event, search, i)" slot="end" 
+					class="ion-float-right cb_items" style="margin-top: -20%;" size="small" color="dark"></ion-checkbox>
+				</div>
+			</ion-item>
+		</ion-virtual-scroll>
+	</ion-list>
+</div>
+
+<div *ngIf="datosArchivos == 'Audio'">	
+	<ion-list #listAudios *ngIf="(!searchActive)">
+		<ion-virtual-scroll #virtualAudios [items]="datosBiblioteca	" approxItemHeight="375">
+			<ion-item-sliding *virtualItem="let dato; let i = index;" class="ion-margin-vertical" (ionDrag)="stopAudioWhenDragged($event);"
+			(click)="eventClickItemSliding(i)">
+				<ion-item lines="none" class="" mode="ios">
+					<div class="img-container-item" [style.background-image]="dato.PathRecurso" (click)="abrirItem(dato, datosArchivos, i)">
+					</div>
+					<div class="ion-margin-start">
+						<ion-label>
+							<h2 class="ion-text-wrap">{{ dato.Nombre }}</h2>
+							<p> {{ dato.Categoria }} </p>
+							<ion-icon slot="end" id="favorito{{ i }}" style="border-radius: 20px;"  
+								[ngClass]="dato.favoritoClass" 
+								[name]="dato.esFavorito"
+								#heartIcon
+								(click)="favoritosAccion($event, dato, heartIcon, i)">
+							</ion-icon>
+						</ion-label>
+					</div>
+					<div slot="end" style="position: relative; margin: 0; margin-left: 1px;">
+						<ion-checkbox id="item_cb_{{ i }}" [(ngModel)]="checkboxes[i].isChecked" (ionChange)="clickCheckBox($event, dato, i)" slot="end" class="ion-float-right cb_items" style="margin-top: -20px;" size="small" color="dark"></ion-checkbox>
+					</div>
+				</ion-item>
+
+				<ion-item-options side="start" (ionSwipe)="assignIndex(i)">
+					<ion-item-option class="color-pink-item" (click)="playAudioOnButtonClick(dato.name, i)">
+						<ion-icon [name]="isPlaying" size="large"></ion-icon>
+							<div id="waveform-{{ i }}" style="width: 1px; height: 1px; display: none;"></div>
+					</ion-item-option>
+				</ion-item-options>
+			</ion-item-sliding>
+		</ion-virtual-scroll>
+	</ion-list>
+
+	<div *ngIf="datosArchivos == 'Audio' && (searchActive)">
+		<ion-list #listAudiosSearch>
+			<ion-virtual-scroll #virtualAudiosSearch [items]="datosSearch" approxItemHeight="375">
+				<ion-item lines="none" class="ion-margin-vertical" mode="ios" *virtualItem="let search; let i = index;">
+					<div class="img-container-item" [style.background-image]="search.PathRescurso" (click)="abrirItem(search, datosArchivos, i)">
+					</div>
+					<div class="ion-margin-start">
+						<ion-label>
+							<h2 class="ion-text-wrap"> {{ search.Nombre }}</h2>
+							<p>{{ search.Categoria }}</p>
+							<ion-icon slot="end" id="favorito{{ i }}" style="border-radius: 20px;"  
+								[ngClass]="search.favoritoClass" 
+								[name]="search.esFavorito"
+								#heartIcon
+								(click)="favoritosAccion($event, search, heartIcon, i)">
+							</ion-icon>
+						</ion-label>
+					</div>
+					<div slot="end" style="position: relative; margin: 0; margin-left: 1px;">
+						<ion-checkbox id="item_cb_{{ i }}" [(ngModel)]="searchCheckboxes[i].isChecked" (ionChange)="searchClickCheckBox($event, search, i)" slot="end" 
+						class="ion-float-right cb_items" style="margin-top: -20%;" size="small" color="dark"></ion-checkbox>
+					</div>
+				</ion-item>
+			</ion-virtual-scroll>
+		</ion-list>
+	</div>
+</div>
+
+<ion-infinite-scroll *ngIf="noResults == false" (ionInfinite)="doInfinite($event)"> 
+	<ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Cargando mas {{ datosArchivos }}s...">
+	</ion-infinite-scroll-content>
+</ion-infinite-scroll>
+
+</div><!-- show/hide content -> loadingController-->
+
+<div *ngIf="noResults == true;" style="text-align: center;">
+	<ion-label style="text-align: center;">
+		No se encontraron resultados.
+	</ion-label>
+</div>
+</ion-content>
+
+
+<ion-card class="error-container" *ngIf="(errorPresent)">
+	<ion-card-header>
+		<ion-card-title>Ups algo salio mal.</ion-card-title>
+		<ion-icon name="bug-outline" size="large"></ion-icon>
+	</ion-card-header>
+	<ion-card-content>
+		Por favor vuelve a intentarlo mas tarde, si el problema persiste, por favor contacta con un administrador.
+	</ion-card-content>
+</ion-card>
+
+<ion-footer class="footer-mostrar-archivo" [ngClass]="{ 'ion-hide': listDataAdj.length == 0, 'ani-slideInUp': listDataAdj.length > 0 }">
+	<ion-toolbar color="dark" class="toolbar-footer-ma">
+		<ion-item color="dark">
+			<ion-button slot="start" color="light" (click)="limpiarListdata()">Cancelar</ion-button>
+			<ion-button id="btn-fav" style="margin: auto;" color="light"  (click)="addFavTest()">
+				<ion-icon [name]="nameFavorito" [ngClass]="classFavorito"></ion-icon> A Favoritos
+			</ion-button>
+			<ion-button *ngIf="(mostrarBtnAdjuntar)" slot="end" color="light" (click)="createAlertAdjuntar()">
+				<ion-icon name="attach-outline"></ion-icon> Adjuntar
+			</ion-button>
+		</ion-item>
+	</ion-toolbar>
+</ion-footer>
+
+<div id="div-heart" class="favorito-container ion-hide">
+	<ion-icon id="heart-fav" name="heart" class="fav-ani"></ion-icon>
+</div>

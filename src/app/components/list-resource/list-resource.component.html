@@ -1,18 +1,94 @@
-<ion-item detail="false" slot="fixed">
-    <ion-chip (click)="openPicker()" color="danger">
-        <ion-icon name="calendar-outline"></ion-icon>
-        <ion-label>{{mesActual}}</ion-label>
-    </ion-chip>
-    <ion-chip (click)="selected('Zoom',0)" [outline]="outline[4].selected">
-        <ion-icon name="videocam-outline"></ion-icon>
-        <ion-label>Clases Virtuales</ion-label>
-    </ion-chip>
-    <ion-chip (click)="selectedSinInfinite(0)" [outline]="outline[3].selected">
-        <ion-icon name="attach-outline"></ion-icon>
-        <ion-label>Archivos</ion-label>
-    </ion-chip>
+<ion-item detail="false" slot="fixed" style="display: none;">
+<div>
+	<ion-chip (click)="openPicker()" color="danger" class="margin-chips">
+		<ion-icon name="calendar-outline"></ion-icon>
+		<ion-label>{{mesActual}}</ion-label>
+	</ion-chip>
+
+	<ion-chip (click)="selected('Zoom',0)" [outline]="outline[3].selected" class="margin-chips">
+		<ion-icon name="videocam-outline"></ion-icon>
+		<ion-label>Clases Virtuales</ion-label>
+	</ion-chip>
+	
+	<ion-chip (click)="selectedSinInfinite(0)" [outline]="outline[4].selected" class="margin-chips">
+		<ion-icon name="attach-outline"></ion-icon>
+		<ion-label>Archivos</ion-label>
+	</ion-chip>
+	
+	<ion-chip outline="true" class="margin-chips" (click)="abrirBiblioteca('Biblioteca')" [outline]="outline[5].selected">
+		<ion-icon name="folder-outline"></ion-icon>
+		<ion-label>Biblioteca</ion-label>
+	</ion-chip>
+
+	<ion-chip class="margin-chips" (click)="abrirFavoritos('Favoritos')" [outline]="outline[6].selected">
+		<ion-icon name="heart-outline"></ion-icon>
+		<ion-label>Favoritos</ion-label>
+	</ion-chip>
+
+</div>
+
 </ion-item>
-<div *ngIf="(!esConferencia)">
+
+<ion-slides #slideChips [options]="slideChipsOptions">
+
+
+	<ion-slide class="slide-width-cerrar" *ngIf="mostrarCerrarChips" [ngClass]="{ 'ani-fadeIn': mostrarCerrarChips == true }">
+		<ion-col>
+			<ion-button (click)="showAllChips(currentChipSlide)" class="icon-close-chips" color="dark" fill="outline" shape="round" type="button" size="small" slots="icon-only">
+				<ion-icon name="close-circle-outline" size="large"></ion-icon>
+			</ion-button>
+		</ion-col>
+	</ion-slide>
+
+	<ion-slide class="slide-width-filtro slide-ani">
+		<ion-col>
+			<ion-chip (click)="openPicker()" color="danger" class="margin-chips">
+				<ion-icon name="calendar-outline"></ion-icon>
+				<ion-label>{{mesActual}}</ion-label>
+			</ion-chip>
+		</ion-col>
+	</ion-slide>
+
+	<ion-slide class="slide-width-clase slide-ani">
+		<ion-col>
+			<ion-chip (click)="selected('Zoom',0)" [outline]="outline[3].selected" class="margin-chips">
+				<ion-icon name="videocam-outline"></ion-icon>
+				<ion-label>Clases Virtuales</ion-label>
+			</ion-chip>
+		</ion-col>
+	</ion-slide>
+	
+	<ion-slide class="slide-width slide-ani">
+		<ion-col>
+			<ion-chip (click)="selectedSinInfinite(0)" [outline]="outline[4].selected" class="margin-chips">
+				<ion-icon name="attach-outline"></ion-icon>
+				<ion-label>Archivos</ion-label>
+			</ion-chip>
+		</ion-col>
+	</ion-slide>
+	
+	<ion-slide class="slide-width slide-ani" *ngIf="permisoEditar()">
+		<ion-col>
+			<ion-chip outline="true" class="margin-chips" (click)="abrirBiblioteca('Biblioteca', 3)" [outline]="outline[5].selected">
+				<ion-icon name="folder-outline"></ion-icon>
+				<ion-label>Biblioteca</ion-label>
+			</ion-chip>
+		</ion-col>
+	</ion-slide>
+	
+	<ion-slide class="slide-width slide-ani" *ngIf="permisoEditar()">
+		<ion-col>
+			<ion-chip class="margin-chips" (click)="abrirFavoritos('Favoritos', 4)" [outline]="outline[6].selected">
+				<ion-icon name="heart-outline"></ion-icon>
+				<ion-label>Favoritos</ion-label>
+			</ion-chip>
+		</ion-col>
+	</ion-slide>
+	
+</ion-slides>
+		
+
+<div *ngIf="(!esConferencia) && (!esBiblioteca) && (!esFavoritos)" [ngClass]="outline[4].animation">
     <ion-list mode="ios">
         <ion-list-header>
             Semana 1
@@ -27,17 +103,34 @@
 
             </ion-card-content>
             <ion-item>
-                <ion-chip outline color="dark" (click)="openFile(item)" *ngIf=" item.PathRecurso != undefined">
-                    <ion-icon name="attach-outline"></ion-icon>
-                    <ion-label style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{item.PathRecursoUser}}</ion-label>
-                </ion-chip>
+				<div *ngIf="item.Recursosdetalles.length === 0">
+					<ion-chip outline color="dark" (click)="openFile(item)" *ngIf=" item.PathRecurso != undefined">
+						<ion-icon name="attach-outline"></ion-icon>
+						<ion-label style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{item.PathRecursoUser}}</ion-label>
+					</ion-chip>
+				</div>
+
+				<div class="lista-archivos" *ngIf="item.Recursosdetalles.length > 0">
+					<ul class="lista-archivos-ul">
+						<li class="ion-text-wrap" *ngFor="let archivo of item.Recursosdetalles; let i = index;" >
+							<ion-chip color="dark" class="color-chip-archivo" (click)="openFileBiblioteca(archivo)">
+								<ion-icon *ngIf="archivo.Tipo == 'Video'" name="videocam-outline" ></ion-icon>
+								<ion-icon *ngIf="archivo.Tipo == 'Imagen'" name="images-outline" ></ion-icon>
+								<ion-icon *ngIf="archivo.Tipo == 'Audio'" name="mic-circle-outline"></ion-icon>
+								<ion-icon *ngIf="archivo.Tipo == 'Mapa'" name="map-outline"></ion-icon>	
+								<ion-icon name="attach-outline"></ion-icon>	
+								<ion-label>{{ archivo.PathRecurso }}</ion-label>
+							</ion-chip>	
+						</li>
+					</ul>
+				</div>
             </ion-item>
             <ion-item *ngIf="permisoEditar()" style="margin-top: -6px;">
                 <ion-button style="transform: translateX(12px);" fill="outline" slot="end" (click)="eliminar($event,item)">Borrar</ion-button>
                 <ion-button fill="outline" slot="end" (click)="edit($event,item)">Editar</ion-button>
             </ion-item>
         </ion-card>
-        <ion-card style="text-align: initial;border-bottom: 0.6px solid #d0d0d0;border-left: none;border-radius: 0px;box-shadow: none !important;" class="ion-activatable ripple-parent " mode="ios " *ngIf="!esConferencia && (LstRecursos | filter : 'Semana 1' : 'Semana').length == 0">
+        <ion-card style="text-align: initial;border-bottom: 0.6px solid #d0d0d0;border-left: none;border-radius: 0px;box-shadow: none !important;" class="ion-activatable ripple-parent " mode="ios" *ngIf="!esConferencia && (LstRecursos | filter : 'Semana 1' : 'Semana').length == 0">
             <ion-ripple-effect></ion-ripple-effect>
             <ion-card-header>
                 <ion-card-title>Ningun recurso</ion-card-title>
@@ -58,11 +151,28 @@
             <ion-card-content style="white-space: pre-line;" [innerHtml]="item.Descripcion + datosClase(item) | linkify : item.Id">
 
             </ion-card-content>
-            <ion-item>
-                <ion-chip outline color="dark" (click)="openFile(item)" *ngIf=" item.PathRecurso != undefined">
-                    <ion-icon name="attach-outline"></ion-icon>
-                    <ion-label style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{item.PathRecursoUser}}</ion-label>
-                </ion-chip>
+            <ion-item >
+				<div *ngIf="item.Recursosdetalles.length === 0">
+					<ion-chip outline color="dark" (click)="openFile(item)" *ngIf=" item.PathRecurso != undefined">
+						<ion-icon name="attach-outline"></ion-icon>
+						<ion-label style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{item.PathRecursoUser}}</ion-label>
+					</ion-chip>
+				</div>
+
+				<div class="lista-archivos" *ngIf="item.Recursosdetalles.length > 0">
+					<ul class="lista-archivos-ul">
+						<li class="ion-text-wrap" *ngFor="let archivo of item.Recursosdetalles; let i = index;" >
+							<ion-chip color="dark" class="color-chip-archivo">
+								<ion-icon *ngIf="archivo.Tipo == 'Video'" name="videocam-outline" ></ion-icon>
+								<ion-icon *ngIf="archivo.Tipo == 'Imagen'" name="images-outline" ></ion-icon>
+								<ion-icon *ngIf="archivo.Tipo == 'Audio'" name="mic-circle-outline"></ion-icon>
+								<ion-icon *ngIf="archivo.Tipo == 'Mapa'" name="map-outline"></ion-icon>	
+								<ion-icon name="attach-outline"></ion-icon>	
+								<ion-label>{{ archivo.PathRecurso }}</ion-label>
+							</ion-chip>	
+						</li>
+					</ul>
+				</div>
             </ion-item>
             <ion-item *ngIf="permisoEditar()" style="margin-top: -6px;">
                 <ion-button style="transform: translateX(12px);" fill="outline" slot="end" (click)="eliminar($event,item)">Borrar</ion-button>
@@ -92,10 +202,29 @@
 
             </ion-card-content>
             <ion-item>
-                <ion-chip outline color="dark" (click)="openFile(item)" *ngIf=" item.PathRecurso != undefined">
-                    <ion-icon name="attach-outline"></ion-icon>
-                    <ion-label style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{item.PathRecursoUser}}</ion-label>
-                </ion-chip>
+
+				<div *ngIf="item.Recursosdetalles.length === 0">
+					<ion-chip outline color="dark" (click)="openFile(item)" *ngIf=" item.PathRecurso != undefined">
+						<ion-icon name="attach-outline"></ion-icon>
+						<ion-label style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{item.PathRecursoUser}}</ion-label>
+					</ion-chip>
+				</div>
+
+				<div class="lista-archivos" *ngIf="item.Recursosdetalles.length > 0">
+					<ul class="lista-archivos-ul">
+						<li class="ion-text-wrap" *ngFor="let archivo of item.Recursosdetalles; let i = index;" >
+							<ion-chip color="dark" class="color-chip-archivo">
+								<ion-icon *ngIf="archivo.Tipo == 'Video'" name="videocam-outline" ></ion-icon>
+								<ion-icon *ngIf="archivo.Tipo == 'Imagen'" name="images-outline" ></ion-icon>
+								<ion-icon *ngIf="archivo.Tipo == 'Audio'" name="mic-circle-outline"></ion-icon>
+								<ion-icon *ngIf="archivo.Tipo == 'Mapa'" name="map-outline"></ion-icon>	
+								<ion-icon name="attach-outline"></ion-icon>	
+								<ion-label>{{ archivo.PathRecurso }}</ion-label>
+							</ion-chip>	
+						</li>
+					</ul>
+				</div>
+
             </ion-item>
             <ion-item *ngIf="permisoEditar()" style="margin-top: -6px;">
                 <ion-button style="transform: translateX(12px);" fill="outline" slot="end" (click)="eliminar($event,item)">Borrar</ion-button>
@@ -126,10 +255,28 @@
 
             </ion-card-content>
             <ion-item>
-                <ion-chip outline color="dark" (click)="openFile(item)" *ngIf=" item.PathRecurso != undefined">
-                    <ion-icon name="attach-outline"></ion-icon>
-                    <ion-label style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{item.PathRecursoUser}}</ion-label>
-                </ion-chip>
+				<div *ngIf="item.Recursosdetalles.length === 0">
+					<ion-chip outline color="dark" (click)="openFile(item)" *ngIf=" item.PathRecurso != undefined">
+						<ion-icon name="attach-outline"></ion-icon>
+						<ion-label style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{item.PathRecursoUser}}</ion-label>
+					</ion-chip>
+				</div>
+
+				<div class="lista-archivos" *ngIf="item.Recursosdetalles.length > 0">
+					<ul class="lista-archivos-ul">
+						<li class="ion-text-wrap" *ngFor="let archivo of item.Recursosdetalles; let i = index;" >
+							<ion-chip color="dark" class="color-chip-archivo">
+								<ion-icon *ngIf="archivo.Tipo == 'Video'" name="videocam-outline" ></ion-icon>
+								<ion-icon *ngIf="archivo.Tipo == 'Imagen'" name="images-outline" ></ion-icon>
+								<ion-icon *ngIf="archivo.Tipo == 'Audio'" name="mic-circle-outline"></ion-icon>
+								<ion-icon *ngIf="archivo.Tipo == 'Mapa'" name="map-outline"></ion-icon>	
+								<ion-icon name="attach-outline"></ion-icon>	
+								<ion-label>{{ archivo.PathRecurso }}</ion-label>
+							</ion-chip>	
+						</li>
+					</ul>
+				</div>
+
             </ion-item>
             <ion-item *ngIf="permisoEditar()" style="margin-top: -6px;">
                 <ion-button style="transform: translateX(12px);" fill="outline" slot="end" (click)="eliminar($event,item)">Borrar</ion-button>
@@ -147,7 +294,7 @@
     </ion-list>
 
 </div>
-<div *ngIf="(esConferencia)">
+<div *ngIf="(esConferencia)" [ngClass]="outline[3].animation">
     <ion-list mode="ios">
         <app-mensaje-adeudo *ngIf="LstRecursos==null"></app-mensaje-adeudo>
         <ion-virtual-scroll [items]="LstRecursos" approxItemHeight="300px" style="margin-bottom: 100px;z-index: 999999;">
@@ -171,7 +318,7 @@
                     <ion-button *ngIf="permisoEditar()" fill="outline" slot="end" (click)="edit($event,item)">Editar</ion-button>
                 </ion-item>
             </ion-card>
-            <ion-card style="text-align: initial;border-bottom: 0.6px solid #d0d0d0;border-left: none;border-radius: 0px;box-shadow: none !important;" class="ion-activatable ripple-parent " mode="ios " *ngIf="!esConferencia && (LstRecursos | filter : 'Semana 1' : 'Semana').length == 0">
+            <ion-card style="text-align: initial;border-bottom: 0.6px solid #d0d0d0;border-left: none;border-radius: 0px;box-shadow: none !important;" class="ion-activatable ripple-parent " mode="ios" *ngIf="!esConferencia && (LstRecursos | filter : 'Semana 1' : 'Semana').length == 0">
                 <ion-ripple-effect></ion-ripple-effect>
                 <ion-card-header>
                     <ion-card-title>Ningun recurso</ion-card-title>
@@ -184,4 +331,14 @@
         <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Cargando mas usuarios...">
         </ion-infinite-scroll-content>
     </ion-infinite-scroll>
+</div>
+
+
+<div [ngClass]="outline[5].animation" *ngIf="(esBiblioteca) && (!esConferencia)">
+	<app-list-biblioteca></app-list-biblioteca>
+</div> 
+
+<div [ngClass]="outline[6].animation" *ngIf="(esFavoritos) && (!esConferencia) && (!esBiblioteca)">
+	<!-- <label>Favoritos</label> -->
+	<app-favoritos (eventEmitUpdateHeight)="emitUpdateHeight($event)"></app-favoritos>
 </div>

@@ -1,0 +1,81 @@
+<ion-header class="ion-no-border">
+	<ion-toolbar>
+		<ion-title style="text-align: center;"></ion-title>
+			<ion-buttons slot="start">
+				<ion-button (click)="onDismissModal(false)">
+					<ion-icon name="chevron-back-outline" slot="icon-only" color="dark" size="large" ></ion-icon>
+				</ion-button>
+				Regresar
+			</ion-buttons>
+	</ion-toolbar>
+</ion-header>
+<ion-content>
+	<div class="audio-container">
+		<ion-item lines="none" style="text-align: center;">
+			<ion-label>
+				<h2>{{ datosItem.name }}</h2>
+			</ion-label>
+		</ion-item>
+		<ion-item lines="none">
+			<!-- <ion-progress-bar value="0.5" mode="ios"></ion-progress-bar> -->
+			<!-- <div class="wave-container">
+				<div class="wave" [style.width.px]="widthScreen">
+					
+				</div>
+			</div> -->
+			<div id="waveform" [style.width.px]="widthScreen"></div>
+			<!-- <div class="wave">
+
+			</div> -->
+		</ion-item>
+		<ion-item lines="none" class="ion-no-margin">
+			<ion-label slot="start" >
+				<p class="ion-float-left">{{ audioCurrentTime }}</p>
+			</ion-label>
+			
+				<ion-label slot="end" >
+					<p class="ion-float-right">{{ audioDuration }} </p>
+				</ion-label>
+
+		</ion-item>
+		<ion-item lines="none">
+			<ion-button slot="start" size="large" color="dark" fill="clear" (click)="repeatAudio()" >
+				<ion-icon name="repeat-outline"></ion-icon>
+			</ion-button>
+			<ion-button  style="margin: auto;" color="dark" shape="round" expand="block" class="btn-round"  size="large" fill="outline" (click)="playPauseResume()">
+				<ion-icon name="play" *ngIf="!isPlaying"></ion-icon>
+				<ion-icon name="pause" *ngIf="isPlaying"></ion-icon>
+			</ion-button>
+			<ion-button slot="end" size="large" fill="clear" color="dark" (click)="stopAudio()">
+				<ion-icon name="stop"></ion-icon>
+			</ion-button>
+		</ion-item>
+	</div>
+
+	<ion-item lines="none">
+
+		
+	</ion-item>
+</ion-content>
+
+<!-- Open after main component enter -->
+<ion-footer class="footer-modal-item ani-slideInUp" *ngIf="afterEntrance === true">
+	<ion-toolbar color="dark" class="toolbar-footer-item">
+		<ion-item color="dark">
+			<ion-button slot="start" color="light" (click)="onDismissModal(true)">
+				<ion-icon name="add-outline"></ion-icon> Seleccionar
+			</ion-button>
+			<ion-button  style="margin: auto;" color="light" class="ion-text-wrap" 
+				(click)="favoritosAccion($event, datosItem, heartIcon)">
+				<ion-icon id="favorito{{ datosItem.Id }}" style="border-radius: 20px;"  
+					[ngClass]="datosItem.favoritoClass" 
+					[name]="datosItem.esFavorito"
+					#heartIcon>
+				</ion-icon> A Favoritos
+			</ion-button>
+			<ion-button *ngIf="(mostrarBtnAdjuntar)" slot="end" color="light" (click)="createAlertAdjuntar();">
+				<ion-icon name="attach-outline"></ion-icon> Adjuntar
+			</ion-button>
+		</ion-item>
+	</ion-toolbar>
+</ion-footer>

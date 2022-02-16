@@ -34,6 +34,9 @@
 }
 
 
+@import "~@videogular/ngx-videogular/fonts/videogular.css"; //ngx videogular
+
+
 /*Hace que el modal salga hasta un punto en especifico*/
 
 .my-custom-modal-css .modal-wrapper {
@@ -59,6 +62,29 @@
     background-color: #00000000;
     width: 100%;
 }
+
+.modal-image-viewer .modal-wrapper {
+	height: 82%;
+    top: 21%;
+    position: absolute;
+    display: block;
+    border-top-right-radius: 44px;
+    border-top-left-radius: 44px;
+    background-color: #ffffff;
+    width: 100%;
+}
+
+.modal-video-viewer .modal-wrapper {
+	height: 82%;
+    top: 21%;
+    position: absolute;
+    display: block;
+    border-top-right-radius: 44px;
+    border-top-left-radius: 44px;
+    background-color: #ffffff;
+    width: 100%;
+}
+
 
 .toastCenter {
     text-align: center;
