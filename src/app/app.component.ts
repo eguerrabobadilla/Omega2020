@@ -123,6 +123,14 @@ export class AppComponent {
         }
 
         const home = this.getKeyToken("home");
+        if(home===undefined){
+          this.authenticationService.logout().then( data => {
+            this.router.navigate(['login'],{ replaceUrl: true });
+            this.webSocket.finishWebScoket();
+            
+          });
+        
+        }
         this.router.navigate([home]);
         //Test
         /*if(this.getKeyToken("tipo")=="Director")

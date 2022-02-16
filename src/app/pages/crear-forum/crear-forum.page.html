@@ -58,7 +58,7 @@
                         <ion-col size="6">
                             <ion-item>
                                 <ion-label color="light" position="floating">Fecha</ion-label>
-                                <ion-datetime formControlName="FechaPublicacion" name="FechaPublicacion" displayFormat="DDDD DD MMM, YYYY" pickerFormat="DD MMMM YYYY"></ion-datetime>
+                                <ion-datetime min="2020-12-01" max="2022-12-31" formControlName="FechaPublicacion" name="FechaPublicacion" displayFormat="DDDD DD MMM, YYYY" pickerFormat="DD MMMM YYYY"></ion-datetime>
                             </ion-item>
                             <div *ngIf="!FrmItem.controls.FechaPublicacion.valid && (FrmItem.controls.FechaPublicacion.dirty || submitAttempt)">
                                 <p class="text-error">Por favor ingresa una fecha.</p>

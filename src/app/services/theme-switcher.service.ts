@@ -21,9 +21,11 @@ interface ThemeStyle {
 export class ThemeSwitcherService {
 
   private themes: Theme[] = [];
+  private themesLocal: Theme[] = [];
   private currentTheme: number = 0;
   public principalColor: string="";
   public escolaridad: string="";
+  public homeBackend: string="";
   public tipoUsuario: string="";
   public cssStyle:string ="";
 
@@ -31,7 +33,7 @@ export class ThemeSwitcherService {
   constructor(private domCtrl: DomController, @Inject(DOCUMENT) private document,
               private http: HttpClient,private storage: Storage,private statusBar: StatusBar) {
     
-    this.themes = [
+    this.themesLocal = [
       {
         name: 'homeThemeDefault',
         styles : [ 
@@ -269,14 +271,16 @@ export class ThemeSwitcherService {
     
      this.tipoUsuario= await this.getKeyToken("tipo");
      this.escolaridad = await this.getKeyToken("escolaridad");
+     this.homeBackend = await this.getKeyToken("home");
 
-     if(this.tipoUsuario !=="Alumno"){
+    /* if(this.tipoUsuario !=="Alumno"){
       this.setTheme(this.tipoUsuario,data)
      }
         
      else{
       this.setTheme(this.escolaridad,data);
-     }
+     }*/
+     this.setTheme(this.escolaridad,data);
      console.log("data.length")
      console.log(data)
    
@@ -290,21 +294,32 @@ export class ThemeSwitcherService {
     console.log(data)
     console.log(name)
     this.themes=data;
-     let theme= data =! null ? this.themes.find(theme => theme.name === name) : null;
-     
+    let theme;
+    if(data==null){
+        theme=undefined;
+    }
+    else{
+        theme= this.themes.find(theme => theme.name === name)
+    }
+    
 
+     //let theme= data ==! null ? this.themes.find(theme => theme.name === name) : undefined;
+     
+     console.log("HOME BACK EN")
+     console.log(this.homeBackend)
+     console.log("theme")
+     console.log(theme)
 
     if(theme ===undefined ){//si por alguna cuestion no se descargan los themas de la nube, entran lo default
         
                 console.log("THEMES DESCARGAS ERROR, ENTRAN DEFAULT")
-                console.log(theme=this.themes[1])
-                if( this.escolaridad=="SAC" || this.escolaridad=="Universidad" || 
-                    this.escolaridad=="Licenciatura Presencial" || this.escolaridad=="Licenciatura SAC") //si va al home universidad
-                    //this.setTheme("homeUniversidadThemeDefault",this.themes)
-                    theme=this.themes[1]
+                console.log(theme=this.themesLocal[1])
+
+                if(this.homeBackend=="home-universidad") //si va al home universidad
+                    theme=this.themesLocal[1]
                     else // si va al home 
-                    theme=this.themes[0]
-          //          this.setTheme("homeThemeDefault",this.themes)
+                    theme=this.themesLocal[0]
+
 
      }
      else{//continua logica normal, si hay themas descargados de la nube

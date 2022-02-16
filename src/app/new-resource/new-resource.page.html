@@ -79,7 +79,7 @@
                         <ion-col size="12" *ngIf="TipoSeleccionada=='Clase Virtual'">
                             <ion-item>
                                 <ion-label color="light" position="floating">Fecha</ion-label>
-                                <ion-datetime formControlName="FechaPublicacionClaseVirtual" name="FechaPublicacionClaseVirtual" displayFormat="DDDD DD MMM, YYYY" pickerFormat="DD MMMM YYYY"></ion-datetime>
+                                <ion-datetime min="2020-12-01" max="2022-12-31" formControlName="FechaPublicacionClaseVirtual" name="FechaPublicacionClaseVirtual" displayFormat="DDDD DD MMM, YYYY" pickerFormat="DD MMMM YYYY"></ion-datetime>
                             </ion-item>
                             <div *ngIf="!FrmItem.controls.FechaPublicacionClaseVirtual.valid && (FrmItem.controls.FechaPublicacionClaseVirtual.dirty || submitAttempt)">
                                 <p class="text-error">Por favor ingresa una fecha.</p>
